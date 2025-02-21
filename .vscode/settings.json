@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "开拓芯_2025_2_20.sln"
+    "dotnet.defaultSolution": "CoreBlazer_2025_2_20_Ver2.sln"
 }

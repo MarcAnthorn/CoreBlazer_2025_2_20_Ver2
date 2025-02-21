@@ -8,7 +8,7 @@ using static DialogueManager.Option;
 public class DialogueManager : Singleton<DialogueManager>
 {
     [System.Serializable]
-    public class Dialogue               //ÎÄ±¾¶Ô»°Àà
+    public class Dialogue               //æ–‡æœ¬å¯¹è¯ç±»
     {
         public int id;
         public string text;
@@ -16,28 +16,28 @@ public class DialogueManager : Singleton<DialogueManager>
     }
 
     [System.Serializable]
-    public class Option                 //Ñ¡ÏîÀà
+    public class Option                 //é€‰é¡¹ç±»
     {
         public string text;
         public int nextId;
-        public EventType eventType; // ÊÂ¼şÀàĞÍ£¬¾ö¶¨Ö´ĞĞµÄÊÂ¼ş  
+        public EventType eventType; // äº‹ä»¶ç±»å‹ï¼Œå†³å®šæ‰§è¡Œçš„äº‹ä»¶  
 
-        // ĞÂÔöÊÂ¼şÀàĞÍ  
+        // æ–°å¢äº‹ä»¶ç±»å‹  
         public enum EventType
         {
-            None,        // Ä¬ÈÏÖµ  
-            Action1,    // ÊÂ¼ş1  
-            Action2,    // ÊÂ¼ş2  
-                        // ÆäËûÊÂ¼şÀàĞÍ  
+            None,        // é»˜è®¤å€¼  
+            Action1,    // äº‹ä»¶1  
+            Action2,    // äº‹ä»¶2  
+                        // å…¶ä»–äº‹ä»¶ç±»å‹  
         }
     }
 
     private Dictionary<int, Dialogue> dialogueDictionary;
 
-    // ĞèÒªµÄUIÔªËØ  
-    public Text dialogueText; // ÓÃÓÚÏÔÊ¾¶Ô»°ÎÄ±¾  
-    public GameObject optionButtonPrefab; // Ñ¡Ïî°´Å¥µÄÔ¤ÖÆÌå  
-    public Transform optionsPanel; // Ñ¡Ïî°´Å¥µÄ¸¸ÎïÌå  
+    // éœ€è¦çš„UIå…ƒç´   
+    public Text dialogueText; // ç”¨äºæ˜¾ç¤ºå¯¹è¯æ–‡æœ¬  
+    public GameObject optionButtonPrefab; // é€‰é¡¹æŒ‰é’®çš„é¢„åˆ¶ä½“  
+    public Transform optionsPanel; // é€‰é¡¹æŒ‰é’®çš„çˆ¶ç‰©ä½“  
 
     protected override void Awake()
     {
@@ -55,24 +55,24 @@ public class DialogueManager : Singleton<DialogueManager>
             using (StringReader reader = new StringReader(textAsset.text))
             {
                 string line;
-                reader.ReadLine(); // Ìø¹ı±êÌâĞĞ  (¸ù¾İÊµ¼ÊÇé¿öÀ´¶¨)
+                reader.ReadLine(); // è·³è¿‡æ ‡é¢˜è¡Œ  (æ ¹æ®å®é™…æƒ…å†µæ¥å®š)
                 while ((line = reader.ReadLine()) != null)
                 {
                     string[] fields = line.Split(',');
 
                     Dialogue dialogue = new Dialogue();
-                    dialogue.id = int.Parse(fields[0]);     //µÚÒ»ÁĞ£ºÎÄ±¾ID
-                    dialogue.text = fields[1];              //µÚ¶şÁĞ£ºÎÄ±¾ĞÅÏ¢
+                    dialogue.id = int.Parse(fields[0]);     //ç¬¬ä¸€åˆ—ï¼šæ–‡æœ¬ID
+                    dialogue.text = fields[1];              //ç¬¬äºŒåˆ—ï¼šæ–‡æœ¬ä¿¡æ¯
 
-                    // ¶ÁÈ¡Ñ¡Ïî£¨Ã¿¸öÑ¡ÏîÓĞÈı¸ö×Ö¶Î£ºÑ¡ÏîÎÄ±¾¡¢Ä¿±ê¶Ô»°ID¡¡ºÍ¡¡ÊÂ¼şÀàĞÍ£©
-                    for (int i = 2; i < fields.Length; i += 3) // ¼ÙÉèĞÂÔöÊÂ¼ş×Ö¶Î
+                    // è¯»å–é€‰é¡¹ï¼ˆæ¯ä¸ªé€‰é¡¹æœ‰ä¸‰ä¸ªå­—æ®µï¼šé€‰é¡¹æ–‡æœ¬ã€ç›®æ ‡å¯¹è¯IDã€€å’Œã€€äº‹ä»¶ç±»å‹ï¼‰
+                    for (int i = 2; i < fields.Length; i += 3) // å‡è®¾æ–°å¢äº‹ä»¶å­—æ®µ
                     {
                         if (i + 2 < fields.Length)
                         {
                             Option option = new Option();
-                            option.text = fields[i];  // Ñ¡ÏîÎÄ±¾  
-                            option.nextId = int.Parse(fields[i + 1]);  // ÏÂÒ»¸ö¶Ô»°ID  
-                            option.eventType = (Option.EventType)Enum.Parse(typeof(Option.EventType), fields[i + 2]); // ÊÂ¼şÀàĞÍ  
+                            option.text = fields[i];  // é€‰é¡¹æ–‡æœ¬  
+                            option.nextId = int.Parse(fields[i + 1]);  // ä¸‹ä¸€ä¸ªå¯¹è¯ID  
+                            option.eventType = (Option.EventType)Enum.Parse(typeof(Option.EventType), fields[i + 2]); // äº‹ä»¶ç±»å‹  
 
                             dialogue.options.Add(option);
                         }
@@ -84,7 +84,7 @@ public class DialogueManager : Singleton<DialogueManager>
         }
         else
         {
-            Debug.LogError("¶Ô»°ÎÄ¼şÎ´ÕÒµ½¡£");
+            Debug.LogError("å¯¹è¯æ–‡ä»¶æœªæ‰¾åˆ°ã€‚");
         }
     }
 
@@ -94,35 +94,35 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             dialogueText.text = dialogue.text;
 
-            // Çå¿ÕÖ®Ç°µÄÑ¡Ïî  
+            // æ¸…ç©ºä¹‹å‰çš„é€‰é¡¹  
             foreach (Transform child in optionsPanel)
             {
                 Destroy(child.gameObject);
             }
 
-            // ÎªÃ¿¸öÑ¡Ïî´´½¨°´Å¥  
+            // ä¸ºæ¯ä¸ªé€‰é¡¹åˆ›å»ºæŒ‰é’®  
             foreach (var option in dialogue.options)
             {
                 GameObject buttonObject = Instantiate(optionButtonPrefab, optionsPanel);
                 Button button = buttonObject.GetComponent<Button>();
                 button.GetComponentInChildren<Text>().text = option.text;
 
-                // ×¢²áµã»÷ÊÂ¼ş  
+                // æ³¨å†Œç‚¹å‡»äº‹ä»¶  
                 button.onClick.AddListener(() => OnOptionSelected(option.nextId));
             }
         }
         else
         {
-            Debug.LogError("¶Ô»°IDÎ´ÕÒµ½: " + dialogueId);
+            Debug.LogError("å¯¹è¯IDæœªæ‰¾åˆ°: " + dialogueId);
         }
     }
 
     private void OnOptionSelected(int nextId)
     {
-        // Ö´ĞĞÊÂ¼ş  
+        // æ‰§è¡Œäº‹ä»¶  
         ExecuteEvent(Option.EventType.None);
 
-        // ÏÔÊ¾ÏÂÒ»¸ö¶Ô»°  
+        // æ˜¾ç¤ºä¸‹ä¸€ä¸ªå¯¹è¯  
         ShowDialogue(nextId);
     }
 
@@ -131,10 +131,10 @@ public class DialogueManager : Singleton<DialogueManager>
         switch (eventType)
         {
             case Option.EventType.Action1:
-                // Ö´ĞĞÊÂ¼ş1  
+                // æ‰§è¡Œäº‹ä»¶1  
                 break;
             case Option.EventType.Action2:
-                // Ö´ĞĞÊÂ¼ş2  
+                // æ‰§è¡Œäº‹ä»¶2  
                 break;
             default:
                 break;

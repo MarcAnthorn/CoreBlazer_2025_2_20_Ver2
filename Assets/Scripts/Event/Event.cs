@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]           //´ú±íÏÂÃæÒ»¸öÀàµÄÊı¾İ¿ÉÒÔĞòÁĞ»¯
+[System.Serializable]           //ä»£è¡¨ä¸‹é¢ä¸€ä¸ªç±»çš„æ•°æ®å¯ä»¥åºåˆ—åŒ–
 public class Event : MonoBehaviour
 {
-    public int id;                              //Ã¿¸ö²»Í¬ÊÂ¼şµÄÎ¨Ò»±êÊ¶
-    public string EvDescription;                //ÊÂ¼şÃèÊö
-    public List<EventOption> options;           //ÊÂ¼şÑ¡Ïî
+    public int id;                              //æ¯ä¸ªä¸åŒäº‹ä»¶çš„å”¯ä¸€æ ‡è¯†
+    public string EvDescription;                //äº‹ä»¶æè¿°
+    public List<EventOption> options;           //äº‹ä»¶é€‰é¡¹
     public List<EventOption.EventResult> results;
     //public Dictionary<EventOption, EventOption.EventResult> results;
 
@@ -17,14 +17,14 @@ public class Event : MonoBehaviour
 public class EventOption
 {
     public string OpDescription;
-    public int eventId;             //ËùÊôÊÂ¼şµÄId
-    public int optionId;            //×÷Îª Ã¿¸öÊÂ¼ş ²»Í¬Ñ¡ÏîµÄÎ¨Ò»±êÊ¶(1,2,3...)
+    public int eventId;             //æ‰€å±äº‹ä»¶çš„Id
+    public int optionId;            //ä½œä¸º æ¯ä¸ªäº‹ä»¶ ä¸åŒé€‰é¡¹çš„å”¯ä¸€æ ‡è¯†(1,2,3...)
 
     public Event nextEventId;
 
     private bool isSeletable = false;
 
-    //´¥·¢ÊÂ¼şµÄ±ê×¼
+    //è§¦å‘äº‹ä»¶çš„æ ‡å‡†
     public int minHP, maxHP;
     public int minSTR, maxSTR;
     public int minDEF, maxDEF;
@@ -35,11 +35,11 @@ public class EventOption
     [System.Serializable]
     public class EventResult
     {
-        public string outcome;      //ÊÂ¼ş½á¹û
-        public int nextEventId;     //´¦Àí¶ÔÓ¦µÄÊÂ¼ş
+        public string outcome;      //äº‹ä»¶ç»“æœ
+        public int nextEventId;     //å¤„ç†å¯¹åº”çš„äº‹ä»¶
     }
 
-    public bool LockOrNot()         //Ëæ½ÇÉ«ÊôĞÔ±ä»¯¶ø¶¯Ì¬¸üĞÂ(ÔÚ½ÇÉ«´¥·¢ÊÂ¼ş(ShowEvent)Ê±µ÷ÓÃ)
+    public bool LockOrNot()         //éšè§’è‰²å±æ€§å˜åŒ–è€ŒåŠ¨æ€æ›´æ–°(åœ¨è§’è‰²è§¦å‘äº‹ä»¶(ShowEvent)æ—¶è°ƒç”¨)
     {
         int HP = PlayerManager.Instance.player.HP;
         int STR = PlayerManager.Instance.player.STR;
@@ -57,11 +57,11 @@ public class EventOption
             DataProcessor.Instance.LowerThanStandard(SAN, minSAN) &&
             DataProcessor.Instance.UpToStandard(SAN, maxSAN))
         {
-            isSeletable = true;             //·ûºÏÌõ¼ş
+            isSeletable = true;             //ç¬¦åˆæ¡ä»¶
             return true;
         }
 
-        isSeletable = false;                //²»·ûºÏÌõ¼ş
+        isSeletable = false;                //ä¸ç¬¦åˆæ¡ä»¶
         return false;
     }
 
@@ -70,7 +70,7 @@ public class EventOption
 
 
 [System.Serializable]
-public class EventDataContainer     //ÓÃÓÚ×öJsonÊı¾İºÍEventÊı¾İ½»»»µÄÖĞ×ªÕ¾
+public class EventDataContainer     //ç”¨äºåšJsonæ•°æ®å’ŒEventæ•°æ®äº¤æ¢çš„ä¸­è½¬ç«™
 {
     public List<Event> eventDatas;
 }

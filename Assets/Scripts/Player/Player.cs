@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour               //´æ´¢½ÇÉ«ĞÅÏ¢µÈ
+public class Player : MonoBehaviour               //å­˜å‚¨è§’è‰²ä¿¡æ¯ç­‰
 {
-    public int HP;          //ÉúÃü    Health point
-    public int STR;         //Á¦Á¿    Strength
-    public int DEF;         //·ÀÓù    Defense
-    public int LVL;         //µÆ¹âÖµ  Light Value
-    public int SAN;         //SANÖµ   Sanity
+    public int HP;          //ç”Ÿå‘½    Health point
+    public int STR;         //åŠ›é‡    Strength
+    public int DEF;         //é˜²å¾¡    Defense
+    public int LVL;         //ç¯å…‰å€¼  Light Value
+    public int SAN;         //SANå€¼   Sanity
 
     // Start is called before the first frame update
     void Start()

@@ -7,7 +7,7 @@ public class CommonItemPanel : BasePanel
 {
 
     public ScrollRect sr;
-    private List<GameObject> itemList = new List<GameObject>();
+    public List<GameObject> itemList = new List<GameObject>();
     protected override void Init()
     {
         //测试用
@@ -26,9 +26,16 @@ public class CommonItemPanel : BasePanel
     {
         for(int i = 0; i < 20; i++)
         {
-            GameObject prefab = Resources.Load<GameObject>("TestImage");
+            GameObject prefab = Resources.Load<GameObject>("Item");
             itemList.Add(Instantiate<GameObject>(prefab));
         }
     }
+
+    // public void ItemFetcher()
+    // {
+        
+    // }
+
+    //外部实现一个单例Item管理器，存储所有当前持有的Item
 }
 

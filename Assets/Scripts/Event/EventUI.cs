@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EventUI : MonoBehaviour        //ÓÃÓÚ¹ÒÔØÔÚÊÂ¼şUIµÄprefabÉÏ£¬ÊµÀı»¯Ê±ÏÔÊ¾ÊÂ¼şĞÅÏ¢
+public class EventUI : MonoBehaviour        //ç”¨äºæŒ‚è½½åœ¨äº‹ä»¶UIçš„prefabä¸Šï¼Œå®ä¾‹åŒ–æ—¶æ˜¾ç¤ºäº‹ä»¶ä¿¡æ¯
 {
     public Text eventDescriptionText;
     //public Text optionText;
@@ -27,16 +27,20 @@ public class EventUI : MonoBehaviour        //ÓÃÓÚ¹ÒÔØÔÚÊÂ¼şUIµÄprefabÉÏ£¬ÊµÀı»¯
             foreach(var option in @event.options)
             {
                 GameObject optionGO = new GameObject("Option");
-                bool isLock = option.LockOrNot();             //½øĞĞËø¶¨ÅĞ¶Ï
+                bool isLock = option.LockOrNot();             //è¿›è¡Œé”å®šåˆ¤æ–­
                 optionGO.transform.SetParent(optionsPanel);
                 if (isLock)
                 {
                     Button button = optionGO.AddComponent<Button>();
-                    button.onClick.AddListener(() => EventManager.Instance.SelectOption(@event.options.IndexOf(option)));       //¶¯Ì¬Ìí¼ÓÊÂ¼ş¼àÌı
+                    button.onClick.AddListener(() => {
+                        //åŠ¨æ€æ·»åŠ äº‹ä»¶ç›‘å¬
+                        EventManager.Instance.SelectOption(@event.options.IndexOf(option));
+
+                    });       
                 }
                 else
                 {
-                    //ÏàÓ¦Î»ÖÃÌùÉÏ´ú±í²»¿ÉÑ¡ÔñµÄÍ¼Æ¬
+                    //ç›¸åº”ä½ç½®è´´ä¸Šä»£è¡¨ä¸å¯é€‰æ‹©çš„å›¾ç‰‡
                 }
                 Text optionText = optionGO.AddComponent<Text>();
                 optionText.text = option.OpDescription;

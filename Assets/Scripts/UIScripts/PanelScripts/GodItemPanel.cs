@@ -27,7 +27,7 @@ public class GodItemPanel : BasePanel
     {
         for(int i = 0; i < 20; i++)
         {
-            GameObject prefab = Resources.Load<GameObject>("TestImage");
+            GameObject prefab = Resources.Load<GameObject>("Item");
             itemList.Add(Instantiate<GameObject>(prefab));
         }
     }

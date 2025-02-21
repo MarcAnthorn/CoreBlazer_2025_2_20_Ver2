@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameMainPanel : BasePanel
 {
+    
     private List<Button> optionList; 
     public Slider sliderHealth;
     public Slider sliderSanity;
@@ -20,12 +21,15 @@ public class GameMainPanel : BasePanel
     public Button btnToCommonItem;
     public Button btnSetting;
     public Button btnQuit;
+    public RectTransform rtOptionsContainer;
 
     public Transform rightSection;
 
+    //当前的事件对象
+    private Event currentEvent;
+
     protected override void Init()
     {
-
         //默认显示的是神明道具面板；
         UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
         btnToGodItem.onClick.AddListener(()=>{
@@ -37,7 +41,23 @@ public class GameMainPanel : BasePanel
             UIManager.Instance.ShowPanel<CommonItemPanel>().transform.SetParent(rightSection, false);
             UIManager.Instance.HidePanel<GodItemPanel>();
         });
+
+        EventHub.Instance.AddEventListener("EventFetcher", EventFetcher);
     }
+
+    private void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener("EventFetcher", EventFetcher);
+    }
+
+    //从外部动态获取当前面板需要显示的事件信息
+    public void EventFetcher()
+    {
+
+    }
+
+
+
 
    
 }

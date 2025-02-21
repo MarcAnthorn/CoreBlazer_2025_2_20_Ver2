@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : Singleton<PlayerManager>          //ÓÃÓÚ¹ÜÀí½ÇÉ«µÄÊÂ¼ş
+public class PlayerManager : Singleton<PlayerManager>          //ç”¨äºç®¡ç†è§’è‰²çš„äº‹ä»¶
 {
     public Player player;
 
