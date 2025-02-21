@@ -87,5 +87,12 @@ public class EventManager : Singleton<EventManager>
             currentEventId = result.nextEventId;    //更新到下一个事件
         }
     }
+
+    //可能需要实现一个向外部广播当前事件对象的方法：
+    //可以需要将EventUI脚本中的ShowEvent迁移过来
+    // public Event BroadcastEvent()
+    // {
+    //     return 
+    // }
     
 }

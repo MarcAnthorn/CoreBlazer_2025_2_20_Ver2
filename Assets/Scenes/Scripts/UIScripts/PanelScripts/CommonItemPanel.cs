@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommonItemPanel : BasePanel
+public class CommonItemPanel : ItemPanel
 {
 
-    public ScrollRect sr;
+    public ScrollRect srCommonItemContainer;
     public List<GameObject> itemList = new List<GameObject>();
     protected override void Init()
     {
         //测试用
-        InitContent();
-
-        
+        InitContent();   
         foreach(var item in itemList)
         {
-            item.transform.SetParent(sr.content, false);
+            item.transform.SetParent(srCommonItemContainer.content, false);
         }
+    }
+
+    protected override void RefreshItem()
+    {
+        //在刷新item的方法中，获取外部数据结构中存储的item；
+        // foreach
     }
 
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GodItemPanel : BasePanel
+public class GodItemPanel : ItemPanel
 {
-    public ScrollRect sr;
+    public ScrollRect srGodItemContainer;
     private List<GameObject> itemList = new List<GameObject>();
     protected override void Init()
     {
@@ -16,9 +16,15 @@ public class GodItemPanel : BasePanel
         foreach(var item in itemList)
         {
             
-            item.transform.SetParent(sr.content, false);
+            item.transform.SetParent(srGodItemContainer.content, false);
 
         }
+    }
+
+    //必须实现的抽象方法：刷新当前Panel中的Item的方法；
+    protected override void RefreshItem()
+    {
+        
     }
 
 
@@ -31,5 +37,7 @@ public class GodItemPanel : BasePanel
             itemList.Add(Instantiate<GameObject>(prefab));
         }
     }
+
+
 
 }
