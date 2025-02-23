@@ -145,10 +145,4 @@ public class GameMainPanel : BasePanel
             true);
     }
    
-
-
-
-
-
-   
 }

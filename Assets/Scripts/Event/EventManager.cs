@@ -1,47 +1,48 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
 using TMPro;
 using UnityEditor.PackageManager;
+using Unity.VisualScripting;
 
 public class EventManager : Singleton<EventManager>
 {
-    public Dictionary<int, Event> events = new Dictionary<int, Event>();    //´æ´¢Ä³Ò»¹Ø¿¨ÊÂ¼ş¿âÀïµÄËùÓĞÊÂ¼ş
+    public Dictionary<int, Event> events = new Dictionary<int, Event>();    //å­˜å‚¨æŸä¸€å…³å¡äº‹ä»¶åº“é‡Œçš„æ‰€æœ‰äº‹ä»¶
     public int currentEventId = 0;
     public static int eventCount = 0;
 
     protected override void Awake()
     {
-        base.Awake();   //µ¥Àı³õÊ¼»¯
+        base.Awake();   //å•ä¾‹åˆå§‹åŒ–
         LoadEvents();
     }
 
     private void Update()
     {
-        
+
     }
 
     void LoadEvents()
     {
-        //¼ÓÔØÒÑÓĞÊÂ¼şÊı¾İ(CSV¸ñÊ½)µ½events×ÖµäÖĞ£¬Ê¹ÓÃAssets(Application.dataPath)ÏÂµÄÏà¶ÔÂ·¾¶
+        //åŠ è½½å·²æœ‰äº‹ä»¶æ•°æ®(CSVæ ¼å¼)åˆ°eventså­—å…¸ä¸­ï¼Œä½¿ç”¨Assets(Application.dataPath)ä¸‹çš„ç›¸å¯¹è·¯å¾„
         string path = Path.Combine(Application.dataPath, "Resources/EventData/eventDatas.json");
         if (File.Exists(path))
         {
-            string[] lines = File.ReadAllLines(path);   //·Ö¸îÃ¿Ò»ĞĞ´æÈëlines
+            string[] lines = File.ReadAllLines(path);   //åˆ†å‰²æ¯ä¸€è¡Œå­˜å…¥lines
 
-            for(int i = 1; i < lines.Length; i++)       //±éÀúÃ¿Ò»ĞĞ£¬»ñµÃ¸÷ÁĞµÄĞÅÏ¢
+            for (int i = 1; i < lines.Length; i++)       //éå†æ¯ä¸€è¡Œï¼Œè·å¾—å„åˆ—çš„ä¿¡æ¯
             {
                 string line = lines[i];
-                string[] values = line.Split(',');      //½«Ã¿Ò»ĞĞ°´ÕÕ¶ººÅ·Ö¸î
+                string[] values = line.Split(',');      //å°†æ¯ä¸€è¡ŒæŒ‰ç…§é€—å·åˆ†å‰²
 
-                // È·±£ÓĞ×ã¹»µÄÁĞ  
+                // ç¡®ä¿æœ‰è¶³å¤Ÿçš„åˆ—  
                 if (values.Length >= 5)
                 {
                     Event eventData = new Event()
                     {
-                        id = int.Parse(values[0]),      //¼ÙÉèidÊÇÕûĞÍÀàĞÍ  
+                        id = int.Parse(values[0]),      //å‡è®¾idæ˜¯æ•´å‹ç±»å‹  
                         name = values[1],
                         EvDescription = values[2]
                     };
@@ -51,36 +52,36 @@ public class EventManager : Singleton<EventManager>
         }
         else
         {
-            Debug.LogWarning("ÊÂ¼şÊı¾İÎÄ¼ş²»´æÔÚ£¡");
+            Debug.LogWarning("äº‹ä»¶æ•°æ®æ–‡ä»¶ä¸å­˜åœ¨ï¼");
         }
     }
 
     void SaveEvents()
     {
-        // ±£´æÊÂ¼şÊı¾İµ½ CSV  
+        // ä¿å­˜äº‹ä»¶æ•°æ®åˆ° CSV  
         string path = Path.Combine(Application.dataPath, "Resources/EventData/eventDatas.csv");
-        // Èç¹ûÎÄ¼ş²»´æÔÚ£¬Ğ´Èë±êÌâĞĞ  
+        // å¦‚æœæ–‡ä»¶ä¸å­˜åœ¨ï¼Œå†™å…¥æ ‡é¢˜è¡Œ  
         if (!File.Exists(path))
         {
-            File.WriteAllText(path, "id,name,date\n"); // ÕâÀïµÄÁĞÃûÓ¦Óë EventData ¶ÔÏóµÄ×Ö¶ÎÏà¶ÔÓ¦  
+            File.WriteAllText(path, "id,name,date\n"); // è¿™é‡Œçš„åˆ—ååº”ä¸ EventData å¯¹è±¡çš„å­—æ®µç›¸å¯¹åº”  
         }
 
-        // ±éÀú events ×Öµä£¬¹¹½¨ CSV ĞĞ  
+        // éå† events å­—å…¸ï¼Œæ„å»º CSV è¡Œ  
         List<string> lines = new List<string>();
         foreach (var kvp in events)
         {
             Event eventData = kvp.Value;
-            string line = $"{eventData.id},{eventData.name},{eventData.EvDescription}";  
+            string line = $"{eventData.id},{eventData.name},{eventData.EvDescription}";
             lines.Add(line);
         }
 
-        // ½«ĞÂµÄĞĞÌí¼Óµ½ CSV ÎÄ¼ş  
+        // å°†æ–°çš„è¡Œæ·»åŠ åˆ° CSV æ–‡ä»¶  
         File.WriteAllLines(path, lines);
     }
 
     public void SelectOption(int optionIndex)           //1,2,3
     {
-        foreach(var option in events[currentEventId].options)
+        foreach (var option in events[currentEventId].options)
         {
             if (optionIndex == option.optionId)
             {
@@ -91,19 +92,19 @@ public class EventManager : Singleton<EventManager>
         if (events[currentEventId].options.Contains(optionIndex))
         {
             EventOption.EventResult result = currentEvent.results[currentEventId];
-            //´¦Àí½á¹û
+            //å¤„ç†ç»“æœ
 
-            Debug.Log(result.outcome);                  //´òÓ¡¸ÃÊÂ¼şµÄ½á¹û
-            currentEventId = result.nextEventId;        //¸üĞÂµ½ÏÂÒ»¸öÊÂ¼ş
+            Debug.Log(result.outcome);                  //æ‰“å°è¯¥äº‹ä»¶çš„ç»“æœ
+            currentEventId = result.nextEventId;        //æ›´æ–°åˆ°ä¸‹ä¸€ä¸ªäº‹ä»¶
         }
     }
 
-    public void TriggerEvent(GameObject go)                //µ±½ÇÉ«µÄOnTriggerEnter()·½·¨·¢ÉúÊ±µ÷ÓÃ,»ñÈ¡¸ÃÊÂ¼şĞÅÏ¢
+    public void TriggerEvent(GameObject go)                //å½“è§’è‰²çš„OnTriggerEnter()æ–¹æ³•å‘ç”Ÿæ—¶è°ƒç”¨,è·å–è¯¥äº‹ä»¶ä¿¡æ¯
     {
         EventGO EvGO = go.GetComponent<EventGO>();
         currentEventId = EvGO.eventId;
         EventUI eventUI = new EventUI();
-        //¿ÉÄÜ»áÉèÖÃeventUIÏà¹ØµÄÊı¾İ(±ÈÈçÎ»ÖÃ£¬´óĞ¡µÈ)
+        //å¯èƒ½ä¼šè®¾ç½®eventUIç›¸å…³çš„æ•°æ®(æ¯”å¦‚ä½ç½®ï¼Œå¤§å°ç­‰)
         Instantiate(eventUI);
     }
 

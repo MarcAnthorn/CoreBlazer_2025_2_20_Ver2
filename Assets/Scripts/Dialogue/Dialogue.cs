@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Dialogue               //ÎÄ±¾¶Ô»°Àà
+public class Dialogue               //æ–‡æœ¬å¯¹è¯ç±»
 {
-    public int libId;               //ÎÄ±¾¿âId
-    public int TextId;              //ÎÄ±¾Id
-    public bool isKwaidan;          //ÎÄ±¾ÀàĞÍ£º¹ÖÌ¸ÎÄ±¾(true)/¶Ô»°ÎÄ±¾(false)
-    public string text;             //ÎÄ±¾ÄÚÈİ
-    public int nextId;              //ÏÂÒ»¸öÎÄ±¾µÄId
-    public int illustrationId;      //Á¢»æId
-    public int bgId;                //±³¾°Id
+    public int libId;               //æ–‡æœ¬åº“Id
+    public int TextId;              //æ–‡æœ¬Id
+    public bool isKwaidan;          //æ–‡æœ¬ç±»å‹ï¼šæ€ªè°ˆæ–‡æœ¬(true)/å¯¹è¯æ–‡æœ¬(false)
+    public string text;             //æ–‡æœ¬å†…å®¹
+    public int nextId;              //ä¸‹ä¸€ä¸ªæ–‡æœ¬çš„Id
+    public int illustrationId;      //ç«‹ç»˜Id
+    public int bgId;                //èƒŒæ™¯Id
 
-    //public int id;                  //µ±Ç°ÎÄ±¾µÄÎ¨Ò»±êÊ¶
+    //public int id;                  //å½“å‰æ–‡æœ¬çš„å”¯ä¸€æ ‡è¯†
     public List<Option> options = new List<Option>();
 
     [System.Serializable]
-    public class Option                 //¶Ô»°Ñ¡ÏîÀà(´ı¶¨)
+    public class Option                 //å¯¹è¯é€‰é¡¹ç±»(å¾…å®š)
     {
         public string text;
-        public int nextId;              //¸ù¾İ²»Í¬Ñ¡Ôñ¶ÔÓ¦Ïà¹ØµÄºóĞøÎÄ±¾(Èç£ºÖ÷Ïß/ifÏß)
-        public EventType eventType;     //ÊÂ¼şÀàĞÍ£¬¾ö¶¨Ö´ĞĞµÄÊÂ¼ş  
+        public int nextId;              //æ ¹æ®ä¸åŒé€‰æ‹©å¯¹åº”ç›¸å…³çš„åç»­æ–‡æœ¬(å¦‚ï¼šä¸»çº¿/ifçº¿)
+        public EventType eventType;     //äº‹ä»¶ç±»å‹ï¼Œå†³å®šæ‰§è¡Œçš„äº‹ä»¶  
 
-        // ĞÂÔöÊÂ¼şÀàĞÍ  
+        // æ–°å¢äº‹ä»¶ç±»å‹  
         public enum FollowUpType
         {
-            None,           // Ä¬ÈÏÖµ  
-            FollowUp1,      // ºóĞø1  
-            FollowUp2,      // ºóĞø2  
-                            // ÆäËûºóĞøÀàĞÍ  
+            None,           // é»˜è®¤å€¼  
+            FollowUp1,      // åç»­1  
+            FollowUp2,      // åç»­2  
+                            // å…¶ä»–åç»­ç±»å‹  
         }
     }
 }

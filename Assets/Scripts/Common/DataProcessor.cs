@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataProcessor : Singleton<DataProcessor>       //ÓÃÓÚ¶ÔÊıÖµ½øĞĞ´¦Àí(Ö÷ÒªÎªÁËºóĞø¿ÉÄÜ»áÓĞµÄ¹¦ÄÜ¿¼ÂÇ)
+public class DataProcessor : Singleton<DataProcessor>       //ç”¨äºå¯¹æ•°å€¼è¿›è¡Œå¤„ç†(ä¸»è¦ä¸ºäº†åç»­å¯èƒ½ä¼šæœ‰çš„åŠŸèƒ½è€ƒè™‘)
 {
     protected override void Awake()
     {
-        base.Awake();   //µ¥Àı³õÊ¼»¯
+        base.Awake();   //å•ä¾‹åˆå§‹åŒ–
     }
 
-    public bool LowerThanStandard(int test, int standard)   //µÍÓÚ±ê×¼
+    public bool LowerThanStandard(int test, int standard)   //ä½äºæ ‡å‡†
     {
         if (test < standard)
         {
@@ -19,7 +19,7 @@ public class DataProcessor : Singleton<DataProcessor>       //ÓÃÓÚ¶ÔÊıÖµ½øĞĞ´¦Àí
         return false;
     }
 
-    public bool UpToStandard(int test, int standard)        //´ïµ½±ê×¼
+    public bool UpToStandard(int test, int standard)        //è¾¾åˆ°æ ‡å‡†
     {
         if (test >= standard)
         {
