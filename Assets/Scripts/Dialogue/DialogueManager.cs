@@ -9,10 +9,10 @@ using UnityEngine.UI;
 //该脚本存在一些报错，我没有直接动，先注释了不然报错情况下不能运行
 public class DialogueManager : Singleton<DialogueManager>
 {
-    private Dictionary<int, Dialogue> dialogueDictionary;       //
+    private Dictionary<int, Dialogue> dialogueDictionary;       // 对话文本库
 
     // 需要的UI元素  
-    public Text dialogueText;                                   // 用于显示对话文本  
+    public Text dialogueText;                                   // 用于显示对话文本(加载对话文本库中的文本)  
     public GameObject optionButtonPrefab;                       // 选项按钮的预制体  
     public Transform optionsPanel;                              // 选项按钮的父物体  
 
