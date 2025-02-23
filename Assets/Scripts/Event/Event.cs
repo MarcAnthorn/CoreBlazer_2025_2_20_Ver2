@@ -4,28 +4,28 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[System.Serializable]           //´ú±íÏÂÃæÒ»¸öÀàµÄÊı¾İ¿ÉÒÔĞòÁĞ»¯
+[System.Serializable]           //ä»£è¡¨ä¸‹é¢ä¸€ä¸ªç±»çš„æ•°æ®å¯ä»¥åºåˆ—åŒ–
 public class Event          //
 {
-    public int libId;                           //ÊÂ¼ş¿âId(ÒÀ²»Í¬¹Ø¿¨À´Ñ¡)   ************************
-    public int eventId;                         //ÊÂ¼şId(¶ÔÓ¦Ò»¸öÊÂ¼şÎÄ±¾¿â)
-    public EventType type;                      //ÊÂ¼şÀàĞÍ(?Èç£ºµ¯´°ÊÂ¼ş/Ö±½ÓÊÂ¼ş(ÏİÚå/)?)
-    public int textLibId;                       //ÊÂ¼şÎÄ±¾¿âId
-    public List<EventOption> options;           //ÊÂ¼şÑ¡Ïî
+    public int libId;                           //äº‹ä»¶åº“Id(ä¾ä¸åŒå…³å¡æ¥é€‰)   ************************
+    public int eventId;                         //äº‹ä»¶Id(å¯¹åº”ä¸€ä¸ªäº‹ä»¶æ–‡æœ¬åº“)
+    public EventType type;                      //äº‹ä»¶ç±»å‹(?å¦‚ï¼šå¼¹çª—äº‹ä»¶/ç›´æ¥äº‹ä»¶(é™·é˜±/)?)
+    public int textLibId;                       //äº‹ä»¶æ–‡æœ¬åº“Id
+    public List<EventOption> options;           //äº‹ä»¶é€‰é¡¹
 
     //public string GUAI_Description;             
     public Dictionary<int, KaidanText> textLib; //  !!!!!!!!!!!!!!
-    public string EvDescription;                //ÊÂ¼şÃèÊö(?×°ÔØÊÂ¼şÎÄ±¾¿âÖĞµÄÊÂ¼ş?)
+    public string EvDescription;                //äº‹ä»¶æè¿°(?è£…è½½äº‹ä»¶æ–‡æœ¬åº“ä¸­çš„äº‹ä»¶?)
 
-    public int id;                              //µ±Ç°ÊÂ¼şµÄÎ¨Ò»±êÊ¶
-    public bool isTrigger;                      //ÊÇ·ñ´¥·¢¹ı(¶ÔÓÚµ¯´°ÊÂ¼ş)
+    public int id;                              //å½“å‰äº‹ä»¶çš„å”¯ä¸€æ ‡è¯†
+    public bool isTrigger;                      //æ˜¯å¦è§¦å‘è¿‡(å¯¹äºå¼¹çª—äº‹ä»¶)
 
     public enum EventType
     {
-        None,       // Ä¬ÈÏÖµ  
-        Action1,    // ÊÂ¼ş1  
-        Action2,    // ÊÂ¼ş2  
-                    // ÆäËûÊÂ¼şÀàĞÍ  
+        None,       // é»˜è®¤å€¼  
+        Action1,    // äº‹ä»¶1  
+        Action2,    // äº‹ä»¶2  
+                    // å…¶ä»–äº‹ä»¶ç±»å‹  
     }
 
 }
@@ -33,15 +33,15 @@ public class Event          //
 [System.Serializable]
 public class EventOption
 {
-    public int[] conditions = new int[4];       //¿ÉÑ¡ÔñÌõ¼şÊôĞÔÒªÇóÖµ(·Ö±ğ¶ÔÓ¦ËÄÏîÓĞ¹ØId)
-    public string OpDescription;                //Ñ¡ÏîÎÄ±¾(?²»±»°üº¬ÔÚÊÂ¼şÎÄ±¾¿âÖĞ£¬¶øÊÇµ¥×÷´¦Àí?)
+    public int[] conditions = new int[4];       //å¯é€‰æ‹©æ¡ä»¶å±æ€§è¦æ±‚å€¼(åˆ†åˆ«å¯¹åº”å››é¡¹æœ‰å…³Id)
+    public string OpDescription;                //é€‰é¡¹æ–‡æœ¬(?ä¸è¢«åŒ…å«åœ¨äº‹ä»¶æ–‡æœ¬åº“ä¸­ï¼Œè€Œæ˜¯å•ä½œå¤„ç†?)
 
-    public int optionId;                        //×÷Îª Ã¿¸öÊÂ¼ş ²»Í¬Ñ¡ÏîµÄÎ¨Ò»±êÊ¶(1,2,3...)
+    public int optionId;                        //ä½œä¸º æ¯ä¸ªäº‹ä»¶ ä¸åŒé€‰é¡¹çš„å”¯ä¸€æ ‡è¯†(1,2,3...)
     public bool isSeletable = false;
 
     public EventResult result;
 
-    //´¥·¢ÊÂ¼şµÄ±ê×¼     !!!!!
+    //è§¦å‘äº‹ä»¶çš„æ ‡å‡†     !!!!!
     public int minHP, maxHP;
     public int minSTR, maxSTR;
     public int minDEF, maxDEF;
@@ -52,10 +52,10 @@ public class EventOption
     [System.Serializable]
     public class EventResult
     {
-        public string outcome;      //ÊÂ¼ş½á¹û
+        public string outcome;      //äº‹ä»¶ç»“æœ
         //
         public Action myAction;     
-        public int nextEventId;     //´¦Àí¶ÔÓ¦µÄÊÂ¼ş
+        public int nextEventId;     //å¤„ç†å¯¹åº”çš„äº‹ä»¶
 
         public void TriggerEvent()
         {
@@ -64,7 +64,7 @@ public class EventOption
 
     }
 
-    public bool LockOrNot()         //Ëæ½ÇÉ«ÊôĞÔ±ä»¯¶ø¶¯Ì¬¸üĞÂ(ÔÚ½ÇÉ«´¥·¢ÊÂ¼ş(ShowEvent)Ê±µ÷ÓÃ)  !!!!!
+    public bool LockOrNot()         //éšè§’è‰²å±æ€§å˜åŒ–è€ŒåŠ¨æ€æ›´æ–°(åœ¨è§’è‰²è§¦å‘äº‹ä»¶(ShowEvent)æ—¶è°ƒç”¨)  !!!!!
     {
         int HP = PlayerManager.Instance.player.HP;
         int STR = PlayerManager.Instance.player.STR;
@@ -82,17 +82,17 @@ public class EventOption
             DataProcessor.Instance.LowerThanStandard(SAN, minSAN) &&
             DataProcessor.Instance.UpToStandard(SAN, maxSAN))
         {
-            isSeletable = true;             //·ûºÏÌõ¼ş
+            isSeletable = true;             //ç¬¦åˆæ¡ä»¶
             return true;
         }
 
-        isSeletable = false;                //²»·ûºÏÌõ¼ş
+        isSeletable = false;                //ä¸ç¬¦åˆæ¡ä»¶
         return false;
     }
 
 }
 
-public class KaidanText                     //¹Öµ®ÎÄ±¾
+public class KaidanText                     //æ€ªè¯æ–‡æœ¬
 {
     public string description;
     public int textId;
@@ -103,7 +103,7 @@ public class KaidanText                     //¹Öµ®ÎÄ±¾
 
 
 //[System.Serializable]
-//public class EventDataContainer     //ÓÃÓÚ×öJsonÊı¾İºÍEventÊı¾İ½»»»µÄÖĞ×ªÕ¾
+//public class EventDataContainer     //ç”¨äºåšJsonæ•°æ®å’ŒEventæ•°æ®äº¤æ¢çš„ä¸­è½¬ç«™
 //{
 //    public List<Event> eventDatas;
 //}

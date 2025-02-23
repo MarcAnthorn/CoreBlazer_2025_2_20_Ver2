@@ -30,17 +30,20 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
     /// <returns>显示当前文本需要的时间；如果外部有需要等待文本显示结束再进行的操作，可以获取该浮点型</returns>
     public float DisplayText(TextMeshProUGUI _tmp, string _text, Color _color, bool _isNewLine = false, float _intervalTime = 0.02f)
     {
-        tmp = _tmp;
+        if(_tmp != tmp)
+        {   
+            //判断：如果tmp组件和上一次组件不是同一个组件，清空StringBuilder，重新进行字符的添加
+            //如果是同一个组件，那么直接跳过这一步
+            tmp = _tmp;
+            sb.Clear();
+            sbBackup.Clear();
+        }
+
         text = _text;
         color = _color;
         isNewLine = _isNewLine;
         textDisplayIntervalTime = _intervalTime;
-        if(_tmp != tmp)
-        {   
-            //如果tmp组件和上一次组件是同一个组件，那么不清空StringBuilder，让两个文本显示在一起
-            sb.Clear();
-            sbBackup.Clear();
-        }
+    
 
         if(isNewLine)
         {
