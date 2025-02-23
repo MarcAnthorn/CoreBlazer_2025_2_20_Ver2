@@ -10,6 +10,7 @@ public class EventManager : Singleton<EventManager>
 {
     public Dictionary<int, Event> events = new Dictionary<int, Event>();    //存储某一关卡事件库里的所有事件
     public int currentEventId = 0;
+    public static int eventCount = 0;
 
     protected override void Awake()
     {
@@ -24,23 +25,23 @@ public class EventManager : Singleton<EventManager>
 
     void LoadEvents()
     {
-        //加载已有事件数据(CSV格式)到events字典中，使用Assets下的相对路径
+        //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
         string path = Path.Combine(Application.dataPath, "Resources/EventData/eventDatas.json");
         if (File.Exists(path))
         {
-            string[] lines = File.ReadAllLines(path);
+            string[] lines = File.ReadAllLines(path);   //分割每一行存入lines
 
             for(int i = 1; i < lines.Length; i++)       //遍历每一行，获得各列的信息
             {
                 string line = lines[i];
-                string[] values = line.Split(',');
+                string[] values = line.Split(',');      //将每一行按照逗号分割
 
                 // 确保有足够的列  
-                if (values.Length >= 3)
+                if (values.Length >= 5)
                 {
                     Event eventData = new Event()
                     {
-                        id = int.Parse(values[0]), // 假设id是字符串类型  
+                        id = int.Parse(values[0]),      //假设id是整型类型  
                         name = values[1],
                         EvDescription = values[2]
                     };

@@ -9,5 +9,6 @@ public class Player               //存储角色信息等
     public int DEF;         //防御    Defense
     public int LVL;         //灯光值  Light Value
     public int SAN;         //SAN值   Sanity
+    public int SPD;         //速度    Speed
 
 }

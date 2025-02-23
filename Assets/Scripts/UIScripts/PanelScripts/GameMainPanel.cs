@@ -104,7 +104,7 @@ public class GameMainPanel : BasePanel
             nowButtonScript.setDescriptionAction(option.OpDescription);
 
             //订正当前Button是否可交互：
-            nowButtonScript.setInteractableAction(option.LockOrNot());
+            nowButtonScript.setInteractableAction(option.LockOrNot(PlayerManager.Instance.player));
             
             //将当前事件的选项游戏对象加入optionList：
             optionList.Add(nowButtonScript.gameObject);
