@@ -1,30 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-[System.Serializable]           //ä»£è¡¨ä¸‹é¢ä¸€ä¸ªç±»çš„æ•°æ®å¯ä»¥åºåˆ—åŒ–
-public class Event : MonoBehaviour
+[System.Serializable]           //´ú±íÏÂÃæÒ»¸öÀàµÄÊı¾İ¿ÉÒÔĞòÁĞ»¯
+public class Event          //
 {
-    public int id;                              //æ¯ä¸ªä¸åŒäº‹ä»¶çš„å”¯ä¸€æ ‡è¯†
-    public string EvDescription;                //äº‹ä»¶æè¿°
-    public List<EventOption> options;           //äº‹ä»¶é€‰é¡¹
-    public List<EventOption.EventResult> results;
-    //public Dictionary<EventOption, EventOption.EventResult> results;
+    public int libId;                           //ÊÂ¼ş¿âId(ÒÀ²»Í¬¹Ø¿¨À´Ñ¡)   ************************
+    public int eventId;                         //ÊÂ¼şId(¶ÔÓ¦Ò»¸öÊÂ¼şÎÄ±¾¿â)
+    public EventType type;                      //ÊÂ¼şÀàĞÍ(?Èç£ºµ¯´°ÊÂ¼ş/Ö±½ÓÊÂ¼ş(ÏİÚå/)?)
+    public int textLibId;                       //ÊÂ¼şÎÄ±¾¿âId
+    public List<EventOption> options;           //ÊÂ¼şÑ¡Ïî
+
+    //public string GUAI_Description;             
+    public Dictionary<int, KaidanText> textLib; //  !!!!!!!!!!!!!!
+    public string EvDescription;                //ÊÂ¼şÃèÊö(?×°ÔØÊÂ¼şÎÄ±¾¿âÖĞµÄÊÂ¼ş?)
+
+    public int id;                              //µ±Ç°ÊÂ¼şµÄÎ¨Ò»±êÊ¶
+    public bool isTrigger;                      //ÊÇ·ñ´¥·¢¹ı(¶ÔÓÚµ¯´°ÊÂ¼ş)
+
+    public enum EventType
+    {
+        None,       // Ä¬ÈÏÖµ  
+        Action1,    // ÊÂ¼ş1  
+        Action2,    // ÊÂ¼ş2  
+                    // ÆäËûÊÂ¼şÀàĞÍ  
+    }
 
 }
 
 [System.Serializable]
 public class EventOption
 {
-    public string OpDescription;
-    public int eventId;             //æ‰€å±äº‹ä»¶çš„Id
-    public int optionId;            //ä½œä¸º æ¯ä¸ªäº‹ä»¶ ä¸åŒé€‰é¡¹çš„å”¯ä¸€æ ‡è¯†(1,2,3...)
+    public int[] conditions = new int[4];       //¿ÉÑ¡ÔñÌõ¼şÊôĞÔÒªÇóÖµ(·Ö±ğ¶ÔÓ¦ËÄÏîÓĞ¹ØId)
+    public string OpDescription;                //Ñ¡ÏîÎÄ±¾(?²»±»°üº¬ÔÚÊÂ¼şÎÄ±¾¿âÖĞ£¬¶øÊÇµ¥×÷´¦Àí?)
 
-    public Event nextEventId;
+    public int optionId;                        //×÷Îª Ã¿¸öÊÂ¼ş ²»Í¬Ñ¡ÏîµÄÎ¨Ò»±êÊ¶(1,2,3...)
+    public bool isSeletable = false;
 
-    private bool isSeletable = false;
+    public EventResult result;
 
-    //è§¦å‘äº‹ä»¶çš„æ ‡å‡†
+    //´¥·¢ÊÂ¼şµÄ±ê×¼     !!!!!
     public int minHP, maxHP;
     public int minSTR, maxSTR;
     public int minDEF, maxDEF;
@@ -35,11 +52,19 @@ public class EventOption
     [System.Serializable]
     public class EventResult
     {
-        public string outcome;      //äº‹ä»¶ç»“æœ
-        public int nextEventId;     //å¤„ç†å¯¹åº”çš„äº‹ä»¶
+        public string outcome;      //ÊÂ¼ş½á¹û
+        //
+        public Action myAction;     
+        public int nextEventId;     //´¦Àí¶ÔÓ¦µÄÊÂ¼ş
+
+        public void TriggerEvent()
+        {
+            myAction();
+        }
+
     }
 
-    public bool LockOrNot()         //éšè§’è‰²å±æ€§å˜åŒ–è€ŒåŠ¨æ€æ›´æ–°(åœ¨è§’è‰²è§¦å‘äº‹ä»¶(ShowEvent)æ—¶è°ƒç”¨)
+    public bool LockOrNot()         //Ëæ½ÇÉ«ÊôĞÔ±ä»¯¶ø¶¯Ì¬¸üĞÂ(ÔÚ½ÇÉ«´¥·¢ÊÂ¼ş(ShowEvent)Ê±µ÷ÓÃ)  !!!!!
     {
         int HP = PlayerManager.Instance.player.HP;
         int STR = PlayerManager.Instance.player.STR;
@@ -57,21 +82,29 @@ public class EventOption
             DataProcessor.Instance.LowerThanStandard(SAN, minSAN) &&
             DataProcessor.Instance.UpToStandard(SAN, maxSAN))
         {
-            isSeletable = true;             //ç¬¦åˆæ¡ä»¶
+            isSeletable = true;             //·ûºÏÌõ¼ş
             return true;
         }
 
-        isSeletable = false;                //ä¸ç¬¦åˆæ¡ä»¶
+        isSeletable = false;                //²»·ûºÏÌõ¼ş
         return false;
     }
 
 }
 
-
-
-[System.Serializable]
-public class EventDataContainer     //ç”¨äºåšJsonæ•°æ®å’ŒEventæ•°æ®äº¤æ¢çš„ä¸­è½¬ç«™
+public class KaidanText                     //¹Öµ®ÎÄ±¾
 {
-    public List<Event> eventDatas;
+    public string description;
+    public int textId;
 }
+
+
+
+
+
+//[System.Serializable]
+//public class EventDataContainer     //ÓÃÓÚ×öJsonÊı¾İºÍEventÊı¾İ½»»»µÄÖĞ×ªÕ¾
+//{
+//    public List<Event> eventDatas;
+//}
 

@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 
-public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour  //å•ä¾‹æ¨¡å¼ï¼Œä½œçˆ¶ç±»è¢«ç»§æ‰¿
+public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour  //µ¥ÀıÄ£Ê½£¬×÷¸¸Àà±»¼Ì³Ğ
 {
     private static T _instance;
     private static object _lock = new object();

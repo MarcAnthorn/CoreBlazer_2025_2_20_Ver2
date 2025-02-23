@@ -4,15 +4,16 @@ using UnityEngine;
 using System.IO;
 using System;
 using TMPro;
+using UnityEditor.PackageManager;
 
 public class EventManager : Singleton<EventManager>
 {
-    public Dictionary<int, Event> events = new Dictionary<int, Event>();
+    public Dictionary<int, Event> events = new Dictionary<int, Event>();    //´æ´¢Ä³Ò»¹Ø¿¨ÊÂ¼ş¿âÀïµÄËùÓĞÊÂ¼ş
     public int currentEventId = 0;
 
     protected override void Awake()
     {
-        base.Awake();   //å•ä¾‹åˆå§‹åŒ–
+        base.Awake();   //µ¥Àı³õÊ¼»¯
         LoadEvents();
     }
 
@@ -23,23 +24,23 @@ public class EventManager : Singleton<EventManager>
 
     void LoadEvents()
     {
-        //åŠ è½½å·²æœ‰äº‹ä»¶æ•°æ®(CSVæ ¼å¼)åˆ°eventså­—å…¸ä¸­ï¼Œä½¿ç”¨Assetsä¸‹çš„ç›¸å¯¹è·¯å¾„
+        //¼ÓÔØÒÑÓĞÊÂ¼şÊı¾İ(CSV¸ñÊ½)µ½events×ÖµäÖĞ£¬Ê¹ÓÃAssetsÏÂµÄÏà¶ÔÂ·¾¶
         string path = Path.Combine(Application.dataPath, "Resources/EventData/eventDatas.json");
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path);
 
-            for(int i = 1; i < lines.Length; i++)       //éå†æ¯ä¸€è¡Œï¼Œè·å¾—å„åˆ—çš„ä¿¡æ¯
+            for(int i = 1; i < lines.Length; i++)       //±éÀúÃ¿Ò»ĞĞ£¬»ñµÃ¸÷ÁĞµÄĞÅÏ¢
             {
                 string line = lines[i];
                 string[] values = line.Split(',');
 
-                // ç¡®ä¿æœ‰è¶³å¤Ÿçš„åˆ—  
+                // È·±£ÓĞ×ã¹»µÄÁĞ  
                 if (values.Length >= 3)
                 {
                     Event eventData = new Event()
                     {
-                        id = int.Parse(values[0]), // å‡è®¾idæ˜¯å­—ç¬¦ä¸²ç±»å‹  
+                        id = int.Parse(values[0]), // ¼ÙÉèidÊÇ×Ö·û´®ÀàĞÍ  
                         name = values[1],
                         EvDescription = values[2]
                     };
@@ -49,21 +50,21 @@ public class EventManager : Singleton<EventManager>
         }
         else
         {
-            Debug.LogWarning("äº‹ä»¶æ•°æ®æ–‡ä»¶ä¸å­˜åœ¨ï¼");
+            Debug.LogWarning("ÊÂ¼şÊı¾İÎÄ¼ş²»´æÔÚ£¡");
         }
     }
 
     void SaveEvents()
     {
-        // ä¿å­˜äº‹ä»¶æ•°æ®åˆ° CSV  
+        // ±£´æÊÂ¼şÊı¾İµ½ CSV  
         string path = Path.Combine(Application.dataPath, "Resources/EventData/eventDatas.csv");
-        // å¦‚æœæ–‡ä»¶ä¸å­˜åœ¨ï¼Œå†™å…¥æ ‡é¢˜è¡Œ  
+        // Èç¹ûÎÄ¼ş²»´æÔÚ£¬Ğ´Èë±êÌâĞĞ  
         if (!File.Exists(path))
         {
-            File.WriteAllText(path, "id,name,date\n"); // è¿™é‡Œçš„åˆ—ååº”ä¸ EventData å¯¹è±¡çš„å­—æ®µç›¸å¯¹åº”  
+            File.WriteAllText(path, "id,name,date\n"); // ÕâÀïµÄÁĞÃûÓ¦Óë EventData ¶ÔÏóµÄ×Ö¶ÎÏà¶ÔÓ¦  
         }
 
-        // éå† events å­—å…¸ï¼Œæ„å»º CSV è¡Œ  
+        // ±éÀú events ×Öµä£¬¹¹½¨ CSV ĞĞ  
         List<string> lines = new List<string>();
         foreach (var kvp in events)
         {
@@ -72,34 +73,37 @@ public class EventManager : Singleton<EventManager>
             lines.Add(line);
         }
 
-        // å°†æ–°çš„è¡Œæ·»åŠ åˆ° CSV æ–‡ä»¶  
+        // ½«ĞÂµÄĞĞÌí¼Óµ½ CSV ÎÄ¼ş  
         File.WriteAllLines(path, lines);
     }
 
-    public void SelectOption(int optionIndex)
+    public void SelectOption(int optionIndex)           //1,2,3
     {
-        if (events.TryGetValue(currentEventId, out Event currentEvent))
+        foreach(var option in events[currentEventId].options)
+        {
+            if (optionIndex == option.optionId)
+            {
+
+            }
+        }
+
+        if (events[currentEventId].options.Contains(optionIndex))
         {
             EventOption.EventResult result = currentEvent.results[currentEventId];
-            //å¤„ç†ç»“æœ
+            //´¦Àí½á¹û
 
-            Debug.Log(result.outcome);              //æ‰“å°è¯¥äº‹ä»¶çš„ç»“æœ
-            currentEventId = result.nextEventId;    //æ›´æ–°åˆ°ä¸‹ä¸€ä¸ªäº‹ä»¶
+            Debug.Log(result.outcome);                  //´òÓ¡¸ÃÊÂ¼şµÄ½á¹û
+            currentEventId = result.nextEventId;        //¸üĞÂµ½ÏÂÒ»¸öÊÂ¼ş
         }
     }
 
-    //å¯èƒ½éœ€è¦å®ç°ä¸€ä¸ªå‘å¤–éƒ¨å¹¿æ’­å½“å‰äº‹ä»¶å¯¹è±¡çš„æ–¹æ³•ï¼š
-    //å¯ä»¥éœ€è¦å°†EventUIè„šæœ¬ä¸­çš„ShowEventè¿ç§»è¿‡æ¥
-    public Event BroadcastEvent()
-    {     
-        if(events.ContainsKey(currentEventId))
-        {
-            return events[currentEventId];
-        }
-        
-        Debug.LogError("å½“å‰å°è¯•è·å–çš„äº‹ä»¶idä¸å­˜åœ¨ï¼Œè¯·æ£€æŸ¥æ˜¯å¦æ­£ç¡®ï¼›æŠ¥é”™è„šæœ¬ï¼šEventManager");
-        return null;
-        
+    public void TriggerEvent(GameObject go)                //µ±½ÇÉ«µÄOnTriggerEnter()·½·¨·¢ÉúÊ±µ÷ÓÃ,»ñÈ¡¸ÃÊÂ¼şĞÅÏ¢
+    {
+        EventGO EvGO = go.GetComponent<EventGO>();
+        currentEventId = EvGO.eventId;
+        EventUI eventUI = new EventUI();
+        //¿ÉÄÜ»áÉèÖÃeventUIÏà¹ØµÄÊı¾İ(±ÈÈçÎ»ÖÃ£¬´óĞ¡µÈ)
+        Instantiate(eventUI);
     }
-    
+
 }
