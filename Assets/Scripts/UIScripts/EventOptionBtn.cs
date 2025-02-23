@@ -34,6 +34,14 @@ public class EventOptionBtn : MonoBehaviour
         setInteractableAction -= SetInteractable;
     }
 
+    void Start()
+    {
+        btnSelf.onClick.AddListener(()=>{
+            //进行影响的广播：
+
+        });
+    }
+
     private void SetRequirement(string text)
     {
         txtAttributeRequirement.text = text;
@@ -56,7 +64,8 @@ public class EventOptionBtn : MonoBehaviour
     }
 
 
-    //广播当前选项影响的
+    //广播当前选项影响
+    //暂时不知道影响如何获取，等待讨论
 
     
    

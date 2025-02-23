@@ -12,13 +12,14 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     {
         base.Awake();
 
-
         //测试用：
+        //该方法在Awake中调用，确保全局只触发一次
         InitPlayer();
     }
 
     //使用只读属性暴露玩家数值
     public int Health => player.HP;
+
     public int Strength => player.STR;
 
     public int Defence => player.DEF;
@@ -32,7 +33,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
 
     public void InitPlayer()
     {
-        //此处有问题：Player是继承自Mono的脚本，不能new
+        //PlayerManager 管理的全局唯一Player实例
         player = new Player()
         {
             HP = 100,
@@ -45,7 +46,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
 
     //通过单例的内部方法，进行玩家属性的调整
     //如：调整玩家血量：
-    // public void AdjustHealth(int adjustment){}
+    public void AdjustHealth(int adjustment){}
     //外部通过单例进行调整方法的调用；
 
 

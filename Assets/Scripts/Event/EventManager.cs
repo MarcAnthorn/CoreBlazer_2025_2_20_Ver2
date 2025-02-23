@@ -90,9 +90,16 @@ public class EventManager : Singleton<EventManager>
 
     //可能需要实现一个向外部广播当前事件对象的方法：
     //可以需要将EventUI脚本中的ShowEvent迁移过来
-    // public Event BroadcastEvent()
-    // {
-    //     return 
-    // }
+    public Event BroadcastEvent()
+    {     
+        if(events.ContainsKey(currentEventId))
+        {
+            return events[currentEventId];
+        }
+        
+        Debug.LogError("当前尝试获取的事件id不存在，请检查是否正确；报错脚本：EventManager");
+        return null;
+        
+    }
     
 }

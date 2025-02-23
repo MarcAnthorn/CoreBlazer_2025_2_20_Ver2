@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommonItemPanel : ItemPanel
+public class GodItemPanel : ItemPanel
 {
-
-    public ScrollRect srCommonItemContainer;
-    public List<GameObject> itemList = new List<GameObject>();
+    public ScrollRect srGodItemContainer;
+    private List<GameObject> itemList = new List<GameObject>();
     protected override void Init()
     {
         //测试用
-        InitContent();   
+        InitContent();
+
+        
         foreach(var item in itemList)
         {
-            item.transform.SetParent(srCommonItemContainer.content, false);
+            
+            item.transform.SetParent(srGodItemContainer.content, false);
+
         }
     }
 
+    //重写的抽象方法：刷新当前Panel中的Item的方法；
     protected override void RefreshItem()
     {
-        //在刷新item的方法中，获取外部数据结构中存储的item；
-        // foreach
+        
     }
 
 
@@ -35,11 +38,6 @@ public class CommonItemPanel : ItemPanel
         }
     }
 
-    // public void ItemFetcher()
-    // {
-        
-    // }
 
-    //外部实现一个单例Item管理器，存储所有当前持有的Item
+
 }
-

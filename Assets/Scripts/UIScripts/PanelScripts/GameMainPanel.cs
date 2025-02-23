@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,7 +16,7 @@ public class GameMainPanel : BasePanel
     public TextMeshProUGUI txtHealth;
     public TextMeshProUGUI txtSanity;
     public TextMeshProUGUI txtLight;
-    public TextMeshProUGUI txtIntroduction;
+    // public TextMeshProUGUI txtIntroduction;
     public TextMeshProUGUI txtEventDescription;
     public TextMeshProUGUI txtRiddleTip; 
     public Button btnToGodItem;
@@ -26,6 +27,8 @@ public class GameMainPanel : BasePanel
     private List<GameObject> optionList; 
 
     public Transform rightSection;
+    //用于控制事件描述延迟的浮点：
+    private float textDisplayDelayTime = 0.3f;
 
     //当前的事件对象
     private Event currentEvent;
@@ -46,29 +49,29 @@ public class GameMainPanel : BasePanel
 
 
         //当前面板显示，更新面板内容：
+        //测试用：
+        UpdateEvent();
+        UpdateAttribute();
         
     }
 
 
-    //测试用：更新属性：
-    protected override void Start()
-    {
-        base.Start();
-        UpdateAttribute();
-    }
+    
 
 
     //更新当前UI显示事件的方法；
     //包含：事件cg、事件描述文本、提示谜语、道具列表
     private void UpdateEvent()
     {
+        //当前事件的获取一定要先于所有更新操作；
+        currentEvent = EventManager.Instance.BroadcastEvent();
     
         //事件cg加载：
 
 
         //事件描述文本加载：
-        txtEventDescription.SetText(currentEvent.EvDescription);
-
+        //应该先加载事件红字介绍，0.3s之后再加载事件的描述部分；
+        StartCoroutine(DisplayEventTextAndOptions());
     
         //更新提示谜语：
 
@@ -79,6 +82,8 @@ public class GameMainPanel : BasePanel
         
 
     }
+
+    
 
     //由于选项需要等待文本输出之后再显示，因此额外设置一个更新方法：
     private void UpdateOptions()
@@ -106,6 +111,8 @@ public class GameMainPanel : BasePanel
         }
     }
 
+    
+
 
     //更新当前UI显示玩家属性的方法：
     private void UpdateAttribute()
@@ -118,7 +125,27 @@ public class GameMainPanel : BasePanel
         txtHealth.SetText("生命属性值：{0}", PlayerManager.Instance.Health);
         
     }
+
+
+    //用于事件加载 / 延时加载事件描述 / 延时加载选项的协同程序：
+    IEnumerator DisplayEventTextAndOptions()
+    {
+        //测试用:
+        float delayExtraTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+            "事件前史部分介绍，此处是红色字体", 
+            Color.red);
+
+        yield return new WaitForSeconds(textDisplayDelayTime + delayExtraTime);
+
+        //展示事件描述部分：
+        //测试用：
+        TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+            "事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍", 
+            Color.white,
+            true);
+    }
    
+
 
 
 

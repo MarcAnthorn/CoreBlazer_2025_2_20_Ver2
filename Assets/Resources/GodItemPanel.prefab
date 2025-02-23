@@ -121,7 +121,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8573730677349072868}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999124
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadingTime: 0.3
-  sr: {fileID: 3307143685973408364}
+  srGodItemContainer: {fileID: 3307143685973408364}
 --- !u!225 &8804758691911361595
 CanvasGroup:
   m_ObjectHideFlags: 0

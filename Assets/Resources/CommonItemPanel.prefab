@@ -319,7 +319,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadingTime: 0.3
-  sr: {fileID: 1089805014770344484}
+  srCommonItemContainer: {fileID: 1089805014770344484}
+  itemList: []
 --- !u!1 &4785445153412988223
 GameObject:
   m_ObjectHideFlags: 0
