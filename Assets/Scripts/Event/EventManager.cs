@@ -6,17 +6,20 @@ using System;
 using TMPro;
 using UnityEditor.PackageManager;
 using Unity.VisualScripting;
+using static UnityEditor.Progress;
+using System.Linq;
 
 public class EventManager : Singleton<EventManager>
 {
-    public Dictionary<int, Event> events = new Dictionary<int, Event>();    //存储某一关卡事件库里的所有事件
+    //存储某一关卡事件库里的所有事件，用来为本关卡提供可调用的Event数据(用eventId来查找)
+    public Dictionary<int, Event> allEvents = new Dictionary<int, Event>();
     public int currentEventId = 0;
     public static int eventCount = 0;
 
     protected override void Awake()
     {
         base.Awake();   //单例初始化
-        LoadEvents();
+        LoadEvents(0);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
     }
 
     private void Update()
@@ -24,7 +27,7 @@ public class EventManager : Singleton<EventManager>
 
     }
 
-    void LoadEvents()
+    void LoadEvents(int libIndex)           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
     {
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
         string path = Path.Combine(Application.dataPath, "Resources/EventData/eventDatas.json");
@@ -32,23 +35,33 @@ public class EventManager : Singleton<EventManager>
         {
             string[] lines = File.ReadAllLines(path);   //分割每一行存入lines
 
-            for (int i = 1; i < lines.Length; i++)       //遍历每一行，获得各列的信息
+            for (int i = 3; i < lines.Length; i++)       //从第四行开始遍历每一行，获得各列的信息
             {
                 string line = lines[i];
-                string[] values = line.Split(',');      //将每一行按照逗号分割
+                string[] values = line.Split(',');      //将每一列按照逗号分割
 
-                // 确保有足够的列  
-                if (values.Length >= 5)
+                if (int.Parse(values[0]) == libIndex && values.Length >= 5)
                 {
                     Event eventData = new Event()
                     {
-                        id = int.Parse(values[0]),      //假设id是整型类型  
-                        name = values[1],
-                        EvDescription = values[2]
+                        libId = int.Parse(values[0]),                                       //A列
+                        eventId = int.Parse(values[1]),                                          //B列
+                        type = (Event.MyEventType)int.Parse(values[2]),                     //C列
                     };
-                    events.Add(eventData.id, eventData);
+                    for (int j = 0; j < 3; j++)     //var option in eventData.options
+                    {
+                        eventData.options[j].conditionId = int.Parse(values[3 + j * 5]);    //D列
+                        eventData.options[j].minCondition = int.Parse(values[4 + j * 5]);   //E列 左
+                        eventData.options[j].maxCondition = int.Parse(values[5 + j * 5]);   //E列 右
+                        eventData.options[j].OpDescription = values[6 + j * 5];             //F列
+                        eventData.options[j].nextId = int.Parse(values[7 + j * 5]);         //G列
+                    }
+
+                    allEvents.Add(eventData.eventId, eventData);
                 }
+
             }
+
         }
         else
         {
@@ -68,10 +81,10 @@ public class EventManager : Singleton<EventManager>
 
         // 遍历 events 字典，构建 CSV 行  
         List<string> lines = new List<string>();
-        foreach (var kvp in events)
+        foreach (var kvp in allEvents)
         {
             Event eventData = kvp.Value;
-            string line = $"{eventData.id},{eventData.name},{eventData.EvDescription}";
+            string line = $"{eventData.eventId}, name, EvDescription";
             lines.Add(line);
         }
 
@@ -81,22 +94,22 @@ public class EventManager : Singleton<EventManager>
 
     public void SelectOption(int optionIndex)           //1,2,3
     {
-        foreach (var option in events[currentEventId].options)
+        foreach (var option in allEvents[currentEventId].options)
         {
             if (optionIndex == option.optionId)
             {
-
+                option.result.TriggerBtlEvent();           //调用触发的(战斗)事件(事件的注册与删除逻辑由Marc来`完成)
             }
         }
 
-        if (events[currentEventId].options.Contains(optionIndex))
-        {
-            EventOption.EventResult result = currentEvent.results[currentEventId];
-            //处理结果
+        //if (allEvents[currentEventId].options.Contains(optionIndex))
+        //{
+        //    EventOption.EventResult result = currentEvent.results[currentEventId];
+        //    //处理结果
 
-            Debug.Log(result.outcome);                  //打印该事件的结果
-            currentEventId = result.nextEventId;        //更新到下一个事件
-        }
+        //    Debug.Log(result.outcome);                  //打印该事件的结果
+        //    currentEventId = result.nextEventId;        //更新到下一个事件
+        //}
     }
 
     public void TriggerEvent(GameObject go)                //当角色的OnTriggerEnter()方法发生时调用,获取该事件信息
@@ -106,6 +119,42 @@ public class EventManager : Singleton<EventManager>
         EventUI eventUI = new EventUI();
         //可能会设置eventUI相关的数据(比如位置，大小等)
         Instantiate(eventUI);
+    }
+
+
+    //用于向外部广播事件的方法，使外部获取当前的事件实例(Marc添加)
+    public Event BroadcastEvent()
+    {
+        if (allEvents.ContainsKey(currentEventId))
+        {
+            return allEvents[currentEventId];
+        }
+
+        Debug.LogError("当前尝试从EventManager中获取的事件不存在");
+        return null;
+    }
+
+    public Event CreateEvent(int eventId)           //创建事件
+    {
+        foreach (var _event in allEvents)
+        {
+            if (_event.Value.eventId == eventId)
+            {
+                Event tempEvent = _event.Value;
+                Event @event = new Event()
+                {
+                    libId = tempEvent.libId,
+                    eventId = tempEvent.eventId,
+                    type = tempEvent.type,
+                    options = tempEvent.options,
+                };
+
+                return @event;
+            }
+        }
+
+        Debug.LogError("无法创建一个本关卡内不存在的事件");
+        return null;
     }
 
 }

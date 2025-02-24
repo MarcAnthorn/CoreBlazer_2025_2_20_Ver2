@@ -9,16 +9,21 @@ public class Event          //
 {
     public int libId;                           //事件库Id(依不同关卡来选)   ************************
     public int eventId;                         //事件Id(对应一个事件文本库)
-    public EventType type;                      //事件类型(?如：弹窗事件/战斗事件/直接事件(如：陷阱)?)
+    public MyEventType type;                    //事件类型(?如：弹窗事件/战斗事件/直接事件(如：陷阱)?)
+    public List<EventOption> options;           //事件选项
 
-    private List<EventOption> options;          //事件选项
     private Dictionary<int, KaidanText> textLib;//事件文本库，前面的int类型是文本的Id标识，文本库作用：按需取文本
     private string EvDescription;               //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
 
-    public int id;                              //当前事件的唯一标识
+    //public int id;                            //当前事件的唯一标识
     public bool isTrigger;                      //是否触发过(对于弹窗事件)
 
-    public enum EventType
+    public Event()
+    {
+
+    }
+
+    public enum MyEventType
     {
         None,       // 默认值  
         Action1,    // 事件1  
@@ -33,14 +38,14 @@ public class Event          //
         public int textId;
     }
 
-    public List<EventOption> GetOptions()           //事件选项
-    {
-        return this.options;
-    }
-    public void SetOptions(int optionId, EventOption @eventOption)
-    {
-        options[optionId] = @eventOption;
-    }
+    //public List<EventOption> GetOptions()           //事件选项
+    //{
+    //    return this.options;
+    //}
+    //public void SetOptions(int optionId, EventOption @eventOption)
+    //{
+    //    options[optionId] = @eventOption;
+    //}
 
     public Dictionary<int, KaidanText> GetTextLib() //事件文本库
     {
@@ -65,10 +70,28 @@ public class Event          //
 [System.Serializable]
 public class EventOption
 {
-    public int conditionId;                     //可选择条件属性Id
+    public int conditionId;                     //可选择条件属性Id(SAN <-> 1   STR <-> 2   SPD <-> 3)
     public int minCondition;                    //最小 可选择条件属性要求值(分别对应一项有关Id)
     public int maxCondition;                    //最大 可选择条件属性要求值(分别对应一项有关Id)
     public string OpDescription;                //选项文本(?不被包含在事件文本库中，而是单作处理?)
+    
+    public int nextId                           //下一个事件的Id
+    {
+        get
+        {
+            return nextId;
+        }
+        set
+        {
+            nextId = value;
+            result = new EventResult();
+            result.battleEvent = new BattleEvent()
+            {
+                id = nextId
+                //其他的一些定义
+            };
+        }
+    }
 
     public int optionId;                        //作为 每个事件 不同选项的唯一标识(1,2,3...)
     public bool isSeletable = false;
@@ -76,9 +99,9 @@ public class EventOption
     public EventResult result;
 
     //触发事件的标准     !!!!!
-    public int minSAN, maxSAN;
-    public int minSTR, maxSTR;
-    public int minSPD, maxSPD;
+    //public int minSAN = -1, maxSAN = -1;
+    //public int minSTR = -1, maxSTR = -1;
+    //public int minSPD = -1, maxSPD = -1;
 
 
     [System.Serializable]
@@ -89,7 +112,7 @@ public class EventOption
         public Action myAction;                 //选择选项之后的处理
         public BattleEvent battleEvent;         //接入对应的战斗事件
 
-        public void TriggerEvent()
+        public void TriggerBtlEvent()
         {
             myAction();
         }
@@ -101,9 +124,9 @@ public class EventOption
         int SAN = player.SAN;       //角色当前精神值
         int STR = player.STR;       //角色当前力量
         int SPD = player.SPD;       //角色当前速度
-        if (optionId == 1 && minSAN < SAN && maxSAN > SAN ||
-            optionId == 2 && minSTR < STR && maxSTR > STR ||
-            optionId == 3 && minSPD < SPD && maxSPD > SPD)
+        if (optionId == 1 && minCondition < SAN && maxCondition > SAN ||
+            optionId == 2 && minCondition < STR && maxCondition > STR ||
+            optionId == 3 && minCondition < SPD && maxCondition > SPD)
         {
             isSeletable = true;             //符合条件
             return true;
@@ -116,10 +139,11 @@ public class EventOption
 }
 
 [System.Serializable]
-public class BattleEvent : Event
+public class BattleEvent
 {
-    
+    public int id;                          //战斗事件的Id
 }
+
 
 
 
