@@ -1,8 +1,8 @@
-using System.Collections;
+锘縰sing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventRepo : Singleton<EventRepo>           //可能用来存储
+public class EventRepo : Singleton<EventRepo>           //鍙兘鐢ㄦ潵瀛樺偍
 {
     // Start is called before the first frame update
     void Start()

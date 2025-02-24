@@ -1,10 +1,10 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameLevelManager : MonoBehaviour
 {
-    //´æ´¢×Å±¾¹Ø¿¨ÄÚµÄËùÓĞ¹Ø¿¨(Ç°ÃæµÄint´ú±í±¾¹Ø¿¨ÄÚµÄÎ¨Ò»Id£¬ÏàÍ¬ÊÂ¼ş¿ÉÄÜÓĞÖØ¸´)
+    //å­˜å‚¨ç€æœ¬å…³å¡å†…çš„æ‰€æœ‰å…³å¡(å‰é¢çš„intä»£è¡¨æœ¬å…³å¡å†…çš„å”¯ä¸€Idï¼Œç›¸åŒäº‹ä»¶å¯èƒ½æœ‰é‡å¤)
     public Dictionary<int, Event> events = new Dictionary<int, Event>();
     public static Event currentEvent;
 

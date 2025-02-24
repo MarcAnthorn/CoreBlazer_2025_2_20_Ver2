@@ -1,11 +1,11 @@
-using System.Collections;
+锘縰sing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventGO : MonoBehaviour            //挂载在游戏中表示事件的物体上
+public class EventGO : MonoBehaviour            //鎸傝浇鍦ㄦ父鎴忎腑琛ㄧず浜嬩欢鐨勭墿浣撲笂
 {
     public Event @event;
-    public int eventId;         //表示事件的固定Id
+    public int eventId;         //琛ㄧず浜嬩欢鐨勫浐瀹欼d
 
     void Awake()
     {
