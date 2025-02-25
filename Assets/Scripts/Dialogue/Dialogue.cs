@@ -7,7 +7,7 @@ public class Dialogue               //文本对话类
 {
     public int libId;               //文本库Id
     public int TextId;              //文本Id
-    public bool isKwaidan;          //文本类型：怪谈文本(true)/对话文本(false)
+    public bool isKwaidan = false;  //文本类型：怪谈文本(true)/对话文本(false)
     public string text;             //文本内容
     public int nextId;              //下一个文本的Id
     public int illustrationId;      //立绘Id

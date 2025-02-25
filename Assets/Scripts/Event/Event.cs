@@ -32,10 +32,16 @@ public class Event          //
     }
 
     [System.Serializable]
-    public class KaidanText                     //怪诞文本
+    public class KaidanText                     //怪诞文本(可以做成类似于结点的用法)
     {
-        public string description;
-        public int textId;
+        public int libId;               //文本库Id
+        public int textId;              //文本Id
+        public bool isKwaidan = true;   //文本类型：怪谈文本(true)/对话文本(false)
+        public string text;             //文本内容
+        public int nextId;              //下一个文本的Id(用于在textLib中查找,等于-1代表不存在下文)
+        public int illustrationId;      //立绘Id
+        public int bgId;                //背景Id
+        //public KaidanText nextText;   //下一个怪诞文本
     }
 
     //public List<EventOption> GetOptions()           //事件选项
@@ -63,6 +69,38 @@ public class Event          //
     public void SetEvDescription(string description)
     {
         this.EvDescription = description;
+    }
+
+    public void RecurReadKaidanTextFrom(int id)         //利用递归进行读取
+    {
+        if (!textLib.ContainsKey(id))
+        {
+            return;
+        }
+        Debug.Log(textLib[id].text);
+        //处理文字动态显示
+        RecurReadKaidanTextFrom(textLib[id].nextId);
+
+        return;
+    }
+    public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取
+    {
+        KaidanText text = begin;
+        while (textLib.ContainsKey(text.textId))
+        {
+            Debug.Log(textLib[text.textId].text);
+            //处理文字动态显示
+            if (textLib.ContainsKey(text.nextId))
+            {
+                text = textLib[text.nextId];
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        return;
     }
 
 }
