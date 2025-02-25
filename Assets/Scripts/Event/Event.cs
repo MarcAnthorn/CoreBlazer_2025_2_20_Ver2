@@ -11,8 +11,8 @@ public class Event          //
     public int eventId;                         //事件Id(对应一个事件文本库)
     public MyEventType type;                    //事件类型(?如：弹窗事件/战斗事件/直接事件(如：陷阱)?)
     public List<EventOption> options;           //事件选项
+    public Dictionary<int, KaidanText> textLib; //事件文本库，前面的int类型是文本的Id标识，文本库作用：按需取文本
 
-    private Dictionary<int, KaidanText> textLib;//事件文本库，前面的int类型是文本的Id标识，文本库作用：按需取文本
     private string EvDescription;               //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
 
     //public int id;                            //当前事件的唯一标识
@@ -25,16 +25,16 @@ public class Event          //
 
     public enum MyEventType
     {
-        None,       // 默认值  
-        Action1,    // 事件1  
-        Action2,    // 事件2  
-                    // 其他事件类型  
+        None,       //默认值  
+        Action1,    //事件1  
+        Action2,    //事件2  
+                    //其他事件类型  
     }
 
     [System.Serializable]
     public class KaidanText                     //怪诞文本(可以做成类似于结点的用法)
     {
-        public int libId;               //文本库Id
+        public int eventId;             //事件Id
         public int textId;              //文本Id
         public bool isKwaidan = true;   //文本类型：怪谈文本(true)/对话文本(false)
         public string text;             //文本内容
@@ -53,14 +53,14 @@ public class Event          //
     //    options[optionId] = @eventOption;
     //}
 
-    public Dictionary<int, KaidanText> GetTextLib() //事件文本库
-    {
-        return textLib;
-    }
-    public void SetTextLib(int textId, KaidanText text)
-    {
-        textLib[textId] = text;
-    }
+    //public Dictionary<int, KaidanText> GetTextLib() //事件文本库
+    //{
+    //    return textLib;
+    //}
+    //public void SetTextLib(int textId, KaidanText text)
+    //{
+    //    textLib[textId] = text;
+    //}
 
     public string GetEvDescription()                //事件描述(读取事件文本库)
     {
@@ -71,19 +71,7 @@ public class Event          //
         this.EvDescription = description;
     }
 
-    public void RecurReadKaidanTextFrom(int id)         //利用递归进行读取
-    {
-        if (!textLib.ContainsKey(id))
-        {
-            return;
-        }
-        Debug.Log(textLib[id].text);
-        //处理文字动态显示
-        RecurReadKaidanTextFrom(textLib[id].nextId);
-
-        return;
-    }
-    public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取
+    public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本
     {
         KaidanText text = begin;
         while (textLib.ContainsKey(text.textId))
@@ -99,6 +87,18 @@ public class Event          //
                 return;
             }
         }
+
+        return;
+    }
+    public void RecurReadKaidanTextFrom(int id)         //利用递归进行读取
+    {
+        if (!textLib.ContainsKey(id))
+        {
+            return;
+        }
+        Debug.Log(textLib[id].text);
+        //处理文字动态显示
+        RecurReadKaidanTextFrom(textLib[id].nextId);
 
         return;
     }

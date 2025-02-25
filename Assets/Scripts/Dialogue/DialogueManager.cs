@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using static Event;
 //using static DialogueManager.Option;
 
 
@@ -19,44 +20,36 @@ public class DialogueManager : Singleton<DialogueManager>
     protected override void Awake()
     {
         base.Awake();
-        LoadDialogues();
+        LoadDialogues(0);
     }
 
-    private void LoadDialogues()
+    private void LoadDialogues(int libIndex)
     {
         dialogueDictionary = new Dictionary<int, Dialogue>();
-        TextAsset textAsset = Resources.Load<TextAsset>("dialogues");
+        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/DialogueDatas.csv");
 
-        if (textAsset != null)
+        if (File.Exists(path))
         {
-            using (StringReader reader = new StringReader(textAsset.text))
+            string[] lines = File.ReadAllLines(path);       //分割每一行存入lines
+
+            for (int i = 3; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
-                string line;
-                reader.ReadLine(); // 跳过标题行  (根据实际情况来定)
-                while ((line = reader.ReadLine()) != null)
+                string line = lines[i];
+                string[] values = line.Split(',');          //将每一列按照逗号分割
+
+                if(int.Parse(values[0]) == libIndex && values.Length >= 4 && int.Parse(values[2]) == 1)
                 {
-                    string[] fields = line.Split(',');
-
                     Dialogue dialogue = new Dialogue();
-                    dialogue.id = int.Parse(fields[0]);     //第一列：文本ID
-                    dialogue.text = fields[1];              //第二列：文本信息
+                    dialogue.eventId = int.Parse(values[0]);
+                    dialogue.textId = int.Parse(values[1]);
+                    dialogue.text = values[3];
+                    dialogue.nextId = int.Parse(values[4]);
+                    dialogue.illustrationId = int.Parse(values[5]);
+                    dialogue.bgId = int.Parse(values[6]);
 
-                    // 读取选项（每个选项有三个字段：选项文本、目标对话ID　和　事件类型）
-                    for (int i = 2; i < fields.Length; i += 3) // 假设新增事件字段
-                    {
-                        if (i + 2 < fields.Length)
-                        {
-                            Option option = new Option();
-                            option.text = fields[i];  // 选项文本  
-                            option.nextId = int.Parse(fields[i + 1]);  // 下一个对话ID  
-                            option.eventType = (Option.EventType)Enum.Parse(typeof(Option.EventType), fields[i + 2]); // 事件类型  
-
-                            dialogue.options.Add(option);
-                        }
-                    }
-
-                    dialogueDictionary.Add(dialogue.id, dialogue);
+                    dialogueDictionary.Add(dialogue.textId, dialogue);
                 }
+
             }
         }
         else
@@ -65,57 +58,92 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
-    public void ShowDialogue(int dialogueId)
+    public void ReadDialogueFrom(Dialogue begin)    //顺序读取对话文本
     {
-        if (dialogueDictionary.TryGetValue(dialogueId, out Dialogue dialogue))
+        Dialogue dialogue = begin;
+        while (dialogueDictionary.ContainsKey(dialogue.textId))
         {
-            dialogueText.text = dialogue.text;
-
-            // 清空之前的选项  
-            foreach (Transform child in optionsPanel)
+            Debug.Log(dialogueDictionary[dialogue.textId].text);
+            //此处用来处理文字动态显示(Marc来完成)
+            if (dialogueDictionary.ContainsKey(dialogue.nextId))
             {
-                Destroy(child.gameObject);
+                dialogue = dialogueDictionary[dialogue.nextId];
             }
-
-            // 为每个选项创建按钮  
-            foreach (var option in dialogue.options)
+            else
             {
-                GameObject buttonObject = Instantiate(optionButtonPrefab, optionsPanel);
-                Button button = buttonObject.GetComponent<Button>();
-                button.GetComponentInChildren<Text>().text = option.text;
-
-                // 注册点击事件  
-                button.onClick.AddListener(() => OnOptionSelected(option.nextId));
+                return;
             }
         }
-        else
-        {
-            Debug.LogError("对话ID未找到: " + dialogueId);
-        }
-    }
 
-    private void OnOptionSelected(int nextId)
+        return;
+    }
+    public void RecurReadDialogueFrom(int id)         //利用递归进行读取
     {
-        // 执行事件  
-        ExecuteEvent(Option.EventType.None);
-
-        // 显示下一个对话  
-        ShowDialogue(nextId);
-    }
-
-    private void ExecuteEvent(Option.EventType eventType)
-    {
-        switch (eventType)
+        if (!dialogueDictionary.ContainsKey(id))
         {
-            case Option.EventType.Action1:
-                // 执行事件1  
-                break;
-            case Option.EventType.Action2:
-                // 执行事件2  
-                break;
-            default:
-                break;
+            return;
         }
+        Debug.Log(dialogueDictionary[id].text);
+        //此处用来处理文字动态显示(Marc来完成)
+        RecurReadDialogueFrom(dialogueDictionary[id].nextId);
+
+        return;
     }
+
+
+
+    // 以下代码暂时无用
+    //public void ShowDialogue(int dialogueId)
+    //{
+    //    if (dialogueDictionary.TryGetValue(dialogueId, out Dialogue dialogue))
+    //    {
+    //        dialogueText.text = dialogue.text;
+
+    //        // 清空之前的选项  
+    //        foreach (Transform child in optionsPanel)
+    //        {
+    //            Destroy(child.gameObject);
+    //        }
+
+    //        // 为每个选项创建按钮  
+    //        foreach (var option in dialogue.options)
+    //        {
+    //            GameObject buttonObject = Instantiate(optionButtonPrefab, optionsPanel);
+    //            Button button = buttonObject.GetComponent<Button>();
+    //            button.GetComponentInChildren<Text>().text = option.text;
+
+    //            // 注册点击事件  
+    //            button.onClick.AddListener(() => OnOptionSelected(option.nextId));
+    //        }
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("对话ID未找到: " + dialogueId);
+    //    }
+    //}
+
+    //private void OnOptionSelected(int nextId)
+    //{
+    //    // 执行事件  
+    //    ExecuteEvent(Event.MyEventType.None);
+
+    //    // 显示下一个对话  
+    //    ShowDialogue(nextId);
+    //}
+
+    //private void ExecuteEvent(Event.MyEventType eventType)
+    //{
+    //    switch (eventType)
+    //    {
+    //        case Event.MyEventType.Action1:
+    //            // 执行事件1  
+    //            break;
+    //        case Event.MyEventType.Action2:
+    //            // 执行事件2  
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
 
 }
