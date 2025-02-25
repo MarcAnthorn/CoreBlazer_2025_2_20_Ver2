@@ -19,21 +19,24 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
    private Coroutine currentCoroutine;
 
 
+
+
     /// <summary>
     /// 用于显示文本的方法，需要传入文本依赖的tmp组件、文本显示内容；
     /// </summary>
     /// <param name="_tmp">文本依赖的tmp组件</param>
     /// <param name="_text">文本显示内容</param>
     /// <param name="_color">自定义文本显示颜色</param>
-    /// <param name="_intervalTime">文本字符显示间隔时间，默认0.02s</param>
+    /// <param name="_isClearText">是否清除上一次StringBuilder中的文本，默认是true；如果是false，StringBuilder不会清空</param>
     /// <param name="_isNewLine">文本是否从上一段文本换行，默认不换行；</param>
-    /// <returns>显示当前文本需要的时间；如果外部有需要等待文本显示结束再进行的操作，可以获取该浮点型</returns>
-    public float DisplayText(TextMeshProUGUI _tmp, string _text, Color _color, bool _isNewLine = false, float _intervalTime = 0.02f)
+    /// <param name="_intervalTime">文本字符显示间隔时间，默认0.02s</param>
+    ///  <returns>显示当前文本需要的时间；如果外部有需要等待文本显示结束再进行的操作，可以获取该浮点型</returns>
+    public float DisplayText(TextMeshProUGUI _tmp, string _text, Color _color, bool _isClearText = true, bool _isNewLine = false, float _intervalTime = 0.02f)
     {
-        if(_tmp != tmp)
+        if(_isClearText)
         {   
-            //判断：如果tmp组件和上一次组件不是同一个组件，清空StringBuilder，重新进行字符的添加
-            //如果是同一个组件，那么直接跳过这一步
+            //判断：如果是清除上一次StringBuilder中的文本，那么重新进行字符的添加
+            //如果不清空，那么直接跳过这一步，组件不会变化
             tmp = _tmp;
             sb.Clear();
             sbBackup.Clear();

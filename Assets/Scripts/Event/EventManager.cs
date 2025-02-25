@@ -54,7 +54,7 @@ public class EventManager : Singleton<EventManager>
                         eventData.options[j].minCondition = int.Parse(values[4 + j * 5]);   //E列 左
                         eventData.options[j].maxCondition = int.Parse(values[5 + j * 5]);   //E列 右
                         eventData.options[j].OpDescription = values[6 + j * 5];             //F列
-                        eventData.options[j].nextId = int.Parse(values[7 + j * 5]);         //G列
+                        eventData.options[j].NextId = int.Parse(values[7 + j * 5]);         //G列
                     }
 
                     allEvents.Add(eventData.eventId, eventData);

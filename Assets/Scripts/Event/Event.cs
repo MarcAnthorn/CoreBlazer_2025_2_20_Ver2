@@ -75,11 +75,18 @@ public class EventOption
     public int maxCondition;                    //最大 可选择条件属性要求值(分别对应一项有关Id)
     public string OpDescription;                //选项文本(?不被包含在事件文本库中，而是单作处理?)
     
-    public int nextId                           //下一个事件的Id
+
+    //此处是Marc调整：
+    //属性一般需要使用帕斯卡命名法
+    //同时属性一般也需要持有一个私有字段，作为属性get & set的操作对象；
+
+    //属性操作的私有字段；
+    private int nextId;
+    public int NextId                           //下一个事件的Id
     {
         get
         {
-            return nextId;
+            return nextId;  //原先这里直接返回属性本身会有bug
         }
         set
         {

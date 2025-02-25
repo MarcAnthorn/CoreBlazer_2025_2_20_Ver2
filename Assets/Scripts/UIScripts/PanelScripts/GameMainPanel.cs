@@ -55,8 +55,19 @@ public class GameMainPanel : BasePanel
         
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        EventHub.Instance.AddEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
+    }
 
-    
+    private void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
+    }
+
+
+
 
 
     //更新当前UI显示事件的方法；
@@ -105,7 +116,7 @@ public class GameMainPanel : BasePanel
 
             //订正当前Button是否可交互：
             nowButtonScript.setInteractableAction(option.LockOrNot(PlayerManager.Instance.player));
-            
+            nowButtonScript.setOptionAction(option);
             //将当前事件的选项游戏对象加入optionList：
             optionList.Add(nowButtonScript.gameObject);
         }
@@ -130,7 +141,7 @@ public class GameMainPanel : BasePanel
     //用于事件加载 / 延时加载事件描述 / 延时加载选项的协同程序：
     IEnumerator DisplayEventTextAndOptions()
     {
-        //测试用:
+        //测试用:（怪谈文本显示）
         float delayExtraTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
             "事件前史部分介绍，此处是红色字体", 
             Color.red);
@@ -138,11 +149,20 @@ public class GameMainPanel : BasePanel
         yield return new WaitForSeconds(textDisplayDelayTime + delayExtraTime);
 
         //展示事件描述部分：
-        //测试用：
+        //测试用：（事件描述文本显示）
         TextDisplayManager.Instance.DisplayText(txtEventDescription, 
             "事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍", 
             Color.white,
-            true);
+            false);
+
+        //事件文本展示结束之后，显示当前的选项；
+    }
+
+
+    //选项触发后，需要更新当前事件的描述
+    private void UpdateDescriptionAfterOption(string _text)
+    {
+        TextDisplayManager.Instance.DisplayText(txtEventDescription, _text, Color.white);
     }
    
 }
