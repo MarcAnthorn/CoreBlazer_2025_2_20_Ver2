@@ -13,7 +13,7 @@ public class Event          //
     public List<EventOption> options;           //事件选项
     public Dictionary<int, KaidanText> textLib; //事件文本库，前面的int类型是文本的Id标识，文本库作用：按需取文本
 
-    private string EvDescription;               //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
+    private string evDescription;               //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
 
     //public int id;                            //当前事件的唯一标识
     public bool isTrigger;                      //是否触发过(对于弹窗事件)
@@ -64,11 +64,11 @@ public class Event          //
 
     public string GetEvDescription()                //事件描述(读取事件文本库)
     {
-        return EvDescription;
+        return evDescription;
     }
     public void SetEvDescription(string description)
     {
-        this.EvDescription = description;
+        this.evDescription = description;
     }
 
     public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本

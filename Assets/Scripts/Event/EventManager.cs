@@ -129,6 +129,8 @@ public class EventManager : Singleton<EventManager>
         File.WriteAllLines(path, lines);
     }
 
+
+    //暂定不需要
     public void SelectOption(int optionIndex)           //1,2,3
     {
         foreach (var option in allEvents[currentEventId].options)
@@ -153,9 +155,13 @@ public class EventManager : Singleton<EventManager>
     {
         EventGO EvGO = go.GetComponent<EventGO>();
         currentEventId = EvGO.eventId;
-        EventUI eventUI = new EventUI();
-        //可能会设置eventUI相关的数据(比如位置，大小等)
-        Instantiate(eventUI);
+        // EventUI eventUI = new EventUI();
+        // //可能会设置eventUI相关的数据(比如位置，大小等)
+        // Instantiate(eventUI);
+
+        //玩家触碰POI后，显示事件面板GameMainPanel:
+        //面板生成之后会立刻获取当前的事件并且加载内容
+        UIManager.Instance.ShowPanel<GameMainPanel>();
     }
 
 
@@ -194,7 +200,7 @@ public class EventManager : Singleton<EventManager>
         return null;
     }
 
-    private void OnOptionSelected(int optionId)
+    public void OnOptionSelected(int optionId)
     {
         // 执行事件  
         ExecuteEvent(Event.MyEventType.None);

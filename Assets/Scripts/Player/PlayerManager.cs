@@ -26,6 +26,8 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     public int Level => player.LVL;
     public int Sanity => player.SAN;
 
+    public int Speed => player.SPD;
+
     //暂未定义玩家灯火值
     // public int Light => player.LIT;
 
@@ -40,7 +42,8 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             STR = 10,
             DEF = 5,
             LVL = 100,
-            SAN = 0
+            SAN = 0,
+            SPD = 10    //测试用速度数值
         };
     }
 

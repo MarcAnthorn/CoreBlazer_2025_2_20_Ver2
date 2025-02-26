@@ -50,8 +50,9 @@ public class GameMainPanel : BasePanel
 
         //当前面板显示，更新面板内容：
         //测试用：
-        UpdateEvent();
-        UpdateAttribute();
+        UpdateEvent();          //更新事件相关内容
+        UpdateAttribute();      //更新当前玩家属性显示
+
         
     }
 
@@ -116,6 +117,7 @@ public class GameMainPanel : BasePanel
 
             //订正当前Button是否可交互：
             nowButtonScript.setInteractableAction(option.LockOrNot(PlayerManager.Instance.player));
+            //将当前的Button脚本应当持有的实例传入：
             nowButtonScript.setOptionAction(option);
             //将当前事件的选项游戏对象加入optionList：
             optionList.Add(nowButtonScript.gameObject);
@@ -134,6 +136,8 @@ public class GameMainPanel : BasePanel
         //（未完成所有调整，有待讨论）
         sliderHealth.value = PlayerManager.Instance.Health;
         txtHealth.SetText("生命属性值：{0}", PlayerManager.Instance.Health);
+
+
         
     }
 
@@ -142,20 +146,23 @@ public class GameMainPanel : BasePanel
     IEnumerator DisplayEventTextAndOptions()
     {
         //测试用:（怪谈文本显示）
-        float delayExtraTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+        float delayTime1 = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
             "事件前史部分介绍，此处是红色字体", 
             Color.red);
 
-        yield return new WaitForSeconds(textDisplayDelayTime + delayExtraTime);
+        yield return new WaitForSeconds(textDisplayDelayTime + delayTime1);
 
         //展示事件描述部分：
         //测试用：（事件描述文本显示）
-        TextDisplayManager.Instance.DisplayText(txtEventDescription, 
-            "事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍", 
-            Color.white,
-            false);
+        // TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+        //     "事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍", 
+        //     Color.white,
+        //     false);
+        float delayTime2 =  TextDisplayManager.Instance.DisplayText(txtEventDescription, currentEvent.GetEvDescription(), Color.white, false);
 
+        yield return new WaitForSeconds(delayTime2);
         //事件文本展示结束之后，显示当前的选项；
+        UpdateOptions();        //更新当前的选项内容
     }
 
 
