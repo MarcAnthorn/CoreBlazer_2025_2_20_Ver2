@@ -58,14 +58,14 @@ public class DialogueManager : Singleton<DialogueManager>
         }
     }
 
-    public void ReadDialogueFrom(Dialogue begin)    //顺序读取对话文本
+    public void ReadDialogueFrom(Dialogue begin)        //顺序读取对话文本
     {
         Dialogue dialogue = begin;
         while (dialogueDictionary.ContainsKey(dialogue.textId))
         {
-            Debug.Log(dialogueDictionary[dialogue.textId].text);
+            Debug.Log($"文本Id：{dialogueDictionary[dialogue.textId].textId}, 文本内容：{dialogueDictionary[dialogue.textId].text}");
             //此处用来处理文字动态显示(Marc来完成)
-            if (dialogueDictionary.ContainsKey(dialogue.nextId))
+            if (dialogue.nextId != 0)
             {
                 dialogue = dialogueDictionary[dialogue.nextId];
             }
@@ -77,13 +77,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
         return;
     }
-    public void RecurReadDialogueFrom(int id)         //利用递归进行读取
+    public void RecurReadDialogueFrom(int id)           //利用递归进行读取
     {
-        if (!dialogueDictionary.ContainsKey(id))
+        if (!dialogueDictionary.ContainsKey(id) || dialogueDictionary[id].nextId == 0)
         {
             return;
         }
-        Debug.Log(dialogueDictionary[id].text);
+        Debug.Log($"文本Id：{dialogueDictionary[id].textId}, 文本内容：{dialogueDictionary[id].text}");
         //此处用来处理文字动态显示(Marc来完成)
         RecurReadDialogueFrom(dialogueDictionary[id].nextId);
 
