@@ -10,7 +10,7 @@ public class GodItemPanel : ItemPanel
     protected override void Init()
     {
         //测试用
-        InitContent();
+        // InitContent();
 
         
         foreach(var item in itemList)
@@ -28,15 +28,15 @@ public class GodItemPanel : ItemPanel
     }
 
 
-    //测试用：初始化道具列表
-    private void InitContent()
-    {
-        for(int i = 0; i < 20; i++)
-        {
-            GameObject prefab = Resources.Load<GameObject>("Item");
-            itemList.Add(Instantiate<GameObject>(prefab));
-        }
-    }
+    // //测试用：初始化道具列表
+    // private void InitContent()
+    // {
+    //     for(int i = 0; i < 20; i++)
+    //     {
+    //         GameObject prefab = Resources.Load<GameObject>("Item");
+    //         itemList.Add(Instantiate<GameObject>(prefab));
+    //     }
+    // }
 
 
 

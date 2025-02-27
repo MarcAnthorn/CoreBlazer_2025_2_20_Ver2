@@ -11,11 +11,11 @@ public class CommonItemPanel : ItemPanel
     protected override void Init()
     {
         //测试用
-        InitContent();   
-        foreach(var item in itemList)
-        {
-            item.transform.SetParent(srCommonItemContainer.content, false);
-        }
+        // InitContent();   
+        // foreach(var item in itemList)
+        // {
+        //     item.transform.SetParent(srCommonItemContainer.content, false);
+        // }
     }
 
     protected override void RefreshItem()
@@ -25,15 +25,15 @@ public class CommonItemPanel : ItemPanel
     }
 
 
-    //测试用：初始化道具列表
-    private void InitContent()
-    {
-        for(int i = 0; i < 20; i++)
-        {
-            GameObject prefab = Resources.Load<GameObject>("Item");
-            itemList.Add(Instantiate<GameObject>(prefab));
-        }
-    }
+    // //测试用：初始化道具列表
+    // private void InitContent()
+    // {
+    //     for(int i = 0; i < 20; i++)
+    //     {
+    //         GameObject prefab = Resources.Load<GameObject>("Item");
+    //         itemList.Add(Instantiate<GameObject>(prefab));
+    //     }
+    // }
 
     //外部实现一个单例Item管理器，存储所有当前持有的Item
 }

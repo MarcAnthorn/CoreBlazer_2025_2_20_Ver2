@@ -16,5 +16,10 @@ public class TestScript : MonoBehaviour
         }
     }
 
-   
+    void Start()
+    {
+        UIManager.Instance.ShowPanel<GameMainPanel>();
+    }
+
+
 }
