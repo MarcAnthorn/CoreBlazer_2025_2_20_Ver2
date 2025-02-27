@@ -38,7 +38,10 @@ public class EventManager : Singleton<EventManager>
 
     void LoadEvents(int libIndex)           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
     {
-        allEvents = new Dictionary<int, Event>();
+        if (allEvents == null )
+        {
+            allEvents = new Dictionary<int, Event>();
+        }
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
         string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Test1_CSV.csv");
 
@@ -72,7 +75,7 @@ public class EventManager : Singleton<EventManager>
                         eventData.options.Add(option);
                     }
 
-                    LoadKaidanTexts(eventData.libId, eventData);        //加载事件对应的怪诞文本
+                    LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
                     allEvents.Add(eventData.eventId, eventData);
                 }
 
@@ -84,30 +87,43 @@ public class EventManager : Singleton<EventManager>
             Debug.LogWarning("事件数据文件不存在！");
         }
     }
-    public void LoadKaidanTexts(int libIndex, Event @event)     //用在Event加载的时候
+    public void LoadKaidanTexts(int eventIndex, Event @event)     //用在Event加载的时候
     {
         @event.textLib = new Dictionary<int, KaidanText>();
-        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/DialogueDatas.csv");
+        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/KaidanTest.csv");
 
         if (File.Exists(path))
         {
-            string[] lines = File.ReadAllLines(path);       //分割每一行存入lines
+            string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
 
-            for (int i = 3; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
+            for (int i = 1; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
+                if (i == 1)
+                {
+                    @event.firstTextId = int.Parse(values[0]);
+                }
 
-                if (int.Parse(values[0]) == libIndex && values.Length >= 4 && int.Parse(values[2]) == 0)
+                if (int.Parse(values[0]) == eventIndex && values.Length >= 4/* && int.Parse(values[2]) == 0*/)
                 {
                     KaidanText kaidanText = new KaidanText();
                     kaidanText.eventId = int.Parse(values[0]);
                     kaidanText.textId = int.Parse(values[1]);
+                    if(int.Parse(values[2]) == 1)
+                    {
+                        kaidanText.isKwaidan = false;
+                    }
+                    else if(int.Parse(values[2]) == 0)
+                    {
+                        kaidanText.isKwaidan = true;
+                    }
                     kaidanText.text = values[3];
                     kaidanText.nextId = int.Parse(values[4]);
                     kaidanText.illustrationId = int.Parse(values[5]);
                     kaidanText.bgId = int.Parse(values[6]);
 
+                    @event.evDescription += values[3];
                     @event.textLib.Add(kaidanText.textId, kaidanText);
                 }
 
@@ -264,6 +280,7 @@ public class EventManager : Singleton<EventManager>
             {
                 Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
             }
+            @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
             Debug.Log("==========================================");
         }
     }

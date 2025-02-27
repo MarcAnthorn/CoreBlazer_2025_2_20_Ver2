@@ -12,11 +12,11 @@ public class Event          //
     public MyEventType type;                    //事件类型(?如：弹窗事件/战斗事件/直接事件(如：陷阱)?)
     public List<EventOption> options;           //事件选项
     public Dictionary<int, KaidanText> textLib; //事件文本库，前面的int类型是文本的Id标识，文本库作用：按需取文本
-
-    private string evDescription;               //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
+    public string evDescription;                //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
 
     //public int id;                            //当前事件的唯一标识
     public bool isTrigger;                      //是否触发过(对于弹窗事件)
+    public int firstTextId;                     //首句Id
 
     public Event()
     {
@@ -63,23 +63,23 @@ public class Event          //
     //    textLib[textId] = text;
     //}
 
-    public string GetEvDescription()                //事件描述(读取事件文本库)
-    {
-        return evDescription;
-    }
-    public void SetEvDescription(string description)
-    {
-        this.evDescription = description;
-    }
+    //public string GetEvDescription()                //事件描述(读取事件文本库)
+    //{
+    //    return evDescription;
+    //}
+    //public void SetEvDescription(string description)
+    //{
+    //    this.evDescription = description;
+    //}
 
     public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本
     {
         KaidanText text = begin;
         while (textLib.ContainsKey(text.textId))
         {
-            Debug.Log(textLib[text.textId].text);
+            Debug.Log($"文本Id：{textLib[text.textId].textId}, 文本内容：{textLib[text.textId].text}");
             //处理文字动态显示
-            if (textLib.ContainsKey(text.nextId))
+            if (text.nextId != 0)
             {
                 text = textLib[text.nextId];
             }
@@ -93,11 +93,11 @@ public class Event          //
     }
     public void RecurReadKaidanTextFrom(int id)         //利用递归进行读取
     {
-        if (!textLib.ContainsKey(id))
+        if (!textLib.ContainsKey(id) || textLib[id].nextId == 0)
         {
             return;
         }
-        Debug.Log(textLib[id].text);
+        Debug.Log($"文本Id：{textLib[id].textId}, 文本内容：{textLib[id].text}");
         //处理文字动态显示
         RecurReadKaidanTextFrom(textLib[id].nextId);
 
