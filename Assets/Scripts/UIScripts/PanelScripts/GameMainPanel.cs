@@ -48,12 +48,6 @@ public class GameMainPanel : BasePanel
         });
 
 
-
-        btnQuit.onClick.AddListener(()=>{
-            UIManager.Instance.HidePanel<GameMainPanel>();
-        });
-
-
         //当前面板显示，更新面板内容：
         //测试用：
         UpdateEvent();          //更新事件相关内容
