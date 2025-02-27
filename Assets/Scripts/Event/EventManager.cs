@@ -72,7 +72,7 @@ public class EventManager : Singleton<EventManager>
                         eventData.options.Add(option);
                     }
 
-                    LoadKaidanTexts(eventData.libId, eventData);        //加载事件对应的怪诞文本
+                    // LoadKaidanTexts(eventData.libId, eventData);        //加载事件对应的怪诞文本
                     allEvents.Add(eventData.eventId, eventData);
                 }
 

@@ -61,41 +61,41 @@ public class GameMainPanel : BasePanel
         base.Awake();
         EventHub.Instance.AddEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
 
-        //测试用：
-        // currentEvent = new Event();
-        // currentEvent.textLib = new Dictionary<int, Event.KaidanText>();
-        // Event.KaidanText text1 = new Event.KaidanText();
-        // text1.textId = 1;
-        // text1.nextId = 2;
-        // text1.isKwaidan = false;
-        // text1.text = "盛大的魔术剧院空无一人，一位魔术师穿着满是血污的礼服站在舞台的正中央，舞台上堆满了毛绒玩偶的残肢断臂。";
+    //     // 测试用：
+    //     currentEvent = new Event();
+    //     currentEvent.textLib = new Dictionary<int, Event.KaidanText>();
+    //     Event.KaidanText text1 = new Event.KaidanText();
+    //     text1.textId = 1;
+    //     text1.nextId = 2;
+    //     text1.isKwaidan = false;
+    //     text1.text = "盛大的魔术剧院空无一人，一位魔术师穿着满是血污的礼服站在舞台的正中央，舞台上堆满了毛绒玩偶的残肢断臂。";
 
-        //  Event.KaidanText text2 = new Event.KaidanText();
-        // text2.textId = 2;
-        // text2.nextId = 3;
-        // text2.isKwaidan = false;
-        // text2.text = "他像是蜡像一样一动不动的站着，直到你靠近。";
-
-
-        //  Event.KaidanText text3 = new Event.KaidanText();
-        // text3.textId = 3;
-        //  text3.nextId = 4;
-        // text3.isKwaidan = true;
-        // text3.text = "“亲爱的女士们先生们，盛大的魔术表演即将开始！”";
+    //      Event.KaidanText text2 = new Event.KaidanText();
+    //     text2.textId = 2;
+    //     text2.nextId = 3;
+    //     text2.isKwaidan = false;
+    //     text2.text = "他像是蜡像一样一动不动的站着，直到你靠近。";
 
 
-        //  Event.KaidanText text4 = new Event.KaidanText();
-        // text4.textId = 4;
-        //  text4.nextId = 0;
-        // text4.isKwaidan = false;
-        // text4.text = "魔术师的声音仿佛从空中传来，身体则一动不动。测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+    //      Event.KaidanText text3 = new Event.KaidanText();
+    //     text3.textId = 3;
+    //      text3.nextId = 4;
+    //     text3.isKwaidan = true;
+    //     text3.text = "“亲爱的女士们先生们，盛大的魔术表演即将开始！”";
 
-        // currentEvent.textLib.Add(1, text1);
-        // currentEvent.textLib.Add(2, text2);
-        // currentEvent.textLib.Add(3, text3);
-        // currentEvent.textLib.Add(4, text4);
 
-        // Debug.Log("Generated!");
+    //      Event.KaidanText text4 = new Event.KaidanText();
+    //     text4.textId = 4;
+    //      text4.nextId = 0;
+    //     text4.isKwaidan = false;
+    //     text4.text = "魔术师的声音仿佛从空中传来，身体则一动不动。测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+
+    //     currentEvent.textLib.Add(1, text1);
+    //     currentEvent.textLib.Add(2, text2);
+    //     currentEvent.textLib.Add(3, text3);
+    //     currentEvent.textLib.Add(4, text4);
+
+    //     Debug.Log("Generated!");
         
     }
 
@@ -114,6 +114,8 @@ public class GameMainPanel : BasePanel
     {
         //当前事件的获取一定要先于所有更新操作；
         // currentEvent = EventManager.Instance.BroadcastEvent();
+
+        // currentEvent = EventManager.Instance.allEvents[1];
     
         //事件cg加载：
 
