@@ -32,6 +32,7 @@ public class EventOptionBtn : MonoBehaviour
         txtOptionDescription = this.GetComponentInChildren<TextMeshProUGUI>();
         btnSelf = this.GetComponent<Button>();
 
+        //设置选项要求文本、描述文本、是否可交互文本、当前脚本持有的EventOption实例的委托；
         setRequirementAction += SetRequirement;
         setDescriptionAction += SetDescription;
         setInteractableAction += SetInteractable;

@@ -48,6 +48,12 @@ public class GameMainPanel : BasePanel
         });
 
 
+
+        btnQuit.onClick.AddListener(()=>{
+            UIManager.Instance.HidePanel<GameMainPanel>();
+        });
+
+
         //当前面板显示，更新面板内容：
         //测试用：
         UpdateEvent();          //更新事件相关内容
@@ -116,6 +122,8 @@ public class GameMainPanel : BasePanel
         // currentEvent = EventManager.Instance.BroadcastEvent();
 
         // currentEvent = EventManager.Instance.allEvents[1];
+        //测试用：
+        // currentEvent = EventManager.Instance.allEvents[1];
     
         //事件cg加载：
 
@@ -123,7 +131,6 @@ public class GameMainPanel : BasePanel
         //事件描述文本加载：
         //应该先加载事件红字介绍，0.3s之后再加载事件的描述部分；
         StartCoroutine(DisplayEventTextAndOptions());
-        Debug.Log("Updating!");
     
         //更新提示谜语：
 
@@ -135,7 +142,18 @@ public class GameMainPanel : BasePanel
 
     }
 
-    
+    //更新当前UI显示玩家属性的方法：
+    private void UpdateAttribute()
+    {
+        //此处只是读取Player暴露给外部的属性数值：
+        //如果需要Slider额外的实现效果（如属性增减时的数值条变化效果），可以使用LeanTween
+        //如：将血量更新为当前玩家血量：
+        //（未完成所有调整，有待讨论）
+        sliderHealth.value = PlayerManager.Instance.Health;
+        txtHealth.SetText("生命属性值：{0}", PlayerManager.Instance.Health);
+        
+    }
+
 
     //由于选项需要等待文本输出之后再显示，因此额外设置一个更新方法：
     private void UpdateOptions()
@@ -162,23 +180,6 @@ public class GameMainPanel : BasePanel
             //将当前事件的选项游戏对象加入optionList：
             optionList.Add(nowButtonScript.gameObject);
         }
-    }
-
-    
-
-
-    //更新当前UI显示玩家属性的方法：
-    private void UpdateAttribute()
-    {
-        //此处只是读取Player暴露给外部的属性数值：
-        //如果需要Slider额外的实现效果（如属性增减时的数值条变化效果），可以使用LeanTween
-        //如：将血量更新为当前玩家血量：
-        //（未完成所有调整，有待讨论）
-        sliderHealth.value = PlayerManager.Instance.Health;
-        txtHealth.SetText("生命属性值：{0}", PlayerManager.Instance.Health);
-
-
-        
     }
 
 
@@ -239,7 +240,7 @@ public class GameMainPanel : BasePanel
             yield return new WaitForSeconds(textDisplayDelayTime);
         }
 
-        // UpdateOptions();
+        UpdateOptions();
     }
 
 

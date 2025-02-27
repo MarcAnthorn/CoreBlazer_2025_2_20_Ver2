@@ -116,9 +116,6 @@ public class EventOption
     public string OpDescription;                //选项文本(?不被包含在事件文本库中，而是单作处理?)
     
 
-    //此处是Marc调整：
-    //属性一般需要使用帕斯卡命名法
-    //同时属性一般也需要持有一个私有字段，作为属性get & set的操作对象；
 
     //属性操作的私有字段；
     private int nextId;
@@ -155,7 +152,9 @@ public class EventOption
     public class EventResult
     {
         public string outcome;                  //事件结果
-        //
+        
+
+        //委托中需要更新EventManager中的currentEventId;
         public Action myAction;                 //选择选项之后的处理
         public BattleEvent battleEvent;         //接入对应的战斗事件
 

@@ -27,8 +27,7 @@ public class EventManager : Singleton<EventManager>
 
     private void Start()
     {
-        //LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
-        //DebugTest();
+
     }
 
     private void Update()
@@ -36,7 +35,7 @@ public class EventManager : Singleton<EventManager>
 
     }
 
-    void LoadEvents(int libIndex)           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
+    public void LoadEvents(int libIndex)           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
     {
         if (allEvents == null )
         {
@@ -126,6 +125,7 @@ public class EventManager : Singleton<EventManager>
                     @event.evDescription += values[3];
                     @event.textLib.Add(kaidanText.textId, kaidanText);
                 }
+
 
             }
         }
@@ -282,6 +282,8 @@ public class EventManager : Singleton<EventManager>
             }
             @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
             Debug.Log("==========================================");
+
+
         }
     }
 
