@@ -21,12 +21,14 @@ public class EventManager : Singleton<EventManager>
     protected override void Awake()
     {
         base.Awake();   //单例初始化
+        LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
+        DebugTest();
     }
 
     private void Start()
     {
-        LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
-        DebugTest();
+        //LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
+        //DebugTest();
     }
 
     private void Update()
@@ -113,7 +115,7 @@ public class EventManager : Singleton<EventManager>
         }
         else
         {
-            Debug.LogError("怪诞文本文件未找到。");
+            Debug.LogError("怪诞文本文件未找到。事件Id：" + @event.eventId);
         }
     }
     void SaveEvents()
