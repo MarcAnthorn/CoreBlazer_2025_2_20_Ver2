@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using static UnityEditor.Progress;
 using System.Linq;
 using static Event;
+using System.Text;
 
 public class EventManager : Singleton<EventManager>
 {
@@ -20,7 +21,12 @@ public class EventManager : Singleton<EventManager>
     protected override void Awake()
     {
         base.Awake();   //单例初始化
-        LoadEvents(0);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
+    }
+
+    private void Start()
+    {
+        LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
+        DebugTest();
     }
 
     private void Update()
@@ -32,13 +38,13 @@ public class EventManager : Singleton<EventManager>
     {
         allEvents = new Dictionary<int, Event>();
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
-        string path = Path.Combine(Application.dataPath, "Resources/EventData/eventDatas.csv");
+        string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Test1_CSV.csv");
 
         if (File.Exists(path))
         {
-            string[] lines = File.ReadAllLines(path);       //分割每一行存入lines
+            string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
 
-            for (int i = 3; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
+            for (int i = 4; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
@@ -53,11 +59,15 @@ public class EventManager : Singleton<EventManager>
                     };
                     for (int j = 0; j < 3; j++)     //var option in eventData.options
                     {
-                        eventData.options[j].conditionId = int.Parse(values[3 + j * 5]);    //D列
-                        eventData.options[j].minCondition = int.Parse(values[4 + j * 5]);   //E列 左
-                        eventData.options[j].maxCondition = int.Parse(values[5 + j * 5]);   //E列 右
-                        eventData.options[j].OpDescription = values[6 + j * 5];             //F列
-                        eventData.options[j].NextId = int.Parse(values[7 + j * 5]);         //G列
+                        EventOption option = new EventOption();
+                        option.optionId = j;
+                        option.conditionId = int.Parse(values[3 + j * 6]);                 //D列
+                        option.minCondition = int.Parse(values[4 + j * 6]);                //E列
+                        option.maxCondition = int.Parse(values[5 + j * 6]);                //F列
+                        option.itemId = int.Parse(values[6 + j * 6]);                      //G列
+                        option.OpDescription = values[7 + j * 6];                          //H列
+                        option.NextId = int.Parse(values[8 + j * 6]);                      //I列
+                        eventData.options.Add(option);
                     }
 
                     LoadKaidanTexts(eventData.libId, eventData);        //加载事件对应的怪诞文本
@@ -171,7 +181,7 @@ public class EventManager : Singleton<EventManager>
         return null;
     }
 
-    public Event CreateEvent(int eventId)           //创建事件
+    public Event CreateEvent(int eventId)           //给外部调用，创建事件
     {
         foreach (var _event in allEvents)
         {
@@ -191,6 +201,23 @@ public class EventManager : Singleton<EventManager>
         }
 
         Debug.LogError("无法创建一个本关卡内不存在的事件");
+        return null;
+    }
+    public Event DeleteEvent(int eventId)           //给外部调用，删除事件
+    {
+        foreach (var _event in allEvents)
+        {
+            if (_event.Value.eventId == eventId)
+            {
+                Event tempEvent = _event.Value;
+                allEvents[_event.Key] = null;       //GC系统自动清除new的对象
+                allEvents.Remove(_event.Key);       //移除键值对
+
+                return tempEvent;
+            }
+        }
+
+        Debug.LogError("无法删除一个本关卡内不存在的事件");
         return null;
     }
 
@@ -215,6 +242,21 @@ public class EventManager : Singleton<EventManager>
                 break;
             default:
                 break;
+        }
+    }
+
+    public void DebugTest()             //用于测试事件数据读取
+    {
+        foreach(var _event in allEvents)
+        {
+            Event @event = _event.Value;
+            Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.type}");
+            Debug.Log($"事件选项数量：{@event.options.Count}");
+            for (int i = 0; i < 3; i++)
+            {
+                Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
+            }
+            Debug.Log("==========================================");
         }
     }
 

@@ -20,7 +20,8 @@ public class Event          //
 
     public Event()
     {
-
+        options = new List<EventOption>();
+        textLib = new Dictionary<int, KaidanText>();
     }
 
     public enum MyEventType
@@ -111,6 +112,7 @@ public class EventOption
     public int conditionId;                     //可选择条件属性Id(SAN <-> 1   STR <-> 2   SPD <-> 3)
     public int minCondition;                    //最小 可选择条件属性要求值(分别对应一项有关Id)
     public int maxCondition;                    //最大 可选择条件属性要求值(分别对应一项有关Id)
+    public int itemId;                          //需求道具Id
     public string OpDescription;                //选项文本(?不被包含在事件文本库中，而是单作处理?)
     
 

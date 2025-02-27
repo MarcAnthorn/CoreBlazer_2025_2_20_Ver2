@@ -10,6 +10,7 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
     void Awake()
     {
         @event = EventManager.Instance.CreateEvent(eventId);        //随游戏对象的初始化而创建并绑定
+        GameLevelManager.Instance.events.Add(++GameLevelManager.Instance.eventNum, @event);
     }
 
     void Update()
