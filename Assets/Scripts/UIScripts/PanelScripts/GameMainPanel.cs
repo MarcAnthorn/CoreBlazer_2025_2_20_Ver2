@@ -28,7 +28,7 @@ public class GameMainPanel : BasePanel
 
     public Transform rightSection;
     //用于控制事件描述延迟的浮点：
-    private float textDisplayDelayTime = 0.3f;
+    private float textDisplayDelayTime;
 
     //当前的事件对象
     private Event currentEvent;
@@ -50,8 +50,9 @@ public class GameMainPanel : BasePanel
 
         //当前面板显示，更新面板内容：
         //测试用：
-        UpdateEvent();
-        UpdateAttribute();
+        UpdateEvent();          //更新事件相关内容
+        UpdateAttribute();      //更新当前玩家属性显示
+
         
     }
 
@@ -59,6 +60,43 @@ public class GameMainPanel : BasePanel
     {
         base.Awake();
         EventHub.Instance.AddEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
+
+        //测试用：
+        // currentEvent = new Event();
+        // currentEvent.textLib = new Dictionary<int, Event.KaidanText>();
+        // Event.KaidanText text1 = new Event.KaidanText();
+        // text1.textId = 1;
+        // text1.nextId = 2;
+        // text1.isKwaidan = false;
+        // text1.text = "盛大的魔术剧院空无一人，一位魔术师穿着满是血污的礼服站在舞台的正中央，舞台上堆满了毛绒玩偶的残肢断臂。";
+
+        //  Event.KaidanText text2 = new Event.KaidanText();
+        // text2.textId = 2;
+        // text2.nextId = 3;
+        // text2.isKwaidan = false;
+        // text2.text = "他像是蜡像一样一动不动的站着，直到你靠近。";
+
+
+        //  Event.KaidanText text3 = new Event.KaidanText();
+        // text3.textId = 3;
+        //  text3.nextId = 4;
+        // text3.isKwaidan = true;
+        // text3.text = "“亲爱的女士们先生们，盛大的魔术表演即将开始！”";
+
+
+        //  Event.KaidanText text4 = new Event.KaidanText();
+        // text4.textId = 4;
+        //  text4.nextId = 0;
+        // text4.isKwaidan = false;
+        // text4.text = "魔术师的声音仿佛从空中传来，身体则一动不动。测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+
+        // currentEvent.textLib.Add(1, text1);
+        // currentEvent.textLib.Add(2, text2);
+        // currentEvent.textLib.Add(3, text3);
+        // currentEvent.textLib.Add(4, text4);
+
+        // Debug.Log("Generated!");
+        
     }
 
     private void OnDestroy()
@@ -75,7 +113,7 @@ public class GameMainPanel : BasePanel
     private void UpdateEvent()
     {
         //当前事件的获取一定要先于所有更新操作；
-        currentEvent = EventManager.Instance.BroadcastEvent();
+        // currentEvent = EventManager.Instance.BroadcastEvent();
     
         //事件cg加载：
 
@@ -83,6 +121,7 @@ public class GameMainPanel : BasePanel
         //事件描述文本加载：
         //应该先加载事件红字介绍，0.3s之后再加载事件的描述部分；
         StartCoroutine(DisplayEventTextAndOptions());
+        Debug.Log("Updating!");
     
         //更新提示谜语：
 
@@ -116,6 +155,7 @@ public class GameMainPanel : BasePanel
 
             //订正当前Button是否可交互：
             nowButtonScript.setInteractableAction(option.LockOrNot(PlayerManager.Instance.player));
+            //将当前的Button脚本应当持有的实例传入：
             nowButtonScript.setOptionAction(option);
             //将当前事件的选项游戏对象加入optionList：
             optionList.Add(nowButtonScript.gameObject);
@@ -134,6 +174,8 @@ public class GameMainPanel : BasePanel
         //（未完成所有调整，有待讨论）
         sliderHealth.value = PlayerManager.Instance.Health;
         txtHealth.SetText("生命属性值：{0}", PlayerManager.Instance.Health);
+
+
         
     }
 
@@ -141,21 +183,61 @@ public class GameMainPanel : BasePanel
     //用于事件加载 / 延时加载事件描述 / 延时加载选项的协同程序：
     IEnumerator DisplayEventTextAndOptions()
     {
-        //测试用:（怪谈文本显示）
-        float delayExtraTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
-            "事件前史部分介绍，此处是红色字体", 
-            Color.red);
+        var dic = currentEvent.textLib;
+        var text = currentEvent.textLib[1];
+        while(dic.ContainsKey(text.textId))
+        {
+            //如果是首行文本（key == 1），清除StringBuilder，不执行换行；
+            if(text.isKwaidan && text.textId == 1)
+            {
+                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                text.text, 
+                Color.red,
+                true,   //清除StringBuilder
+                false); //不执行换行（第一行的文本不额外换行）
+            }
+            else if(!text.isKwaidan && text.textId == 1)
+            {
+                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                text.text, 
+                Color.white,
+                true,
+                false);
+            }
 
-        yield return new WaitForSeconds(textDisplayDelayTime + delayExtraTime);
+            //如果是非首行文本（key != 1），不清除StringBuilder，执行换行；
+            else if(text.isKwaidan)
+            {
+                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                text.text, 
+                Color.red,
+                false,  
+                true);
+            }
+            else if(!text.isKwaidan)
+            {
+                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                text.text, 
+                Color.white,
+                false,
+                true);
+            }
 
-        //展示事件描述部分：
-        //测试用：（事件描述文本显示）
-        TextDisplayManager.Instance.DisplayText(txtEventDescription, 
-            "事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍事件介绍", 
-            Color.white,
-            false);
+            //虽然按理说textLib只会存储当前事件的文本，因此读取文本结束就会终止；
+            //但是以防万一，设置一个break条件；
+            if(!dic.ContainsKey(text.nextId))
+            {
+                break;
+            }
+            else
+            {
+                text = dic[text.nextId];
+            }
 
-        //事件文本展示结束之后，显示当前的选项；
+            yield return new WaitForSeconds(textDisplayDelayTime);
+        }
+
+        // UpdateOptions();
     }
 
 

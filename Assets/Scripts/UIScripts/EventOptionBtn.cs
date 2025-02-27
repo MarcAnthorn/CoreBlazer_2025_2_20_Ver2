@@ -75,8 +75,8 @@ public class EventOptionBtn : MonoBehaviour
         //如果不可交互，还需要额外的内容，如贴上不可交互的贴图等：
         if(!isInteractable)
         {
-
-        }
+            txtAttributeRequirement.color = Color.red;
+        }   
     }
 
     private void SetOption(EventOption option)

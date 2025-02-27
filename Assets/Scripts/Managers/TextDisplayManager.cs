@@ -9,7 +9,8 @@ using UnityEngine;
 public class TextDisplayManager : Singleton<TextDisplayManager>
 {
     //当前文本的单个字之间的显示间隔用时
-   private float textDisplayIntervalTime = 0.02f;
+   private float textDisplayIntervalTime = 0.3f;
+   private float intervalTimeExtra= 0.8f;
    private StringBuilder sb = new StringBuilder();
    private StringBuilder sbBackup = new StringBuilder();
    private TextMeshProUGUI tmp;
@@ -33,11 +34,14 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
     ///  <returns>显示当前文本需要的时间；如果外部有需要等待文本显示结束再进行的操作，可以获取该浮点型</returns>
     public float DisplayText(TextMeshProUGUI _tmp, string _text, Color _color, bool _isClearText = true, bool _isNewLine = false, float _intervalTime = 0.02f)
     {
+        if(tmp != _tmp)
+        {
+            tmp = _tmp;
+        }
         if(_isClearText)
         {   
             //判断：如果是清除上一次StringBuilder中的文本，那么重新进行字符的添加
             //如果不清空，那么直接跳过这一步，组件不会变化
-            tmp = _tmp;
             sb.Clear();
             sbBackup.Clear();
         }
@@ -57,7 +61,11 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
         sbBackup.AppendFormat("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>", 
                 (int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255), text);
         currentCoroutine = StartCoroutine(DisplayTextSequentially());
-        return (_text.Length - 1) * textDisplayIntervalTime;
+
+        //此处因为字符显示的时间间隔是0.02，也就是说如果文本量比较少，那么返回出去的等待时间就少；
+        //而协同程序的精度只有0.1s左右；因此如果等待时间过短，就会出现协同程序的冲突；
+        //解决方案：加一个基础时间给等待时间，确保文本显示完毕：并且延长字符显示的时间间隔；
+        return _text.Length * textDisplayIntervalTime + intervalTimeExtra;
     }
 
     //如果有需要立刻显示当前文本的需求，提供一个立刻停止当前的协同程序，显示当前所有文本的方法：
@@ -65,6 +73,13 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
     {
         StopCoroutine(currentCoroutine);
         tmp.text = sbBackup.ToString();
+    }
+
+    //用于清空当前StringBuilder的方法：
+    public void ClearStringBuilder()
+    {
+        sb.Clear();
+        sbBackup.Clear();
     }
 
 
