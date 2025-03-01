@@ -56,7 +56,7 @@ public class EventManager : Singleton<EventManager>
                     {
                         libId = int.Parse(values[0]),                                       //A列
                         eventId = int.Parse(values[1]),                                     //B列
-                        type = (Event.MyEventType)int.Parse(values[2]),                     //C列
+                        eventType = (Event.MyEventType)int.Parse(values[2]),                     //C列
                     };
                     for (int j = 0; j < 3; j++)     //var option in eventData.options
                     {
@@ -213,7 +213,7 @@ public class EventManager : Singleton<EventManager>
                 {
                     libId = tempEvent.libId,
                     eventId = tempEvent.eventId,
-                    type = tempEvent.type,
+                    eventType = tempEvent.eventType,
                     options = tempEvent.options,
                 };
 
