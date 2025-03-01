@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]           //代表下面一个类的数据可以序列化
 public class Event          //
@@ -128,7 +129,7 @@ public class EventOption
         set
         {
             nextId = value;
-            result = new EventResult();
+            result = new EventResult(nextId);
             result.battleEvent = new BattleEvent()
             {
                 id = nextId
@@ -151,19 +152,38 @@ public class EventOption
     [System.Serializable]
     public class EventResult
     {
+
+        //测试用
+        private int nextId;
+        public EventResult(int _nextId)
+        {
+            myAction += Test;
+            nextId = _nextId;
+        }
+
         public string outcome;                  //事件结果
         
 
         //委托中需要更新EventManager中的currentEventId;
-        public Action myAction;                 //选择选项之后的处理
-        public BattleEvent battleEvent;         //接入对应的战斗事件
+        public UnityAction myAction;         //选择选项之后的处理
+       
+        //测试用：
+        public void Test()
+        {
+            EventManager.Instance.currentEventId = nextId;
+            Debug.Log("当前事件id已更新： " + EventManager.Instance.currentEventId);
+        }
 
         public void TriggerBtlEvent()
         {
-            myAction();
+
         }
+        public BattleEvent battleEvent;         //接入对应的战斗事件
+
+
 
     }
+   
 
     public bool LockOrNot(Player player)         //随角色属性变化而动态更新(在角色触发事件(ShowEvent)时调用)  !!!!!
     {

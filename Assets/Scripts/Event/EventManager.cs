@@ -268,20 +268,20 @@ public class EventManager : Singleton<EventManager>
 
     public void DebugTest()             //用于测试事件数据读取
     {
-        foreach(var _event in allEvents)
-        {
-            Event @event = _event.Value;
-            Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.type}");
-            Debug.Log($"事件选项数量：{@event.options.Count}");
-            for (int i = 0; i < 3; i++)
-            {
-                Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
-            }
-            @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
-            Debug.Log("==========================================");
+        // foreach(var _event in allEvents)
+        // {
+        //     Event @event = _event.Value;
+        //     Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.type}");
+        //     Debug.Log($"事件选项数量：{@event.options.Count}");
+        //     for (int i = 0; i < 3; i++)
+        //     {
+        //         Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
+        //     }
+        //     @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
+        //     Debug.Log("==========================================");
 
 
-        }
+        // }
     }
 
 }

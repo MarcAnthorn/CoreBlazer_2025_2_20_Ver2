@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +24,9 @@ public class TestScript : MonoBehaviour
         // btnTest.onClick.AddListener(()=>{
         //     UIManager.Instance.ShowPanel<GameMainPanel>();
         // });
+
         UIManager.Instance.ShowPanel<GameMainPanel>();
+
     }
 
 

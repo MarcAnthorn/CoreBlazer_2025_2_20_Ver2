@@ -24,12 +24,9 @@ public class GameMainPanel : BasePanel
     public Button btnSetting;
     public Button btnQuit;
     public RectTransform rtOptionsContainer;
-    private List<GameObject> optionList; 
+    private List<GameObject> optionList = new List<GameObject>(); 
 
     public Transform rightSection;
-    //用于控制事件描述延迟的浮点：
-    private float textDisplayDelayTime;
-
     //当前的事件对象
     private Event currentEvent;
 
@@ -59,49 +56,17 @@ public class GameMainPanel : BasePanel
     protected override void Awake()
     {
         base.Awake();
+        EventHub.Instance.AddEventListener("UpdateOptions", UpdateOptions);
         EventHub.Instance.AddEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
 
-    //     // 测试用：
-    //     currentEvent = new Event();
-    //     currentEvent.textLib = new Dictionary<int, Event.KaidanText>();
-    //     Event.KaidanText text1 = new Event.KaidanText();
-    //     text1.textId = 1;
-    //     text1.nextId = 2;
-    //     text1.isKwaidan = false;
-    //     text1.text = "盛大的魔术剧院空无一人，一位魔术师穿着满是血污的礼服站在舞台的正中央，舞台上堆满了毛绒玩偶的残肢断臂。";
 
-    //      Event.KaidanText text2 = new Event.KaidanText();
-    //     text2.textId = 2;
-    //     text2.nextId = 3;
-    //     text2.isKwaidan = false;
-    //     text2.text = "他像是蜡像一样一动不动的站着，直到你靠近。";
-
-
-    //      Event.KaidanText text3 = new Event.KaidanText();
-    //     text3.textId = 3;
-    //      text3.nextId = 4;
-    //     text3.isKwaidan = true;
-    //     text3.text = "“亲爱的女士们先生们，盛大的魔术表演即将开始！”";
-
-
-    //      Event.KaidanText text4 = new Event.KaidanText();
-    //     text4.textId = 4;
-    //      text4.nextId = 0;
-    //     text4.isKwaidan = false;
-    //     text4.text = "魔术师的声音仿佛从空中传来，身体则一动不动。测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
-
-    //     currentEvent.textLib.Add(1, text1);
-    //     currentEvent.textLib.Add(2, text2);
-    //     currentEvent.textLib.Add(3, text3);
-    //     currentEvent.textLib.Add(4, text4);
-
-    //     Debug.Log("Generated!");
-        
     }
 
     private void OnDestroy()
     {
+        EventHub.Instance.RemoveEventListener("UpdateOptions", UpdateOptions);
         EventHub.Instance.RemoveEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
+
     }
 
 
@@ -112,19 +77,21 @@ public class GameMainPanel : BasePanel
     //包含：事件cg、事件描述文本、提示谜语、道具列表
     private void UpdateEvent()
     {
+        Debug.Log("事件开始更新");
         //当前事件的获取一定要先于所有更新操作；
         // currentEvent = EventManager.Instance.BroadcastEvent();
 
         // currentEvent = EventManager.Instance.allEvents[1];
         //测试用：
-        // currentEvent = EventManager.Instance.allEvents[1];
+        currentEvent = EventManager.Instance.allEvents[1];
     
         //事件cg加载：
 
 
         //事件描述文本加载：
         //应该先加载事件红字介绍，0.3s之后再加载事件的描述部分；
-        StartCoroutine(DisplayEventTextAndOptions());
+        DislayText();
+
     
         //更新提示谜语：
 
@@ -158,7 +125,7 @@ public class GameMainPanel : BasePanel
         {
             //遍历每一个option数据结构；
             //访问数据结构前，动态创建btnEventOption:
-            EventOptionBtn nowButtonScript = Instantiate<GameObject>(Resources.Load<GameObject>("EventOptionButton"), 
+            EventOptionBtn nowButtonScript = Instantiate<GameObject>(Resources.Load<GameObject>("EventOptionBtn"), 
                 rtOptionsContainer.transform, 
                 false).GetComponent<EventOptionBtn>();
             
@@ -176,18 +143,17 @@ public class GameMainPanel : BasePanel
         }
     }
 
-
-    //用于事件加载 / 延时加载事件描述 / 延时加载选项的协同程序：
-    IEnumerator DisplayEventTextAndOptions()
+    private void DislayText()
     {
         var dic = currentEvent.textLib;
         var text = currentEvent.textLib[1];
+
         while(dic.ContainsKey(text.textId))
         {
             //如果是首行文本（key == 1），清除StringBuilder，不执行换行；
             if(text.isKwaidan && text.textId == 1)
             {
-                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                TextDisplayManager.Instance.BuildText(txtEventDescription, 
                 text.text, 
                 Color.red,
                 true,   //清除StringBuilder
@@ -195,17 +161,17 @@ public class GameMainPanel : BasePanel
             }
             else if(!text.isKwaidan && text.textId == 1)
             {
-                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                TextDisplayManager.Instance.BuildText(txtEventDescription, 
                 text.text, 
                 Color.white,
                 true,
                 false);
             }
-
+ 
             //如果是非首行文本（key != 1），不清除StringBuilder，执行换行；
             else if(text.isKwaidan)
             {
-                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                TextDisplayManager.Instance.BuildText(txtEventDescription, 
                 text.text, 
                 Color.red,
                 false,  
@@ -213,35 +179,31 @@ public class GameMainPanel : BasePanel
             }
             else if(!text.isKwaidan)
             {
-                textDisplayDelayTime = TextDisplayManager.Instance.DisplayText(txtEventDescription, 
+                TextDisplayManager.Instance.BuildText(txtEventDescription, 
                 text.text, 
                 Color.white,
                 false,
                 true);
             }
-
-            //虽然按理说textLib只会存储当前事件的文本，因此读取文本结束就会终止；
-            //但是以防万一，设置一个break条件；
+            
             if(!dic.ContainsKey(text.nextId))
             {
+                //当前文本读取结束，开始调用文本管理器的协同程序，执行文字的逐字显示
+                TextDisplayManager.Instance.DisplayTextInSequence();
                 break;
             }
             else
             {
                 text = dic[text.nextId];
             }
-
-            yield return new WaitForSeconds(textDisplayDelayTime);
         }
-
-        UpdateOptions();
-    }
+    }   
 
 
     //选项触发后，需要更新当前事件的描述
     private void UpdateDescriptionAfterOption(string _text)
     {
-        TextDisplayManager.Instance.DisplayText(txtEventDescription, _text, Color.white);
+        // TextDisplayManager.Instance.BuildText(txtEventDescription, _text, Color.white);
     }
    
 }

@@ -10,12 +10,20 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
 {
     //当前文本的单个字之间的显示间隔用时
    private float textDisplayIntervalTime = 0.3f;
-   private float intervalTimeExtra= 0.8f;
+
    private StringBuilder sb = new StringBuilder();
-   private StringBuilder sbBackup = new StringBuilder();
+   private StringBuilder sbForImmediate = new StringBuilder();
+   private StringBuilder sbForSequencial = new StringBuilder();
+
+   //当前文本的颜色列表，在文本第一行和换行的时候，会依赖它进行颜色更换；
+   private List<Color> listColor = new List<Color>();
+
+   //布尔成员：当前文本的第一行需要单独判断上色；
+   //如果当前是文本的第一行，那么isFirstColored就是false；如果不是，那就一定已经是true了；
+   private bool isFirstColored = false;
+   private Color currentColor;
    private TextMeshProUGUI tmp;
    private string text;   
-   private Color color;
    private bool isNewLine;
    private Coroutine currentCoroutine;
 
@@ -28,76 +36,91 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
     /// <param name="_tmp">文本依赖的tmp组件</param>
     /// <param name="_text">文本显示内容</param>
     /// <param name="_color">自定义文本显示颜色</param>
-    /// <param name="_isClearText">是否清除上一次StringBuilder中的文本，默认是true；如果是false，StringBuilder不会清空</param>
+    /// <param name="_isClear">是否清除上一次文本的所有残余，默认是true；如果要确保文本全新，需要是true</param>
     /// <param name="_isNewLine">文本是否从上一段文本换行，默认不换行；</param>
-    /// <param name="_intervalTime">文本字符显示间隔时间，默认0.02s</param>
     ///  <returns>显示当前文本需要的时间；如果外部有需要等待文本显示结束再进行的操作，可以获取该浮点型</returns>
-    public float DisplayText(TextMeshProUGUI _tmp, string _text, Color _color, bool _isClearText = true, bool _isNewLine = false, float _intervalTime = 0.02f)
+    public void BuildText(TextMeshProUGUI _tmp, string _text, Color _color, bool _isClear = true, bool _isNewLine = false)
     {
         if(tmp != _tmp)
         {
             tmp = _tmp;
         }
-        if(_isClearText)
+        if(_isClear)
         {   
-            //判断：如果是清除上一次StringBuilder中的文本，那么重新进行字符的添加
-            //如果不清空，那么直接跳过这一步，组件不会变化
+            //判断：如果当前判断需要进行上次文本的清空，首先清除的是两个StringBuilder：
             sb.Clear();
-            sbBackup.Clear();
+            sbForSequencial.Clear();
+            sbForImmediate.Clear();
+
+            //然后就是颜色相关：
+            listColor.Clear();
+            //isFirstColored也需要重制：
+            isFirstColored = false;
         }
 
-        text = _text;
-        color = _color;
         isNewLine = _isNewLine;
-        textDisplayIntervalTime = _intervalTime;
-    
+        listColor.Add(_color);
 
         if(isNewLine)
         {
-            sbBackup.Append('\n');
+            sb.Append('\n');
+            sbForImmediate.Append('\n');
         }
+              
+        sb.Append(_text);
+        sbForImmediate.AppendFormat("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>", 
+                (int)(_color.r * 255), (int)(_color.g * 255), (int)(_color.b * 255), _text);
+    }
 
-                    
-        sbBackup.AppendFormat("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>", 
-                (int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255), text);
+    public void DisplayTextInSequence(float _intervalTime = 0.02f)
+    {
+        textDisplayIntervalTime = _intervalTime;
+        text = sb.ToString();
         currentCoroutine = StartCoroutine(DisplayTextSequentially());
 
-        //此处因为字符显示的时间间隔是0.02，也就是说如果文本量比较少，那么返回出去的等待时间就少；
-        //而协同程序的精度只有0.1s左右；因此如果等待时间过短，就会出现协同程序的冲突；
-        //解决方案：加一个基础时间给等待时间，确保文本显示完毕：并且延长字符显示的时间间隔；
-        return _text.Length * textDisplayIntervalTime + intervalTimeExtra;
     }
+
+
 
     //如果有需要立刻显示当前文本的需求，提供一个立刻停止当前的协同程序，显示当前所有文本的方法：
     public void DisplayTextImmediately()
     {
         StopCoroutine(currentCoroutine);
-        tmp.text = sbBackup.ToString();
+        tmp.text = sbForImmediate.ToString();
+        EventHub.Instance.EventTrigger("UpdateOptions");
     }
 
     //用于清空当前StringBuilder的方法：
     public void ClearStringBuilder()
     {
         sb.Clear();
-        sbBackup.Clear();
+        sbForSequencial.Clear();
+        sbForImmediate.Clear();
     }
 
 
    //用于延迟单个字体输出的协同程序：
     IEnumerator DisplayTextSequentially()
     {      
-        if(isNewLine)
-        {
-            sb.Append('\n');
-        }
-
+        int colorIndex = 0;
         foreach(var ch in text)
         {
-            sb.AppendFormat("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>", 
-                (int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255), ch);
-            tmp.text = sb.ToString();
+            // sbForSequencial.AppendFormat("<_color=#{0:X2}{1:X2}{2:X2}>{3}</_color>", 
+            //     (int)(_color.r * 255), (int)(_color.g * 255), (int)(_color.b * 255), ch);
+            if(!isFirstColored || ch == '\n')
+            {
+                currentColor = listColor[colorIndex++];
+                isFirstColored = true;
+            }
+            sbForSequencial.AppendFormat("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>", 
+                (int)(currentColor.r * 255), (int)(currentColor.g * 255), (int)(currentColor.b * 255), ch);
+
+            tmp.text = sbForSequencial.ToString();
             yield return new WaitForSeconds(textDisplayIntervalTime);
         }
+
+        //循环结果之后，更新选项：
+        EventHub.Instance.EventTrigger("UpdateOptions");
 
     }
 }

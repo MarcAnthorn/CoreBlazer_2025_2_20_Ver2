@@ -9,8 +9,8 @@ using UnityEngine.UI;
 
 public class EventOptionBtn : MonoBehaviour
 {
-    private TextMeshProUGUI txtAttributeRequirement;
-    private TextMeshProUGUI txtOptionDescription;
+    public TextMeshProUGUI txtAttributeRequirement;
+    public TextMeshProUGUI txtOptionDescription;
     private Button btnSelf;
 
     public UnityAction<string> setRequirementAction;
@@ -28,8 +28,6 @@ public class EventOptionBtn : MonoBehaviour
 
     void Awake()
     {
-        txtAttributeRequirement = this.GetComponentInChildren<TextMeshProUGUI>();
-        txtOptionDescription = this.GetComponentInChildren<TextMeshProUGUI>();
         btnSelf = this.GetComponent<Button>();
 
         //设置选项要求文本、描述文本、是否可交互文本、当前脚本持有的EventOption实例的委托；
@@ -72,6 +70,10 @@ public class EventOptionBtn : MonoBehaviour
     private void SetInteractable(bool isInteractable)
     {
         btnSelf.interactable = isInteractable;
+
+        //测试用修改：将选项全部设置为可交互
+        // btnSelf.interactable = true;
+        
 
         //如果不可交互，还需要额外的内容，如贴上不可交互的贴图等：
         if(!isInteractable)
