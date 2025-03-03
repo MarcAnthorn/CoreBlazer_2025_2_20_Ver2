@@ -10,7 +10,7 @@ public class Event          //
 {
     public int libId;                           //事件库Id(依不同关卡来选)   ************************
     public int eventId;                         //事件Id(对应一个事件文本库)
-    public MyEventType type;                    //事件类型(?如：弹窗事件/战斗事件/直接事件(如：陷阱)?)
+    public MyEventType eventType;               //事件类型(主线事件/怪谈事件)
     public List<EventOption> options;           //事件选项
     public Dictionary<int, KaidanText> textLib; //事件文本库，前面的int类型是文本的Id标识，文本库作用：按需取文本
     public string evDescription;                //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
@@ -23,6 +23,11 @@ public class Event          //
     {
         options = new List<EventOption>();
         textLib = new Dictionary<int, KaidanText>();
+    }
+    ~Event()
+    {
+        options.Clear();
+        textLib = null;
     }
 
     public enum MyEventType
@@ -143,12 +148,6 @@ public class EventOption
 
     public EventResult result;
 
-    //触发事件的标准     !!!!!
-    //public int minSAN = -1, maxSAN = -1;
-    //public int minSTR = -1, maxSTR = -1;
-    //public int minSPD = -1, maxSPD = -1;
-
-
     [System.Serializable]
     public class EventResult
     {
@@ -187,12 +186,13 @@ public class EventOption
 
     public bool LockOrNot(Player player)         //随角色属性变化而动态更新(在角色触发事件(ShowEvent)时调用)  !!!!!
     {
-        int SAN = player.SAN;       //角色当前精神值
-        int STR = player.STR;       //角色当前力量
-        int SPD = player.SPD;       //角色当前速度
-        if (optionId == 1 && minCondition < SAN && maxCondition > SAN ||
-            optionId == 2 && minCondition < STR && maxCondition > STR ||
-            optionId == 3 && minCondition < SPD && maxCondition > SPD)
+        float SAN = player.SAN.value;       //角色当前精神值
+        float STR = player.STR.value;       //角色当前力量
+        float SPD = player.SPD.value;       //角色当前速度
+        if (((optionId == 1 && minCondition < SAN && maxCondition > SAN  ||
+              optionId == 2 && minCondition < STR && maxCondition > STR  ||
+              optionId == 3 && minCondition < SPD && maxCondition > SPD) &&
+              itemId == 0) || (itemId != 0 && player.bag.ContainsKey(itemId)))
         {
             isSeletable = true;             //符合条件
             return true;
