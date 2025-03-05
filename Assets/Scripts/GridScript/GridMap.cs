@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GridMap<T>
+public class GridMap<T> where T : MonoBehaviour
 {
     private int width;
     private int height;
@@ -14,7 +14,7 @@ public class GridMap<T>
     private float cellSize;
     //存储cell的二维数组：
     private T[,] grid;
-    //使用一个TextMeshPro数组，存储所有位置的TMP组件：
+    //使用一个TextMeshPro数组，存储所有位置的TM P组件：
     private TextMeshPro[,] tmpGrid;
     //offset实际上就是我们grid的原点位置；
     private Vector3 offset;
@@ -33,13 +33,12 @@ public class GridMap<T>
         height = _height;
         cellSize = _cellSize;
         offset= _offset;
-        grid = new T[width, height];
-        tmpGrid = new TextMeshPro[width, height];
-
+        grid = new T[height, width];
+        tmpGrid = new TextMeshPro[height, width];
         //初始化cell的数据；
-        for(int i = 0; i < width; i++)
+        for(int i = 0; i < height; i++)
         {
-            for(int j = 0; j < height; j++)
+            for(int j = 0; j < width; j++)
             {
                 //问题来了，传入的类型都不知到会是什么，我们怎么知道应该初始化什么？
                 //值类型还好说，可以用default；但是引用类型需要实例化，不能是null；
@@ -53,23 +52,16 @@ public class GridMap<T>
         }
 
 
-        //遍历二维数组，初始化每一个cell的信息；
-        for(int i = 0; i < width; i++)
+        //测试：遍历二维数组，输出每一个cell的坐标信息：
+        for(int i = 0; i < height; i++)
         {
-            for(int j = 0; j < height; j++)
+            for(int j = 0; j < width; j++)
             {
-                //此处初始化cell的信息
-
-                //使用画线功能，将grid可视化：
-                //水平方向：
-                Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i, j + 1), Color.white, 100f);
-                //垂直方向：
-                Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.white, 100f);
+                int x, y;
+                GetGridIndex(GetWorldPosition(i ,j), out x, out y);
+                Debug.Log($"x : {x}, y : {y}");
             }
-            //将边缘的区域也画上线，封闭我们的grid：
-            Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height),  Color.white, 100f);
-            Debug.DrawLine(GetWorldPosition(height, 0), GetWorldPosition(height, width),  Color.white, 100f);
-
+           
         }
     }
 
@@ -79,7 +71,7 @@ public class GridMap<T>
     {
         int x, y;
         GetGridIndex(worldPosition, out x, out y);
-        if(x >= 0 && x < width && y >= 0 && y < height)
+        if(x >= 0 && x < height && y >= 0 && y < width)
         {
             //坐标合法，进行值的设置：
             grid[x, y] = value;
@@ -94,7 +86,7 @@ public class GridMap<T>
     {
         int x, y;
         GetGridIndex(worldPosition, out x, out y);
-        if(x >= 0 && x < width && y >= 0 && y < height)
+        if(x >= 0 && x < height && y >= 0 && y < width)
         {
             //为了让改变的值显示，我们同步调整对应的TMP数组；
             //使用回调将当前需要调整的文本对象传递出去，让外界去自定设置文本显示；
@@ -107,7 +99,7 @@ public class GridMap<T>
     //该重载是传入cell的下标，进行调整：
     public void SetValueOfCellObject(int x, int y, Action<T> setValueAction)
     {
-        if(x >= 0 && x < width && y >= 0 && y < height)
+        if(x >= 0 && x < height && y >= 0 && y < width)
         {
             //为了让改变的值显示，我们同步调整对应的TMP数组；
             //使用回调将当前需要调整的文本对象传递出去，让外界去自定设置文本显示；
@@ -120,7 +112,7 @@ public class GridMap<T>
     {
         int x, y;
         GetGridIndex(worldPosition, out x, out y);
-        if(x >= 0 && x < width && y >=0 && y < height)
+        if(x >= 0 && x < height && y >= 0 && y < width)
         {
             //坐标合法，返回对应值：
             return grid[x, y];
@@ -134,7 +126,7 @@ public class GridMap<T>
     //该重载是传入cell的下标，返回实例：
     public T GetObjectOfCell(int x, int y)
     {
-        if(x >= 0 && x < width && y >=0 && y < height)
+        if(x >= 0 && x < height && y >= 0 && y < width)
         {
             //坐标合法，返回对应值：
             return grid[x, y];
@@ -145,17 +137,41 @@ public class GridMap<T>
     }
 
     //一个获取世界坐标系的方法：传入当前cell坐标，返回Vector3；
+    //注意：因为Unity中的x', y'（传入Vector3中的）和我们此处的二维数组的x y（访问grid）并不一样；
+    //因此需要进行坐标上的转换，即x' = y; y' = -x;
     private Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x, y) * cellSize + offset;
+        //             x' = y; y' = -x;
+        return new Vector3(y, -x) * cellSize + offset;
     }
 
     //一个根据世界坐标系推出grid中的对应的x、y值的方法：
     //使用out关键字返回出x、y结果：
+
     private void GetGridIndex(Vector3 worldPosition, out int x, out int y)
     {
-        x = Mathf.FloorToInt((worldPosition.x - offset.x) / cellSize);
-        y = Mathf.FloorToInt((worldPosition.y - offset.y) / cellSize);
+        //转换的规则本质同样也是Unity <-> grid之间的xy的规则；
+        x = -Mathf.FloorToInt((worldPosition.y - offset.y) / cellSize);
+        y = Mathf.FloorToInt((worldPosition.x - offset.x) / cellSize);
     }
 
+    // private TextMeshPro CreateWorldText(string text, Transform parent, Vector3 localPosition, Color color, int fontSize = 4, int sortingOrder = 1)
+    // {
+    //     //创建带有TMP组建的GameObject
+    //     GameObject gameObject = new GameObject("WorldText", typeof(TextMeshPro));
+    //     Transform transform = gameObject.transform;
+    //     transform.SetParent(parent, false);
+    //     transform.localPosition = localPosition;
+    //     TextMeshPro tmp = gameObject.GetComponent<TextMeshPro>();
+    //     //设置字体文本、颜色、大小、对齐方式和显示层级；
+    //     tmp.text = text;
+    //     tmp.color = color;
+    //     tmp.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+    //     tmp.fontSize = fontSize;
+    //     tmp.alignment = TextAlignmentOptions.Center;
+    //     tmp.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
+    //     return tmp;
+    // }
+
 }
+
