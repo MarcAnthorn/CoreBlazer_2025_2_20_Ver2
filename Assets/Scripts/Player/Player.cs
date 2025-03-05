@@ -60,11 +60,23 @@ public class Player               //存储角色信息等
 
     public Player()
     {
+        HP = new playerAttribute();
+        STR = new playerAttribute();
+        DEF = new playerAttribute();
+        LVL = new playerAttribute();
+        SAN = new playerAttribute();
+        SPD = new playerAttribute();
+
         bag = new Dictionary<int, Item>();
     }
     ~Player()
     {
         bag = null;
+    }
+
+    public void GameOver()
+    {
+
     }
 
 }

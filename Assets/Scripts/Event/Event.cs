@@ -11,6 +11,10 @@ public class Event          //
     public int libId;                           //事件库Id(依不同关卡来选)   ************************
     public int eventId;                         //事件Id(对应一个事件文本库)
     public MyEventType eventType;               //事件类型(主线事件/怪谈事件)
+    public int changeId;                        //事件结果(影响的属性Id)
+    public float change;                        //结果影响(加值)
+    public int grade;                           //事件分级
+
     public List<EventOption> options;           //事件选项
     public Dictionary<int, KaidanText> textLib; //事件文本库，前面的int类型是文本的Id标识，文本库作用：按需取文本
     public string evDescription;                //事件描述(装载事件文本库中的事件，作用：装载实际显示的文本)
@@ -151,7 +155,8 @@ public class EventOption
     [System.Serializable]
     public class EventResult
     {
-
+        public int changeId;
+        public float change;
         //测试用
         private int nextId;
         public EventResult(int _nextId)

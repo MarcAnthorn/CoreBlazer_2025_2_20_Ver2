@@ -56,18 +56,21 @@ public class EventManager : Singleton<EventManager>
                     {
                         libId = int.Parse(values[0]),                                       //A列
                         eventId = int.Parse(values[1]),                                     //B列
-                        eventType = (Event.MyEventType)int.Parse(values[2]),                     //C列
+                        eventType = (Event.MyEventType)int.Parse(values[2]),                //C列
+                        changeId = int.Parse(values[3]),                                    //D列
+                        change = float.Parse(values[4]),                                    //E列
+                        grade = int.Parse(values[5])                                        //F列
                     };
                     for (int j = 0; j < 3; j++)     //var option in eventData.options
                     {
                         EventOption option = new EventOption();
                         option.optionId = j;
-                        option.conditionId = int.Parse(values[3 + j * 6]);                 //D列
-                        option.minCondition = int.Parse(values[4 + j * 6]);                //E列
-                        option.maxCondition = int.Parse(values[5 + j * 6]);                //F列
-                        option.itemId = int.Parse(values[6 + j * 6]);                      //G列
-                        option.OpDescription = values[7 + j * 6];                          //H列
-                        option.NextId = int.Parse(values[8 + j * 6]);                      //I列
+                        option.conditionId = int.Parse(values[6 + j * 6]);                  //G列
+                        option.minCondition = int.Parse(values[7 + j * 6]);                 //H列
+                        option.maxCondition = int.Parse(values[8 + j * 6]);                 //I列
+                        option.itemId = int.Parse(values[9 + j * 6]);                       //J列
+                        option.OpDescription = values[10 + j * 6];                          //K列
+                        option.NextId = int.Parse(values[11 + j * 6]);                      //L列
                         eventData.options.Add(option);
                     }
 
