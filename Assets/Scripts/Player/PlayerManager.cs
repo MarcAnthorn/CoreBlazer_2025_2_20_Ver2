@@ -18,17 +18,18 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     }
 
     //使用只读属性暴露玩家数值
-    public int Health => player.HP;
+    //报错，暂时先调整：（Marc调整）
+    public float Health => player.HP.value;
 
-    public int Strength => player.STR;
+    public float Strength => player.STR.value;
 
-    public int Defence => player.DEF;
-    public int Level => player.LVL;
-    public int Sanity => player.SAN;
+    public float Defence => player.DEF.value;
+    public float Level => player.LVL.value;
+    public float Sanity => player.SAN.value;
 
-    public int Speed => player.SPD;
+    public float Speed => player.SPD.value;
 
-    //暂未定义玩家灯火值
+    // 暂未定义玩家灯火值
     // public int Light => player.LIT;
 
 
@@ -38,12 +39,13 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         //PlayerManager 管理的全局唯一Player实例
         player = new Player()
         {
-            HP = 100,
-            STR = 10,
-            DEF = 5,
-            LVL = 100,
-            SAN = 0,
-            SPD = 10    //测试用速度数值
+            //报错，暂时先注释：（Marc调整）
+            // HP = 100,
+            // STR = 10,
+            // DEF = 5,
+            // LVL = 100,
+            // SAN = 0,
+            // SPD = 10    //测试用速度数值
         };
     }
 

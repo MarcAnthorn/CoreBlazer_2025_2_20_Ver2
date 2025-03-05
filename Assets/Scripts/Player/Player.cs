@@ -69,10 +69,12 @@ public class Player               //存储角色信息等
 
         bag = new Dictionary<int, Item>();
     }
-    ~Player()
-    {
-        bag = null;
-    }
+
+    //这是啥？析构函数吗（Marc疑问）
+    // ~Player()
+    // {
+    //     bag = null;
+    // }
 
     public void GameOver()
     {
