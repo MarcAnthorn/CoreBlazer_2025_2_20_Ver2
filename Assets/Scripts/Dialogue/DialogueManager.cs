@@ -32,12 +32,12 @@ public class DialogueManager : Singleton<DialogueManager>
         {
             string[] lines = File.ReadAllLines(path);       //分割每一行存入lines
 
-            for (int i = 3; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
+            for (int i = 1; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
 
-                if(int.Parse(values[0]) == libIndex && values.Length >= 4 && int.Parse(values[2]) == 1)
+                if (int.Parse(values[0]) == libIndex && values.Length >= 4 && int.Parse(values[2]) == 1)
                 {
                     Dialogue dialogue = new Dialogue();
                     dialogue.eventId = int.Parse(values[0]);
@@ -49,8 +49,13 @@ public class DialogueManager : Singleton<DialogueManager>
 
                     dialogueDictionary.Add(dialogue.textId, dialogue);
                 }
+                else if (values.Length <= 4)
+                {
+                    break;
+                }
 
             }
+
         }
         else
         {
