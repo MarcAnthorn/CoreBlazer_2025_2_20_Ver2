@@ -49,12 +49,12 @@ public struct playerAttribute           //角色属性（在读取角色信息�
 
 public class Player               //存储角色信息等
 {
-    public playerAttribute HP;          //生命    Health point
-    public playerAttribute STR;         //力量    Strength
-    public playerAttribute DEF;         //防御    Defense
-    public playerAttribute LVL;         //灯光值  Light Value
-    public playerAttribute SAN;         //SAN值   Sanity
-    public playerAttribute SPD;         //速度    Speed
+    public playerAttribute HP;          //生命    Health point    id = 1
+    public playerAttribute STR;         //力量    Strength        id = 2  
+    public playerAttribute DEF;         //防御    Defense         id = 3 
+    public playerAttribute LVL;         //灯光值  Light Value     id = 4  
+    public playerAttribute SAN;         //SAN值   Sanity          id = 5 
+    public playerAttribute SPD;         //速度    Speed           id = 6 
 
     public Dictionary<int, Item> bag;
 
