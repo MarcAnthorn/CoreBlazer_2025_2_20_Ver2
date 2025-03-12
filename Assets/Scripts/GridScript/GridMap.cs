@@ -27,6 +27,8 @@ public class GridMap<T> where T : MonoBehaviour
     /// <param name="_cellSize">每一个网格的大小</param>
     /// <param name="_offset">当前Grid的偏移量（默认为0）</param>
     /// <param name="initialCellObject">传入的委托参数，用于传递给外界内部的信息</param>
+    
+    
     public GridMap(int _width, int _height, float _cellSize, Vector3 _offset, Func<GridMap<T>, int, int, T> initialCellObject = null)
     {
         width = _width;

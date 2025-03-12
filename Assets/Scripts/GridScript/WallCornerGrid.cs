@@ -14,8 +14,6 @@ public class WallCornerGrid : MonoBehaviour
     private Vector3 originalPoint;
     //当前地块的中心点
     private Vector3 centerPoint;
-    //当前地块需要偏移的量：(留出间距给扁墙)
-    private Vector3 offset; 
     private float cellSize;
 
     //wallSizeMutiplier * cellSize == 墙体地块的宽度（较短边的长度 wallSize）

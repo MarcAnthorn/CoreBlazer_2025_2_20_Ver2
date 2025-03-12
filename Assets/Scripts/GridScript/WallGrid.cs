@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallGrid : MonoBehaviour
 {
-   //这个是在自己的GridMap当中的坐标，和策划表中的坐标不同；
+    //这个是在自己的GridMap当中的坐标，和策划表中的坐标不同；
     //坐标位置是：matrix[xMap][yMap]
     public int xMap;
     public int yMap;
