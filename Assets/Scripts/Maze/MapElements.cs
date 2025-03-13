@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +28,7 @@ public abstract class MapElement
         return posY;
     }
 
-    protected void SetId(int id)     //¶Á±íÊ±²»Ê¹ÓÃ£¬ÔÚÖ®ºóµÄ³õÊ¼»¯µØÍ¼Ê±Ê¹ÓÃ
+    protected void SetId(int id)     //è¯»è¡¨æ—¶ä¸ä½¿ç”¨ï¼Œåœ¨ä¹‹åçš„åˆå§‹åŒ–åœ°å›¾æ—¶ä½¿ç”¨
     {
         this.elementId = id;
     }

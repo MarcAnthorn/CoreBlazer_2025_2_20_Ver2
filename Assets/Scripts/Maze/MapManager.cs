@@ -1,10 +1,13 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapManager : Singleton<MapManager>
 {
+    public Dictionary<int, Map> Maps = new Dictionary<int, Map>();
+
     public int[,] map1Index;
     public MapElement[,] map1;
 
@@ -21,12 +24,20 @@ public class MapManager : Singleton<MapManager>
         
     }
 
+    public Map this[int key]            //ç´¢å¼•å™¨
+    {
+        get
+        {
+            return this.Maps[key];
+        }
+    }
+
     private void LoadMapElements(int mapId)
     {
         map1Index = new int[40, 40];
-        for (int i = 0; i < 100; i++)                           //¼ÙÉèµØÍ¼´óĞ¡ÉÏÏŞÎª100
+        for (int i = 0; i < MapManager.Instance[mapId].width; i++)              //æ ¹æ®åœ°å›¾é•¿å®½æ¥è¿›è¡Œæ‰“å°
         {
-            for (int j = 0; map1Index[i, j] != -1; j++)         //³õÊ¼»¯µØÍ¼ÉÏËùÓĞµÄµØ¿éId
+            for (int j = 0; i < MapManager.Instance[mapId].length; j++)         //åˆå§‹åŒ–åœ°å›¾ä¸Šæ‰€æœ‰çš„åœ°å—Id
             {
                 map1Index[i, j] = -1;
             }
@@ -34,21 +45,22 @@ public class MapManager : Singleton<MapManager>
         string path = null;
         if (mapId >= 1 && mapId <= 3)
         {
-            path = Path.Combine(Application.dataPath, $"Resources/MapDatas/Map{mapId}.csv");
+            path = Path.Combine(Application.dataPath, $"Resources/MapDatas/Map{mapId}.csv");    //å‘½åè§„èŒƒï¼ï¼ï¼
         }
         else
         {
-            Debug.LogError($"²»´æÔÚIdÎª {mapId} µÄµØÍ¼");
+            Debug.LogError($"ä¸å­˜åœ¨Idä¸º {mapId} çš„åœ°å›¾");
+            return;
         }
 
         if (File.Exists(path))
         {
-            string[] lines = File.ReadAllLines(path);       //·Ö¸îÃ¿Ò»ĞĞ´æÈëlines
+            string[] lines = File.ReadAllLines(path);       //åˆ†å‰²æ¯ä¸€è¡Œå­˜å…¥lines
 
-            for (int i = 0; i < lines.Length; i++)          //´ÓµÚËÄĞĞ¿ªÊ¼±éÀúÃ¿Ò»ĞĞ£¬»ñµÃ¸÷ÁĞµÄĞÅÏ¢
+            for (int i = 0; i < lines.Length; i++)          //ä»ç¬¬å››è¡Œå¼€å§‹éå†æ¯ä¸€è¡Œï¼Œè·å¾—å„åˆ—çš„ä¿¡æ¯
             {
                 string line = lines[i];
-                string[] values = line.Split(',');          //½«Ã¿Ò»ÁĞ°´ÕÕ¶ººÅ·Ö¸î
+                string[] values = line.Split(',');          //å°†æ¯ä¸€åˆ—æŒ‰ç…§é€—å·åˆ†å‰²
 
                 if (int.Parse(values[0]) == mapId && values.Length >= 4 && int.Parse(values[2]) == 1)
                 {
@@ -66,13 +78,13 @@ public class MapManager : Singleton<MapManager>
                         {
 
                         }
-                        else
-                        {
-                            Debug.LogError($"µØÍ¼IdÎª {mapId} µÄµØÍ¼²»´æÔÚ");
-                        }
+                        //else
+                        //{
+                        //    Debug.LogError($"åœ°å›¾Idä¸º {mapId} çš„åœ°å›¾ä¸å­˜åœ¨");
+                        //}
                     }
                 }
-                else if (values.Length <= 4)    //Óöµ½¿ÕĞĞÖ÷¶¯ÍË³ö
+                else if (values.Length <= 4)    //é‡åˆ°ç©ºè¡Œä¸»åŠ¨é€€å‡º
                 {
                     break;
                 }
@@ -81,16 +93,16 @@ public class MapManager : Singleton<MapManager>
         }
         else
         {
-            Debug.LogError($"ÕÒ²»µ½IdÎª {mapId} µÄµØÍ¼");
+            Debug.LogError($"æ‰¾ä¸åˆ°Idä¸º {mapId} çš„åœ°å›¾");          //è¡¨ç¤ºæ²¡æœ‰åœ¨è·¯å¾„ä¸­æ‰¾åˆ°è¯¥æ–‡ä»¶
         }
     }
 
-    public void InitMap1Elements(int mapId)                     //ÏÈÉè¶¨Ò»¸öµØÍ¼£¬Ö®ºóÔÙÏë°ì·¨ÍØÕ¹
+    public void InitMap1Elements(int mapId)                     //å…ˆè®¾å®šä¸€ä¸ªåœ°å›¾ï¼Œä¹‹åå†æƒ³åŠæ³•æ‹“å±•
     {
         map1 = new MapElement[40, 40];
-        for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> ĞĞÊı
+        for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> è¡Œæ•°
         {
-            for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> ÁĞÊı
+            for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> åˆ—æ•°
             {
                 map1[i, j] = CreateMapElement(map1Index[i, j]);
             }
@@ -113,7 +125,7 @@ public class MapManager : Singleton<MapManager>
                 element = new Ground();
                 return element;
             default:
-                Debug.LogError($"ÕÒ²»µ½IdÎª {elementId} µÄ½¨ÖşÀàĞÍ£¬·µ»Ønull");
+                Debug.LogError($"æ‰¾ä¸åˆ°Idä¸º {elementId} çš„å»ºç­‘ç±»å‹ï¼Œè¿”å›null");
                 return null;
         }
 
