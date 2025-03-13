@@ -15,8 +15,10 @@ public class MapManager : Singleton<MapManager>
     {
         base.Awake();
 
-        LoadMapElements(1);
-        InitMap1Elements(1);
+        //LoadMapElements(1);
+        //InitMap1Elements(1);
+        AddMap(1);
+        TestMapLoading();
     }
 
     void Update()
@@ -32,12 +34,22 @@ public class MapManager : Singleton<MapManager>
         }
     }
 
+    public void AddMap(int mapId)                   //!!先设定一个地图，之后再想办法拓展!!
+    {
+        Map map1 = new Map()
+        {
+            row = 41,
+            colume = 41
+        };
+        Maps.Add(mapId, map1);
+    }
+
     private void LoadMapElements(int mapId)
     {
-        map1Index = new int[40, 40];
-        for (int i = 0; i < MapManager.Instance[mapId].width; i++)              //根据地图长宽来进行打印
+        map1Index = new int[41, 41];
+        for (int i = 0; i < MapManager.Instance[mapId].row; i++)              //根据地图长宽来进行打印
         {
-            for (int j = 0; i < MapManager.Instance[mapId].length; j++)         //初始化地图上所有的地块Id
+            for (int j = 0; j < MapManager.Instance[mapId].colume; j++)         //初始化地图上所有的地块Id
             {
                 map1Index[i, j] = -1;
             }
@@ -62,9 +74,9 @@ public class MapManager : Singleton<MapManager>
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
 
-                if (int.Parse(values[0]) == mapId && values.Length >= 4 && int.Parse(values[2]) == 1)
+                if (values.Length >= 4)
                 {
-                    for (int j = 0; values[j] != null; j++)
+                    for (int j = 0; j < MapManager.Instance[mapId].colume; j++)
                     {
                         if (mapId == 1)
                         {
@@ -97,7 +109,7 @@ public class MapManager : Singleton<MapManager>
         }
     }
 
-    public void InitMap1Elements(int mapId)                     //先设定一个地图，之后再想办法拓展
+    public void InitMap1Elements(int mapId)                     //!!先设定一个地图，之后再想办法拓展!!
     {
         map1 = new MapElement[40, 40];
         for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> 行数
@@ -129,6 +141,19 @@ public class MapManager : Singleton<MapManager>
                 return null;
         }
 
+    }
+
+    public void TestMapLoading()
+    {
+        LoadMapElements(1);
+        //InitMap1Elements(1);
+        for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> 行数
+        {
+            for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> 列数
+            {
+                Debug.Log($"【{i},{j}】==> value: {map1Index[i, j]}");
+            }
+        }
     }
 
 }

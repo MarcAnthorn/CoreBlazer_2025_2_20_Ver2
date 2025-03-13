@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Map
 {
-    public int length;      //地图横向长度
-    public int width;       //地图纵向宽度
+    public int row;             //行数
+    public int colume;          //列数
 }
