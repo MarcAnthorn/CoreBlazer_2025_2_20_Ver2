@@ -38,15 +38,15 @@ public class MapManager : Singleton<MapManager>
     {
         Map map1 = new Map()
         {
-            row = 41,
-            colume = 41
+            row = 40,
+            colume = 40
         };
         Maps.Add(mapId, map1);
     }
 
     private void LoadMapElements(int mapId)
     {
-        map1Index = new int[41, 41];
+        map1Index = new int[40, 40];
         for (int i = 0; i < MapManager.Instance[mapId].row; i++)              //根据地图长宽来进行打印
         {
             for (int j = 0; j < MapManager.Instance[mapId].colume; j++)         //初始化地图上所有的地块Id
@@ -58,6 +58,7 @@ public class MapManager : Singleton<MapManager>
         if (mapId >= 1 && mapId <= 3)
         {
             path = Path.Combine(Application.dataPath, $"Resources/MapDatas/Map{mapId}.csv");    //命名规范！！！
+
         }
         else
         {
@@ -127,13 +128,13 @@ public class MapManager : Singleton<MapManager>
         MapElement element = null;
         switch (elementId)
         {
-            case 1:
+            case 10009:
                 element = new Wall();
                 return element;
             case 2:
-                element = new LightTower();
+                element =new Ground(true);
                 return element;
-            case 3:
+            case 10001:
                 element = new Ground();
                 return element;
             default:
@@ -146,7 +147,7 @@ public class MapManager : Singleton<MapManager>
     public void TestMapLoading()
     {
         LoadMapElements(1);
-        //InitMap1Elements(1);
+        InitMap1Elements(1);
         for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> 行数
         {
             for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> 列数

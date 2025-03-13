@@ -47,19 +47,21 @@ public class Wall : MapElement
     }
 
 }
-public class LightTower : MapElement
-{
-    public LightTower() : base()
-    {
-        SetId(2);
-    }
+// public class LightTower : MapElement
+// {
+//     public LightTower() : base()
+//     {
+//         SetId(2);
+//     }
 
-}
+// }
 public class Ground : MapElement
 {
-    public Ground() : base()
+    public bool isLightHouse = false;
+    public Ground(bool _isLightHouse = false) : base()
     {
         SetId(3);
+        isLightHouse = _isLightHouse;
     }
 
 }

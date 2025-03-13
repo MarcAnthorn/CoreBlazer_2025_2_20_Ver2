@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PathGrid : MonoBehaviour
 {
@@ -35,9 +36,11 @@ public class PathGrid : MonoBehaviour
     private float intervalDistanceMutiplier = 0.25f;
     private float intervalDistance;
 
+    public bool isLightHouse = false;
+
 
     Vector3 centerPosition;
-    public void Init(GridMap<PathGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize)
+    public void Init(GridMap<PathGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize, bool _isLightHouse = false)
     {
         myMap = _map;
         xMap = _xMap;
@@ -45,6 +48,7 @@ public class PathGrid : MonoBehaviour
         originalPoint = _originalPoint;
         cellSize = _cellSize;
         intervalDistance = intervalDistanceMutiplier * _cellSize;
+        isLightHouse = _isLightHouse;
     }
 
 
