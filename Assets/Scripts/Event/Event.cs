@@ -11,8 +11,6 @@ public class Event          //
     public int libId;                           //事件库Id(依不同关卡来选)   ************************
     public int eventId;                         //事件Id(对应一个事件文本库)
     public MyEventType eventType;               //事件类型(主线事件/怪谈事件)
-    public int changeId;                        //事件结果(影响的属性Id)
-    public float change;                        //结果影响(加值)
     public int grade;                           //事件分级
 
     public List<EventOption> options;           //事件选项
@@ -23,10 +21,14 @@ public class Event          //
     public bool isTrigger;                      //是否触发过(对于弹窗事件)
     public int firstTextId;                     //首句Id
 
+    public EventResult result;
+
     public Event()
     {
+        eventType = new MyEventType();
         options = new List<EventOption>();
         textLib = new Dictionary<int, KaidanText>();
+        result = new EventResult();
     }
     ~Event()
     {
@@ -40,6 +42,31 @@ public class Event          //
         Action1,    //事件1  
         Action2,    //事件2  
                     //其他事件类型  
+    }
+
+    public class EventResult
+    {
+        public int resultId;                        //事件结果(影响的属性Id)
+        public float change_HP;                     //HP影响(加值)
+        public float change_HP_rate;                //HP影响(百分比)
+        public float change_STR;                    //STR影响(加值)
+        public float change_STR_rate;               //STR影响(百分比)
+        public float change_DEF;                    //DEF影响(加值)
+        public float change_DEF_rate;               //DEF影响(百分比)
+        public float change_LVL;                    //LVL影响(加值)
+        public float change_LVL_rate;               //LVL影响(百分比)
+        public float change_SAN;                    //SAN影响(加值)
+        public float change_SAN_rate;               //SAN影响(百分比)
+        public float change_SPD;                    //SPD影响(加值)
+        public float change_SPD_rate;               //SPD影响(百分比)
+        public float change_CRIT_Rate;              //CRIT_rate影响(加值)
+        public float change_CRIT_Rate_rate;         //CRIT_rate影响(百分比)
+        public float change_CRIT_DMG;               //CRIT_DMG影响(加值)
+        public float change_CRIT_DMG_rate;          //CRIT_DMG影响(百分比)
+        public float change_HIT;                    //HIT影响(加值)
+        public float change_HIT_rate;               //HIT影响(百分比)
+        public float change_AVO;                    //AVO影响(加值)
+        public float change_AVO_rate;               //AVO影响(百分比)
     }
 
     [System.Serializable]
@@ -81,6 +108,39 @@ public class Event          //
     //{
     //    this.evDescription = description;
     //}
+
+    public void ExecuteResult(Player player)                //执行事件结果
+    {
+        player.HP.value += this.result.change_HP;
+        player.HP.value *= (this.result.change_HP_rate + 1);
+
+        player.STR.value += this.result.change_STR;
+        player.STR.value *= (this.result.change_STR_rate + 1);
+
+        player.DEF.value += this.result.change_DEF;
+        player.DEF.value *= (this.result.change_DEF_rate + 1);
+
+        player.LVL.value += this.result.change_LVL;
+        player.LVL.value *= (this.result.change_LVL_rate + 1);
+
+        player.SAN.value += this.result.change_SAN;
+        player.SAN.value *= (this.result.change_SAN_rate + 1);
+
+        player.SPD.value += this.result.change_SPD;
+        player.SPD.value *= (this.result.change_SPD_rate + 1);
+
+        player.CRIT_Rate.value += this.result.change_CRIT_Rate;
+        player.CRIT_Rate.value *= (this.result.change_CRIT_Rate_rate + 1);
+
+        player.CRIT_DMG.value += this.result.change_CRIT_DMG;
+        player.CRIT_DMG.value *= (this.result.change_CRIT_DMG_rate + 1);
+
+        player.HIT.value += this.result.change_HIT;
+        player.HIT.value *= (this.result.change_HIT_rate + 1);
+
+        player.AVO.value += this.result.change_AVO;
+        player.AVO.value *= (this.result.change_AVO_rate + 1);
+    }
 
     public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本
     {
@@ -138,7 +198,7 @@ public class EventOption
         set
         {
             nextId = value;
-            result = new EventResult(nextId);
+            result = new OptionResult(nextId);
             result.battleEvent = new BattleEvent()
             {
                 id = nextId
@@ -150,16 +210,16 @@ public class EventOption
     public int optionId;                        //作为 每个事件 不同选项的唯一标识(1,2,3...)
     public bool isSeletable = false;
 
-    public EventResult result;
+    public OptionResult result;
 
     [System.Serializable]
-    public class EventResult
+    public class OptionResult
     {
         public int changeId;
         public float change;
         //测试用
         private int nextId;
-        public EventResult(int _nextId)
+        public OptionResult(int _nextId)
         {
             myAction += Test;
             nextId = _nextId;

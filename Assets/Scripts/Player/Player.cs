@@ -49,14 +49,18 @@ public struct playerAttribute           //角色属性（在读取角色信息�
 
 public class Player               //存储角色信息等
 {
-    public playerAttribute HP;          //生命    Health point    id = 1
-    public playerAttribute STR;         //力量    Strength        id = 2  
-    public playerAttribute DEF;         //防御    Defense         id = 3 
-    public playerAttribute LVL;         //灯光值  Light Value     id = 4  
-    public playerAttribute SAN;         //SAN值   Sanity          id = 5 
-    public playerAttribute SPD;         //速度    Speed           id = 6 
+    public playerAttribute HP;          //生命     Health point      id = 1
+    public playerAttribute STR;         //力量     Strength          id = 2  
+    public playerAttribute DEF;         //防御     Defense           id = 3 
+    public playerAttribute LVL;         //灯光值   Light Value       id = 4  
+    public playerAttribute SAN;         //SAN 值   Sanity            id = 5 
+    public playerAttribute SPD;         //速度     Speed             id = 6 
+    public playerAttribute CRIT_Rate;   //暴击率   Critical Hit Rate id = 7 
+    public playerAttribute CRIT_DMG;    //暴击伤害 Critical Damage   id = 8 
+    public playerAttribute HIT;         //连击     Hit               id = 9 
+    public playerAttribute AVO;         //闪避值   AVO               id = 10
 
-    public Dictionary<int, Item> bag;
+    public Dictionary<int, Item> bag;   //??感觉用List来存会好一些??
 
     public Player()
     {
@@ -66,11 +70,15 @@ public class Player               //存储角色信息等
         LVL = new playerAttribute();
         SAN = new playerAttribute();
         SPD = new playerAttribute();
+        CRIT_Rate = new playerAttribute();
+        CRIT_DMG = new playerAttribute();
+        HIT = new playerAttribute();
+        AVO = new playerAttribute();
 
         bag = new Dictionary<int, Item>();
     }
 
-    //这是啥？析构函数吗（Marc疑问）
+    //这是啥？析构函数吗（Marc疑问）(是滴，对性能优化时用，但非必要)
     // ~Player()
     // {
     //     bag = null;
