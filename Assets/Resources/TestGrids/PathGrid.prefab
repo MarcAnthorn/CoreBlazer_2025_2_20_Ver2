@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.76813567, g: 0.9056604, b: 0.36311856, a: 1}
+  m_Color: {r: 0.7514203, g: 0.990566, b: 0.34109113, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,5 +99,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: 0
   y: 0
-  xMap: 7
-  yMap: 7
+  xMap: 19
+  yMap: 19
+  isLightHouse: 0

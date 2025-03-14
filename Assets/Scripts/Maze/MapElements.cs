@@ -8,6 +8,7 @@ public abstract class MapElement
     protected int posY;
     public int elementId;
 
+
     protected MapElement()
     {
         SetPosXY(0, 0);
@@ -19,11 +20,11 @@ public abstract class MapElement
         posX = x;
         posY = y;
     }
-    protected int GetPosX()
+    public int GetPosX()
     {
         return posX;
     }
-    protected int GetPosY()
+    public  int GetPosY()
     {
         return posY;
     }
@@ -32,7 +33,7 @@ public abstract class MapElement
     {
         this.elementId = id;
     }
-    protected int GetId()
+    public int GetId()
     {
         return elementId;
     }
@@ -41,9 +42,11 @@ public abstract class MapElement
 
 public class Wall : MapElement
 {
-    public Wall() : base()
+
+    public Wall(int _id) : base()
     {
-        SetId(1);
+        SetId(_id);
+
     }
 
 }
@@ -57,11 +60,10 @@ public class Wall : MapElement
 // }
 public class Ground : MapElement
 {
-    public bool isLightHouse = false;
-    public Ground(bool _isLightHouse = false) : base()
+    public Ground(int _id) : base()
     {
-        SetId(3);
-        isLightHouse = _isLightHouse;
+        SetId(_id);
+        
     }
 
 }
