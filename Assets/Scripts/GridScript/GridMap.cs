@@ -61,7 +61,6 @@ public class GridMap<T> where T : MonoBehaviour
             {
                 int x, y;
                 GetGridIndex(GetWorldPosition(i ,j), out x, out y);
-                Debug.Log($"x : {x}, y : {y}");
             }
            
         }

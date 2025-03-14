@@ -1,0 +1,95 @@
+# Process result (86)
+
+> item format: [encoding/confidence][file path]
+
+## Converted (0)
+
+
+## Not convert (86)
+
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/DataProcessor.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/DataProcessor.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/Singleton.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/Singleton.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/Dialogue.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/Dialogue.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/DialogueManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/DialogueManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/Event.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/Event.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventGO.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventGO.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventManager.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventRepo.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventRepo.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventUI.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventUI.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GameLevel/GameLevelManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GameLevel/GameLevelManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GameLevel.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/GridMap.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/GridMap.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/PathGrid.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/PathGrid.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallCornerGrid.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallCornerGrid.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallGrid.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallGrid.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/EventHub.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/EventHub.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/SingletonBaseManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/SingletonBaseManager.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/TextDisplayManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/TextDisplayManager.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/UIManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/UIManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapElements.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapElements.cs.meta`
+- `[UTF-16LE/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/Maps.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/Maps.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/Player.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/Player.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerController.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerController.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/Prop.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/Prop.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/PropManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/PropManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/TestScript.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/TestScript.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfo.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfo.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfoContainer.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfoContainer.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/EventOptionBtn.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/EventOptionBtn.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/Item.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/Item.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/BasePanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/BasePanel.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/CommonItemPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/CommonItemPanel.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GameMainPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GameMainPanel.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GodItemPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GodItemPanel.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemCheckPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemCheckPanel.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemPanel.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts.meta`

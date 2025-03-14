@@ -8,6 +8,7 @@ public class WallGrid : MonoBehaviour
     //坐标位置是：matrix[xMap][yMap]
     public int xMap;
     public int yMap;
+    public int id;
     private GridMap<WallGrid> myMap;
 
     //当前GridMap的原点（起始点）
@@ -27,7 +28,7 @@ public class WallGrid : MonoBehaviour
     private float intervalDistanceMutiplier = 1;
     private float intervalDistance;
 
-    public void Init(GridMap<WallGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize)
+    public void Init(GridMap<WallGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize, int _id)
     {
         myMap = _map;
         xMap = _xMap;
@@ -36,6 +37,7 @@ public class WallGrid : MonoBehaviour
         cellSize = _cellSize;
         wallSize = wallSizeMutiplier * _cellSize;
         intervalDistance = intervalDistanceMutiplier * _cellSize;
+        id = _id;
     }
 
 

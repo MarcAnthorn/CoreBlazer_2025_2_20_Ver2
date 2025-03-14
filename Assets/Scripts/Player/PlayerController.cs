@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -18,26 +19,19 @@ public class PlayerController : MonoBehaviour
     public float lightShrinkSpeed;
     [Range(0, 8)]
     public float initialLightScope;
+    public CinemachineVirtualCamera cam;
 
     // Start is called before the first frame update
     void Start()
     {
+        cam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+        cam.Follow = this.gameObject.transform;
         spriteLight.pointLightOuterRadius = initialLightScope;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
-        {
-            this.transform.Translate(0, Input.GetAxis("Vertical") * Time.deltaTime * speed, 0);
-        }
-
-        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) 
-        {
-             this.transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, 0);
-        }
-
         if(isLightShrinking)
         {
             spriteLight.pointLightOuterRadius -= lightShrinkSpeed * Time.deltaTime;
@@ -48,6 +42,21 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+
+    }
+
+    void FixedUpdate()
+    {
+        
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+        {
+            this.transform.Translate(0, Input.GetAxis("Vertical") * Time.deltaTime * speed, 0);
+        }
+
+        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) 
+        {
+             this.transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * speed, 0, 0);
+        }
 
     }
 

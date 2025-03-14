@@ -21,7 +21,7 @@ public class EventManager : Singleton<EventManager>
     protected override void Awake()
     {
         base.Awake();   //单例初始化
-        LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
+        // LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
         DebugTest();
     }
 

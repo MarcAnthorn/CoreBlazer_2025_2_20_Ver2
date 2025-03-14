@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PathGrid : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class PathGrid : MonoBehaviour
     //坐标位置是：matrix[xMap][yMap]
     public int xMap;
     public int yMap;
+    //当前地块的id：
+    public int id;
     private GridMap<PathGrid> myMap;
 
     //当前GridMap的原点（起始点）
@@ -36,8 +39,10 @@ public class PathGrid : MonoBehaviour
     private float intervalDistance;
 
 
+
+
     Vector3 centerPosition;
-    public void Init(GridMap<PathGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize)
+    public void Init(GridMap<PathGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize, int _id)
     {
         myMap = _map;
         xMap = _xMap;
@@ -45,6 +50,7 @@ public class PathGrid : MonoBehaviour
         originalPoint = _originalPoint;
         cellSize = _cellSize;
         intervalDistance = intervalDistanceMutiplier * _cellSize;
+        id = _id;
     }
 
 

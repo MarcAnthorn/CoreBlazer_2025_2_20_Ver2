@@ -58,6 +58,7 @@ public class MapManager : Singleton<MapManager>
         if (mapId >= 1 && mapId <= 3)
         {
             path = Path.Combine(Application.dataPath, $"Resources/MapDatas/Map{mapId}.csv");    //命名规范！！！
+
         }
         else
         {
@@ -111,7 +112,7 @@ public class MapManager : Singleton<MapManager>
 
     public void InitMap1Elements(int mapId)                     //!!先设定一个地图，之后再想办法拓展!!
     {
-        map1 = new MapElement[40, 40];
+        map1 = new MapElement[41, 41];
         for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> 行数
         {
             for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> 列数
@@ -127,14 +128,15 @@ public class MapManager : Singleton<MapManager>
         MapElement element = null;
         switch (elementId)
         {
-            case 1:
-                element = new Wall();
+            case 10001:
+                element = new Wall(elementId);     //普通墙壁
                 return element;
-            case 2:
-                element = new LightTower();
-                return element;
-            case 3:
-                element = new Ground();
+
+            case 10003: //起始点
+            case 10005: //明亮灯塔
+            case 10007: //传送点
+            case 10009: //普通通路
+                element = new Ground(elementId);  //起始点
                 return element;
             default:
                 Debug.LogError($"找不到Id为 {elementId} 的建筑类型，返回null");
@@ -146,14 +148,14 @@ public class MapManager : Singleton<MapManager>
     public void TestMapLoading()
     {
         LoadMapElements(1);
-        //InitMap1Elements(1);
-        for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> 行数
-        {
-            for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> 列数
-            {
-                Debug.Log($"【{i},{j}】==> value: {map1Index[i, j]}");
-            }
-        }
+        InitMap1Elements(1);
+        // for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> 行数
+        // {
+        //     for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> 列数
+        //     {
+        //         Debug.Log($"【{i},{j}】==> value: {map1Index[i, j]}");
+        //     }
+        // }
     }
 
 }

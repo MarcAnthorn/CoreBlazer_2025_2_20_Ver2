@@ -1,0 +1,730 @@
+# Process result (721)
+
+> item format: [encoding/confidence][file path]
+
+## Converted (0)
+
+
+## Not convert (721)
+
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/.DS_Store`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/BackGround/BG.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/BackGround/BG.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/BackGround.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_BG.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_BG.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_PropSwitch_BG.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_PropSwitch_BG.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_PropSwitch_Slider.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_PropSwitch_Slider.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_Scrollbar.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_Scrollbar.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_ScrollbarSlider.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_ScrollbarSlider.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_Toolbox.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory/Inventory_Toolbox.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Inventory.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Option/Option_Lock.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Option/Option_Lock.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Option/Option_Unlock.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Option/Option_Unlock.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/Option.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_BG.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_BG.png.meta`
+- `[windows-1252/0.5]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_NumericBar.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_NumericBar.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_NumericBox.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_NumericBox.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_PropertiesBox.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar/PlayerDataBar_PropertiesBox.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PlayerDataBar.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PromptBar/PromptBar_BG.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PromptBar/PromptBar_BG.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PromptBar/PromptBar_Title.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PromptBar/PromptBar_Title.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/PromptBar.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/StrangeEvent_XiaoGuoTu.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/StrangeEvent_XiaoGuoTu.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/conversation/Conversation_BG.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/conversation/Conversation_BG.png.meta`
+- `[ISO-8859-7/0.22]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/conversation/Conversation_Scroli.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/conversation/Conversation_Scroli.png.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/conversation/Conversation_ScroliSlider.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/conversation/Conversation_ScroliSlider.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/conversation.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/icon/Exit.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/icon/Exit.png.meta`
+- `[ISO-8859-7/0.24]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/icon/Setting.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/icon/Setting.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI/icon.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources/StrangeEvent_UI.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/ArtResources.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets/css/main.css`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets/css/main.css.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets/css.meta`
+- `[ISO-8859-8/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets/favicon.ico`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets/favicon.ico.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets/index.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets/index.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/assets.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTBezierPath.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTBezierPath.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTDescr.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTDescr.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTEvent.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTEvent.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTRect.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTRect.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTSeq.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTSeq.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTSpline.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LTSpline.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanAudio.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanAudio.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanAudioOptions.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanAudioOptions.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanSmooth.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanSmooth.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanTween.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanTween.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanTweenType.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/LeanTweenType.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/index.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes/index.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/classes.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/elements/index.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/elements/index.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/elements.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/index.html`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation/index.html.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Documentation.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Editor/LeanTweenDocumentationEditor.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Editor/LeanTweenDocumentationEditor.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Editor.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/AlphBumps.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/AlphBumps.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/AlphaReadyMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/AlphaReadyMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/DirectionalArrowMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/DirectionalArrowMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/FrictionLess.physicMaterial`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/FrictionLess.physicMaterial.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_PersonSprites.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_PersonSprites.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_PlanetMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_PlanetMaterial.mat.meta`
+- `[windows-1252/0.95]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_Ring.psd`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_Ring.psd.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_SineWave.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futoro_SineWave.mat.meta`
+- `[ISO-8859-2/0.57]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_Bar.psd`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_Bar.psd.meta`
+- `[ISO-8859-2/0.57]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_ButtonBack.psd`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_ButtonBack.psd.meta`
+- `[ISO-8859-2/0.6]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_ButtonBackDark.psd`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_ButtonBackDark.psd.meta`
+- `[ISO-8859-2/0.57]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_SineWave.psd`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_SineWave.psd.meta`
+- `[ISO-8859-2/0.57]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_WindowBack.psd`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Futuro_WindowBack.psd.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Graph.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Graph.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/GridLines.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/GridLines.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Ground.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Ground.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/LineGlowMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/LineGlowMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Mock2d.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/Mock2d.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/ParticleGlow.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/ParticleGlow.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/PointMark.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/PointMark.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/SpaceLineGlowMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/SpaceLineGlowMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackCar.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackCar.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackFollowMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackFollowMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackGlowMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackGlowMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackLines.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrackLines.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrailFollowMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/TrailFollowMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/WalkingStick.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material/WalkingStick.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Material.meta`
+- `[ISO-8859-2/0.54]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/2dText.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/2dText.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/AdvancedExamplesText.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/AdvancedExamplesText.fbx.meta`
+- `[ISO-8859-2/0.54]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/BasicExamplesText.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/BasicExamplesText.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/CameraShakeText.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/CameraShakeText.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/CurvePathsText.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/CurvePathsText.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/DirectionalArrow.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/DirectionalArrow.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/EndlessDrivingText.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/EndlessDrivingText.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/ExampleCar.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/ExampleCar.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/ExampleFirTree.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/ExampleFirTree.fbx.meta`
+- `[ISO-8859-2/0.54]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Grid.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Grid.fbx.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTween-Icon.blend.zip`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTween-Icon.blend.zip.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTween-Icon.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTween-Icon.fbx.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTween.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTween.prefab.meta`
+- `[ISO-8859-2/0.54]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTweenHD-Icon.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/LeanTweenHD-Icon.fbx.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/LMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/LMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/LineMaterial.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/LineMaterial.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/Material.001.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/Material.001.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/Material.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/Material.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/Material_001.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/Material_001.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/No Name.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/No Name.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarAlphaBlue.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarAlphaBlue.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarBlue.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarBlue.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarHat.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarHat.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarMat.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarMat.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarSpace.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SimpleAvatarSpace.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SubTitleText.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/SubTitleText.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/eanTween.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials/eanTween.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/Materials.meta`
+- `[ISO-8859-2/0.54]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/SimpleAvatar.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/SimpleAvatar.fbx.meta`
+- `[ISO-8859-2/0.53]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/SimpleAvatarPieces.fbx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models/SimpleAvatarPieces.fbx.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Models.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/Avatar2dParticles.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/Avatar2dParticles.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarAlpha.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarAlpha.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarDiffuse 1.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarDiffuse 1.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarDiffuse.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarDiffuse.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarEventsCS.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarEventsCS.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarSpace.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarSpace.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarSparkles.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/AvatarSparkles.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/BasicExamplesText.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/BasicExamplesText.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/DustCloud.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/DustCloud.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/EndlessPiece.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/EndlessPiece.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/GridLine.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/GridLine.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/Grids.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs/Grids.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Prefabs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/Following.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/Following.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/FollowingSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/FollowingSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralAdvancedTechniques.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralAdvancedTechniques.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralAdvancedTechniquesSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralAdvancedTechniquesSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasic.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasic.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasicSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasicSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasics2d.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasics2d.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasics2dSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralBasics2dSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralCameraShake.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralCameraShake.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralCameraShakeSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralCameraShakeSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEasingTypes.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEasingTypes.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEasingTypesSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEasingTypesSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEvents.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEvents.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEventsSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralEventsSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSequencer.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSequencer.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSequencerSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSequencerSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSimpleUi.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSimpleUi.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSimpleUiSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralSimpleUiSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralUISpace.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralUISpace.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralUISpaceSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/GeneralUISpaceSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/LogoCinematic.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/LogoCinematic.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/LogoCinematicSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/LogoCinematicSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezier.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezier.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezier2d.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezier2d.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezier2dSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezier2dSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezierSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathBezierSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSpline2d.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSpline2d.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSpline2dSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSpline2dSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineEndless.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineEndless.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineEndlessSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineEndlessSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplinePerformance.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplinePerformance.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplinePerformanceSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplinePerformanceSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineTrack.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineTrack.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineTrackSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplineTrackSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplines.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplines.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplinesSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/PathSplinesSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingUnitTests.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingUnitTests.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingUnitTestsSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingUnitTestsSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingZLegacy.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingZLegacy.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingZLegacySettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes/TestingZLegacySettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scenes.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/Archive.zip`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/Archive.zip.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/Following.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/Following.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralAdvancedTechniques.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralAdvancedTechniques.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralBasic.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralBasic.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralBasics2d.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralBasics2d.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralCameraShake.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralCameraShake.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralEasingTypes.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralEasingTypes.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralEventsListeners.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralEventsListeners.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralSequencer.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralSequencer.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralSimpleUI.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralSimpleUI.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralUISpace.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/GeneralUISpace.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/LogoCinematic.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/LogoCinematic.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathBezier.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathBezier.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathBezier2d.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathBezier2d.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSpline.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSpline.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSpline2d.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSpline2d.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplineEndless.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplineEndless.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplinePerformance.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplinePerformance.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplineTrack.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplineTrack.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplines.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/PathSplines.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/TestingUnitTests.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/TestingUnitTests.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/TestingZLegacy.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/TestingZLegacy.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/TestingZLegacyExt.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts/TestingZLegacyExt.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Scripts.meta`
+- `[windows-1252/0.95]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/DefaultParticleReplacement.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/DefaultParticleReplacement.png.meta`
+- `[windows-1252/0.95]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/Dude2d.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/Dude2d.png.meta`
+- `[ISO-8859-2/0.61]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/DustCloud.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/DustCloud.png.meta`
+- `[windows-1252/0.95]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/HorizontalGradient.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/HorizontalGradient.png.meta`
+- `[windows-1252/0.95]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/PowerUpStar.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures/PowerUpStar.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples/Textures.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Examples.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LTDescr.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LTDescr.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LTDescrOptional.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LTDescrOptional.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LTSeq.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LTSeq.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanAudio.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanAudio.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanSmooth.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanSmooth.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTest.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTest.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTween.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTween.cs.meta`
+- `[null/0]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTween.dll.zip`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTween.dll.zip.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTweenExt.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework/LeanTweenExt.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Framework.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/License.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/License.txt.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/ReadMe.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/ReadMe.txt.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/FollowingTests.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/FollowingTests.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/FollowingTests.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/FollowingTests.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/FollowingTestsSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/FollowingTestsSettings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/PerformanceTests.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/PerformanceTests.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/PerformanceTests.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/PerformanceTests.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/PerformanceTestsSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/PerformanceTestsSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Prefabs/BulletPrefab.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Prefabs/BulletPrefab.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Prefabs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Scripts/LeanPool.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Scripts/LeanPool.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Scripts.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing240.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing240.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing240.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing240.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing240Settings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing240Settings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing243.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing243.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing243.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing243.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing243Settings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing243Settings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing246.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing246.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing246.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing246.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing246Settings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing246Settings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing248.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing248.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing248.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing248.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing248Settings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/Testing248Settings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingColorTweening.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingColorTweening.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingDescr.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingDescr.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingDescr.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingDescr.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingDescrSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingDescrSettings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssue.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssue.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssue.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssue.unity.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssue2.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssue2.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssueSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingIssueSettings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingMaxTweens.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingMaxTweens.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingMaxTweens.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingMaxTweens.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingMaxTweensSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingMaxTweensSettings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingOptionalCancel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingOptionalCancel.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingOptionalCancel.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingOptionalCancel.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingOptionalCancelSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingOptionalCancelSettings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingRotate.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingRotate.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingRotate.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingRotate.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingRotateSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingRotateSettings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSceneSwitching.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSceneSwitching.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSceneSwitching.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSceneSwitching.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSceneSwitchingSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSceneSwitchingSettings.lighting.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSequencer.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSequencer.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSequencer.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSequencer.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSequencerSettings.lighting`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing/TestingSequencerSettings.lighting.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween/Testing.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/LeanTween.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/New Universal Render Pipeline Asset.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/New Universal Render Pipeline Asset.asset.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/New Universal Render Pipeline Asset_Renderer.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/New Universal Render Pipeline Asset_Renderer.asset.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Prefabs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/BillingMode.json`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/BillingMode.json.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/CommonItemPanel.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/CommonItemPanel.prefab.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/DialogueData/KaidanTest.csv`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/DialogueData/KaidanTest.csv.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/DialogueData.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventData/EventCSV/Test1_CSV.csv`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventData/EventCSV/Test1_CSV.csv.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventData/EventCSV.meta`
+- `[ISO-8859-7/0.22]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventData/EventTable/迷宫事件库.xlsx`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventData/EventTable/迷宫事件库.xlsx.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventData/EventTable.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventData.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventOptionBtn.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/EventOptionBtn.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/GameMainPanel.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/GameMainPanel.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/GodItemPanel.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/GodItemPanel.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/Item.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/Item.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/PathGrid.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/PathGrid.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/WallCornerGrid.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/WallCornerGrid.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/WallGridHorizontal.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/WallGridHorizontal.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/WallGridVertical.prefab`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids/WallGridVertical.prefab.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources/TestGrids.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Resources.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scenes/SampleScene.unity`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scenes/SampleScene.unity.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scenes.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/DataProcessor.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/DataProcessor.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/Singleton.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common/Singleton.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Common.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/Dialogue.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/Dialogue.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/DialogueManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue/DialogueManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Dialogue.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/Event.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/Event.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventGO.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventGO.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventManager.cs.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventRepo.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventRepo.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventUI.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event/EventUI.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Event.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GameLevel/GameLevelManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GameLevel/GameLevelManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GameLevel.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/GridMap.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/GridMap.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/PathGrid.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/PathGrid.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallCornerGrid.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallCornerGrid.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallGrid.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript/WallGrid.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/GridScript.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/EventHub.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/EventHub.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/SingletonBaseManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/SingletonBaseManager.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/TextDisplayManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/TextDisplayManager.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/UIManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers/UIManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Managers.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapElements.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapElements.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/MapManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/Maps.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze/Maps.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Maze.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/Player.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/Player.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerController.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerController.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player/PlayerManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Player.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/Prop.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/Prop.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/PropManager.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop/PropManager.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Prop.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/TestScript.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/TestScript.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfo.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfo.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfoContainer.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6/GridInfoContainer.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/Test_3_6.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/EventOptionBtn.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/EventOptionBtn.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/Item.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/Item.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/BasePanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/BasePanel.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/CommonItemPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/CommonItemPanel.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GameMainPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GameMainPanel.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GodItemPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/GodItemPanel.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemCheckPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemCheckPanel.cs.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemPanel.cs`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts/ItemPanel.cs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts/PanelScripts.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts/UIScripts.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/Scripts.meta`
+- `[ISO-8859-2/0.67]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Documentation/TextMesh Pro User Guide 2016.pdf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Documentation/TextMesh Pro User Guide 2016.pdf.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Documentation.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt.meta`
+- `[ISO-8859-2/0.27]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Fonts/LiberationSans.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Fonts/LiberationSans.ttf.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Fonts.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Outline.mat`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Outline.mat.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Fonts & Materials.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt.meta`
+- `[ISO-8859-2/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/NotoSansSC-VariableFont_wght.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/NotoSansSC-VariableFont_wght.ttf.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/OFL.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/OFL.txt.meta`
+- `[UTF-8/0.99]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/README.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/README.txt.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Black SDF.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Black SDF.asset.meta`
+- `[ISO-8859-2/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Black.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Black.ttf.meta`
+- `[ISO-8859-2/0.24]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Bold.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Bold.ttf.meta`
+- `[ISO-8859-2/0.24]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-ExtraBold.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-ExtraBold.ttf.meta`
+- `[windows-1253/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-ExtraLight.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-ExtraLight.ttf.meta`
+- `[windows-1253/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Light.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Light.ttf.meta`
+- `[ISO-8859-2/0.26]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Medium.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Medium.ttf.meta`
+- `[ISO-8859-7/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Regular.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Regular.ttf.meta`
+- `[ISO-8859-2/0.24]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-SemiBold.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-SemiBold.ttf.meta`
+- `[ISO-8859-2/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Thin.ttf`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Thin.ttf.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Noto_Sans_SC.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Sprite Assets/EmojiOne.asset.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Sprite Assets.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/Style Sheets.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/TMP Settings.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources/TMP Settings.asset.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Resources.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Surface.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF-Surface.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_SDF.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Sprite.shader`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMP_Sprite.shader.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro.cginc`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro.cginc.meta`
+- `[UTF-8/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Shaders.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Sprites/EmojiOne Attribution.txt`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Sprites/EmojiOne Attribution.txt.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Sprites/EmojiOne.json`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Sprites/EmojiOne.json.meta`
+- `[ISO-8859-2/0.63]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Sprites/EmojiOne.png`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Sprites/EmojiOne.png.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro/Sprites.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/TextMesh Pro.meta`
+- `[ISO-8859-2/0.25]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/UIReferences/PanelRefs/A4EDC877-C22E-4E13-9F12-091C8D6B7ED1_1_201_a.jpeg`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/UIReferences/PanelRefs/A4EDC877-C22E-4E13-9F12-091C8D6B7ED1_1_201_a.jpeg.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/UIReferences/PanelRefs.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/UIReferences.meta`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/UniversalRenderPipelineGlobalSettings.asset`
+- `[ascii/1]` `/Users/hua/Desktop/CoreBlazer_2025_2_20_Ver2/Assets/UniversalRenderPipelineGlobalSettings.asset.meta`
