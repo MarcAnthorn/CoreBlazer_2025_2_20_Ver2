@@ -60,7 +60,7 @@ public class EventManager : Singleton<EventManager>
                         grade = int.Parse(values[4])                                        //E列
                     };
                     eventData.result.resultId = int.Parse(values[3]);                       //D列
-                    LoadEventResult(1, eventData);                                   //读入事件的对应结果
+                    eventData = LoadEventResult(1, eventData);                       //读入事件的对应结果
                     for (int j = 0; j < 3; j++)     //var option in eventData.options
                     {
                         EventOption option = new EventOption();
@@ -86,48 +86,50 @@ public class EventManager : Singleton<EventManager>
             Debug.LogWarning("事件数据文件不存在！");
         }
     }
-    public Event LoadEventResult(int resultId, Event @event)
+    public Event LoadEventResult(int resultId, Event @event)        //一般来说不用外部调用
     {
         string path = Path.Combine(Application.dataPath, "Resources/EventData/EventResult/EventResults1.csv");
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path);
-            for (int i = 4; i < lines.Length; i++)
+            for (int i = 5; i < lines.Length; i++)
             {
                 string line = lines[i];
                 string[] values = line.Split();
 
                 if (values.Length > 4 && int.Parse(values[0]) == resultId)
                 {
-                    @event.result.change_HP = int.Parse(values[1]);
-                    @event.result.change_HP_rate = int.Parse(values[2]);
+                    @event.result.spId = int.Parse(values[1]);
 
-                    @event.result.change_STR = int.Parse(values[3]);
-                    @event.result.change_STR_rate = int.Parse(values[4]);
+                    @event.result.change_HP = int.Parse(values[2]);
+                    @event.result.change_HP_rate = int.Parse(values[3]);
 
-                    @event.result.change_DEF = int.Parse(values[5]);
-                    @event.result.change_DEF_rate = int.Parse(values[6]);
+                    @event.result.change_STR = int.Parse(values[4]);
+                    @event.result.change_STR_rate = int.Parse(values[5]);
 
-                    @event.result.change_LVL = int.Parse(values[7]);
-                    @event.result.change_LVL_rate = int.Parse(values[8]);
+                    @event.result.change_DEF = int.Parse(values[6]);
+                    @event.result.change_DEF_rate = int.Parse(values[7]);
 
-                    @event.result.change_SAN = int.Parse(values[9]);
-                    @event.result.change_SAN_rate = int.Parse(values[10]);
+                    @event.result.change_LVL = int.Parse(values[8]);
+                    @event.result.change_LVL_rate = int.Parse(values[9]);
 
-                    @event.result.change_SPD = int.Parse(values[11]);
-                    @event.result.change_SPD_rate = int.Parse(values[12]);
+                    @event.result.change_SAN = int.Parse(values[10]);
+                    @event.result.change_SAN_rate = int.Parse(values[11]);
 
-                    @event.result.change_CRIT_Rate = int.Parse(values[13]);
-                    @event.result.change_CRIT_Rate_rate = int.Parse(values[14]);
+                    @event.result.change_SPD = int.Parse(values[12]);
+                    @event.result.change_SPD_rate = int.Parse(values[13]);
 
-                    @event.result.change_CRIT_DMG = int.Parse(values[15]);
-                    @event.result.change_CRIT_DMG_rate = int.Parse(values[16]);
+                    @event.result.change_CRIT_Rate = int.Parse(values[14]);
+                    @event.result.change_CRIT_Rate_rate = int.Parse(values[15]);
 
-                    @event.result.change_HIT = int.Parse(values[17]);
-                    @event.result.change_HIT_rate = int.Parse(values[18]);
+                    @event.result.change_CRIT_DMG = int.Parse(values[16]);
+                    @event.result.change_CRIT_DMG_rate = int.Parse(values[17]);
 
-                    @event.result.change_AVO = int.Parse(values[19]);
-                    @event.result.change_AVO_rate = int.Parse(values[20]);
+                    @event.result.change_HIT = int.Parse(values[18]);
+                    @event.result.change_HIT_rate = int.Parse(values[19]);
+
+                    @event.result.change_AVO = int.Parse(values[20]);
+                    @event.result.change_AVO_rate = int.Parse(values[21]);
                 }
 
             }

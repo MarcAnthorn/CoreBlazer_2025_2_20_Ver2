@@ -47,6 +47,7 @@ public class Event          //
     public class EventResult
     {
         public int resultId;                        //事件结果(影响的属性Id)
+        public int spId;                            //特殊结果(另作处理)
         public float change_HP;                     //HP影响(加值)
         public float change_HP_rate;                //HP影响(百分比)
         public float change_STR;                    //STR影响(加值)
