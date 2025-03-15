@@ -13,8 +13,9 @@ using System.Text;
 
 public class EventManager : Singleton<EventManager>
 {
-    //存储某一关卡事件库里的所有事件，用来为本关卡提供可调用的Event数据(用eventId来查找)
+    //存储某一关卡事件库里的所有可能出现的事件，用来为本关卡提供可调用的Event数据(用eventId来查找)
     public Dictionary<int, Event> allEvents;
+    public Dictionary<int, float> weights;      //表示事件对应的权重
     public int currentEventId = 0;
     public static int eventCount = 0;
 
@@ -76,6 +77,7 @@ public class EventManager : Singleton<EventManager>
 
                     LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
                     allEvents.Add(eventData.eventId, eventData);
+                    weights.Add(eventData.eventId, 1.0f);               //加入权重（等权重）
                 }
 
             }

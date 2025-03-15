@@ -5,11 +5,11 @@ using UnityEngine;
 public class EventGO : MonoBehaviour            //挂载在游戏中表示事件的物体上
 {
     public Event @event;
-    public int eventId;         //表示事件的固定Id(在Unity内进行修改)
+    public int eventId;         //表示事件的固定Id(在Unity内进行修改)(如果是随机生成事件的POI则不需要这个字段)
 
-    void Awake()
+    void Awake()        //开局就定下了本关卡内的所有POI对应事件
     {
-        @event = EventManager.Instance.CreateEvent(eventId);        //随游戏对象的初始化而创建并绑定
+        @event = ExtractEvent();
         GameLevelManager.Instance.events.Add(++GameLevelManager.Instance.eventNum, @event);
     }
 
@@ -17,4 +17,32 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
     {
         
     }
+
+    private Event ExtractEvent()        //按照权重抽取事件
+    {
+        float totalWeight = 0f;
+        foreach(float weight in EventManager.Instance.weights.Values)
+        {
+            totalWeight += weight;
+        }
+
+        float randomValue = Random.Range(0f, totalWeight);      //随机生成
+        foreach(KeyValuePair<int, float> pair in EventManager.Instance.weights)
+        {
+            totalWeight -= pair.Value;
+            if (totalWeight <= 0)
+            {
+                return EventManager.Instance.CreateEvent(pair.Key);
+            }
+        }
+
+        return null;
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        //填写角色与POI碰撞之后的逻辑
+        
+    }
+
 }
