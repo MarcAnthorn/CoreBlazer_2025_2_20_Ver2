@@ -15,6 +15,7 @@ public class LightHouse : MonoBehaviour
     void Start()
     {
         lightLock = false;
+        light.intensity = 1;
     }
 
     // Update is called once per frame
