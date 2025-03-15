@@ -141,6 +141,7 @@ public class MapManager : Singleton<MapManager>
             case 20010: //
             case 20020: //
             case 20030: //
+                return null;
             default:
                 Debug.LogError($"找不到Id为 {elementId} 的建筑类型，返回null");
                 return null;
