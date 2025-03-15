@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class PlayerManager : Singleton<PlayerManager>          //用于管理角色的事件
 {
     public Player player;
+    public Vector3 initPosition;
 
     protected override void Awake()
     {

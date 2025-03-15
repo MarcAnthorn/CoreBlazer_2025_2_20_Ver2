@@ -182,9 +182,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2627d26ae0eef456bb42c1c1dde4b6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  moveSpeed: 3.02
+  isMoving: 1
+  L0: 100
+  L2: 0
+  L5: 0
+  L: 0
   spriteLight: {fileID: 6314804529608919329}
-  lightShrinkSpeed: 0.269
   initialLightScope: 8
   cam: {fileID: 0}
 --- !u!61 &4864421100200725809
