@@ -22,13 +22,14 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1f)]
     public float stageThreeSpeed;
 
-    [Range(100, 300f)]
-    public float bleedSpeed;
+    [Range(50, 300f)]
+    public float bleedSpeed = 100f;
 
 
     public Light2D spriteLight;
 
     private bool isLightShrinking = true;
+    private bool isDamaging = false;
 
     public float initialLightScope = 100;
     public CinemachineVirtualCamera cam;
@@ -41,7 +42,9 @@ public class PlayerController : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {   
+    { 
+          
+        bleedSpeed = 100f;
         time = 0;
         L0 = 300;
 
@@ -57,6 +60,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         LightShrinking();
+        Damage();
 
 
     }
@@ -130,15 +134,12 @@ public class PlayerController : MonoBehaviour
             {
                 spriteLight.pointLightOuterRadius = 2.12f;
                 TriggerLightShrinking(false);
+                isDamaging = true;
 
             }
 
         }
-        else{
-            BeginDamage();
-        }
-
-
+    
     }
 
     private void ControlPlayerMove()
@@ -157,18 +158,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void BeginDamage()
-    {
-        PlayerManager.Instance.player.HP.ChargeValue(-bleedSpeed);
-        Debug.Log(PlayerManager.Instance.player.HP.value);
-        if(PlayerManager.Instance.player.HP.value <= 0)
+    private void Damage()
+    {   
+        if(isDamaging)
         {
-            ResetPosition();
-            L = L0;
-            time = 0;
-            isLightShrinking = true;
-            PlayerManager.Instance.player.HP.value = 100;
-            Debug.Log("you are dead");
+            PlayerManager.Instance.player.HP.ChargeValue(-bleedSpeed);
+            Debug.Log(PlayerManager.Instance.player.HP.value);
+            if(PlayerManager.Instance.player.HP.value <= 0)
+            {
+                ResetPosition();
+                L = L0;
+                time = 0;
+                isLightShrinking = true;
+                isDamaging = false;
+                PlayerManager.Instance.player.HP.value = 100;
+                Debug.Log("you are dead");
+            }
         }
     }
 
@@ -182,6 +187,7 @@ public class PlayerController : MonoBehaviour
         L = 200;
         time = 0;
         isLightShrinking = true;
+        isDamaging = false;
     }
 }
 
