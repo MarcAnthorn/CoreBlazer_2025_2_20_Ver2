@@ -138,6 +138,9 @@ public class MapManager : Singleton<MapManager>
             case 10009: //普通通路
                 element = new Ground(elementId);  //起始点
                 return element;
+            case 20010: //
+            case 20020: //
+            case 20030: //
             default:
                 Debug.LogError($"找不到Id为 {elementId} 的建筑类型，返回null");
                 return null;

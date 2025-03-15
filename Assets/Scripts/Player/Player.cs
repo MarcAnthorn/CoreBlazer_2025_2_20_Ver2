@@ -11,7 +11,7 @@ public struct playerAttribute           //角色属性（在读取角色信息�
     public int type;
     public float value;
 
-    public playerAttribute(int id, string name, int level, string icon, int type)
+    public playerAttribute(int id, int level = 0, int type = 0, string name = null, string icon = null)
     {
         this.id = id;
         this.name = name;
@@ -64,21 +64,19 @@ public class Player               //存储角色信息等
 
     public Player()
     {
-        HP = new playerAttribute();
-        //测试用：
+        HP = new playerAttribute(1);
         HP.value = 100;
         HP.type = 1;
 
-
-        STR = new playerAttribute();
-        DEF = new playerAttribute();
-        LVL = new playerAttribute();
-        SAN = new playerAttribute();
-        SPD = new playerAttribute();
-        CRIT_Rate = new playerAttribute();
-        CRIT_DMG = new playerAttribute();
-        HIT = new playerAttribute();
-        AVO = new playerAttribute();
+        STR = new playerAttribute(2);
+        DEF = new playerAttribute(3);
+        LVL = new playerAttribute(4);
+        SAN = new playerAttribute(5);
+        SPD = new playerAttribute(6);
+        CRIT_Rate = new playerAttribute(7);
+        CRIT_DMG = new playerAttribute(8);
+        HIT = new playerAttribute(9);
+        AVO = new playerAttribute(10);
 
         bag = new Dictionary<int, Item>();
     }
