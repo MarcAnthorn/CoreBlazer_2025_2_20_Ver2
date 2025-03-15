@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8583867538973940465}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -188,6 +188,9 @@ MonoBehaviour:
   L2: 0
   L5: 0
   L: 0
+  stageOneSpeed: 0
+  stageTwoSpeed: 0
+  stageThreeSpeed: 0
   spriteLight: {fileID: 6314804529608919329}
   initialLightScope: 8
   cam: {fileID: 0}

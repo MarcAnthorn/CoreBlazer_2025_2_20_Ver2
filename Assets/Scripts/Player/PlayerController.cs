@@ -139,6 +139,13 @@ public class PlayerController : MonoBehaviour
     {
         this.transform.position = PlayerManager.Instance.initPosition;
     }
+
+    public void ResumeLight()
+    {
+        L = 200;
+        time = 0;
+        isLightShrinking = true;
+    }
 }
 
 
