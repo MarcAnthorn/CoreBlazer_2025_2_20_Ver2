@@ -25,11 +25,18 @@ public class TestScript : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+
+    }
+
     void Start()
     {
         // btnTest.onClick.AddListener(()=>{
         //     UIManager.Instance.ShowPanel<GameMainPanel>();
         // });
+
+
 
         // UIManager.Instance.ShowPanel<GameMainPanel>();
         // Vector3 originalPoint = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height)).x, Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height)).y, 0);
@@ -64,7 +71,17 @@ public class TestScript : MonoBehaviour
             {
                 GameObject playerObj = Resources.Load<GameObject>("Player");
                 Instantiate(playerObj, gridScript.GetWorldPosition(), Quaternion.identity);
+
+                //测试：
+                PlayerManager.Instance.initPosition = gridScript.GetWorldPosition();
                 Debug.Log("Player is instantiated!");
+            }
+            else if(id == 20010 || id == 20020 || id == 20030)
+            {
+                //（测试）POI的布置：
+                GameObject POIObj = Resources.Load<GameObject>("POI");
+                Instantiate(POIObj, gridScript.GetWorldPosition(), Quaternion.identity);
+
             }
             //实例化地块，调用内部函数GetWorldPosition布置位置
             Instantiate(pathGridObj, gridScript.GetWorldPosition(), Quaternion.identity);
@@ -165,17 +182,19 @@ public class TestScript : MonoBehaviour
         });
 
         //补充生成上方和左侧的墙壁：
+        GenerateExtraWall();
 
     }
 
 
     private void GenerateExtraWall()
     {
-        Vector2 basicOffset = originalPoint + new Vector3(-cellSize / 2, cellSize / 2);
-        Vector2 currentOffset = basicOffset;
+        Vector2 basicOffset = originalPoint + new Vector3(-cellSize / 8, cellSize / 8);
+        float offset = cellSize / 8 + cellSize / 2;
         GameObject wallObj;
         for(int j = 0; j < 41; j++)
         {
+            Vector2 currentOffset = basicOffset;
             if(j % 2 == 0)
             {
                 wallObj = Resources.Load<GameObject>("TestGrids/WallCornerGrid");
@@ -183,10 +202,26 @@ public class TestScript : MonoBehaviour
             }
             else
             {
-                wallObj = Resources.Load<GameObject>("TestGrids/WallCornerGrid");
+                wallObj = Resources.Load<GameObject>("TestGrids/WallGridHorizontal");
             }
+            currentOffset += j * new Vector2(offset, 0);
+            Instantiate(wallObj, currentOffset, wallObj.transform.rotation);
+        }
 
-            Instantiate(wallObj, currentOffset, Quaternion.identity);
+        for(int i = 1; i < 41; i++)
+        {   
+            Vector2 currentOffset = basicOffset;
+            if(i % 2 == 0)
+            {
+                wallObj = Resources.Load<GameObject>("TestGrids/WallCornerGrid");
+
+            }
+            else
+            {
+                wallObj = Resources.Load<GameObject>("TestGrids/WallGridVertical");
+            }
+            currentOffset += i * new Vector2(0, -offset);
+            Instantiate(wallObj, currentOffset, wallObj.transform.rotation);
         }
     }
 

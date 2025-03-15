@@ -21,7 +21,7 @@ public struct playerAttribute           //角色属性（在读取角色信息�
         this.value = 0f;         //初始化为0
     }
 
-    public void ChargeValue(int change)     //用于调整角色属性
+    public void ChargeValue(float change)     //用于调整角色属性
     {
         if (type == 0)          //整数
         {
@@ -65,6 +65,9 @@ public class Player               //存储角色信息等
     public Player()
     {
         HP = new playerAttribute(1);
+        HP.value = 100;
+        HP.type = 1;
+
         STR = new playerAttribute(2);
         DEF = new playerAttribute(3);
         LVL = new playerAttribute(4);
