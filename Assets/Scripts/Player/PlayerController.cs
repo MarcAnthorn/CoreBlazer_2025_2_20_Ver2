@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     [Range(0, 1f)]
     public float stageThreeSpeed;
 
+    [Range(100, 300f)]
+    public float bleedSpeed;
+
 
     public Light2D spriteLight;
 
@@ -41,8 +44,12 @@ public class PlayerController : MonoBehaviour
     {   
         time = 0;
         L0 = 300;
+
         L2 = L0 * (1 - 0.2f * 2);             
-        L5 = L2 * Mathf.Exp(-0.8f * (5 - 2)); 
+        L5 = L2 * (1 - 0.2f * 2); 
+
+        // L2 = L0 * (1 - 0.2f * 2);             
+        // L5 = L2 * Mathf.Exp(-0.8f * (5 - 2)); 
         spriteLight.pointLightOuterRadius = initialLightScope;
     }
 
@@ -68,6 +75,36 @@ public class PlayerController : MonoBehaviour
     }
     private void LightShrinking()
     {
+    //     if(isLightShrinking)
+    //     {
+    //         time += Time.deltaTime;
+    //         if (time >= 0 && time <= 2)
+    //         {
+    //             // L = stageOneSpeed * L0 * (1 - 0.1f * time);
+    //             L =  L0 * (1 - 0.1f * time);
+    //         }
+    //         else if (time > 2 && time <= 5)
+    //         {
+    //             // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (time - 2));
+    //             L =  L2 * Mathf.Exp(-0.6f * (time - 2));
+    //         }
+    //         else if (time > 5)
+    //         {
+    //             // L = stageThreeSpeed * L5 / (1 + 0.5f * (time - 5));
+    //             L = L5 / (1 + 0.5f * (time - 5));
+    //         }
+
+    //         spriteLight.pointLightOuterRadius = L / 10;
+
+    //         if(spriteLight.pointLightOuterRadius <= 2.12f)
+    //         {
+    //             spriteLight.pointLightOuterRadius = 2.12f;
+    //             TriggerLightShrinking(false);
+                
+    //         }
+        
+    //     }
+
         if(isLightShrinking)
         {
             time += Time.deltaTime;
@@ -79,7 +116,7 @@ public class PlayerController : MonoBehaviour
             else if (time > 2 && time <= 5)
             {
                 // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (time - 2));
-                L =  L2 * Mathf.Exp(-0.6f * (time - 2));
+                L =  L2 * (1 - 0.1f * time);
             }
             else if (time > 5)
             {
@@ -93,9 +130,9 @@ public class PlayerController : MonoBehaviour
             {
                 spriteLight.pointLightOuterRadius = 2.12f;
                 TriggerLightShrinking(false);
-                
+
             }
-        
+
         }
         else{
             BeginDamage();
@@ -122,7 +159,7 @@ public class PlayerController : MonoBehaviour
 
     private void BeginDamage()
     {
-        PlayerManager.Instance.player.HP.ChargeValue(-100f);
+        PlayerManager.Instance.player.HP.ChargeValue(-bleedSpeed);
         Debug.Log(PlayerManager.Instance.player.HP.value);
         if(PlayerManager.Instance.player.HP.value <= 0)
         {
@@ -138,6 +175,13 @@ public class PlayerController : MonoBehaviour
     private void ResetPosition()
     {
         this.transform.position = PlayerManager.Instance.initPosition;
+    }
+
+    public void ResumeLight()
+    {
+        L = 200;
+        time = 0;
+        isLightShrinking = true;
     }
 }
 
