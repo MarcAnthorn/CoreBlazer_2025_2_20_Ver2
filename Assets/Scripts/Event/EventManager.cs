@@ -179,11 +179,11 @@ public class EventManager : Singleton<EventManager>
                     KaidanText kaidanText = new KaidanText();
                     kaidanText.eventId = int.Parse(values[0]);
                     kaidanText.textId = int.Parse(values[1]);
-                    if(int.Parse(values[2]) == 1)
+                    if (int.Parse(values[2]) == 1)
                     {
                         kaidanText.isKwaidan = false;
                     }
-                    else if(int.Parse(values[2]) == 0)
+                    else if (int.Parse(values[2]) == 0)
                     {
                         kaidanText.isKwaidan = true;
                     }

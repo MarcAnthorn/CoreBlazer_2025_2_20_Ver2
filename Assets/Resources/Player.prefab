@@ -188,9 +188,10 @@ MonoBehaviour:
   L2: 0
   L5: 0
   L: 0
-  stageOneSpeed: 0
-  stageTwoSpeed: 0
-  stageThreeSpeed: 0
+  stageOneSpeed: 1
+  stageTwoSpeed: 1
+  stageThreeSpeed: 1
+  bleedSpeed: 100
   spriteLight: {fileID: 6314804529608919329}
   initialLightScope: 8
   cam: {fileID: 0}

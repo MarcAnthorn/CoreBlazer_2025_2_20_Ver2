@@ -49,10 +49,15 @@ public class EventOptionBtn : MonoBehaviour
     {
         btnSelf.onClick.AddListener(()=>{
             //进行影响的广播：
-            myOption.result?.myAction();
+            // myOption.result?.myAction();
 
-            //进行事件文字描述更改的广播：
-            EventHub.Instance.EventTrigger<string>("UpdateDescriptionAfterOption", myOption.result.outcome);
+            // //进行事件文字描述更改的广播：
+            // EventHub.Instance.EventTrigger<string>("UpdateDescriptionAfterOption", myOption.result.outcome);
+
+            //更新事件id：
+            myOption.result.myAction?.Invoke();
+            //选项之后的事件，一定不是初始事件
+            EventHub.Instance.EventTrigger<bool>("UpdateEvent", false);
 
         });
     }

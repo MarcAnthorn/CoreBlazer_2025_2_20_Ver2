@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public float stageThreeSpeed;
 
     [Range(50, 300f)]
+    [Tooltip("每秒扣除的血量（万分比），如100就是每秒扣除百分之一")]
     public float bleedSpeed = 100f;
 
 
@@ -39,12 +40,13 @@ public class PlayerController : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         cam.Follow = this.gameObject.transform;
 
+        EventHub.Instance.AddEventListener("OnPlayerDead", OnPlayerDead);
+
     }
     // Start is called before the first frame update
     void Start()
     { 
           
-        bleedSpeed = 100f;
         time = 0;
         L0 = 300;
 
@@ -59,19 +61,21 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LightShrinking();
-        Damage();
-
-
     }
 
     void FixedUpdate()
     {
         
         ControlPlayerMove();
+        Damage();
+        LightShrinking();
         
     }
 
+    void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener("OnPlayerDead", OnPlayerDead);
+    }
 
     private void TriggerLightShrinking(bool _isShrinking)
     {
@@ -162,19 +166,24 @@ public class PlayerController : MonoBehaviour
     {   
         if(isDamaging)
         {
-            PlayerManager.Instance.player.HP.ChargeValue(-bleedSpeed);
+            PlayerManager.Instance.player.HP.ChangeValue(-bleedSpeed / 50);
             Debug.Log(PlayerManager.Instance.player.HP.value);
             if(PlayerManager.Instance.player.HP.value <= 0)
             {
-                ResetPosition();
-                L = L0;
-                time = 0;
-                isLightShrinking = true;
-                isDamaging = false;
-                PlayerManager.Instance.player.HP.value = 100;
-                Debug.Log("you are dead");
+                EventHub.Instance.EventTrigger("OnPlayerDead");
             }
         }
+    }
+
+    private void OnPlayerDead()
+    {
+        ResetPosition();
+        L = L0;
+        time = 0;
+        isLightShrinking = true;
+        isDamaging = false;
+        PlayerManager.Instance.player.HP.value = 100;
+        Debug.LogWarning("PlayerController Dead Triggered");
     }
 
     private void ResetPosition()
@@ -184,7 +193,10 @@ public class PlayerController : MonoBehaviour
 
     public void ResumeLight()
     {
-        L = 200;
+        LeanTween.value(gameObject, L, 200, 1f)
+                .setOnUpdate((float val) => {
+                    L = val;
+        });
         time = 0;
         isLightShrinking = true;
         isDamaging = false;

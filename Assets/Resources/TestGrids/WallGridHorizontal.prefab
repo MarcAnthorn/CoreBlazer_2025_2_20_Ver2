@@ -124,15 +124,15 @@ MonoBehaviour:
   m_ApplyToSortingLayers: 00000000
   m_ShapePath:
   - {x: -0.5, y: -0.12598157, z: 0}
-  - {x: -0.49520493, y: 0.4040978, z: 0}
-  - {x: 0.49520493, y: 0.38971245, z: 0}
+  - {x: -0.49979544, y: 0.124078155, z: 0}
+  - {x: 0.5043857, y: 0.12805474, z: 0}
   - {x: 0.4952047, y: -0.12118673, z: 0}
-  m_ShapePathHash: 927584957
+  m_ShapePathHash: -2630487
   m_Mesh: {fileID: 0}
-  m_InstanceId: 67494
+  m_InstanceId: 33310
   m_LocalBounds:
-    m_Center: {x: -0.0023975372, y: 0.13905811, z: 0}
-    m_Extent: {x: 0.49760246, y: 0.26503968, z: 0}
+    m_Center: {x: 0.0021928549, y: 0.0010365844, z: 0}
+    m_Extent: {x: 0.50219285, y: 0.12701815, z: 0}
 --- !u!61 &-5420844102834830147
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -21,7 +21,7 @@ public struct playerAttribute           //角色属性（在读取角色信息�
         this.value = 0f;         //初始化为0
     }
 
-    public void ChargeValue(float change)     //用于调整角色属性
+    public void ChangeValue(float change)     //用于调整角色属性
     {
         if (type == 0)          //整数
         {
@@ -29,7 +29,9 @@ public struct playerAttribute           //角色属性（在读取角色信息�
         }
         else                    //万分比
         {
-            value += change * 0.0001f;
+            //Marc调整：调整前：
+            //value += change * 0.0001f;
+            value += value * change * 0.0001f;
         }
 
         if (value < 0)
