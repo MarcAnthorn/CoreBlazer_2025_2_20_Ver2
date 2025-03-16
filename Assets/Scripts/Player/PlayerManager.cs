@@ -50,10 +50,6 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         };
     }
 
-    //通过单例的内部方法，进行玩家属性的调整
-    //如：调整玩家血量：
-    public void AdjustHealth(int adjustment){}
-    //外部通过单例进行调整方法的调用；
 
 
 

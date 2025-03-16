@@ -39,6 +39,10 @@ public class EventManager : Singleton<EventManager>
     public void LoadEvents(int libIndex)           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
     {
         allEvents = new Dictionary<int, Event>();
+
+        //测试：
+        weights = new Dictionary<int, float>();
+        
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
         string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Test1_CSV.csv");
 

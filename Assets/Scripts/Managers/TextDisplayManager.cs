@@ -120,7 +120,7 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
         }
 
         //循环结果之后，更新选项：
-        EventHub.Instance.EventTrigger("UpdateOptions");
+        EventHub.Instance.EventTrigger("TryUpdateOptions");
 
     }
 }

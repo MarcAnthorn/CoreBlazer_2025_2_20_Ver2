@@ -36,13 +36,19 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
             }
         }
 
+        Debug.LogError("当前无事件抽取");
         return null;
     }
 
-    public void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        //填写角色与POI碰撞之后的逻辑
-        
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            UIManager.Instance.ShowPanel<GameMainPanel>();
+        }
+
+
     }
+
 
 }

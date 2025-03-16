@@ -30,6 +30,9 @@ public class GameMainPanel : BasePanel
     //当前的事件对象
     private Event currentEvent;
 
+    private bool isDetectingClose = false;
+    private bool isFirst = true;
+
     protected override void Init()
     {
         //默认显示的是神明道具面板；
@@ -47,6 +50,7 @@ public class GameMainPanel : BasePanel
 
         //当前面板显示，更新面板内容：
         //测试用：
+        isDetectingClose = false;
         UpdateEvent();          //更新事件相关内容
         UpdateAttribute();      //更新当前玩家属性显示
 
@@ -56,16 +60,31 @@ public class GameMainPanel : BasePanel
     protected override void Awake()
     {
         base.Awake();
-        EventHub.Instance.AddEventListener("UpdateOptions", UpdateOptions);
-        EventHub.Instance.AddEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
+        EventHub.Instance.AddEventListener<bool>("UpdateEvent", UpdateEvent);
+        EventHub.Instance.AddEventListener("TryUpdateOptions", TryUpdateOptions);
+        
+
 
 
     }
 
+    private void Update()
+    {
+        //如果当前处在检测任意键关闭的状态，则检测鼠标左键是否按下；如果按下，关闭面板；
+        if(isDetectingClose)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                UIManager.Instance.HidePanel<GameMainPanel>();
+            }
+        }
+    }
+
     private void OnDestroy()
     {
-        EventHub.Instance.RemoveEventListener("UpdateOptions", UpdateOptions);
-        EventHub.Instance.RemoveEventListener<string>("UpdateDescriptionAfterOption", UpdateDescriptionAfterOption);
+        EventHub.Instance.RemoveEventListener<bool>("UpdateEvent", UpdateEvent);
+         EventHub.Instance.RemoveEventListener("TryUpdateOptions", TryUpdateOptions);
+
 
     }
 
@@ -75,9 +94,10 @@ public class GameMainPanel : BasePanel
 
     //更新当前UI显示事件的方法；
     //包含：事件cg、事件描述文本、提示谜语、道具列表
-    private void UpdateEvent()
+    private void UpdateEvent(bool _isFirst = true)
     {
         Debug.Log("事件开始更新");
+        isFirst = _isFirst;
         //当前事件的获取一定要先于所有更新操作；
         // currentEvent = EventManager.Instance.BroadcastEvent();
 
@@ -197,13 +217,25 @@ public class GameMainPanel : BasePanel
                 text = dic[text.nextId];
             }
         }
+
+        
+
     }   
 
-
-    //选项触发后，需要更新当前事件的描述
-    private void UpdateDescriptionAfterOption(string _text)
+    private void TryUpdateOptions()
     {
-        // TextDisplayManager.Instance.BuildText(txtEventDescription, _text, Color.white);
+        if(isFirst)
+        {
+            UpdateOptions();
+
+        }
+        else 
+        {
+            isDetectingClose = true;
+        }
     }
+
+    
+   
    
 }
