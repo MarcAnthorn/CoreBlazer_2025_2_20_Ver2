@@ -62,7 +62,6 @@ public class EventManager : Singleton<EventManager>
 
                 if (int.Parse(values[0]) == libIndex && values.Length >= 5)
                 {
-                    Debug.Log("进入if");
                     Event eventData = new Event()
                     {
                         libId = int.Parse(values[0]),                                       //A列
@@ -91,7 +90,6 @@ public class EventManager : Singleton<EventManager>
                     {
                         startEvents.Add(eventData.eventId, eventData);      //起始事件
                         weights.Add(eventData.eventId, 1.0f);               //加入起始事件的权重（等权重）
-                        Debug.Log("Enter Weight Add");
                     }
                     else
                     {
@@ -351,22 +349,22 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
-    [Conditional("DEBUGTEST")]          //便于调试
+    // [Conditional("DEBUGTEST")]          //便于调试
     public void DebugTest()             //用于测试事件数据读取
     {
-        foreach (var _event in startEvents)
-        {
-            Event @event = _event.Value;
-            Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.eventType}");
-            Debug.Log($"事件选项数量：{@event.options.Count}");
-            for (int i = 0; i < 3; i++)
-            {
-                Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
-            }
-            @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
-            Debug.Log("==========================================");
+        // foreach (var _event in startEvents)
+        // {
+        //     Event @event = _event.Value;
+        //     Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.eventType}");
+        //     Debug.Log($"事件选项数量：{@event.options.Count}");
+        //     for (int i = 0; i < 3; i++)
+        //     {
+        //         Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
+        //     }
+        //     @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
+        //     Debug.Log("==========================================");
 
-        }
+        // }
     }
 
 }

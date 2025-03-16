@@ -116,7 +116,8 @@ public class GameMainPanel : BasePanel
 
         //事件描述文本加载：
         //应该先加载事件红字介绍，0.3s之后再加载事件的描述部分；
-        DislayText();
+        
+        // DislayText();
 
     
         //更新提示谜语：
