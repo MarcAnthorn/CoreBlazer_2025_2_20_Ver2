@@ -10,10 +10,6 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
     void Awake()        //开局就定下了本关卡内的所有POI对应事件
     {
         @event = ExtractEvent();
-        if(@event == null)
-        {
-            Debug.LogError("当前无事件抽取");
-        }
         GameLevelManager.Instance.events.Add(++GameLevelManager.Instance.eventNum, @event);
         Debug.Log(@event.eventId);
 
@@ -33,6 +29,7 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
         {
             totalWeight += weight;
         }
+        Debug.Log(totalWeight);
         randomValue = Random.Range(0f, totalWeight);      //随机生成
         foreach(KeyValuePair<int, float> pair in EventManager.Instance.weights)
         {
@@ -43,10 +40,12 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
             randomValue -= pair.Value;
             if (randomValue <= 0)
             {
+                Debug.Log($"尝试创建事件（EventGO）, 此时randowValue == {randomValue}");
                 return EventManager.Instance.CreateStartEvent(pair.Key);
             }
         }
 
+        Debug.LogError("尝试创建事件失败，返回null（EventGO）");
         return null;
     }
 

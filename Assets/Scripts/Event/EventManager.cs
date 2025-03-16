@@ -54,8 +54,10 @@ public class EventManager : Singleton<EventManager>
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
 
+                Debug.Log("开始读取事件");
                 if (int.Parse(values[0]) == libIndex && values.Length >= 5)
                 {
+                    Debug.Log("进入if");
                     Event eventData = new Event()
                     {
                         libId = int.Parse(values[0]),                                       //A列
@@ -78,11 +80,12 @@ public class EventManager : Singleton<EventManager>
                         eventData.options.Add(option);
                     }
 
-                    LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
+                    // LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
                     if (int.Parse(values[3]) / 10 == libIndex && int.Parse(values[3]) % 10 == 1)
                     {
                         startEvents.Add(eventData.eventId, eventData);      //起始事件
                         weights.Add(eventData.eventId, 1.0f);               //加入起始事件的权重（等权重）
+                        Debug.Log("Enter Weight Add");
                     }
                     else
                     {
