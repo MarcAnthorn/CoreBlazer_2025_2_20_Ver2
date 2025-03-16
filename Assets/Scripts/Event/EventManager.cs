@@ -81,12 +81,12 @@ public class EventManager : Singleton<EventManager>
                     LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
                     if ((int.Parse(values[3]) / 10 == libIndex && int.Parse(values[3]) % 10 == 1))
                     {
-                        startEvents.Add(eventData.eventId, eventData);
-                        weights.Add(eventData.eventId, 1.0f);               //加入权重（等权重）
+                        startEvents.Add(eventData.eventId, eventData);      //起始事件
+                        weights.Add(eventData.eventId, 1.0f);               //加入起始事件的权重（等权重）
                     }
                     else
                     {
-                        optionEvents.Add(eventData.eventId, eventData);
+                        optionEvents.Add(eventData.eventId, eventData);     //选项(后续)事件
                     }
 
                 }
