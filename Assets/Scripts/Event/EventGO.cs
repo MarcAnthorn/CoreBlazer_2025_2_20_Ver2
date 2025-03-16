@@ -21,14 +21,18 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
     private Event ExtractEvent()        //按照权重抽取事件
     {
         float totalWeight = 0f;
-        foreach(float weight in EventManager.Instance.weights.Values)
+        float randomValue = 0f;
+        foreach (float weight in EventManager.Instance.weights.Values)
         {
             totalWeight += weight;
         }
-
-        float randomValue = Random.Range(0f, totalWeight);      //随机生成
+        randomValue = Random.Range(0f, totalWeight);      //随机生成
         foreach(KeyValuePair<int, float> pair in EventManager.Instance.weights)
         {
+            if (GameLevelManager.Instance.events.ContainsKey(pair.Key))
+            {
+                continue;
+            }
             totalWeight -= pair.Value;
             if (totalWeight <= 0)
             {
