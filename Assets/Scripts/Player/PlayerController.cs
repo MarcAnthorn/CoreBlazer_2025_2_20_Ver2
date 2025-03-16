@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
    
     [Range(0, 5)]
     public float moveSpeed;
-    public bool isMoving = true;
     public float L0 = 300;
     public float L2, L5, L;
     private float time = 0;
@@ -29,6 +28,7 @@ public class PlayerController : MonoBehaviour
 
     public Light2D spriteLight;
 
+    public bool isMoving = true;
     private bool isLightShrinking = true;
     private bool isDamaging = false;
 
@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
         cam.Follow = this.gameObject.transform;
 
         EventHub.Instance.AddEventListener("OnPlayerDead", OnPlayerDead);
+        EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
 
     }
     // Start is called before the first frame update
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener("OnPlayerDead", OnPlayerDead);
+        EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
     }
 
     private void TriggerLightShrinking(bool _isShrinking)
@@ -167,7 +169,6 @@ public class PlayerController : MonoBehaviour
         if(isDamaging)
         {
             PlayerManager.Instance.player.HP.ChangeValue(-bleedSpeed / 50);
-            Debug.Log(PlayerManager.Instance.player.HP.value);
             if(PlayerManager.Instance.player.HP.value <= 0)
             {
                 EventHub.Instance.EventTrigger("OnPlayerDead");
@@ -201,6 +202,16 @@ public class PlayerController : MonoBehaviour
         isLightShrinking = true;
         isDamaging = false;
     }
+
+    //冻结（解冻）方法，在UI显示等其他交互的时候，冻结Player相关的调整
+    private void Freeze(bool _isFrozen)
+    {
+        isMoving = !_isFrozen;
+        isDamaging = !_isFrozen;
+        isLightShrinking = !_isFrozen;
+
+    }
+
 }
 
 

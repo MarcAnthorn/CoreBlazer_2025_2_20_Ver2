@@ -25,7 +25,7 @@ public class EventManager : Singleton<EventManager>
     protected override void Awake()
     {
         base.Awake();   //单例初始化
-        // LoadEvents(2001);  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
+        LoadEvents();  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
         DebugTest();
     }
 
@@ -81,7 +81,7 @@ public class EventManager : Singleton<EventManager>
                     }
 
                     LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
-                    if ((int.Parse(values[3]) / 10 == libIndex && int.Parse(values[3]) % 10 == 1))
+                    if (int.Parse(values[3]) / 10 == libIndex && int.Parse(values[3]) % 10 == 1)
                     {
                         startEvents.Add(eventData.eventId, eventData);      //起始事件
                         weights.Add(eventData.eventId, 1.0f);               //加入起始事件的权重（等权重）
@@ -251,13 +251,9 @@ public class EventManager : Singleton<EventManager>
         //}
     }
 
-    public void TriggerEvent(GameObject go)                //当角色的OnTriggerEnter()方法发生时调用,获取该事件信息
+    public void TriggerEvent(int eventId)                //当角色的OnTriggerEnter()方法发生时调用,获取该事件信息
     {
-        EventGO EvGO = go.GetComponent<EventGO>();
-        currentEventId = EvGO.eventId;
-        // EventUI eventUI = new EventUI();
-        // //可能会设置eventUI相关的数据(比如位置，大小等)
-        // Instantiate(eventUI);
+        currentEventId = eventId;
 
         //玩家触碰POI后，显示事件面板GameMainPanel:
         //面板生成之后会立刻获取当前的事件并且加载内容

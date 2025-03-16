@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3429453298297813023}
   - component: {fileID: 7253446431355311871}
   - component: {fileID: 4839234486225254298}
+  - component: {fileID: -8823075773481436075}
   m_Layer: 0
   m_Name: POI
   m_TagString: Untagged
@@ -120,3 +121,25 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &-8823075773481436075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571630891228677199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50f791a7749846b42aa9798d61e0781b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  event:
+    libId: 0
+    eventId: 0
+    eventType: 0
+    grade: 0
+    options: []
+    evDescription: 
+    isTrigger: 0
+    firstTextId: 0
+  eventId: 0

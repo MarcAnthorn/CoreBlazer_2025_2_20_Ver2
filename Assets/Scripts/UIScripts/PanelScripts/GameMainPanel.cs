@@ -36,7 +36,7 @@ public class GameMainPanel : BasePanel
     protected override void Init()
     {
         //默认显示的是神明道具面板；
-        UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
+        // UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
         btnToGodItem.onClick.AddListener(()=>{
             UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
             UIManager.Instance.HidePanel<CommonItemPanel>();
@@ -50,7 +50,13 @@ public class GameMainPanel : BasePanel
 
         //当前面板显示，更新面板内容：
         //测试用：
-        isDetectingClose = false;
+        // isDetectingClose = false;
+        isDetectingClose = true;
+        
+
+        //冻结玩家
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
+
         UpdateEvent();          //更新事件相关内容
         UpdateAttribute();      //更新当前玩家属性显示
 
@@ -62,18 +68,16 @@ public class GameMainPanel : BasePanel
         base.Awake();
         EventHub.Instance.AddEventListener<bool>("UpdateEvent", UpdateEvent);
         EventHub.Instance.AddEventListener("TryUpdateOptions", TryUpdateOptions);
-        
-
-
-
+    
     }
 
     private void Update()
     {
+
         //如果当前处在检测任意键关闭的状态，则检测鼠标左键是否按下；如果按下，关闭面板；
         if(isDetectingClose)
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.A))
             {
                 UIManager.Instance.HidePanel<GameMainPanel>();
             }
@@ -83,9 +87,10 @@ public class GameMainPanel : BasePanel
     private void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener<bool>("UpdateEvent", UpdateEvent);
-         EventHub.Instance.RemoveEventListener("TryUpdateOptions", TryUpdateOptions);
-
-
+        EventHub.Instance.RemoveEventListener("TryUpdateOptions", TryUpdateOptions);
+        
+        //解冻玩家
+        EventHub.Instance.EventTrigger<bool>("Freeze", false);
     }
 
 
@@ -103,7 +108,8 @@ public class GameMainPanel : BasePanel
 
         // currentEvent = EventManager.Instance.allEvents[1];
         //测试用：
-        currentEvent = EventManager.Instance.startEvents[1];
+        // currentEvent = EventManager.Instance.allEvents[1];
+        Debug.Log(EventManager.Instance.currentEventId);
     
         //事件cg加载：
 

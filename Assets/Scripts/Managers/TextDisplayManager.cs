@@ -87,7 +87,7 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
     {
         StopCoroutine(currentCoroutine);
         tmp.text = sbForImmediate.ToString();
-        EventHub.Instance.EventTrigger("UpdateOptions");
+        EventHub.Instance.EventTrigger("TryUpdateOptions");
     }
 
     //用于清空当前StringBuilder的方法：

@@ -10,7 +10,14 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
     void Awake()        //开局就定下了本关卡内的所有POI对应事件
     {
         @event = ExtractEvent();
+        if(@event == null)
+        {
+            Debug.LogError("当前无事件抽取");
+        }
         GameLevelManager.Instance.events.Add(++GameLevelManager.Instance.eventNum, @event);
+        Debug.Log(@event.eventId);
+
+
     }
 
     void Update()
@@ -33,14 +40,13 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
             {
                 continue;
             }
-            totalWeight -= pair.Value;
-            if (totalWeight <= 0)
+            randomValue -= pair.Value;
+            if (randomValue <= 0)
             {
                 return EventManager.Instance.CreateStartEvent(pair.Key);
             }
         }
 
-        Debug.LogError("当前无事件抽取");
         return null;
     }
 
@@ -48,10 +54,9 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            UIManager.Instance.ShowPanel<GameMainPanel>();
+            EventManager.Instance.TriggerEvent(eventId);
+            Destroy(this.gameObject);
         }
-
-
     }
 
 
