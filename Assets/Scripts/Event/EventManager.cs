@@ -10,6 +10,8 @@ using static UnityEditor.Progress;
 using System.Linq;
 using static Event;
 using System.Text;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class EventManager : Singleton<EventManager>
 {
@@ -94,7 +96,7 @@ public class EventManager : Singleton<EventManager>
                 line = lines[i + 1];
                 int charToFind = line.IndexOf(",");
                 string firstValue = line.Substring(0, charToFind);
-                if (int.Parse(firstValue) != libIndex)
+                if (int.Parse(firstValue) != libIndex)          //如果下一行的事件库Id变化，则++
                     libIndex++;
 
             }
@@ -343,22 +345,22 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
+    [Conditional("DebugTest")]
     public void DebugTest()             //用于测试事件数据读取
     {
-        // foreach(var _event in allEvents)
-        // {
-        //     Event @event = _event.Value;
-        //     Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.type}");
-        //     Debug.Log($"事件选项数量：{@event.options.Count}");
-        //     for (int i = 0; i < 3; i++)
-        //     {
-        //         Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
-        //     }
-        //     @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
-        //     Debug.Log("==========================================");
+        foreach (var _event in startEvents)
+        {
+            Event @event = _event.Value;
+            Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.eventType}");
+            Debug.Log($"事件选项数量：{@event.options.Count}");
+            for (int i = 0; i < 3; i++)
+            {
+                Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
+            }
+            @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
+            Debug.Log("==========================================");
 
-
-        // }
+        }
     }
 
 }
