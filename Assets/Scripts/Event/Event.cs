@@ -21,14 +21,15 @@ public class Event          //
     public bool isTrigger;                      //是否触发过(对于弹窗事件)
     public int firstTextId;                     //首句Id
 
-    public EventResult result;
+    public bool hasResult = false;
+    public EventResult result = null;
 
     public Event()
     {
         eventType = new MyEventType();
         options = new List<EventOption>();
         textLib = new Dictionary<int, KaidanText>();
-        result = new EventResult();
+        //result = new EventResult();
     }
     ~Event()
     {
@@ -112,35 +113,43 @@ public class Event          //
 
     public void ExecuteResult(Player player)                //执行事件结果
     {
-        player.HP.value += this.result.change_HP;
-        player.HP.value *= (this.result.change_HP_rate + 1);
+        if (hasResult)
+        {
+            player.HP.value += this.result.change_HP;
+            player.HP.value *= (this.result.change_HP_rate + 1);
 
-        player.STR.value += this.result.change_STR;
-        player.STR.value *= (this.result.change_STR_rate + 1);
+            player.STR.value += this.result.change_STR;
+            player.STR.value *= (this.result.change_STR_rate + 1);
 
-        player.DEF.value += this.result.change_DEF;
-        player.DEF.value *= (this.result.change_DEF_rate + 1);
+            player.DEF.value += this.result.change_DEF;
+            player.DEF.value *= (this.result.change_DEF_rate + 1);
 
-        player.LVL.value += this.result.change_LVL;
-        player.LVL.value *= (this.result.change_LVL_rate + 1);
+            player.LVL.value += this.result.change_LVL;
+            player.LVL.value *= (this.result.change_LVL_rate + 1);
 
-        player.SAN.value += this.result.change_SAN;
-        player.SAN.value *= (this.result.change_SAN_rate + 1);
+            player.SAN.value += this.result.change_SAN;
+            player.SAN.value *= (this.result.change_SAN_rate + 1);
 
-        player.SPD.value += this.result.change_SPD;
-        player.SPD.value *= (this.result.change_SPD_rate + 1);
+            player.SPD.value += this.result.change_SPD;
+            player.SPD.value *= (this.result.change_SPD_rate + 1);
 
-        player.CRIT_Rate.value += this.result.change_CRIT_Rate;
-        player.CRIT_Rate.value *= (this.result.change_CRIT_Rate_rate + 1);
+            player.CRIT_Rate.value += this.result.change_CRIT_Rate;
+            player.CRIT_Rate.value *= (this.result.change_CRIT_Rate_rate + 1);
 
-        player.CRIT_DMG.value += this.result.change_CRIT_DMG;
-        player.CRIT_DMG.value *= (this.result.change_CRIT_DMG_rate + 1);
+            player.CRIT_DMG.value += this.result.change_CRIT_DMG;
+            player.CRIT_DMG.value *= (this.result.change_CRIT_DMG_rate + 1);
 
-        player.HIT.value += this.result.change_HIT;
-        player.HIT.value *= (this.result.change_HIT_rate + 1);
+            player.HIT.value += this.result.change_HIT;
+            player.HIT.value *= (this.result.change_HIT_rate + 1);
 
-        player.AVO.value += this.result.change_AVO;
-        player.AVO.value *= (this.result.change_AVO_rate + 1);
+            player.AVO.value += this.result.change_AVO;
+            player.AVO.value *= (this.result.change_AVO_rate + 1);
+        }
+        else
+        {
+            Debug.LogError("正在尝试访问一个结果为 null 的事件结果");
+        }
+
     }
 
     public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本

@@ -21,7 +21,8 @@ public class EventManager : Singleton<EventManager>
     //存储某一关卡事件库里的所有可能出现的事件，用来为本关卡提供可调用的Event数据(用eventId来查找)
     public Dictionary<int, Event> startEvents;
     public Dictionary<int, Event> optionEvents;
-    public Dictionary<int, float> weights;      //表示事件对应的权重
+    public Dictionary<int, float> weights;                          //表示事件对应的权重
+    public Dictionary<int, Event.EventResult> eventResults;         //表示所有事件的所有结果(性能优化)
     public int currentEventId = 0;
     public static int eventCount = 0;
 
@@ -29,7 +30,7 @@ public class EventManager : Singleton<EventManager>
     {
         base.Awake();   //单例初始化
         LoadEvents();  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
-        DebugTest();
+        DebugTest1();
     }
 
     private void Start()
@@ -53,7 +54,8 @@ public class EventManager : Singleton<EventManager>
 
         if (File.Exists(path))
         {
-            string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
+            LoadEventResult();                                              //加载所有事件的所有结果
+            string[] lines = File.ReadAllLines(path, Encoding.UTF8);        //分割每一行存入lines
 
             for (int i = 5; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
@@ -69,8 +71,12 @@ public class EventManager : Singleton<EventManager>
                         eventType = (Event.MyEventType)int.Parse(values[2]),                //C列
                         grade = int.Parse(values[4])                                        //E列
                     };
-                    eventData.result.resultId = int.Parse(values[3]);                       //D列
-                    eventData = LoadEventResult(eventData.result.resultId, eventData);      //读入事件的对应结果
+                    int result_id = int.Parse(values[3]);                       //D列
+                    if(result_id != 0)
+                    {
+                        eventData.hasResult = true;                         //表示有结果可以访问
+                        eventData.result = GetEventResult(result_id);       //读入事件的对应结果
+                    }
 
                     for (int j = 0; j < 3; j++)     //var option in eventData.options
                     {
@@ -115,57 +121,75 @@ public class EventManager : Singleton<EventManager>
             Debug.LogWarning("事件数据文件不存在！");
         }
     }
-    public Event LoadEventResult(int resultId, Event @event)        //一般来说不用外部调用
+    public Event.EventResult GetEventResult(int resultId)
     {
+        foreach(KeyValuePair<int, Event.EventResult> pair in eventResults)
+        {
+            if(pair.Key == resultId)
+            {
+                return pair.Value;
+            }
+        }
+
+        return null;
+    }
+    public void LoadEventResult()        //一般来说不用外部调用
+    {
+        eventResults = new Dictionary<int, EventResult>();
+
         string path = Path.Combine(Application.dataPath, "Resources/EventData/EventResult/EventResults1.csv");
         if (File.Exists(path))
         {
-            string[] lines = File.ReadAllLines(path);
-            for (int i = 5; i < lines.Length; i++)
+            string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
+
+            for (int i = 4; i < lines.Length; i++)
             {
                 string line = lines[i];
-                string[] values = line.Split();
+                string[] values = line.Split(",");
 
-                if (values.Length > 4 && int.Parse(values[0]) == resultId)
+                if (values.Length > 4 /*&& int.Parse(values[0]) == resultId*/)
                 {
-                    @event.result.spId = int.Parse(values[1]);
+                    Event.EventResult @eventResult = new Event.EventResult();
+                    @eventResult.resultId = int.Parse(values[0]);      //涉及到覆盖，所以要重新再设置一次
+                    @eventResult.spId = int.Parse(values[1]);
 
-                    @event.result.change_HP = int.Parse(values[2]);
-                    @event.result.change_HP_rate = int.Parse(values[3]);
+                    @eventResult.change_HP = float.Parse(values[2]);
+                    @eventResult.change_HP_rate = float.Parse(values[3]);
 
-                    @event.result.change_STR = int.Parse(values[4]);
-                    @event.result.change_STR_rate = int.Parse(values[5]);
+                    @eventResult.change_STR = float.Parse(values[4]);
+                    @eventResult.change_STR_rate = float.Parse(values[5]);
 
-                    @event.result.change_DEF = int.Parse(values[6]);
-                    @event.result.change_DEF_rate = int.Parse(values[7]);
+                    @eventResult.change_DEF = float.Parse(values[6]);
+                    @eventResult.change_DEF_rate = float.Parse(values[7]);
 
-                    @event.result.change_LVL = int.Parse(values[8]);
-                    @event.result.change_LVL_rate = int.Parse(values[9]);
+                    @eventResult.change_LVL = float.Parse(values[8]);
+                    @eventResult.change_LVL_rate = float.Parse(values[9]);
 
-                    @event.result.change_SAN = int.Parse(values[10]);
-                    @event.result.change_SAN_rate = int.Parse(values[11]);
+                    @eventResult.change_SAN = float.Parse(values[10]);
+                    @eventResult.change_SAN_rate = float.Parse(values[11]);
 
-                    @event.result.change_SPD = int.Parse(values[12]);
-                    @event.result.change_SPD_rate = int.Parse(values[13]);
+                    @eventResult.change_SPD = float.Parse(values[12]);
+                    @eventResult.change_SPD_rate = float.Parse(values[13]);
 
-                    @event.result.change_CRIT_Rate = int.Parse(values[14]);
-                    @event.result.change_CRIT_Rate_rate = int.Parse(values[15]);
+                    @eventResult.change_CRIT_Rate = float.Parse(values[14]);
+                    @eventResult.change_CRIT_Rate_rate = float.Parse(values[15]);
 
-                    @event.result.change_CRIT_DMG = int.Parse(values[16]);
-                    @event.result.change_CRIT_DMG_rate = int.Parse(values[17]);
+                    @eventResult.change_CRIT_DMG = float.Parse(values[16]);
+                    @eventResult.change_CRIT_DMG_rate = float.Parse(values[17]);
 
-                    @event.result.change_HIT = int.Parse(values[18]);
-                    @event.result.change_HIT_rate = int.Parse(values[19]);
+                    @eventResult.change_HIT = float.Parse(values[18]);
+                    @eventResult.change_HIT_rate = float.Parse(values[19]);
 
-                    @event.result.change_AVO = int.Parse(values[20]);
-                    @event.result.change_AVO_rate = int.Parse(values[21]);
+                    @eventResult.change_AVO = float.Parse(values[20]);
+                    @eventResult.change_AVO_rate = float.Parse(values[21]);
+
+                    eventResults.Add(@eventResult.resultId, @eventResult);
                 }
 
             }
 
         }
 
-        return @event;
     }
     public void LoadKaidanTexts(int eventIndex, Event @event)     //用在Event加载的时候
     {
@@ -350,7 +374,7 @@ public class EventManager : Singleton<EventManager>
     }
 
     // [Conditional("DEBUGTEST")]          //便于调试
-    public void DebugTest()             //用于测试事件数据读取
+    public void DebugTest1()             //用于测试事件数据读取
     {
         // foreach (var _event in startEvents)
         // {
