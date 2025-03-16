@@ -83,7 +83,7 @@ public class GameMainPanel : BasePanel
 
         // currentEvent = EventManager.Instance.allEvents[1];
         //测试用：
-        currentEvent = EventManager.Instance.allEvents[1];
+        currentEvent = EventManager.Instance.startEvents[1];
     
         //事件cg加载：
 

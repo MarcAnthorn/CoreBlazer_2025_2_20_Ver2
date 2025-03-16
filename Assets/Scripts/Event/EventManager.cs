@@ -14,7 +14,8 @@ using System.Text;
 public class EventManager : Singleton<EventManager>
 {
     //存储某一关卡事件库里的所有可能出现的事件，用来为本关卡提供可调用的Event数据(用eventId来查找)
-    public Dictionary<int, Event> allEvents;
+    public Dictionary<int, Event> startEvents;
+    public Dictionary<int, Event> optionEvents;
     public Dictionary<int, float> weights;      //表示事件对应的权重
     public int currentEventId = 0;
     public static int eventCount = 0;
@@ -36,11 +37,12 @@ public class EventManager : Singleton<EventManager>
 
     }
 
-    public void LoadEvents(int libIndex)           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
+    public void LoadEvents()           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
     {
-        allEvents = new Dictionary<int, Event>();
+        startEvents = new Dictionary<int, Event>();
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
         string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Test1_CSV.csv");
+        int libIndex = 2001;
 
         if (File.Exists(path))
         {
@@ -76,9 +78,23 @@ public class EventManager : Singleton<EventManager>
                     }
 
                     LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
-                    allEvents.Add(eventData.eventId, eventData);
-                    weights.Add(eventData.eventId, 1.0f);               //加入权重（等权重）
+                    if ((int.Parse(values[3]) / 10 == libIndex && int.Parse(values[3]) % 10 == 1))
+                    {
+                        startEvents.Add(eventData.eventId, eventData);
+                        weights.Add(eventData.eventId, 1.0f);               //加入权重（等权重）
+                    }
+                    else
+                    {
+                        optionEvents.Add(eventData.eventId, eventData);
+                    }
+
                 }
+
+                line = lines[i + 1];
+                int charToFind = line.IndexOf(",");
+                string firstValue = line.Substring(0, charToFind);
+                if (int.Parse(firstValue) != libIndex)
+                    libIndex++;
 
             }
 
@@ -199,7 +215,7 @@ public class EventManager : Singleton<EventManager>
 
         // 遍历 events 字典，构建 CSV 行  
         List<string> lines = new List<string>();
-        foreach (var kvp in allEvents)
+        foreach (var kvp in startEvents)
         {
             Event eventData = kvp.Value;
             string line = $"{eventData.eventId}, name, EvDescription";
@@ -214,7 +230,7 @@ public class EventManager : Singleton<EventManager>
     //暂定不需要
     public void SelectOption(int optionIndex)           //1,2,3
     {
-        foreach (var option in allEvents[currentEventId].options)
+        foreach (var option in optionEvents[currentEventId].options)
         {
             if (optionIndex == option.optionId)
             {
@@ -249,18 +265,22 @@ public class EventManager : Singleton<EventManager>
     //用于向外部广播事件的方法，使外部获取当前的事件实例(Marc添加)
     public Event BroadcastEvent()
     {
-        if (allEvents.ContainsKey(currentEventId))
+        if (startEvents.ContainsKey(currentEventId))
         {
-            return allEvents[currentEventId];
+            return startEvents[currentEventId];
+        }
+        else if (optionEvents.ContainsKey(currentEventId))
+        {
+            return optionEvents[currentEventId];
         }
 
         Debug.LogError("当前尝试从EventManager中获取的事件不存在");
         return null;
     }
 
-    public Event CreateEvent(int eventId)           //给外部调用，创建事件
+    public Event CreateStartEvent(int eventId)           //给外部调用，创建事件
     {
-        foreach (var _event in allEvents)
+        foreach (var _event in startEvents)
         {
             if (_event.Value.eventId == eventId)
             {
@@ -280,15 +300,15 @@ public class EventManager : Singleton<EventManager>
         Debug.LogError("无法创建一个本关卡内不存在的事件");
         return null;
     }
-    public Event DeleteEvent(int eventId)           //给外部调用，删除事件
+    public Event DeleteStartEvent(int eventId)           //给外部调用，删除事件
     {
-        foreach (var _event in allEvents)
+        foreach (var _event in startEvents)
         {
             if (_event.Value.eventId == eventId)
             {
                 Event tempEvent = _event.Value;
-                allEvents[_event.Key] = null;       //GC系统自动清除new的对象
-                allEvents.Remove(_event.Key);       //移除键值对
+                startEvents[_event.Key] = null;       //GC系统自动清除new的对象
+                startEvents.Remove(_event.Key);       //移除键值对
 
                 return tempEvent;
             }

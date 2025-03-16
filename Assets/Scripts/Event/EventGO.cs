@@ -32,7 +32,7 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
             totalWeight -= pair.Value;
             if (totalWeight <= 0)
             {
-                return EventManager.Instance.CreateEvent(pair.Key);
+                return EventManager.Instance.CreateStartEvent(pair.Key);
             }
         }
 
