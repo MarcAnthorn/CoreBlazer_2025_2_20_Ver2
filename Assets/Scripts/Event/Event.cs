@@ -155,7 +155,7 @@ public class Event          //
         }
         else
         {
-            Debug.LogError("正在尝试访问一个结果为 null 的事件结果");
+            Debug.LogWarning("正在尝试访问一个结果为 null 的事件结果");
         }
 
     }
