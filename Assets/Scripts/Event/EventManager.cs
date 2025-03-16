@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#define DEBUGTEST
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -12,6 +14,7 @@ using static Event;
 using System.Text;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
+
 
 public class EventManager : Singleton<EventManager>
 {
@@ -42,6 +45,7 @@ public class EventManager : Singleton<EventManager>
     public void LoadEvents()           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
     {
         startEvents = new Dictionary<int, Event>();
+        optionEvents = new Dictionary<int, Event>();
         weights = new Dictionary<int, float>();
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
         string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Test1_CSV.csv");
@@ -51,7 +55,7 @@ public class EventManager : Singleton<EventManager>
         {
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
 
-            for (int i = 4; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
+            for (int i = 5; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
@@ -66,7 +70,7 @@ public class EventManager : Singleton<EventManager>
                         grade = int.Parse(values[4])                                        //E列
                     };
                     eventData.result.resultId = int.Parse(values[3]);                       //D列
-                    eventData = LoadEventResult(1, eventData);                       //读入事件的对应结果
+                    eventData = LoadEventResult(eventData.result.resultId, eventData);                       //读入事件的对应结果
                     for (int j = 0; j < 3; j++)     //var option in eventData.options
                     {
                         EventOption option = new EventOption();
@@ -81,7 +85,7 @@ public class EventManager : Singleton<EventManager>
                     }
 
                     LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
-                    if (int.Parse(values[3]) / 10 == libIndex && int.Parse(values[3]) % 10 == 1)
+                    if (int.Parse(values[1]) / 10 == libIndex && int.Parse(values[1]) % 10 == 1)
                     {
                         startEvents.Add(eventData.eventId, eventData);      //起始事件
                         weights.Add(eventData.eventId, 1.0f);               //加入起始事件的权重（等权重）
@@ -93,11 +97,14 @@ public class EventManager : Singleton<EventManager>
 
                 }
 
-                line = lines[i + 1];
-                int charToFind = line.IndexOf(",");
-                string firstValue = line.Substring(0, charToFind);
-                if (int.Parse(firstValue) != libIndex)          //如果下一行的事件库Id变化，则++
-                    libIndex++;
+                if (i + 1 <= 87)
+                {
+                    line = lines[i + 1];
+                    int charToFind = line.IndexOf(",");
+                    string firstValue = line.Substring(0, charToFind);
+                    if (int.Parse(firstValue) != libIndex)          //如果下一行的事件库Id变化，则++
+                        libIndex++;
+                }
 
             }
 
@@ -174,7 +181,7 @@ public class EventManager : Singleton<EventManager>
                 string[] values = line.Split(',');          //将每一列按照逗号分割
                 if (i == 1)
                 {
-                    @event.firstTextId = int.Parse(values[0]);
+                    @event.firstTextId = int.Parse(values[1]);
                 }
 
                 if (int.Parse(values[0]) == eventIndex && values.Length >= 4/* && int.Parse(values[2]) == 0*/)
@@ -341,7 +348,7 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
-    [Conditional("DebugTest")]
+    [Conditional("DEBUGTEST")]          //便于调试
     public void DebugTest()             //用于测试事件数据读取
     {
         foreach (var _event in startEvents)
