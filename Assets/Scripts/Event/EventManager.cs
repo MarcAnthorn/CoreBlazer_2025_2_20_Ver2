@@ -51,12 +51,11 @@ public class EventManager : Singleton<EventManager>
         {
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
 
-            for (int i = 4; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
+            for (int i = 5; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
 
-                Debug.Log("开始读取事件");
                 if (int.Parse(values[0]) == libIndex && values.Length >= 5)
                 {
                     Debug.Log("进入if");
@@ -68,7 +67,7 @@ public class EventManager : Singleton<EventManager>
                         grade = int.Parse(values[4])                                        //E列
                     };
                     eventData.result.resultId = int.Parse(values[3]);                       //D列
-                    eventData = LoadEventResult(1, eventData);                       //读入事件的对应结果
+                    eventData = LoadEventResult(eventData.result.resultId, eventData);      //读入事件的对应结果
                     for (int j = 0; j < 3; j++)     //var option in eventData.options
                     {
                         EventOption option = new EventOption();
