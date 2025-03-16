@@ -40,7 +40,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         //PlayerManager 管理的全局唯一Player实例
         player = new Player()
         {
-            //报错，暂时先注释：（Marc调整）
+            
             // HP = 100,
             // STR = 10,
             // DEF = 5,

@@ -71,14 +71,32 @@ public class Player               //存储角色信息等
         HP.type = 1;
 
         STR = new playerAttribute(2);
+        STR.value = 10;
+
         DEF = new playerAttribute(3);
+        DEF.value = 1;
+
         LVL = new playerAttribute(4);
+        LVL.value = 1;
+
         SAN = new playerAttribute(5);
+        SAN.value = 40;
+        
         SPD = new playerAttribute(6);
+        SPD.value = 10;
+
         CRIT_Rate = new playerAttribute(7);
+        CRIT_Rate.value = 0.1f;
+        CRIT_Rate.type = 1;
+
         CRIT_DMG = new playerAttribute(8);
         HIT = new playerAttribute(9);
+
         AVO = new playerAttribute(10);
+        AVO.value = 0.3f;
+        AVO.type = 1;
+
+        DebugInfo();
 
         bag = new Dictionary<int, Item>();
     }
@@ -92,6 +110,11 @@ public class Player               //存储角色信息等
     public void GameOver()
     {
 
+    }
+
+    public void DebugInfo()
+    {
+        Debug.LogWarning($"HP: {HP.value}, \n STR:{STR.value}, \n DEF:{DEF.value}, \n SAN:{SAN.value}, \n SPD:{SPD.value}, \n CRIT_Rate:{CRIT_Rate.value}, \n CRIT_DMG:{CRIT_DMG.value}, \n HIT:{HIT.value}, \n AVO:{AVO.value}");
     }
 
 }

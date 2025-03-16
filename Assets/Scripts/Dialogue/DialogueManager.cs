@@ -82,18 +82,18 @@ public class DialogueManager : Singleton<DialogueManager>
 
         return;
     }
-    public void RecurReadDialogueFrom(int id)           //利用递归进行读取
-    {
-        if (!dialogueDictionary.ContainsKey(id) || dialogueDictionary[id].nextId == 0)
-        {
-            return;
-        }
-        Debug.Log($"文本Id：{dialogueDictionary[id].textId}, 文本内容：{dialogueDictionary[id].text}");
-        //此处用来处理文字动态显示(Marc来完成)
-        RecurReadDialogueFrom(dialogueDictionary[id].nextId);
+    // public void RecurReadDialogueFrom(int id)           //利用递归进行读取
+    // {
+    //     if (!dialogueDictionary.ContainsKey(id) || dialogueDictionary[id].nextId == 0)
+    //     {
+    //         return;
+    //     }
+    //     Debug.Log($"文本Id：{dialogueDictionary[id].textId}, 文本内容：{dialogueDictionary[id].text}");
+    //     //此处用来处理文字动态显示(Marc来完成)
+    //     RecurReadDialogueFrom(dialogueDictionary[id].nextId);
 
-        return;
-    }
+    //     return;
+    // }
 
 
 

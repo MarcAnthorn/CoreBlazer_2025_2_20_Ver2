@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -30,7 +31,7 @@ public class GameMainPanel : BasePanel
     //当前的事件对象
     private Event currentEvent;
 
-    private bool isDetectingClose = false;
+    private bool isDetectingCloseInput = false;
     private bool isFirst = true;
 
     protected override void Init()
@@ -50,8 +51,7 @@ public class GameMainPanel : BasePanel
 
         //当前面板显示，更新面板内容：
         //测试用：
-        // isDetectingClose = false;
-        isDetectingClose = true;
+        isDetectingCloseInput = false;
         
 
         //冻结玩家
@@ -68,6 +68,7 @@ public class GameMainPanel : BasePanel
         base.Awake();
         EventHub.Instance.AddEventListener<bool>("UpdateEvent", UpdateEvent);
         EventHub.Instance.AddEventListener("TryUpdateOptions", TryUpdateOptions);
+        EventHub.Instance.AddEventListener("ClearOptions", ClearOptions);
     
     }
 
@@ -75,9 +76,9 @@ public class GameMainPanel : BasePanel
     {
 
         //如果当前处在检测任意键关闭的状态，则检测鼠标左键是否按下；如果按下，关闭面板；
-        if(isDetectingClose)
+        if(isDetectingCloseInput)
         {
-            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.A))
+            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.P))
             {
                 UIManager.Instance.HidePanel<GameMainPanel>();
             }
@@ -88,7 +89,9 @@ public class GameMainPanel : BasePanel
     {
         EventHub.Instance.RemoveEventListener<bool>("UpdateEvent", UpdateEvent);
         EventHub.Instance.RemoveEventListener("TryUpdateOptions", TryUpdateOptions);
-        
+        EventHub.Instance.RemoveEventListener("ClearOptions", ClearOptions);
+    
+
         //解冻玩家
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
     }
@@ -104,20 +107,16 @@ public class GameMainPanel : BasePanel
         Debug.Log("事件开始更新");
         isFirst = _isFirst;
         //当前事件的获取一定要先于所有更新操作；
-        // currentEvent = EventManager.Instance.BroadcastEvent();
+        currentEvent = EventManager.Instance.BroadcastEvent();
 
-        // currentEvent = EventManager.Instance.allEvents[1];
-        //测试用：
-        // currentEvent = EventManager.Instance.allEvents[1];
-        Debug.Log(EventManager.Instance.currentEventId);
     
         //事件cg加载：
 
 
         //事件描述文本加载：
         //应该先加载事件红字介绍，0.3s之后再加载事件的描述部分；
-        
-        // DislayText();
+
+        DislayText();
 
     
         //更新提示谜语：
@@ -126,6 +125,13 @@ public class GameMainPanel : BasePanel
         //更新当前道具列表；
         //当前类不负责道具列表的刷新；交给ItemPanel（2个）自己实现
         //此处相当于只是发布事件：RefreshItem，同时会触发两个ItemPanel的内部订阅事件RefreshItem
+
+        //如果当前事件是含有结果的事件，那么需要执行事件结果：
+        if(!isFirst)
+        {
+            currentEvent.ExecuteResult(PlayerManager.Instance.player);
+            PlayerManager.Instance.player.DebugInfo();
+        }
         
 
     }
@@ -147,9 +153,14 @@ public class GameMainPanel : BasePanel
     private void UpdateOptions()
     {
         //事件选项加载：
+
         optionList.Clear();
         foreach(var option in currentEvent.options)
         {
+            if(option.OpDescription == "0")
+            {
+                continue;
+            }
             //遍历每一个option数据结构；
             //访问数据结构前，动态创建btnEventOption:
             EventOptionBtn nowButtonScript = Instantiate<GameObject>(Resources.Load<GameObject>("EventOptionBtn"), 
@@ -158,7 +169,8 @@ public class GameMainPanel : BasePanel
             
             //修改当前Button的属性判断描述和选项描述：
             //当前的Button应该是只有唯一的属性判断；应该是根据EventOption数据结构中存储的Option的id决定的；
-            // nowButtonScript.setRequirementAction(option.op);
+            nowButtonScript.setRequirementAction(option.ConditionName(), option.minCondition, option.maxCondition);
+            Debug.Log(option.ConditionName());
             nowButtonScript.setDescriptionAction(option.OpDescription);
 
             //订正当前Button是否可交互：
@@ -238,11 +250,20 @@ public class GameMainPanel : BasePanel
         }
         else 
         {
-            isDetectingClose = true;
+            isDetectingCloseInput = true;
         }
     }
 
+    private void ClearOptions()
+    {
+        foreach(var optionObj in optionList)
+        {
+            GameObject.Destroy(optionObj);
+        }
+    }
     
+
+             
    
    
 }

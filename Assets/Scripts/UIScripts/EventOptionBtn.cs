@@ -13,7 +13,7 @@ public class EventOptionBtn : MonoBehaviour
     public TextMeshProUGUI txtOptionDescription;
     private Button btnSelf;
 
-    public UnityAction<string> setRequirementAction;
+    public UnityAction<string, float, float> setRequirementAction;
     public UnityAction<string> setDescriptionAction;
 
     public UnityAction<bool> setInteractableAction;
@@ -58,13 +58,14 @@ public class EventOptionBtn : MonoBehaviour
             myOption.result.myAction?.Invoke();
             //选项之后的事件，一定不是初始事件
             EventHub.Instance.EventTrigger<bool>("UpdateEvent", false);
+            EventHub.Instance.EventTrigger("ClearOptions");
 
         });
     }
 
-    private void SetRequirement(string text)
+    private void SetRequirement(string conditionName, float minValue, float maxValue)
     {
-        txtAttributeRequirement.text = text;
+        txtAttributeRequirement.text = $"属性{conditionName}最小需要达到：{minValue}，最大不可超过：{maxValue}";
     }
 
     private void SetDescription(string text)

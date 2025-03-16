@@ -144,6 +144,14 @@ public class Event          //
 
             player.AVO.value += this.result.change_AVO;
             player.AVO.value *= (this.result.change_AVO_rate + 1);
+
+
+            //测试用：
+            Debug.LogWarning($"当前san值：{player.SAN.value}");
+            if(player.SAN.value <= 0)
+            {
+                Debug.LogError("san归零，死亡");
+            }
         }
         else
         {
@@ -152,37 +160,37 @@ public class Event          //
 
     }
 
-    public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本
-    {
-        KaidanText text = begin;
-        while (textLib.ContainsKey(text.textId))
-        {
-            Debug.Log($"文本Id：{textLib[text.textId].textId}, 文本内容：{textLib[text.textId].text}");
-            //处理文字动态显示
-            if (text.nextId != 0)
-            {
-                text = textLib[text.nextId];
-            }
-            else
-            {
-                return;
-            }
-        }
+    // public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本
+    // {
+    //     KaidanText text = begin;
+    //     while (textLib.ContainsKey(text.textId))
+    //     {
+    //         Debug.Log($"文本Id：{textLib[text.textId].textId}, 文本内容：{textLib[text.textId].text}");
+    //         //处理文字动态显示
+    //         if (text.nextId != 0)
+    //         {
+    //             text = textLib[text.nextId];
+    //         }
+    //         else
+    //         {
+    //             return;
+    //         }
+    //     }
 
-        return;
-    }
-    public void RecurReadKaidanTextFrom(int id)         //利用递归进行读取
-    {
-        if (!textLib.ContainsKey(id) || textLib[id].nextId == 0)
-        {
-            return;
-        }
-        Debug.Log($"文本Id：{textLib[id].textId}, 文本内容：{textLib[id].text}");
-        //处理文字动态显示
-        RecurReadKaidanTextFrom(textLib[id].nextId);
+    //     return;
+    // }
+    // public void RecurReadKaidanTextFrom(int id)         //利用递归进行读取
+    // {
+    //     if (!textLib.ContainsKey(id) || textLib[id].nextId == 0)
+    //     {
+    //         return;
+    //     }
+    //     Debug.Log($"文本Id：{textLib[id].textId}, 文本内容：{textLib[id].text}");
+    //     //处理文字动态显示
+    //     RecurReadKaidanTextFrom(textLib[id].nextId);
 
-        return;
-    }
+    //     return;
+    // }
 
 }
 
@@ -264,17 +272,56 @@ public class EventOption
         float SAN = player.SAN.value;       //角色当前精神值
         float STR = player.STR.value;       //角色当前力量
         float SPD = player.SPD.value;       //角色当前速度
-        if (((optionId == 1 && minCondition < SAN && maxCondition > SAN  ||
-              optionId == 2 && minCondition < STR && maxCondition > STR  ||
-              optionId == 3 && minCondition < SPD && maxCondition > SPD) &&
-              itemId == 0) || (itemId != 0 && player.bag.ContainsKey(itemId)))
-        {
-            isSeletable = true;             //符合条件
-            return true;
-        }
+        float AVO = player.AVO.value; 
 
-        isSeletable = false;                //不符合条件
-        return false;
+        //测试用！！！！因为目前选项的需求数值还没填完，很多都是0；（Marc修改）
+        
+        // if ((optionId == 1 && minCondition < SAN && maxCondition > SAN  ||
+        //       optionId == 2 && minCondition < STR && maxCondition > STR  ||
+        //       optionId == 3 && minCondition < SPD && maxCondition > SPD ||
+        //       optionId == 10 && minCondition < AVO && maxCondition > AVO &&
+        //       itemId == 0) || (itemId != 0 && player.bag.ContainsKey(itemId)))
+        // {
+        //     isSeletable = true;             //符合条件
+        //     return true;
+        // }
+
+        // isSeletable = false;                //不符合条件
+        // return false;
+
+        //测试用！因为目前选项的需求数值还没填完，很多都是0；
+        return true;
+    }
+
+    public string ConditionName()
+    {
+        switch(conditionId)
+        {
+            case 0:
+            return "测试属性";
+            case 1:
+            return "生命";
+            case 2:
+            return "力量";
+            case 3:
+            return "防御";
+            case 4:
+            return "理智";
+            case 5:
+            return "生命值";
+            case 6:
+            return "速度";
+            case 7:
+            return "暴击率";
+            case 8:
+            return "暴击伤害";
+            case 9:
+            return "连击";
+            case 10:
+            return "闪避值";
+            default:
+            return null;
+        }
     }
 
 }
