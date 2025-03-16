@@ -65,7 +65,7 @@ public class TestScript : MonoBehaviour
             {
                 GameObject lightHouse = Resources.Load<GameObject>("LightHouse");
                 Instantiate(lightHouse, gridScript.GetWorldPosition(), Quaternion.identity);
-                Debug.Log($"x : {realX}, y : {realY}");
+                // Debug.Log($"x : {realX}, y : {realY}");
             }
             else if(id == 10003)
             {
@@ -74,7 +74,7 @@ public class TestScript : MonoBehaviour
 
                 //测试：
                 PlayerManager.Instance.initPosition = gridScript.GetWorldPosition();
-                Debug.Log("Player is instantiated!");
+                // Debug.Log("Player is instantiated!");
             }
             else if(id == 20010 || id == 20020 || id == 20030)
             {
