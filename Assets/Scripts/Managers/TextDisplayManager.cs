@@ -26,6 +26,7 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
    private string text;   
    private bool isNewLine;
    private Coroutine currentCoroutine;
+   private bool isOptionUpdateLock = false;
 
 
 
@@ -41,6 +42,7 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
     ///  <returns>显示当前文本需要的时间；如果外部有需要等待文本显示结束再进行的操作，可以获取该浮点型</returns>
     public void BuildText(TextMeshProUGUI _tmp, string _text, Color _color, bool _isClear = true, bool _isNewLine = false)
     {
+        isOptionUpdateLock = false;
         if(tmp != _tmp)
         {
             tmp = _tmp;
@@ -85,9 +87,13 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
     //如果有需要立刻显示当前文本的需求，提供一个立刻停止当前的协同程序，显示当前所有文本的方法：
     public void DisplayTextImmediately()
     {
+        if(!isOptionUpdateLock)
+        {
+            EventHub.Instance.EventTrigger("UpdateOptions");
+        }
+        isOptionUpdateLock = true;
         StopCoroutine(currentCoroutine);
         tmp.text = sbForImmediate.ToString();
-        EventHub.Instance.EventTrigger("TryUpdateOptions");
     }
 
     //用于清空当前StringBuilder的方法：
@@ -120,7 +126,11 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
         }
 
         //循环结果之后，更新选项：
-        EventHub.Instance.EventTrigger("TryUpdateOptions");
+        if(!isOptionUpdateLock)
+        {
+            EventHub.Instance.EventTrigger("UpdateOptions");
+        }
+        
 
     }
 }

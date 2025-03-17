@@ -56,9 +56,8 @@ public class EventOptionBtn : MonoBehaviour
 
             //更新事件id：
             myOption.result.myAction?.Invoke();
-            //选项之后的事件，一定不是初始事件
-            EventHub.Instance.EventTrigger<bool>("UpdateEvent", false);
             EventHub.Instance.EventTrigger("ClearOptions");
+            EventHub.Instance.EventTrigger("UpdateEvent");
 
         });
     }

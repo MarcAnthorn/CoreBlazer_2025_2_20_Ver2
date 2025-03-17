@@ -32,7 +32,7 @@ public class GameMainPanel : BasePanel
     private Event currentEvent;
 
     private bool isDetectingCloseInput = false;
-    private bool isFirst = true;
+
 
     protected override void Init()
     {
@@ -66,8 +66,8 @@ public class GameMainPanel : BasePanel
     protected override void Awake()
     {
         base.Awake();
-        EventHub.Instance.AddEventListener<bool>("UpdateEvent", UpdateEvent);
-        EventHub.Instance.AddEventListener("TryUpdateOptions", TryUpdateOptions);
+        EventHub.Instance.AddEventListener("UpdateEvent", UpdateEvent);
+        EventHub.Instance.AddEventListener("UpdateOptions", UpdateOptions);   
         EventHub.Instance.AddEventListener("ClearOptions", ClearOptions);
     
     }
@@ -78,7 +78,7 @@ public class GameMainPanel : BasePanel
         //如果当前处在检测任意键关闭的状态，则检测鼠标左键是否按下；如果按下，关闭面板；
         if(isDetectingCloseInput)
         {
-            if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.P))
+            if(Input.GetKeyDown(KeyCode.Q))
             {
                 UIManager.Instance.HidePanel<GameMainPanel>();
             }
@@ -87,8 +87,8 @@ public class GameMainPanel : BasePanel
 
     private void OnDestroy()
     {
-        EventHub.Instance.RemoveEventListener<bool>("UpdateEvent", UpdateEvent);
-        EventHub.Instance.RemoveEventListener("TryUpdateOptions", TryUpdateOptions);
+        EventHub.Instance.RemoveEventListener("UpdateEvent", UpdateEvent);
+        EventHub.Instance.RemoveEventListener("UpdateOptions", UpdateOptions);
         EventHub.Instance.RemoveEventListener("ClearOptions", ClearOptions);
     
 
@@ -102,10 +102,9 @@ public class GameMainPanel : BasePanel
 
     //更新当前UI显示事件的方法；
     //包含：事件cg、事件描述文本、提示谜语、道具列表
-    private void UpdateEvent(bool _isFirst = true)
+    private void UpdateEvent()
     {
         Debug.Log("事件开始更新");
-        isFirst = _isFirst;
         //当前事件的获取一定要先于所有更新操作；
         currentEvent = EventManager.Instance.BroadcastEvent();
 
@@ -127,12 +126,11 @@ public class GameMainPanel : BasePanel
         //此处相当于只是发布事件：RefreshItem，同时会触发两个ItemPanel的内部订阅事件RefreshItem
 
         //如果当前事件是含有结果的事件，那么需要执行事件结果：
-        if(!isFirst)
+        if(currentEvent.hasResult)
         {
             currentEvent.ExecuteResult(PlayerManager.Instance.player);
             PlayerManager.Instance.player.DebugInfo();
-        }
-        
+        }      
 
     }
 
@@ -150,15 +148,23 @@ public class GameMainPanel : BasePanel
 
 
     //由于选项需要等待文本输出之后再显示，因此额外设置一个更新方法：
+    //这个方法在文本显示之后，通过事件中心进行调用；
     private void UpdateOptions()
     {
         //事件选项加载：
-
-        optionList.Clear();
+        int invalidOptionsCount = 0;
         foreach(var option in currentEvent.options)
         {
             if(option.OpDescription == "0")
             {
+                invalidOptionsCount++;
+                if(invalidOptionsCount == 3)
+                {
+                    //
+                    isDetectingCloseInput = true;
+                    break;
+                }
+                    
                 continue;
             }
             //遍历每一个option数据结构；
@@ -241,18 +247,7 @@ public class GameMainPanel : BasePanel
 
     }   
 
-    private void TryUpdateOptions()
-    {
-        if(isFirst)
-        {
-            UpdateOptions();
 
-        }
-        else 
-        {
-            isDetectingCloseInput = true;
-        }
-    }
 
     private void ClearOptions()
     {
@@ -260,6 +255,7 @@ public class GameMainPanel : BasePanel
         {
             GameObject.Destroy(optionObj);
         }
+        optionList.Clear();
     }
     
 
