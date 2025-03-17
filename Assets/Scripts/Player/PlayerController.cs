@@ -39,6 +39,10 @@ public class PlayerController : MonoBehaviour
 
     public float initialLightScope = 100;
     public CinemachineVirtualCamera cam;
+    private Coroutine damageCoroutine;
+    private int initDamageValue = 1;
+    private int damageTime = 0;
+    private int currentDamage;
 
     private void Awake()
     {
@@ -71,7 +75,6 @@ public class PlayerController : MonoBehaviour
     {
         
         ControlPlayerMove();
-        Damage();
         LightShrinking();
         
     }
@@ -150,9 +153,10 @@ public class PlayerController : MonoBehaviour
             if(spriteLight.pointLightOuterRadius <= 2.12f)
             {
                 spriteLight.pointLightOuterRadius = 2.12f;
+                L = 21.2f;
                 TriggerLightShrinking(false);
-                isDamaging = true;
-
+                damageCoroutine = StartCoroutine(DamageCoroutine());
+                damageTime = 0;
             }
 
         }
@@ -175,27 +179,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Damage()
-    {   
-        if(isDamaging)
-        {
-            PlayerManager.Instance.player.HP.ChangeValue(-bleedSpeed / 50);
-            if(PlayerManager.Instance.player.HP.value <= 0)
-            {
-                EventHub.Instance.EventTrigger("OnPlayerDead");
-            }
-        }
-    }
-
     private void OnPlayerDead()
     {
         ResetPosition();
         L = L0;
         time = 0;
         isLightShrinking = true;
-        isDamaging = false;
+        StopCoroutine(damageCoroutine);
         PlayerManager.Instance.player.HP.value = 100;
-        Debug.LogWarning("PlayerController Dead Triggered");
     }
 
     private void ResetPosition()
@@ -206,8 +197,6 @@ public class PlayerController : MonoBehaviour
     public void ResumeLight()
     {
         isLightShrinking = false;
-        Debug.Log(L + LExtra);
-        Debug.Log(LExtra);
         L = L + LExtra;
         if (L > 115)  
         {
@@ -224,16 +213,10 @@ public class PlayerController : MonoBehaviour
             // 第三阶段：L = L5 / (1 + 0.5f * (time - 5))
             time = 5 + (L5 / L - 1) / 0.5f;
         }
+
+        //补充灯光之后，开启灯光衰减，关闭伤害判定协程；
         isLightShrinking = true;
-        isDamaging = false;
-        // LeanTween.value(gameObject, L, L + LExtra, 1f)
-        //         .setOnUpdate((float val) => {
-        //             L = val;
-        // }).setOnComplete(()=>{
-        //     time = previousTime;
-        //     isLightShrinking = true;
-        //     isDamaging = false;
-        // });
+        StopCoroutine(damageCoroutine);
        
     }
 
@@ -243,6 +226,28 @@ public class PlayerController : MonoBehaviour
         isMoving = !_isFrozen;
         isDamaging = !_isFrozen;
         isLightShrinking = !_isFrozen;
+
+    }
+
+    
+    IEnumerator DamageCoroutine()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(1);
+
+            damageTime += 1;
+            currentDamage = initDamageValue * (1 + damageTime);
+            PlayerManager.Instance.player.HP.ChangeValue(-currentDamage);
+            Debug.Log(PlayerManager.Instance.player.HP.value);
+
+            if(PlayerManager.Instance.player.HP.value <= 0)
+            {
+                EventHub.Instance.EventTrigger("OnPlayerDead");
+            }
+
+        }
+
 
     }
 

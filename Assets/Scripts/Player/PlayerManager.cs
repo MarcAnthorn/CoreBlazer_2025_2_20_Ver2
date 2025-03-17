@@ -40,7 +40,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         //PlayerManager 管理的全局唯一Player实例
        player = new Player()
         {
-            HP = new playerAttribute(1) { value = 100, type = 1 },  
+            HP = new playerAttribute(1) { value = 100},  
             // 生命值 (Health Point)，id = 1，初始值 100
 
             STR = new playerAttribute(2) { value = 10 },           

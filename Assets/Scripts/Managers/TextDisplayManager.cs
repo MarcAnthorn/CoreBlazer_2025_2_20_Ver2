@@ -9,7 +9,7 @@ using UnityEngine;
 public class TextDisplayManager : Singleton<TextDisplayManager>
 {
     //当前文本的单个字之间的显示间隔用时
-   private float textDisplayIntervalTime = 0.3f;
+   private float textDisplayIntervalTime = 0.05f;
 
    private StringBuilder sb = new StringBuilder();
    private StringBuilder sbForImmediate = new StringBuilder();
@@ -74,7 +74,7 @@ public class TextDisplayManager : Singleton<TextDisplayManager>
                 (int)(_color.r * 255), (int)(_color.g * 255), (int)(_color.b * 255), _text);
     }
 
-    public void DisplayTextInSequence(float _intervalTime = 0.02f)
+    public void DisplayTextInSequence(float _intervalTime = 0.05f)
     {
         textDisplayIntervalTime = _intervalTime;
         text = sb.ToString();
