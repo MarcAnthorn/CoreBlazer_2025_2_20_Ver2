@@ -66,39 +66,40 @@ public class Player               //存储角色信息等
 
     public Player()
     {
-        HP = new playerAttribute(1);
-        HP.value = 100;
-        HP.type = 1;
+        //初始化列表在PlayerManager中；
+        // HP = new playerAttribute(1);
+        // HP.value = 100;
+        // HP.type = 1;
 
-        STR = new playerAttribute(2);
-        STR.value = 10;
+        // STR = new playerAttribute(2);
+        // STR.value = 10;
 
-        DEF = new playerAttribute(3);
-        DEF.value = 1;
+        // DEF = new playerAttribute(3);
+        // DEF.value = 1;
 
-        LVL = new playerAttribute(4);
-        LVL.value = 1;
+        // LVL = new playerAttribute(4);
+        // LVL.value = 1;
 
-        SAN = new playerAttribute(5);
-        SAN.value = 40;
+        // SAN = new playerAttribute(5);
+        // SAN.value = 40;
         
-        SPD = new playerAttribute(6);
-        SPD.value = 10;
+        // SPD = new playerAttribute(6);
+        // SPD.value = 10;
 
-        CRIT_Rate = new playerAttribute(7);
-        CRIT_Rate.value = 0.1f;
-        CRIT_Rate.type = 1;
+        // CRIT_Rate = new playerAttribute(7);
+        // CRIT_Rate.value = 0.1f;
+        // CRIT_Rate.type = 1;
 
-        CRIT_DMG = new playerAttribute(8);
-        HIT = new playerAttribute(9);
+        // CRIT_DMG = new playerAttribute(8);
+        // HIT = new playerAttribute(9);
 
-        AVO = new playerAttribute(10);
-        AVO.value = 0.3f;
-        AVO.type = 1;
+        // AVO = new playerAttribute(10);
+        // AVO.value = 0.3f;
+        // AVO.type = 1;
 
         DebugInfo();
 
-        bag = new Dictionary<int, Item>();
+        // bag = new Dictionary<int, Item>();
     }
 
     //这是啥？析构函数吗（Marc疑问）(是滴，对性能优化时用，但非必要)

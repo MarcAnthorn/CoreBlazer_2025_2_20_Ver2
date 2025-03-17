@@ -38,15 +38,39 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     public void InitPlayer()
     {
         //PlayerManager 管理的全局唯一Player实例
-        player = new Player()
+       player = new Player()
         {
-            
-            // HP = 100,
-            // STR = 10,
-            // DEF = 5,
-            // LVL = 100,
-            // SAN = 0,
-            // SPD = 10    //测试用速度数值
+            HP = new playerAttribute(1) { value = 100, type = 1 },  
+            // 生命值 (Health Point)，id = 1，初始值 100
+
+            STR = new playerAttribute(2) { value = 10 },           
+            // 力量 (Strength)，id = 2，初始值 10
+
+            DEF = new playerAttribute(3) { value = 5 },           
+            // 防御 (Defense)，id = 3，初始值 5
+
+            LVL = new playerAttribute(4) { value = 1 },            
+            // 灯光值 (Light Value)，id = 4，初始值 1
+
+            SAN = new playerAttribute(5) { value = 40 },           
+            // SAN 值 (Sanity)，id = 5，初始值 40
+
+            SPD = new playerAttribute(6) { value = 10 },          
+            // 速度 (Speed)，id = 6，初始值 10
+
+            CRIT_Rate = new playerAttribute(7) { value = 0.1f, type = 1 }, 
+            // 暴击率 (Critical Hit Rate)，id = 7，初始值 10%
+
+            CRIT_DMG = new playerAttribute(8),                    
+            // 暴击伤害 (Critical Damage)，id = 8，未初始化
+
+            HIT = new playerAttribute(9),                          
+            // 连击 (Hit)，id = 9，未初始化
+
+            AVO = new playerAttribute(10) { value = 0.3f, type = 1 }, 
+            // 闪避值 (AVO)，id = 10，初始值 30%
+
+            bag = new Dictionary<int, Item>()  // 初始化物品栏
         };
     }
 

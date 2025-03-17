@@ -8,11 +8,16 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
-   
+    public float l1;
+    public float l2;
     [Range(0, 5)]
     public float moveSpeed;
+
+    [Range(100, 300)]
     public float L0 = 300;
-    public float L2, L5, L;
+    [Range(0, 200)]
+    public float LExtra;
+    private float L2, L5, L;
     private float time = 0;
     [Range(0, 1f)]
     public float stageOneSpeed;
@@ -49,8 +54,6 @@ public class PlayerController : MonoBehaviour
     { 
           
         time = 0;
-        L0 = 300;
-
         L2 = L0 * (1 - 0.2f * 2);             
         L5 = L2 * (1 - 0.2f * 2); 
 
@@ -120,11 +123,19 @@ public class PlayerController : MonoBehaviour
             time += Time.deltaTime;
             if (time >= 0 && time <= 2)
             {
+                if(time >= 1.96 && time <= 2.02)
+                {
+                    l1 = L0 * (1 - 0.1f * time);
+                }
                 // L = stageOneSpeed * L0 * (1 - 0.1f * time);
                 L =  L0 * (1 - 0.1f * time);
             }
             else if (time > 2 && time <= 5)
             {
+                if(time >= 4.96 && time <= 5.02)
+                {
+                    l2 = L0 * (1 - 0.1f * time);
+                }
                 // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (time - 2));
                 L =  L2 * (1 - 0.1f * time);
             }
@@ -194,13 +205,36 @@ public class PlayerController : MonoBehaviour
 
     public void ResumeLight()
     {
-        LeanTween.value(gameObject, L, 200, 1f)
-                .setOnUpdate((float val) => {
-                    L = val;
-        });
-        time = 0;
+        isLightShrinking = false;
+        Debug.Log(L + LExtra);
+        Debug.Log(LExtra);
+        L = L + LExtra;
+        if (L > 115)  
+        {
+            // 第一阶段：L = L0 * (1 - 0.1f * time)
+            time = (1 - L / L0) / 0.1f;
+        }
+        else if (L > 78 && L <= 115)  
+        {
+            // 第二阶段：L = L2 * (1 - 0.1f * time)
+            time = (1 - L / L2) / 0.1f;
+        }
+        else  
+        {
+            // 第三阶段：L = L5 / (1 + 0.5f * (time - 5))
+            time = 5 + (L5 / L - 1) / 0.5f;
+        }
         isLightShrinking = true;
         isDamaging = false;
+        // LeanTween.value(gameObject, L, L + LExtra, 1f)
+        //         .setOnUpdate((float val) => {
+        //             L = val;
+        // }).setOnComplete(()=>{
+        //     time = previousTime;
+        //     isLightShrinking = true;
+        //     isDamaging = false;
+        // });
+       
     }
 
     //冻结（解冻）方法，在UI显示等其他交互的时候，冻结Player相关的调整
