@@ -252,7 +252,8 @@ public class PlayerController : MonoBehaviour
             }
 
             damageTime += 1;
-            currentDamage = initDamageValue * (1 + damageTime);
+            currentDamage = initDamageValue * (1 + damageTime) >= 20 ? 20 : initDamageValue * (1 + damageTime);
+            
             PlayerManager.Instance.player.HP.ChangeValue(-currentDamage);
             Debug.Log(PlayerManager.Instance.player.HP.value);
 
