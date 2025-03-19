@@ -34,8 +34,8 @@ public class PlayerController : MonoBehaviour
     public Light2D spriteLight;
 
     public bool isMoving = true;
+    private bool isFrozen;
     private bool isLightShrinking = true;
-    private bool isDamaging = false;
 
     public float initialLightScope = 100;
     public CinemachineVirtualCamera cam;
@@ -224,7 +224,16 @@ public class PlayerController : MonoBehaviour
     private void Freeze(bool _isFrozen)
     {
         isMoving = !_isFrozen;
-        isDamaging = !_isFrozen;
+        isFrozen = _isFrozen;
+        if(_isFrozen)
+        {
+            StopCoroutine(damageCoroutine);
+            damageCoroutine = null;
+        }
+        else
+        {
+            damageCoroutine = StartCoroutine(DamageCoroutine());
+        }
         isLightShrinking = !_isFrozen;
 
     }
@@ -235,6 +244,12 @@ public class PlayerController : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(1);
+
+            if(isFrozen)
+            {
+                //使用lambda表达式，表示当!isFrozen返回true才会继续执行；
+                yield return new WaitUntil( () => !isFrozen );
+            }
 
             damageTime += 1;
             currentDamage = initDamageValue * (1 + damageTime);
