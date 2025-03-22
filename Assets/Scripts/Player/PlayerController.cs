@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     [Range(0, 200)]
     public float LExtra;
     private float L2, L5, L;
-    private float time = 0;
+    private float lightShrinkingTime = 0;
     [Range(0, 1f)]
     public float stageOneSpeed;
     [Range(0, 1f)]
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     public bool isMoving = true;
     private bool isFrozen;
     private bool isLightShrinking = true;
-
+    private bool isDamaging = false;
     public float initialLightScope = 100;
     public CinemachineVirtualCamera cam;
     private Coroutine damageCoroutine;
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     { 
           
-        time = 0;
+        lightShrinkingTime = 0;
         L2 = L0 * (1 - 0.2f * 2);             
         L5 = L2 * (1 - 0.2f * 2); 
 
@@ -93,21 +93,21 @@ public class PlayerController : MonoBehaviour
     {
     //     if(isLightShrinking)
     //     {
-    //         time += Time.deltaTime;
-    //         if (time >= 0 && time <= 2)
+    //         lightShrinkingTime += Time.deltaTime;
+    //         if (lightShrinkingTime >= 0 && lightShrinkingTime <= 2)
     //         {
-    //             // L = stageOneSpeed * L0 * (1 - 0.1f * time);
-    //             L =  L0 * (1 - 0.1f * time);
+    //             // L = stageOneSpeed * L0 * (1 - 0.1f * lightShrinkingTime);
+    //             L =  L0 * (1 - 0.1f * lightShrinkingTime);
     //         }
-    //         else if (time > 2 && time <= 5)
+    //         else if (lightShrinkingTime > 2 && lightShrinkingTime <= 5)
     //         {
-    //             // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (time - 2));
-    //             L =  L2 * Mathf.Exp(-0.6f * (time - 2));
+    //             // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (lightShrinkingTime - 2));
+    //             L =  L2 * Mathf.Exp(-0.6f * (lightShrinkingTime - 2));
     //         }
-    //         else if (time > 5)
+    //         else if (lightShrinkingTime > 5)
     //         {
-    //             // L = stageThreeSpeed * L5 / (1 + 0.5f * (time - 5));
-    //             L = L5 / (1 + 0.5f * (time - 5));
+    //             // L = stageThreeSpeed * L5 / (1 + 0.5f * (lightShrinkingTime - 5));
+    //             L = L5 / (1 + 0.5f * (lightShrinkingTime - 5));
     //         }
 
     //         spriteLight.pointLightOuterRadius = L / 10;
@@ -123,29 +123,29 @@ public class PlayerController : MonoBehaviour
 
         if(isLightShrinking)
         {
-            time += Time.deltaTime;
-            if (time >= 0 && time <= 2)
+            lightShrinkingTime += Time.deltaTime;
+            if (lightShrinkingTime >= 0 && lightShrinkingTime <= 2)
             {
-                if(time >= 1.96 && time <= 2.02)
+                if(lightShrinkingTime >= 1.96 && lightShrinkingTime <= 2.02)
                 {
-                    l1 = L0 * (1 - 0.1f * time);
+                    l1 = L0 * (1 - 0.1f * lightShrinkingTime);
                 }
-                // L = stageOneSpeed * L0 * (1 - 0.1f * time);
-                L =  L0 * (1 - 0.1f * time);
+                // L = stageOneSpeed * L0 * (1 - 0.1f * lightShrinkingTime);
+                L =  L0 * (1 - 0.1f * lightShrinkingTime);
             }
-            else if (time > 2 && time <= 5)
+            else if (lightShrinkingTime > 2 && lightShrinkingTime <= 5)
             {
-                if(time >= 4.96 && time <= 5.02)
+                if(lightShrinkingTime >= 4.96 && lightShrinkingTime <= 5.02)
                 {
-                    l2 = L0 * (1 - 0.1f * time);
+                    l2 = L0 * (1 - 0.1f * lightShrinkingTime);
                 }
-                // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (time - 2));
-                L =  L2 * (1 - 0.1f * time);
+                // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (lightShrinkingTime - 2));
+                L =  L2 * (1 - 0.1f * lightShrinkingTime);
             }
-            else if (time > 5)
+            else if (lightShrinkingTime > 5)
             {
-                // L = stageThreeSpeed * L5 / (1 + 0.5f * (time - 5));
-                L = L5 / (1 + 0.5f * (time - 5));
+                // L = stageThreeSpeed * L5 / (1 + 0.5f * (lightShrinkingTime - 5));
+                L = L5 / (1 + 0.5f * (lightShrinkingTime - 5));
             }
 
             spriteLight.pointLightOuterRadius = L / 10;
@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour
                 spriteLight.pointLightOuterRadius = 2.12f;
                 L = 21.2f;
                 TriggerLightShrinking(false);
+                isDamaging = true;
                 damageCoroutine = StartCoroutine(DamageCoroutine());
                 damageTime = 0;
             }
@@ -181,11 +182,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnPlayerDead()
     {
+        //重置位置
         ResetPosition();
-        L = L0;
-        time = 0;
+
+        //重置灯光相关
         isLightShrinking = true;
+        L = L0;
+        lightShrinkingTime = 0;
+
+        //重置伤害相关
+        damageTime = 0;
         StopCoroutine(damageCoroutine);
+        isDamaging = false;
+
+        //重置血量相关
         PlayerManager.Instance.player.HP.value = 100;
     }
 
@@ -200,23 +210,24 @@ public class PlayerController : MonoBehaviour
         L = L + LExtra;
         if (L > 115)  
         {
-            // 第一阶段：L = L0 * (1 - 0.1f * time)
-            time = (1 - L / L0) / 0.1f;
+            // 第一阶段：L = L0 * (1 - 0.1f * lightShrinkingTime)
+            lightShrinkingTime = (1 - L / L0) / 0.1f;
         }
         else if (L > 78 && L <= 115)  
         {
-            // 第二阶段：L = L2 * (1 - 0.1f * time)
-            time = (1 - L / L2) / 0.1f;
+            // 第二阶段：L = L2 * (1 - 0.1f * lightShrinkingTime)
+            lightShrinkingTime = (1 - L / L2) / 0.1f;
         }
         else  
         {
-            // 第三阶段：L = L5 / (1 + 0.5f * (time - 5))
-            time = 5 + (L5 / L - 1) / 0.5f;
+            // 第三阶段：L = L5 / (1 + 0.5f * (lightShrinkingTime - 5))
+            lightShrinkingTime = 5 + (L5 / L - 1) / 0.5f;
         }
 
         //补充灯光之后，开启灯光衰减，关闭伤害判定协程；
         isLightShrinking = true;
         StopCoroutine(damageCoroutine);
+        isDamaging = false;
        
     }
 
@@ -225,16 +236,20 @@ public class PlayerController : MonoBehaviour
     {
         isMoving = !_isFrozen;
         isFrozen = _isFrozen;
+        isLightShrinking = !_isFrozen;
         if(_isFrozen)
         {
-            StopCoroutine(damageCoroutine);
+            if(damageCoroutine != null)
+                StopCoroutine(damageCoroutine);
+
             damageCoroutine = null;
         }
         else
         {
-            damageCoroutine = StartCoroutine(DamageCoroutine());
+            if(isDamaging)
+                damageCoroutine = StartCoroutine(DamageCoroutine());
         }
-        isLightShrinking = !_isFrozen;
+
 
     }
 
