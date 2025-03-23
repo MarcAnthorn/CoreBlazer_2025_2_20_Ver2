@@ -10,7 +10,6 @@ using static Event;
 //该脚本存在一些报错，我没有直接动，先注释了不然报错情况下不能运行
 public class DialogueManager : Singleton<DialogueManager>
 {
-    private Dictionary<int, Dialogue> dialogueDictionary;       // 对话文本库
 
     // 需要的UI元素  
     public Text dialogueText;                                   // 用于显示对话文本(加载对话文本库中的文本)  
@@ -20,59 +19,19 @@ public class DialogueManager : Singleton<DialogueManager>
     protected override void Awake()
     {
         base.Awake();
-        LoadDialogues(0);
-    }
-
-    private void LoadDialogues(int libIndex)
-    {
-        dialogueDictionary = new Dictionary<int, Dialogue>();
-        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/DialogueDatas.csv");
-
-        if (File.Exists(path))
-        {
-            string[] lines = File.ReadAllLines(path);       //分割每一行存入lines
-
-            for (int i = 1; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
-            {
-                string line = lines[i];
-                string[] values = line.Split(',');          //将每一列按照逗号分割
-
-                if (int.Parse(values[0]) == libIndex && values.Length >= 4 && int.Parse(values[2]) == 1)
-                {
-                    Dialogue dialogue = new Dialogue();
-                    dialogue.eventId = int.Parse(values[0]);
-                    dialogue.textId = int.Parse(values[1]);
-                    dialogue.text = values[3];
-                    dialogue.nextId = int.Parse(values[4]);
-                    dialogue.illustrationId = int.Parse(values[5]);
-                    dialogue.bgId = int.Parse(values[6]);
-
-                    dialogueDictionary.Add(dialogue.textId, dialogue);
-                }
-                else if (values.Length <= 4)
-                {
-                    break;
-                }
-
-            }
-
-        }
-        else
-        {
-            Debug.LogError("对话文件未找到。");
-        }
+        //LoadDialogues(0);
     }
 
     public void ReadDialogueFrom(Dialogue begin)        //顺序读取对话文本
     {
         Dialogue dialogue = begin;
-        while (dialogueDictionary.ContainsKey(dialogue.textId))
+        while (LoadManager.Instance.dialogueDictionary.ContainsKey(dialogue.textId))
         {
-            Debug.Log($"文本Id：{dialogueDictionary[dialogue.textId].textId}, 文本内容：{dialogueDictionary[dialogue.textId].text}");
+            Debug.Log($"文本Id：{LoadManager.Instance.dialogueDictionary[dialogue.textId].textId}, 文本内容：{LoadManager.Instance.dialogueDictionary[dialogue.textId].text}");
             //此处用来处理文字动态显示(Marc来完成)
             if (dialogue.nextId != 0)
             {
-                dialogue = dialogueDictionary[dialogue.nextId];
+                dialogue = LoadManager.Instance.dialogueDictionary[dialogue.nextId];
             }
             else
             {

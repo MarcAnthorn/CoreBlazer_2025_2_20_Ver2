@@ -53,7 +53,7 @@ public class TestScript : MonoBehaviour
             //获取数据结构中的信息：
             int realX = i * 2 + 1;
             int realY = j * 2 + 1;
-            MapElement me = MapManager.Instance.map1[realX, realY];
+            MapElement me = LoadManager.Instance.map1[realX, realY];
             int id = me.GetId();
 
 
@@ -105,7 +105,7 @@ public class TestScript : MonoBehaviour
                 //获取数据结构中的信息：
                 int realX = i + 1;
                 int realY = j * 2 + 1;
-                MapElement me = MapManager.Instance.map1[realX, realY];
+                MapElement me = LoadManager.Instance.map1[realX, realY];
                 id = me.GetId();
 
                 if(me.GetId() == 10001)
@@ -127,7 +127,7 @@ public class TestScript : MonoBehaviour
                 //获取数据结构中的信息：
                 int realX = i + 1;
                 int realY = j * 2 + 2;
-                MapElement me = MapManager.Instance.map1[realX, realY];
+                MapElement me = LoadManager.Instance.map1[realX, realY];
                 id = me.GetId();
 
 
@@ -160,7 +160,7 @@ public class TestScript : MonoBehaviour
             //获取数据结构中的信息：
             int realX = i * 2 + 2;
             int realY = j * 2 + 2;
-            MapElement me = MapManager.Instance.map1[realX, realY];
+            MapElement me = LoadManager.Instance.map1[realX, realY];
             int id = me.GetId();
             if(me.GetId() == 10001)
             {

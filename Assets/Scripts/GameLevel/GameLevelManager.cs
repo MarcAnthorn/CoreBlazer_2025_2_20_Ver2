@@ -8,6 +8,7 @@ public class GameLevelManager : Singleton<GameLevelManager>
     public Dictionary<int, Event> events = new Dictionary<int, Event>();
     public int eventNum;
     public static Event currentEvent;
+    public static int currentEnvironment;        // 1-事件选择 2-战斗场景 3-迷宫内
 
     // Start is called before the first frame update
     void Start()

@@ -1,0 +1,3 @@
+﻿关卡id,兴趣点id,是否为固定剧情点（0-不是 1-是）,事件库id,固定事件id,,,,,,,,,,,,,,,,
+level_id,POI_id,,eventlibary_id,event_id,,,,,,,,,,,,,,,,
+string,string,int,string,string,,,,,,,,,,,,,,,,
