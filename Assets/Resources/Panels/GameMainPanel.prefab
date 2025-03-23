@@ -3529,7 +3529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52b6e2aff41874f73acabd7fa030dbf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 1
+  fadingTime: 0.2
   sliderHealth: {fileID: 1599181332222000787}
   sliderSanity: {fileID: 2622589062933027176}
   sliderLight: {fileID: 6387051566147031566}

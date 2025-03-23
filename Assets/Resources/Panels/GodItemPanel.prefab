@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf873cd7c3974ff99b6b9eeb216dfa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 0.3
+  fadingTime: 0.2
   srGodItemContainer: {fileID: 3307143685973408364}
 --- !u!225 &8804758691911361595
 CanvasGroup:

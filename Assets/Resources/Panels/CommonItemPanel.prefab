@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c635c335bb354a12b98f07f79891840, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 0.3
+  fadingTime: 0.2
   srCommonItemContainer: {fileID: 0}
   itemList: []
 --- !u!1 &4666855814571751303

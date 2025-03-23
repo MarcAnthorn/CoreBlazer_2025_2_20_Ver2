@@ -396,7 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a72e54f16c1d4de7866d785d0d461a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 1
+  fadingTime: 0.2
   btnBack: {fileID: 6974512409130181959}
   btnTarot: {fileID: 5862726599940291899}
   btnItem: {fileID: 7818139744219978704}
