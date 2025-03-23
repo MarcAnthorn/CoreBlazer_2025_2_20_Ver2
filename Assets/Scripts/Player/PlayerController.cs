@@ -6,12 +6,10 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : PlayerBase
 {
     public float l1;
     public float l2;
-    [Range(0, 5)]
-    public float moveSpeed;
 
     [Range(100, 300)]
     public float L0 = 300;
@@ -30,10 +28,8 @@ public class PlayerController : MonoBehaviour
     [Tooltip("每秒扣除的血量（万分比），如100就是每秒扣除百分之一")]
     public float bleedSpeed = 100f;
 
-
     public Light2D spriteLight;
 
-    public bool isMoving = true;
     private bool isFrozen;
     private bool isLightShrinking = true;
     private bool isDamaging = false;
@@ -44,8 +40,9 @@ public class PlayerController : MonoBehaviour
     private int damageTime = 0;
     private int currentDamage;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         cam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         cam.Follow = this.gameObject.transform;
 
@@ -71,16 +68,16 @@ public class PlayerController : MonoBehaviour
     {
     }
 
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
-        
-        ControlPlayerMove();
+        base.FixedUpdate();
         LightShrinking();
         
     }
 
-    void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         EventHub.Instance.RemoveEventListener("OnPlayerDead", OnPlayerDead);
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
     }
@@ -163,23 +160,6 @@ public class PlayerController : MonoBehaviour
         }
     
     }
-
-    private void ControlPlayerMove()
-    {
-        if(isMoving)
-        {
-            if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
-            {
-                this.transform.Translate(0, Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed, 0);
-            }
-
-            if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)) 
-            {
-                this.transform.Translate(Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed, 0, 0);
-            }
-        }
-    }
-
     private void OnPlayerDead()
     {
         //重置位置
@@ -232,9 +212,9 @@ public class PlayerController : MonoBehaviour
     }
 
     //冻结（解冻）方法，在UI显示等其他交互的时候，冻结Player相关的调整
-    private void Freeze(bool _isFrozen)
+    protected override void Freeze(bool _isFrozen)
     {
-        isMoving = !_isFrozen;
+        base.Freeze(_isFrozen);
         isFrozen = _isFrozen;
         isLightShrinking = !_isFrozen;
         if(_isFrozen)
