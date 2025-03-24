@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory 
+public class Inventory              //背包
 {
     public List<Prop> props = new List<Prop>();
-    public Dictionary<Prop, int> CountOfProps = new Dictionary<Prop, int>();
+    public Dictionary<Prop, int> CountOfProps = new Dictionary<Prop, int>();//供外部访问的数据结构
 
     public void AddProp(Prop prop)
     {
-        if (CountOfProps.ContainsKey(prop))
+        if (CountOfProps.ContainsKey(prop))     //加这个是为了防止下面的CountOfProps[prop]空引用
         {
             if (CountOfProps[prop] < prop.maxLimit)
             {
@@ -20,7 +20,8 @@ public class Inventory
         }
         else
         {
-            props.Add(prop);
+            //props.Add(prop);
+            AddInDic(prop);
         }
 
         Debug.LogWarning($"道具：{prop.name}已满！");

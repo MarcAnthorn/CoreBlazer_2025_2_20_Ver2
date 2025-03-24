@@ -29,7 +29,7 @@ public class PropManager : Singleton<PropManager>
         Debug.LogError($"无法使用该道具：{prop.name}");
     }
 
-    public Prop ClassilyProps(int propId)               //用于将道具分类
+    public Prop ClassilyProps(int propId)               //用于将道具分类(工厂模式)
     {
         switch (propId)
         {
