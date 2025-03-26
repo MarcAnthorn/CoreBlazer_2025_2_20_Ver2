@@ -19,11 +19,17 @@ public class NPCInteractionPanel : BasePanel
     //设置当前面板显示的NPC，因为没有数据结构类，所以暂时使用GameObject;
     public UnityAction<string> setNPCAction;
 
+    //测试用：当前交互的NPC：
+    public string currentNPCName;
+
     protected override void Awake()
     {
         base.Awake();
         setNPCAction += SetCurrentNPC;
         //根据当前的NPC类型实例化btn；
+
+
+        EventHub.Instance.AddEventListener<UnityAction<string>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
     }
     protected override void Init()
     {
@@ -39,6 +45,8 @@ public class NPCInteractionPanel : BasePanel
     void OnDestroy()
     {
         setNPCAction -= SetCurrentNPC;
+
+        EventHub.Instance.RemoveEventListener<UnityAction<string>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
     }
 
     protected void Update()
@@ -53,6 +61,13 @@ public class NPCInteractionPanel : BasePanel
     private void SetCurrentNPC(string _npcName)
     {
         Debug.Log($"NPC交互面板已显示，显示NPC为：{_npcName}");
+        //将当前交互的NPC
+    }
+
+    //测试用：
+    private void BroadcastCurrentInteractingNPC(UnityAction<string> action)
+    {
+        action?.Invoke(currentNPCName);
     }
 
  

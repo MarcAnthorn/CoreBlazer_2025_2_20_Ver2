@@ -49,12 +49,6 @@ public class EventOptionBtn : MonoBehaviour
     {
         btnSelf.onClick.AddListener(()=>{
             //进行影响的广播：
-            // myOption.result?.myAction();
-
-            // //进行事件文字描述更改的广播：
-            // EventHub.Instance.EventTrigger<string>("UpdateDescriptionAfterOption", myOption.result.outcome);
-
-            //更新事件id：
             myOption.result.myAction?.Invoke();
             EventHub.Instance.EventTrigger("ClearOptions");
             EventHub.Instance.EventTrigger("UpdateEvent");

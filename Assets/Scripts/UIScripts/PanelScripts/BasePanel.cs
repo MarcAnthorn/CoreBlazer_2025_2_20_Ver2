@@ -13,7 +13,7 @@ public abstract class BasePanel : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Time for panel to fade, only positive values are supportive")]
-    private float fadingTime = 1;
+    private float fadingTime = 0.4f;
 
     //面板隐藏之后的回调函数
     private UnityAction callBackHide;

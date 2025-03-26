@@ -19,13 +19,16 @@ public class LoadManager : Singleton<LoadManager>
     protected override void Awake()
     {
         base.Awake();   //单例初始化
+
+        //测试：加载资源
+        LoadResources();
     }
 
     public void LoadResources()
     {
         //LoadDialogues(0);
-        LoadEvents();
-        LoadProps();
+        // LoadEvents();
+        // LoadProps();
         LoadMapElements(1);
         InitMap1Elements(1);
     }
@@ -87,7 +90,7 @@ public class LoadManager : Singleton<LoadManager>
 
                 if (values.Length > 3)
                 {
-                    Prop prop = PropManager.Instance.ClassilyProps(int.Parse(values[1]));
+                    Prop prop = PropManager.Instance.ClassifyProps(int.Parse(values[1]));
                     prop.name = values[0];                              //A列
                     prop.id = int.Parse(values[1]);                     //B列
                     prop.type = (Prop.PropType)int.Parse(values[2]);    //C列

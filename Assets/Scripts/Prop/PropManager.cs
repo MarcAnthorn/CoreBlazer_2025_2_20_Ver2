@@ -7,8 +7,9 @@ public class PropManager : Singleton<PropManager>
 {
     private Inventory inventory;
 
-    public void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         inventory = new Inventory();
     }
 
@@ -29,7 +30,7 @@ public class PropManager : Singleton<PropManager>
         Debug.LogError($"无法使用该道具：{prop.name}");
     }
 
-    public Prop ClassilyProps(int propId)               //用于将道具分类
+    public Prop ClassifyProps(int propId)               //用于将道具分类
     {
         switch (propId)
         {
