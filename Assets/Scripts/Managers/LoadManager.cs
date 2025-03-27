@@ -26,11 +26,11 @@ public class LoadManager : Singleton<LoadManager>
 
     public void LoadResources()
     {
-        //LoadDialogues(0);
-        // LoadEvents();
-        // LoadProps();
         LoadMapElements(1);
         InitMap1Elements(1);
+        //LoadDialogues(0);
+        LoadEvents();
+        // LoadProps();
     }
 
 
@@ -233,7 +233,7 @@ public class LoadManager : Singleton<LoadManager>
             LoadEventResult();                                              //加载所有事件的所有结果
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);        //分割每一行存入lines
 
-            for (int i = 5; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
+            for (int i = 3; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
             {
                 string line = lines[i];
                 string[] values = line.Split(',');          //将每一列按照逗号分割
@@ -280,7 +280,7 @@ public class LoadManager : Singleton<LoadManager>
 
                 }
 
-                if (i + 1 <= 87)
+                if (i + 1 <= lines.Length - 1)      // 85 = 当前Test1_CSV表格的最后一行行号 - 1
                 {
                     line = lines[i + 1];
                     int charToFind = line.IndexOf(",");
@@ -288,6 +288,10 @@ public class LoadManager : Singleton<LoadManager>
                     if (int.Parse(firstValue) != libIndex)          //如果下一行的事件库Id变化，则++
                         libIndex++;
                 }
+                //else
+                //{
+                //    Debug.LogWarning($"结束，当前 i 的值为：{i}");
+                //}
 
             }
 
