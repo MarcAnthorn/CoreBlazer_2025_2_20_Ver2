@@ -46,9 +46,16 @@ public class InventoryPanel : BasePanel
     //这样再次点击slot就会将这个item加入slot；
     private GameObject currentSelectedItem = null;
 
-    //当前插入插槽的两个Item；
-    private GameObject leftSlottedItem;
-    private GameObject rightSlottedItem;
+    //当前插入插槽的两个Item (注意是GodItemPanel中的)；
+    private GameObject leftSlottedOriginalItem;
+    private GameObject rightSlottedOriginalItem;
+
+    //当前插入插槽的两个Item (注意是InventoryPanel中的)；
+
+    private GameObject leftSlottedInventoryItem;
+    private GameObject rightSlottedInventoryItem;
+    private InventoryItemLogic leftItemScript;
+    private InventoryItemLogic rightItemScript;
 
 
     
@@ -80,18 +87,49 @@ public class InventoryPanel : BasePanel
             }
             else if(currentSelectedItem != null)
             {
+                InventoryItemLogic currentScript =  currentSelectedItem.GetComponent<InventoryItemLogic>();
+                if(currentScript.isSelectedToSlot)
+                {
+                    Debug.LogWarning("不可重复选择Item到Slot中");
+                    EventHub.Instance.EventTrigger("ResetItem");
+
+                    //需要重新点击Slot才能再次尝试插入：
+                    isLeftSlotReadyForItem = false;
+                    return;
+                }
                 Debug.Log("左侧装备");
                 //如果当前的Slot处在预备态，同时当前已经选中了Item(也就是currentSelectedItem不为空)
-                //将当前持有的item的信息同步到leftSlottedItem中；
-                leftSlottedItem = Instantiate(currentSelectedItem, leftSlotItemAnchor, false);
-                RectTransform rt = leftSlottedItem.GetComponent<RectTransform>();
+                //让leftSlottedItem指向该Item，使其被记录下来，用于之后需要的同步操作；
+                leftSlottedOriginalItem = currentSelectedItem;
+                leftSlottedInventoryItem = Instantiate(currentSelectedItem, leftSlotItemAnchor, false);
+                RectTransform rt = leftSlottedInventoryItem.GetComponent<RectTransform>();
                 rt.anchorMin = new Vector2(0.5f, 0.5f); 
                 rt.anchorMax = new Vector2(0.5f, 0.5f); 
                 rt.sizeDelta = new Vector2(100, 100);
                 rt.anchoredPosition = new Vector2(0, 0);
-                //立刻置空：
+
+                //处理GodItemPanel中的当前被装载道具的逻辑
+                //它需要持续高亮，以及快捷道具的使用等等需要数据同步（相当于就是绑定）
+                leftItemScript = currentScript;
+                leftItemScript.isSelectedToSlot = true;
+
+
+                //成功插入之后，触发ResetItem；因为相当于是点了一次取消Button；
+                EventHub.Instance.EventTrigger("ResetItem");
+                //结束置空，不然进不去右侧RightSlot的逻辑：
                 currentSelectedItem = null;
+
+                //装载之后，将「卸下」Button恢复；
+                btnSlotLeftOff.gameObject.SetActive(true);
             }
+
+            // else if(leftSlottedOriginalItem != null)
+            // {
+            //     //如果没有预备，同时当前左侧有Item，
+            //     //那么就会执行卸下有关的后续操作；
+                
+            //     //首先：
+            // }
 
         });
 
@@ -108,24 +146,56 @@ public class InventoryPanel : BasePanel
             }
             else if(currentSelectedItem != null)
             {
+                InventoryItemLogic currentScript =  currentSelectedItem.GetComponent<InventoryItemLogic>();
+                if(currentScript.isSelectedToSlot)
+                {
+                    Debug.LogWarning("不可重复选择Item到Slot中");
+                    EventHub.Instance.EventTrigger("ResetItem");
+                    isRightSlotReadyForItem = false;
+                    return;
+                }
                 Debug.Log("右侧装备");
-                rightSlottedItem = Instantiate(currentSelectedItem, rightSlotItemAnchor, false);
-                RectTransform rt = rightSlottedItem.GetComponent<RectTransform>();
+                rightSlottedOriginalItem = currentSelectedItem;
+
+                rightSlottedInventoryItem = Instantiate(currentSelectedItem, rightSlotItemAnchor, false);
+                RectTransform rt = rightSlottedInventoryItem.GetComponent<RectTransform>();
                 rt.anchorMin = new Vector2(0.5f, 0.5f); 
                 rt.anchorMax = new Vector2(0.5f, 0.5f); 
                 rt.sizeDelta = new Vector2(100, 100);
                 rt.anchoredPosition = new Vector2(0, 0);
+
+                rightItemScript = currentScript;
+                rightItemScript.isSelectedToSlot = true;
+
+                EventHub.Instance.EventTrigger("ResetItem");
+
+                btnSlotRightOff.gameObject.SetActive(true);
+                          
                 currentSelectedItem = null;
             }
             
         });
 
         btnSlotLeftOff?.onClick.AddListener(()=>{
+            Destroy(leftSlottedInventoryItem);
+            leftSlottedOriginalItem = null;
+            isLeftSlotReadyForItem = false;
+
+            //同时将对应的Item高光取消：
+            leftItemScript.isSelectedToSlot = false;
+
+            btnSlotLeftOff.gameObject.SetActive(false);
+
 
         });
 
         btnSlotRightOff?.onClick.AddListener(()=>{
+            Destroy(rightSlottedInventoryItem);
+            rightSlottedOriginalItem = null;
+            isRightSlotReadyForItem = false;
 
+            rightItemScript.isSelectedToSlot = false;
+            btnSlotRightOff.gameObject.SetActive(false);
         });
 
         btnCancelSlotHighLight.onClick.AddListener(()=>{

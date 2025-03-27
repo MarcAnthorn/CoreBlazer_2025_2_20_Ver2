@@ -9,9 +9,10 @@ public class InventoryItemLogic : MonoBehaviour
 {
     public Image imgSelf;
     public TextMeshProUGUI txtSelfName;
-    //是否处在选中快捷插槽之后的高光状态；
-    public bool isHighLight;
+    //是否处在预选阶段；
+    public bool isInPreselecting;
     //是否已经插入插槽；
+    //只有在卸下当前道具之后才会重置；
     public bool isSelectedToSlot;
     private Button btnSelf;
     private Outline outlineSelf;
@@ -31,13 +32,13 @@ public class InventoryItemLogic : MonoBehaviour
         btnSelf.onClick.AddListener(()=>{
             //点击当前按钮会有多个不同的相应逻辑；取决于我当前所处的状态是什么；
             //如果处在高亮态（isHighLight），那么再次点击我会进入预选中（isPreSelected）；
-            if(isHighLight)
+            if(isInPreselecting)
             {
                 //取消其他所有的Item的高光：
                 EventHub.Instance.EventTrigger<bool>("HighLightItemsOrNot", false);
                 //但是对于自己，进行特殊处理：依然高光：
                 outlineSelf.enabled = true;
-                isHighLight = true;
+                isInPreselecting = true;
 
                 //将当前选中的Item发送到Panel中让它持有：
                 EventHub.Instance.EventTrigger("BroadcastCurrentItem", this.gameObject);
@@ -46,10 +47,25 @@ public class InventoryItemLogic : MonoBehaviour
             //如果什么状态都不属于，就会进入当前item对应的展示面板；
             else
             {
-
+                Debug.Log("Item展示框触发");
             }
 
         });
+    }
+
+
+    void Update()
+    {
+        if(isSelectedToSlot)
+        {
+            //如果当前的Item被选中了，那么就持续高光：
+            outlineSelf.enabled = true;
+            //但是isHighLight不能持续置true，不然这个道具点击不会触发展示Item面板；
+        }
+        else if(!isInPreselecting && !isSelectedToSlot)
+        {
+            outlineSelf.enabled = false;
+        }
     }
 
     void OnDestroy()
@@ -60,8 +76,10 @@ public class InventoryItemLogic : MonoBehaviour
     //用于重置当前Item的方法，在GodItemPanelInventory中取消交互方法调用的时候，通过外部调用委托触发：
     private void ResetItem()
     {
-        isHighLight = false;
+        isInPreselecting = false;
     }
+
+
 
 
 }

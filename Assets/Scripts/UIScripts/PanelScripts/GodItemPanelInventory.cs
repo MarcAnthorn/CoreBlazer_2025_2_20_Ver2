@@ -61,7 +61,7 @@ public class GodItemPanelInventory : BasePanel
             item.gameObject.GetComponent<Outline>().enabled = _isHighLight;
             if(!isStillSelecting)
             {
-                item.gameObject.GetComponent<InventoryItemLogic>().isHighLight = _isHighLight;
+                item.gameObject.GetComponent<InventoryItemLogic>().isInPreselecting = _isHighLight;
             }
 
         }
