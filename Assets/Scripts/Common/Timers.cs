@@ -51,6 +51,13 @@ public class Timers : Singleton<Timers>
             timer.isSuspend = true;
         }
     }
+    public void ContinueAllTimers()                         //进入事件 或者 游戏暂停时调用
+    {
+        foreach (Timer timer in timers.Values)
+        {
+            timer.isSuspend = false;
+        }
+    }
     public float GetGameTime()
     {
         return gameTime;
@@ -85,6 +92,11 @@ public class Timers : Singleton<Timers>
     {
         Timer timer = timers[key];
         timer.isSuspend = true;
+    }
+    public void SingleTimerContinue(int key)
+    {
+        Timer timer = timers[key];
+        timer.isSuspend = false;
     }
     public void SingleTimerOver(int key)
     {
