@@ -34,12 +34,18 @@ public class PropManager : Singleton<PropManager>
     {
         switch (propId)
         {
-            case 1:
-                return new Prop1();
-            case 2:
-                return new Prop2();
-            case 3:
-                return new Prop3();
+            case 101:
+                return new Prop_Glim();
+            case 201:
+                return new Prop_Tatakai();
+            case 301:
+                return new Prop_LightUP();
+            case 401:
+                return new Prop_Alive();
+            case 501:
+                return new Prop_BloodMedicine();
+            case 601:
+                return new Prop_Tarot1();
             default:
                 Debug.LogWarning($"未找到id为 {propId} 的道具");
                 return null;

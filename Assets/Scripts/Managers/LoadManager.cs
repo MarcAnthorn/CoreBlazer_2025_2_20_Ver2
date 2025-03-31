@@ -83,13 +83,14 @@ public class LoadManager : Singleton<LoadManager>
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path);
-            for (int i = 2; i < lines.Length; i++)
+            for (int i = 1; i < lines.Length; i++)
             {
                 string line = lines[i];
                 string[] values = line.Split(',');
 
                 if (values.Length > 3)
                 {
+                    //此处进行道具分类
                     Prop prop = PropManager.Instance.ClassifyProps(int.Parse(values[1]));
                     prop.name = values[0];                              //A列
                     prop.id = int.Parse(values[1]);                     //B列
@@ -100,35 +101,36 @@ public class LoadManager : Singleton<LoadManager>
                     else
                         prop.isImmediate = false;
 
-                    char[] envs = values[4].ToCharArray();              //E列
+                    prop.useTimes = int.Parse(values[4]);               //E列
+                    char[] envs = values[5].ToCharArray();              //F列
                     for (int j = 0; j < 3; j++)
                         prop.usableScene[j] = (int)envs[j];
 
-                    if (values[5] == "1")                               //F列
+                    if (values[6] == "0")                               //G列
                         prop.resetAfterDeath = true;
                     else
                         prop.resetAfterDeath = false;
 
-                    if (values[6] == "1")                               //G列
+                    if (values[7] == "0")                               //H列
                         prop.quickEquip = true;
                     else
                         prop.quickEquip = false;
 
-                    if (values[7] == "1")                               //H列
+                    if (values[8] == "0")                               //I列
                         prop.reObtain = true;
                     else
                         prop.reObtain = false;
 
-                    prop.maxLimit = int.Parse(values[8]);               //I列
+                    prop.maxLimit = int.Parse(values[9]);               //J列
 
-                    if (values[9] == "1")                               //J列
+                    if (values[10] == "0")                              //K列
                         prop.isPermanent = true;
                     else
                         prop.isPermanent = false;
 
-                    prop.EffectiveTime = float.Parse(values[10]);       //K列
-                    prop.instruction = values[11];                      //L列
-                    prop.description = values[12];                      //M列
+                    prop.EffectiveTime = float.Parse(values[11]);       //L列
+                    prop.instruction = values[12];                      //M列
+                    prop.description = values[13];                      //N列
 
                     allProps.Add(prop.id, prop);
                 }
