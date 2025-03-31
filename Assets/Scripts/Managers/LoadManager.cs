@@ -501,6 +501,8 @@ public class LoadManager : Singleton<LoadManager>
                         nextLine = null;
                     }
 
+                    tempBlock.orderDic.Add(dialogue.rootId, dialogue);
+
                 }
 
                 if (i + 1 <= lines.Length - 1)
