@@ -1,116 +1,230 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AVGPanel : BasePanel
 {
-    //当前演出进行到的指令：
-    public DialogueOrder currentOrder;
+    //当前演出的首指令：
+    public DialogueOrderBlock orderBlock;
     public Transform defaultPos;
     public Transform leftPos;
     public Transform midPos;
     public Transform rightPos;
+    public Transform optionContainer;
+    public TextMeshProUGUI txtConversation;
+    public TextMeshProUGUI txtConverseNPCName;
     //最新从表中读取出来的位置（可能是出现的位置，可能是目标移动的位置）
     private Transform currentTargetPos;
     public Image imgBackground;
+    public Button btnContinue;
 
+    //当前正在处理的指令：
+    public DialogueOrder currentOrder;
+    //文本继续按钮是否点击
+    private bool isContinueButtonClicked = false;
+    //选项是否有选择结束（在选项脚本中进行广播）
+    private bool isChoiceMade = false;
+    //是否准备进行选项的处理（在监测到下一行是中断指令的时候）
+    private bool isReadyForUpdateOptions = false;
 
     public string currentBackgroundName;
     public string bgmName;
     //当前对话场景中包含的所有NPC（以NPC名字的形式存储）
     public Dictionary<string, GameObject> currentNPCDic = new Dictionary<string, GameObject>();
 
-    // public List<DialogueOption> optionList = new List<DialogueOption>();
+    public List<GameObject> optionList = new List<GameObject>();
+
+    //当前进行的协程句柄：
+    private Coroutine dialogueCoroutine;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        EventHub.Instance.AddEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
+        EventHub.Instance.AddEventListener<DialogueOrder>("ChoiceIsMade", ChoiceIsMade);
+    }
+
+    void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
+        EventHub.Instance.RemoveEventListener<DialogueOrder>("ChoiceIsMade", ChoiceIsMade);
+    }
 
     protected override void Init()
     {
+        btnContinue.onClick.AddListener(()=>{
+            isContinueButtonClicked = true;
+        });
+    }
+
+    //执行指令的方法；是一个协同程序
+    private void ExecuteOrder()
+    {
+        //此处应该会有向我广播当前的orderBlock的逻辑；
+        //也就是初始化当前需要处理的avg orderBlock 的逻辑；
+
+
+
+        //首个指令必定是1001：
+        DialogueOrder first = orderBlock.orderDic[1001];
+        //开启协程：
+        dialogueCoroutine = StartCoroutine(ProcessOrder(first));
+        
+
+
 
     }
 
-    //接收单个指令，并且处理指令
-    private void ProcessOrder(DialogueOrder order, E_OrderType type)
+    //接收首指令，并且顺序处理指令
+    private IEnumerator ProcessOrder(DialogueOrder firstOrder)
     {
-        //当前指令是：普通指令 / 选项后对话指令
-        if(type == E_OrderType.Common)
-        {
-            //处理背景：
-            currentBackgroundName = order.backgroundName;
-            if(currentBackgroundName != null)
+        currentOrder = firstOrder;
+        while(currentOrder.nextOrderId != -1)
+        {    
+            E_OrderType type = currentOrder.orderType;
+
+            //当前指令是：普通指令 / 选项后对话指令
+            if(type == E_OrderType.Common)
             {
-                imgBackground.sprite = Resources.Load<Sprite>(currentBackgroundName);
+                //处理背景：
+                currentBackgroundName = currentOrder.backgroundName;
+                if(currentBackgroundName != null)
+                {
+                    imgBackground.sprite = Resources.Load<Sprite>(currentBackgroundName);
+                }
+
+                //处理出现的NPC
+                //这个需要分情况，
+                //如果是NPC已经在场景中存在，那么就是移动位置
+                //如果不存在，才是浮现的效果出现在对应的位置；
+                string npcName = currentOrder.showUpNPCName.ToString();
+                if(currentOrder.showUpNPCName != E_NPCName.None)
+                {
+                    //处理当前的位置：
+                    switch(currentOrder.positionId)
+                    {
+                        case 0:
+                            currentTargetPos = defaultPos;
+                        break;
+                        case 1:
+                            currentTargetPos = leftPos;
+                        break;
+                        case 2:
+                            currentTargetPos = midPos;
+                        break;
+                        case 3:
+                            currentTargetPos = rightPos;
+                        break;
+                        default:
+                            Debug.LogWarning("当前获取的位置id不存在，错误位置：AVGPanel");
+                        break;
+                    }
+
+                    //处理NPC的出现（或者是位置重置）
+                    if(currentNPCDic.ContainsKey(npcName))
+                    {
+                        //如果包含，那么就是重置位置:
+                        MoveNPC(npcName, currentTargetPos);
+                    }
+                    else
+                    {
+                        //不包含，就是加入Dictionary，同时让NPC出现在对应的位置
+                        InitNPC(npcName, currentTargetPos);
+                    }
+
+                }
+
+                //处理NPC消失的逻辑：
+                //直接复用npcName这个变量：
+                npcName = currentOrder.disappearNPCName.ToString();
+                if(currentOrder.disappearNPCName != E_NPCName.None)
+                {
+                    EraseNPC(npcName);
+                }
+
+
+                npcName = currentOrder.conversationNPCName.ToString();
+                //处理NPC立绘动效的逻辑：
+                if(currentOrder.effectId != 0 && currentOrder.conversationNPCName != E_NPCName.None)
+                {
+                    NPCEffect(npcName, currentOrder.effectId);
+                }
+
+                //处理对话者逻辑：
+                //注意：如果没有对话需要处理，说明是过程动画，给一个固定的时间间隔，然后就会继续处理下一个order；
+                if(currentOrder.conversationNPCName != E_NPCName.None)
+                {
+                    ConverseWithNPC(npcName, currentOrder.orderText);
+
+                    //等待玩家点击后再进行：
+                    isContinueButtonClicked = false;    //等待；
+                    yield return new WaitUntil(() => isContinueButtonClicked);
+                }
+
+                //如果对话者名字为空，同时无对话文本，那么就是过场order（即：处理人物出现 / 消失等等的order）
+                else if(currentOrder.orderText == null)
+                {
+                    //等待一定时间就继续：先设置等一秒；
+                    yield return new WaitForSeconds(1f);
+                }
+
+                //更新当前order（只有Common的指令才是顺序的， Option & Break都不是严格顺序的）
+                currentOrder = orderBlock.orderDic[currentOrder.nextOrderId];
             }
 
-            //处理出现的NPC
-            //这个需要分情况，
-            //如果是NPC已经在场景中存在，那么就是移动位置
-            //如果不存在，才是浮现的效果出现在对应的位置；
-            string npcName = order.showUpNPCName.ToString();
-
-            //处理当前的位置：
-            switch(order.positionId)
+            //当前指令是：选项类型
+            else if(type == E_OrderType.Option)
             {
-                case 0:
-                    currentTargetPos = defaultPos;
-                break;
-                case 1:
-                    currentTargetPos = leftPos;
-                break;
-                case 2:
-                    currentTargetPos = midPos;
-                break;
-                case 3:
-                    currentTargetPos = rightPos;
-                break;
-                default:
-                    Debug.LogWarning("当前获取的位置id不存在，错误位置：AVGPanel");
-                break;
-            }
+                //如果是选项类型，那么就会一直执行指令；直到中断指令出现
+                //处理当前的orderId对应的选项内容：
+                GameObject option = Resources.Load<GameObject>("DialogueOptionButton");
 
-            //处理NPC的出现（或者是位置重置）
-            if(currentNPCDic.ContainsKey(npcName))
-            {
-                //如果包含，那么就是重置位置:
-                MoveNPC(npcName, currentTargetPos);
+                DialogueOptionBtn script = option.GetComponent<DialogueOptionBtn>();
+                script.Init(currentOrder);
+
+                //更新当前的order：
+                //其orderId就是当前的Option的orderId + 1:
+                //前提是下一行不是中断指令
+                if(currentOrder.nextLineOrderId / 1000 != 3)
+                {
+                    currentOrder = orderBlock.orderDic[currentOrder.orderId + 1];
+                }
+                //如果下一行是中断指令，那么预备在下一个循环中处理所有的选项；
+                else
+                {
+                    isReadyForUpdateOptions = true;
+                }
             }
-            else
+            
+            //当前类型是：中断指令（也就是准备好了要进行选项的显示和更新了）
+            if(isReadyForUpdateOptions)
             {
-                //不包含，就是加入List，同时让NPC出现在对应的位置
-                InitNPC(npcName, currentTargetPos);
-            }
+                isReadyForUpdateOptions = false;    //更新一次就重置；
+
+                //中断指令的出现，说明之前处理的是选项；因此需要处理选项；
+                //值得注意的是，Common指令之后一定不会出现中断指令；
+
+                //处理选项：
+                //首先实例化所有的选项：
+                foreach(var option in optionList)
+                {
+                    Instantiate(option, optionContainer, false);
+                }
+
+                //继续处理的条件是：等待选项的选择：
+                //首先先终止；
+                isChoiceMade = false;
+                yield return new WaitUntil(() => isChoiceMade); //只有选项点击选择之后才会继续；
+
+                //本来应该是在继续之后先更新当前的指令：
+                //但是我们将指令更新的逻辑迁移到了ChoiceMade方法中，也就是选项点击之后就会立刻更新：
 
 
-            //处理消失的逻辑：
-            //直接复用npcName这个变量：
-            npcName = order.disappearNPCName.ToString();
-            if(npcName != null)
-            {
-                EraseNPC(npcName);
             }
-
-            //处理对话者逻辑：
-            npcName = order.conversationNPCName.ToString();
-            if(npcName != null)
-            {
-                ConverseWithNPC(npcName);
-            }
+            
         }
-
-        //当前指令是：选项类型
-        else if(type == E_OrderType.Option)
-        {
-            //如果是选项类型，那么外部就会一直执行指令；直到中断指令出现
-        }
-        
-        //当前类型是：中断指令
-        else
-        {
-            //中断指令的出现，说明之前处理的是选项；因此需要处理选项；
-            //值得注意的是，Common指令之后一定不会出现中断指令；
-        }
-
-
-
     }
 
 
@@ -162,7 +276,7 @@ public class AVGPanel : BasePanel
     }
 
     //处理NPC对话逻辑：
-    private void ConverseWithNPC(string name)
+    private void ConverseWithNPC(string name, string conversation)
     {
         foreach(var key in currentNPCDic.Keys)
         {
@@ -173,9 +287,11 @@ public class AVGPanel : BasePanel
             }
         }
 
-        //然后在对话框中显示对话内容
-    }
+        //然后在对话框中显示对话内容，并且调整对话者的名字：
+        txtConversation.text = conversation;
+        txtConverseNPCName.text = name;
 
+    }
 
     //处理NPC的Image暗化的逻辑：参数是NPC名字
     //用于在对话的时候，将所有不是当前对话的Image调暗；
@@ -191,11 +307,41 @@ public class AVGPanel : BasePanel
         targetImage.color = currentColor;  // 应用新的颜色
     }
 
+    private void NPCEffect(string npcName, int effectId)
+    {
+        GameObject npc = currentNPCDic[npcName];
+        switch(effectId)
+        {
+            case 1:
+                //抖动
+            break;
+            case 2:
+                //镜像
+            break;
+        }
+    }
+
+
+    //方法：外部调用，通过广播当前需要显示的对话的orderBlock，执行对话：
+    private void BroadcastCurrentOrderBlock(DialogueOrderBlock _orderBlock)
+    {
+        orderBlock = _orderBlock;
+    }   
+
+    //方法；DialogueOptionBtn中调用：更新布尔变量，让对话继续：
+    private void ChoiceIsMade(DialogueOrder nextOrderOfOption)
+    {
+        isChoiceMade = true;
+        //更新当前需要处理的选项：
+        currentOrder = nextOrderOfOption;
+    }
+
 
 }
 
 
 public enum E_NPCName{
+    None = -1,
     奈亚拉 = 0,
     优格 = 1,
     纱布 = 2,  
@@ -210,6 +356,7 @@ public enum E_OrderType{
 
 public class DialogueOrder
 {
+    //所有的成员，如果没有对应的内容，赋予默认值（string给null, 枚举给None）
     //当前指令所属的演出id；
     public int rootId;
     //当前指令的id
@@ -220,6 +367,16 @@ public class DialogueOrder
     public int effectId;
     //下一个指令的索引id；
     public int nextOrderId;
+
+    //这个是在策划表中，当前指令行的下一行的指令的orderId；
+    //规范是 只有当前指令行是option类型的时候，才需要辛苦你为这个字段进行赋值；如2001赋值的就是2002；2002赋值的就是3001；
+    //其他类型的指令行不需要为其赋值；
+    //作用是用于确定中断指令的位置的（如果有问题可以直接问我）
+    public int nextLineOrderId;
+
+    //当前指令的类型：
+    //读取的时候，千位数对应：1 -> Common; 2 -> Option; 3 -> Break
+    public E_OrderType orderType;
     
     //当前要展示的NPC名称（枚举类）
     public E_NPCName showUpNPCName;
@@ -237,9 +394,5 @@ public class DialogueOrder
 
     //包含了选项文本和对话文本两个东西的string：
     public string orderText;
-
-
-
-
 
 }
