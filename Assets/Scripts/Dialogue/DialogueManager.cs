@@ -10,19 +10,19 @@ using static Event;
 
 //此处是Marc暂时先实现的对话管理器，之前你实现的版本没有删除，注释了放在了最下方的位置：
 //DialogueManager除了负责表格的读取和存储，对外只负责向AVGPanel广播DialogueOrderBlock; 
-public class DialogueManager : SingletonBaseManager<DialogueManager>
-{
-    private DialogueManager(){}
+// public class DialogueManager : SingletonBaseManager<DialogueManager>
+// {
+//     private DialogueManager(){}
 
 
-    //对外接口：通过演出id，访问到对应的演出id的首order：
-    public Dictionary<int, DialogueOrderBlock> orderBlockDic = new Dictionary<int, DialogueOrderBlock>();
+//     //对外接口：通过演出id，访问到对应的演出id的首order：
+//     public Dictionary<int, DialogueOrderBlock> orderBlockDic = new Dictionary<int, DialogueOrderBlock>();
 
 
-    //以下应该就是读取表格的逻辑；相关的内容全部存储在 orderBlockDic 中；
-    //对话之间的连接通过索引链接的方式进行；
+//     //以下应该就是读取表格的逻辑；相关的内容全部存储在 orderBlockDic 中；
+//     //对话之间的连接通过索引链接的方式进行；
 
-}
+// }
 
 
 

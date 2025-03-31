@@ -12,6 +12,11 @@ public class LoadManager : Singleton<LoadManager>
     public Dictionary<int, Event> optionEvents;
     public Dictionary<int, Event.EventResult> eventResults;         //表示所有事件的所有结果(性能优化)
     public Dictionary<int, Prop> allProps;
+    
+    //指令字典，管理的是 按照演出id区分的DialogueOrderBlock；
+    //DialogueOrderBlock在 Dialogue文件夹下；
+    public Dictionary<int, DialogueOrderBlock> orderBlockDic = new Dictionary<int, DialogueOrderBlock>();
+
     public int[,] map1Index;
     public MapElement[,] map1;
 
