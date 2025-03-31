@@ -33,6 +33,7 @@ public class LoadManager : Singleton<LoadManager>
     {
         LoadMapElements(1);
         InitMap1Elements(1);
+        LoadAVGDialogues();
         //LoadDialogues(0);
         LoadEvents();
         // LoadProps();
@@ -423,6 +424,109 @@ public class LoadManager : Singleton<LoadManager>
         else
         {
             Debug.LogError("怪诞文本文件未找到。事件Id：" + @event.eventId);
+        }
+    }
+
+    private void LoadAVGDialogues()
+    {
+        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/AVGDialogues.csv");
+        int showIndex = 1;
+        DialogueOrderBlock tempBlock = new DialogueOrderBlock();
+
+        if (File.Exists(path))
+        {
+            string[] lines = File.ReadAllLines(path, Encoding.UTF8);
+            DialogueOrder dialogue = null;
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                string[] values = line.Split(',');          //将每一列按照逗号分割
+                string nextLine = null;
+                string[] nextValues = null;
+                if (i + 1 != lines.Length)
+                {
+                    nextLine = lines[i + 1];
+                    nextValues = nextLine.Split(",");
+                }
+
+                if (int.Parse(values[0]) == showIndex && values.Length >= 5)
+                {
+                    dialogue = new DialogueOrder();
+                    dialogue.rootId = int.Parse(values[0]);                 //A列
+                    dialogue.orderId = int.Parse(values[1]);                //B列
+                    dialogue.backgroundName = values[2];                    //C列
+
+                    if (values[3] == "奈亚拉")                               //D列
+                        dialogue.showUpNPCName = E_NPCName.奈亚拉;
+                    else if (values[3] == "优格")
+                        dialogue.showUpNPCName = E_NPCName.优格;
+                    else if (values[3] == "纱布")
+                        dialogue.showUpNPCName = E_NPCName.纱布;
+
+                    dialogue.positionId = int.Parse(values[4]);             //E列
+
+                    if (values[5] == "奈亚拉")                               //F列
+                        dialogue.disappearNPCName = E_NPCName.奈亚拉;
+                    else if (values[5] == "优格")
+                        dialogue.disappearNPCName = E_NPCName.优格;
+                    else if (values[5] == "纱布")
+                        dialogue.disappearNPCName = E_NPCName.纱布;
+
+                    dialogue.effectId = int.Parse(values[6]);               //G列
+
+                    if (values[7] == "奈亚拉")                               //H列
+                        dialogue.conversationNPCName = E_NPCName.奈亚拉;
+                    else if (values[7] == "优格")
+                        dialogue.conversationNPCName = E_NPCName.优格;
+                    else if (values[7] == "纱布")
+                        dialogue.conversationNPCName = E_NPCName.纱布;
+
+                    dialogue.orderText = values[8];                         //I列
+                    dialogue.nextOrderId = int.Parse(values[9]);            //J列
+                    dialogue.audioClipStartName = values[10];               //K列
+                    dialogue.audioClipEndName = values[11];                 //L列
+
+                    if ((int.Parse(values[1]) / 1000) == 1)         //进行分类
+                        dialogue.orderType = E_OrderType.Common;
+                    else if ((int.Parse(values[1]) / 1000) == 2)
+                        dialogue.orderType = E_OrderType.Option;
+                    else if ((int.Parse(values[1]) / 1000) == 3)
+                        dialogue.orderType = E_OrderType.Break;
+
+                    //检测是否需要对nextLineOrderId赋值
+                    if (nextLine != null && dialogue.orderType == E_OrderType.Option)   //可加处理细节
+                    {
+                        dialogue.nextLineOrderId = int.Parse(nextValues[1]);
+                        nextLine = null;
+                    }
+
+                }
+
+                if (i + 1 <= lines.Length - 1)
+                {
+                    line = lines[i + 1];
+                    int charToFind = line.IndexOf(",");
+                    string firstValue = line.Substring(0, charToFind);
+                    if (int.Parse(firstValue) != showIndex)          //代表下一行开始是新的演出id
+                    {
+                        orderBlockDic.Add(showIndex, tempBlock);
+                        tempBlock = new DialogueOrderBlock();
+                        showIndex++;
+                    }
+                }
+
+                if(i + 1 == lines.Length)
+                {
+                    orderBlockDic.Add(showIndex, tempBlock);
+                }
+
+            }
+
+        }
+        else
+        {
+            Debug.LogWarning("事件数据文件不存在！");
         }
     }
 
