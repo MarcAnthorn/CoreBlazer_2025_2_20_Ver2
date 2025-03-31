@@ -87,7 +87,7 @@ public class InventoryPanel : BasePanel
             }
             else if(currentSelectedItem != null)
             {
-                InventoryItemLogic currentScript =  currentSelectedItem.GetComponent<InventoryItemLogic>();
+                InventoryItemLogic currentScript =  currentSelectedItem.GetComponentInChildren<InventoryItemLogic>();
                 if(currentScript.isSelectedToSlot)
                 {
                     Debug.LogWarning("不可重复选择Item到Slot中");
@@ -146,7 +146,7 @@ public class InventoryPanel : BasePanel
             }
             else if(currentSelectedItem != null)
             {
-                InventoryItemLogic currentScript =  currentSelectedItem.GetComponent<InventoryItemLogic>();
+                InventoryItemLogic currentScript =  currentSelectedItem.GetComponentInChildren<InventoryItemLogic>();
                 if(currentScript.isSelectedToSlot)
                 {
                     Debug.LogWarning("不可重复选择Item到Slot中");
@@ -182,6 +182,7 @@ public class InventoryPanel : BasePanel
             isLeftSlotReadyForItem = false;
 
             //同时将对应的Item高光取消：
+            Debug.LogWarning("你正在尝试将 isSelectedToSlot 置false");
             leftItemScript.isSelectedToSlot = false;
 
             btnSlotLeftOff.gameObject.SetActive(false);
@@ -194,6 +195,7 @@ public class InventoryPanel : BasePanel
             rightSlottedOriginalItem = null;
             isRightSlotReadyForItem = false;
 
+            Debug.LogWarning("你正在尝试将 isSelectedToSlot 置false");
             rightItemScript.isSelectedToSlot = false;
             btnSlotRightOff.gameObject.SetActive(false);
         });

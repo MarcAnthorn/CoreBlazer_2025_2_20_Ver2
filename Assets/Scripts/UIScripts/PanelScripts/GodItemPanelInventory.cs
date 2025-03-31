@@ -58,10 +58,12 @@ public class GodItemPanelInventory : BasePanel
         //对每一个道具都进行高光 / 取消高光处理：
         foreach(var item in itemList)
         {
-            item.gameObject.GetComponent<Outline>().enabled = _isHighLight;
+            //注意：实际上的脚本在我们存储的游戏对象的子对象上：
+            InventoryItemLogic script = item.gameObject.GetComponentInChildren<InventoryItemLogic>();
+            script.outlineObjects.SetActive(_isHighLight);
             if(!isStillSelecting)
             {
-                item.gameObject.GetComponent<InventoryItemLogic>().isInPreselecting = _isHighLight;
+                script.isInPreselecting = _isHighLight;
             }
 
         }

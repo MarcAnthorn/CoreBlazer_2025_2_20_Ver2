@@ -52,6 +52,7 @@ public class Prop1 : Prop
     {
         Debug.Log("道具 Prop1 使用！");
     }
+
 }
 
 public class Prop2 : Prop

@@ -48,6 +48,7 @@ public class PlayerController : PlayerBase
 
         EventHub.Instance.AddEventListener("OnPlayerDead", OnPlayerDead);
         EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
+        EventHub.Instance.AddEventListener<bool>("TriggerLightShrinking", TriggerLightShrinking);
 
     }
     // Start is called before the first frame update
@@ -80,6 +81,7 @@ public class PlayerController : PlayerBase
         base.OnDestroy();
         EventHub.Instance.RemoveEventListener("OnPlayerDead", OnPlayerDead);
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
+        EventHub.Instance.RemoveEventListener<bool>("TriggerLightShrinking", TriggerLightShrinking);
     }
 
     private void TriggerLightShrinking(bool _isShrinking)
