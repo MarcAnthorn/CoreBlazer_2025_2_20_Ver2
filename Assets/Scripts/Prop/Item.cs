@@ -6,11 +6,11 @@ using System.Threading;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class Prop                  //所有道具类的基类
+public abstract class Item                  //所有道具类的基类
 {
     public string name;
     public int id;
-    public PropType type;
+    public ItemType type;
     public bool isImmediate;
     public int useTimes;
     public int[] usableScene = new int[] { 0, 0, 0 };   // 1代表可使用
@@ -23,7 +23,7 @@ public abstract class Prop                  //所有道具类的基类
     public string instruction;                          //表示使用说明
     public string description;                          //表示道具文案
 
-    public enum PropType
+    public enum ItemType
     {
         None = 0,
         God_Maze = 1,
@@ -50,11 +50,11 @@ public abstract class Prop                  //所有道具类的基类
 
 
 
-public class Prop_Glim : Prop
+public class Item_Glim : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Prop_Glim 使用！");
+        Debug.Log($"道具 Item_Glim 使用！");
         //可视范围扩大5格
         Thread thread = new Thread(() => InOperation());
         thread.Start();
@@ -84,48 +84,48 @@ public class Prop_Glim : Prop
 
 }
 
-public class Prop_Tatakai : Prop
+public class Item_Tatakai : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Prop_Tatakai 使用！");
+        Debug.Log($"道具 Item_Tatakai 使用！");
         PlayerManager.Instance.player.STR.value += 10;
     }
 
 }
 
-public class Prop_LightUP : Prop
+public class Item_LightUP : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Prop_LightUP 使用！");
+        Debug.Log($"道具 Item_LightUP 使用！");
         PlayerManager.Instance.player.LVL.value += 20;
     }
 }
 
-public class Prop_Alive : Prop
+public class Item_Alive : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Prop_Alive 使用！");
+        Debug.Log($"道具 Item_Alive 使用！");
         PlayerManager.Instance.player.HP.value_limit += 10;
     }
 }
 
-public class Prop_BloodMedicine : Prop
+public class Item_BloodMedicine : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Prop_BloodMedicine 使用！");
+        Debug.Log($"道具 Item_BloodMedicine 使用！");
         PlayerManager.Instance.player.HP.value += 5;
     }
 }
 
-public class Prop_Tarot1 : Prop
+public class Item_Tarot1 : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Prop_Tarot 使用！");
+        Debug.Log($"道具 Item_Tarot 使用！");
         PlayerManager.Instance.player.LVL.value += 2;
     }
 }

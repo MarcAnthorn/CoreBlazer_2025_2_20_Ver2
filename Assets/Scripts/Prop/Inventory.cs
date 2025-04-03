@@ -4,57 +4,57 @@ using UnityEngine;
 
 public class Inventory              //背包
 {
-    public List<Prop> props = new List<Prop>();
-    public Dictionary<Prop, int> CountOfProps = new Dictionary<Prop, int>();//供外部访问的数据结构
+    public List<Item> Items = new List<Item>();
+    public Dictionary<Item, int> CountOfItems = new Dictionary<Item, int>();//供外部访问的数据结构
 
-    public void AddProp(Prop prop)
+    public void AddItem(Item Item)
     {
-        if (CountOfProps.ContainsKey(prop))     //加这个是为了防止下面的CountOfProps[prop]空引用
+        if (CountOfItems.ContainsKey(Item))     //加这个是为了防止下面的CountOfItems[Item]空引用
         {
-            if (CountOfProps[prop] < prop.maxLimit)
+            if (CountOfItems[Item] < Item.maxLimit)
             {
-                AddInDic(prop);
-                props.Add(prop);
+                AddInDic(Item);
+                Items.Add(Item);
                 return;
             }
         }
         else
         {
-            //props.Add(prop);
-            AddInDic(prop);
+            //Items.Add(Item);
+            AddInDic(Item);
         }
 
-        Debug.LogWarning($"道具：{prop.name}已满！");
+        Debug.LogWarning($"道具：{Item.name}已满！");
     }
-    public void RemoveProp(Prop prop)
+    public void RemoveItem(Item Item)
     {
-        if (props.Contains(prop))           //按照List内的prop来判断
+        if (Items.Contains(Item))           //按照List内的Item来判断
         {
-            props.Remove(prop);
-            RemoveInDic(prop);
+            Items.Remove(Item);
+            RemoveInDic(Item);
             return;
         }
 
-        Debug.LogError($"背包中没有该道具：{prop.name}");
+        Debug.LogError($"背包中没有该道具：{Item.name}");
     }
 
-    private void AddInDic(Prop prop)
+    private void AddInDic(Item Item)
     {
-        if (!CountOfProps.ContainsKey(prop))
+        if (!CountOfItems.ContainsKey(Item))
         {
-            CountOfProps.Add(prop, 0);
+            CountOfItems.Add(Item, 0);
         }
-        CountOfProps[prop]++;
+        CountOfItems[Item]++;
     }
-    private void RemoveInDic(Prop prop)
+    private void RemoveInDic(Item Item)
     {
-        if (!CountOfProps.ContainsKey(prop))
+        if (!CountOfItems.ContainsKey(Item))
         {
-            CountOfProps.Add(prop, 0);
-            Debug.LogError($"背包中没有该道具：{prop.name}");
+            CountOfItems.Add(Item, 0);
+            Debug.LogError($"背包中没有该道具：{Item.name}");
             return;
         }
-        CountOfProps[prop]--;
+        CountOfItems[Item]--;
     }
 
 }
