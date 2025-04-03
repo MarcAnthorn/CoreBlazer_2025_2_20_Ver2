@@ -6,13 +6,12 @@ using UnityEngine.UI;
 
 public class AVGPanel : BasePanel
 {
-    //当前演出的首指令：
-    public DialogueOrderBlock orderBlock;
     public Transform defaultPos;
     public Transform leftPos;
     public Transform midPos;
     public Transform rightPos;
     public Transform optionContainer;
+    public GameObject optionContainerGameObject;
     public TextMeshProUGUI txtConversation;
     public TextMeshProUGUI txtConverseNPCName;
     //最新从表中读取出来的位置（可能是出现的位置，可能是目标移动的位置）
@@ -22,17 +21,21 @@ public class AVGPanel : BasePanel
 
     //当前正在处理的指令：
     public DialogueOrder currentOrder;
+    //当前实例持有的OrderBlock
+    public DialogueOrderBlock orderBlock;
     //文本继续按钮是否点击
     private bool isContinueButtonClicked = false;
     //选项是否有选择结束（在选项脚本中进行广播）
     private bool isChoiceMade = false;
     //是否准备进行选项的处理（在监测到下一行是中断指令的时候）
-    private bool isReadyForUpdateOptions = false;
+    private bool isReadyToUpdateOptions = false;
 
     public string currentBackgroundName;
     public string bgmName;
     //当前对话场景中包含的所有NPC（以NPC名字的形式存储）
     public Dictionary<string, GameObject> currentNPCDic = new Dictionary<string, GameObject>();
+    //当前所有可能的立绘的RGB颜色字典，用于恢复NPC立绘的亮度：
+    public Dictionary<string, Color> colorDic = new Dictionary<string, Color>();
 
     public List<GameObject> optionList = new List<GameObject>();
 
@@ -43,13 +46,13 @@ public class AVGPanel : BasePanel
     {
         base.Awake();
         EventHub.Instance.AddEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
-        EventHub.Instance.AddEventListener<DialogueOrder>("ChoiceIsMade", ChoiceIsMade);
+        EventHub.Instance.AddEventListener<int>("ChoiceIsMade", ChoiceIsMade);
     }
 
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
-        EventHub.Instance.RemoveEventListener<DialogueOrder>("ChoiceIsMade", ChoiceIsMade);
+        EventHub.Instance.RemoveEventListener<int>("ChoiceIsMade", ChoiceIsMade);
     }
 
     protected override void Init()
@@ -57,6 +60,10 @@ public class AVGPanel : BasePanel
         btnContinue.onClick.AddListener(()=>{
             isContinueButtonClicked = true;
         });
+
+        //测试用：初始化当前持有的DialogueOrderBlock:
+        orderBlock = LoadManager.Instance.orderBlockDic[1];
+        ExecuteOrder();
     }
 
     //执行指令的方法；是一个协同程序
@@ -81,18 +88,20 @@ public class AVGPanel : BasePanel
     private IEnumerator ProcessOrder(DialogueOrder firstOrder)
     {
         currentOrder = firstOrder;
-        while(currentOrder.nextOrderId != -1)
+        while(true)
         {    
             E_OrderType type = currentOrder.orderType;
 
+            Debug.Log($"当前指令代号：{currentOrder.orderId}");
             //当前指令是：普通指令 / 选项后对话指令
             if(type == E_OrderType.Common)
             {
                 //处理背景：
                 currentBackgroundName = currentOrder.backgroundName;
-                if(currentBackgroundName != null)
+                if(currentBackgroundName != "0")
                 {
-                    imgBackground.sprite = Resources.Load<Sprite>(currentBackgroundName);
+                    // imgBackground.sprite = Resources.Load<Sprite>(currentBackgroundName);
+                    Debug.Log($"背景资源加载，资源名：{currentBackgroundName}");
                 }
 
                 //处理出现的NPC
@@ -164,13 +173,19 @@ public class AVGPanel : BasePanel
                 }
 
                 //如果对话者名字为空，同时无对话文本，那么就是过场order（即：处理人物出现 / 消失等等的order）
-                else if(currentOrder.orderText == null)
+                else if(currentOrder.orderText == "0")
                 {
                     //等待一定时间就继续：先设置等一秒；
                     yield return new WaitForSeconds(1f);
                 }
 
                 //更新当前order（只有Common的指令才是顺序的， Option & Break都不是严格顺序的）
+                if(currentOrder.nextOrderId == -1)
+                {
+                    Debug.LogWarning("演出已终止");
+                    UIManager.Instance.HidePanel<AVGPanel>();
+                    break;
+                }
                 currentOrder = orderBlock.orderDic[currentOrder.nextOrderId];
             }
 
@@ -179,10 +194,11 @@ public class AVGPanel : BasePanel
             {
                 //如果是选项类型，那么就会一直执行指令；直到中断指令出现
                 //处理当前的orderId对应的选项内容：
-                GameObject option = Resources.Load<GameObject>("DialogueOptionButton");
-
+                GameObject option = Instantiate(Resources.Load<GameObject>("DialogueOptionButton"), optionContainer, false);
+                option.SetActive(false);
                 DialogueOptionBtn script = option.GetComponent<DialogueOptionBtn>();
                 script.Init(currentOrder);
+                optionList.Add(option);
 
                 //更新当前的order：
                 //其orderId就是当前的Option的orderId + 1:
@@ -194,23 +210,25 @@ public class AVGPanel : BasePanel
                 //如果下一行是中断指令，那么预备在下一个循环中处理所有的选项；
                 else
                 {
-                    isReadyForUpdateOptions = true;
+                    isReadyToUpdateOptions = true;
                 }
             }
             
             //当前类型是：中断指令（也就是准备好了要进行选项的显示和更新了）
-            if(isReadyForUpdateOptions)
+            if(isReadyToUpdateOptions)
             {
-                isReadyForUpdateOptions = false;    //更新一次就重置；
+                Debug.Log("此处是中断指令");
+                isReadyToUpdateOptions = false;    //更新一次就重置；
 
                 //中断指令的出现，说明之前处理的是选项；因此需要处理选项；
                 //值得注意的是，Common指令之后一定不会出现中断指令；
 
                 //处理选项：
-                //首先实例化所有的选项：
+                //将选项全部激活：
+                optionContainerGameObject.SetActive(true);
                 foreach(var option in optionList)
                 {
-                    Instantiate(option, optionContainer, false);
+                    option.SetActive(true);
                 }
 
                 //继续处理的条件是：等待选项的选择：
@@ -223,6 +241,10 @@ public class AVGPanel : BasePanel
 
 
             }
+
+            //最终处理终止相关的指令：如果当前指令的nextOrderId是-1，说明当前的指令是最终的指令；
+            //需要终止avg的演出:
+
             
         }
     }
@@ -240,14 +262,21 @@ public class AVGPanel : BasePanel
     //初始化NPC的方法：出现并且将其放置在对应的位置：
     private void InitNPC(string name, Transform targetPos)
     {
+        Debug.Log($"当前出现的NPC是:{name}");
         GameObject npc = Instantiate(Resources.Load<GameObject>("NPC/" + name), targetPos, false);
         currentNPCDic.Add(name, npc);
 
         //处理其渐显的逻辑：
         Image npcImage = npc.gameObject.GetComponent<Image>();
         Color color = npcImage.color;
+        if(!colorDic.ContainsKey(name))
+        {
+            colorDic.Add(name, color);
+        }
+
         color.a = 0;
         npcImage.color = color;
+
 
         float moveDuration = 0.4f;
         LeanTween.alpha(npcImage.rectTransform, 1, moveDuration);
@@ -257,6 +286,7 @@ public class AVGPanel : BasePanel
     //处理NPC消失的方法：
     private void EraseNPC(string name)
     {
+        Debug.Log($"当前消除的NPC是:{name}");
         if(!currentNPCDic.ContainsKey(name))
         {
             Debug.LogWarning($"当前要移除的NPC不存在，NPC名：{name}");
@@ -285,6 +315,11 @@ public class AVGPanel : BasePanel
                 //如果不是当前对话的NPC，则调暗Image；
                 DarkenNPCImage(key);
             }
+            else
+            {
+                //如果是当前对话的NPC，则调整Image维正常亮度；
+                LightenNPCImage(key);
+            }
         }
 
         //然后在对话框中显示对话内容，并且调整对话者的名字：
@@ -307,6 +342,13 @@ public class AVGPanel : BasePanel
         targetImage.color = currentColor;  // 应用新的颜色
     }
 
+    //恢复亮度的方法：
+    private void LightenNPCImage(string name)
+    {
+        Image targetImage = currentNPCDic[name].GetComponent<Image>();
+        targetImage.color = colorDic[name];  // 应用原先的的颜色
+    }
+
     private void NPCEffect(string npcName, int effectId)
     {
         GameObject npc = currentNPCDic[npcName];
@@ -314,9 +356,11 @@ public class AVGPanel : BasePanel
         {
             case 1:
                 //抖动
+                Debug.LogWarning("抖动");
             break;
             case 2:
                 //镜像
+                Debug.LogWarning("镜像");
             break;
         }
     }
@@ -329,11 +373,19 @@ public class AVGPanel : BasePanel
     }   
 
     //方法；DialogueOptionBtn中调用：更新布尔变量，让对话继续：
-    private void ChoiceIsMade(DialogueOrder nextOrderOfOption)
+    private void ChoiceIsMade(int nextOrderId)
     {
         isChoiceMade = true;
         //更新当前需要处理的选项：
-        currentOrder = nextOrderOfOption;
+        currentOrder = orderBlock.orderDic[nextOrderId];
+
+        //清空当前显示的所有Options，并且清空List：
+        optionContainerGameObject.SetActive(false);
+        foreach(var option in optionList)
+        {
+            Destroy(option);   
+        }
+        optionList.Clear();
     }
 
 

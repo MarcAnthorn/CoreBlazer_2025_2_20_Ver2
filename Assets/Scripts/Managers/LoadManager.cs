@@ -15,6 +15,7 @@ public class LoadManager : Singleton<LoadManager>
     
     //指令字典，管理的是 按照演出id区分的DialogueOrderBlock；
     //DialogueOrderBlock在 Dialogue文件夹下；
+    //int -> rootId;
     public Dictionary<int, DialogueOrderBlock> orderBlockDic = new Dictionary<int, DialogueOrderBlock>();
 
     public int[,] map1Index;
@@ -44,6 +45,21 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadDialogues(int libIndex)
     {
+        // DialogueOrderBlock block1 = new DialogueOrderBlock();
+        // DialogueOrder currentOrder  = new DialogueOrder();
+
+
+
+        // block1.orderDic.Add(1001, currentOrder);
+
+
+        // DialogueOrderBlock block2 = new DialogueOrderBlock();
+        // block2.orderDic.Add(1001, currentOrder);
+
+
+
+
+
         dialogueDictionary = new Dictionary<int, Dialogue>();
         string path = Path.Combine(Application.dataPath, "Resources/DialogueData/DialogueDatas.csv");
 
@@ -429,6 +445,7 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadAVGDialogues()
     {
+        Debug.Log("开始加载AVG内容");
         string path = Path.Combine(Application.dataPath, "Resources/DialogueData/AVGDialogues.csv");
         int showIndex = 1;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
@@ -463,6 +480,8 @@ public class LoadManager : Singleton<LoadManager>
                         dialogue.showUpNPCName = E_NPCName.优格;
                     else if (values[3] == "纱布")
                         dialogue.showUpNPCName = E_NPCName.纱布;
+                    else
+                        dialogue.showUpNPCName = E_NPCName.None; 
 
                     dialogue.positionId = int.Parse(values[4]);             //E列
 
@@ -472,6 +491,8 @@ public class LoadManager : Singleton<LoadManager>
                         dialogue.disappearNPCName = E_NPCName.优格;
                     else if (values[5] == "纱布")
                         dialogue.disappearNPCName = E_NPCName.纱布;
+                    else
+                        dialogue.disappearNPCName = E_NPCName.None; 
 
                     dialogue.effectId = int.Parse(values[6]);               //G列
 
@@ -481,6 +502,8 @@ public class LoadManager : Singleton<LoadManager>
                         dialogue.conversationNPCName = E_NPCName.优格;
                     else if (values[7] == "纱布")
                         dialogue.conversationNPCName = E_NPCName.纱布;
+                    else
+                        dialogue.conversationNPCName = E_NPCName.None;    
 
                     dialogue.orderText = values[8];                         //I列
                     dialogue.nextOrderId = int.Parse(values[9]);            //J列
@@ -501,7 +524,8 @@ public class LoadManager : Singleton<LoadManager>
                         nextLine = null;
                     }
 
-                    tempBlock.orderDic.Add(dialogue.rootId, dialogue);
+                    // tempBlock.orderDic.Add(dialogue.rootId, dialogue);
+                    tempBlock.orderDic.Add(dialogue.orderId, dialogue);
 
                 }
 
@@ -512,6 +536,7 @@ public class LoadManager : Singleton<LoadManager>
                     string firstValue = line.Substring(0, charToFind);
                     if (int.Parse(firstValue) != showIndex)          //代表下一行开始是新的演出id
                     {
+                        Debug.Log("???");
                         orderBlockDic.Add(showIndex, tempBlock);
                         tempBlock = new DialogueOrderBlock();
                         showIndex++;
@@ -520,6 +545,7 @@ public class LoadManager : Singleton<LoadManager>
 
                 if(i + 1 == lines.Length)
                 {
+                    Debug.Log("orderBlock已添加2");
                     orderBlockDic.Add(showIndex, tempBlock);
                 }
 

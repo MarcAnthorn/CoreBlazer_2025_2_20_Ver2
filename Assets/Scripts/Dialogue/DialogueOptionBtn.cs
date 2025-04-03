@@ -20,7 +20,7 @@ public class DialogueOptionBtn : MonoBehaviour
     {
         btnOption.onClick.AddListener(()=>{
             //触发方法，让AVGPanel中的逻辑继续：
-            EventHub.Instance.EventTrigger<bool>("ChoiceIsMade", true);
+            EventHub.Instance.EventTrigger<int>("ChoiceIsMade", myOrder.nextOrderId);
         });
     }
 
@@ -29,6 +29,7 @@ public class DialogueOptionBtn : MonoBehaviour
     {
         myOrder = _order;
         //初始化当前的文本信息：
+        Debug.Log($"当前的文本信息是{myOrder.orderText}");
         txtOptionText.text = myOrder.orderText;
 
     }

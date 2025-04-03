@@ -14,4 +14,7 @@ public class DialogueOrderBlock
     //自己所组织的所有order；通过orderId - order实例的方式，以dictionary的方式组织；
     public Dictionary<int, DialogueOrder> orderDic = new Dictionary<int, DialogueOrder>();
 
+
 }
+
+
