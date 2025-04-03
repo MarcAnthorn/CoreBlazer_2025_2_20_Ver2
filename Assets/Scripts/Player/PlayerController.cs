@@ -15,7 +15,21 @@ public class PlayerController : PlayerBase
     public float L0 = 300;
     [Range(0, 200)]
     public float LExtra;
-    private float L2, L5, L;
+    private float L2, L5;
+    private float _l;
+
+
+    //将L和PlayerManager.Instance.player.LVL.value绑定，互相同步；
+    public float L
+    {
+        get => PlayerManager.Instance.player.LVL.value;
+        set
+        {
+            PlayerManager.Instance.player.LVL.value = value;
+            _l = value; // 也同步更新本地的 _l
+        }
+    }
+    
     private float lightShrinkingTime = 0;
     [Range(0, 1f)]
     public float stageOneSpeed;
@@ -58,7 +72,6 @@ public class PlayerController : PlayerBase
         lightShrinkingTime = 0;
         L2 = L0 * (1 - 0.2f * 2);             
         L5 = L2 * (1 - 0.2f * 2); 
-
         // L2 = L0 * (1 - 0.2f * 2);             
         // L5 = L2 * Mathf.Exp(-0.8f * (5 - 2)); 
         spriteLight.pointLightOuterRadius = initialLightScope;
