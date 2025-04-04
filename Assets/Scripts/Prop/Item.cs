@@ -50,11 +50,11 @@ public abstract class Item                  //所有道具类的基类
 
 
 
-public class Item_Glim : Item
+public class Item_101 : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Item_Glim 使用！");
+        Debug.Log($"道具 灯火助燃剂 使用！");
         //可视范围扩大5格
         Thread thread = new Thread(() => InOperation());
         thread.Start();

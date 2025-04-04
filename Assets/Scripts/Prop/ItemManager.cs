@@ -35,7 +35,7 @@ public class ItemManager : Singleton<ItemManager>
         switch (ItemId)
         {
             case 101:
-                return new Item_Glim();
+                return new Item_101();
             case 201:
                 return new Item_Tatakai();
             case 301:

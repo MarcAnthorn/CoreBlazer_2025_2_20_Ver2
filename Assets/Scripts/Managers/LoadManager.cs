@@ -11,7 +11,11 @@ public class LoadManager : Singleton<LoadManager>
     public Dictionary<int, Event> startEvents;
     public Dictionary<int, Event> optionEvents;
     public Dictionary<int, Event.EventResult> eventResults;         //表示所有事件的所有结果(性能优化)
+<<<<<<< Updated upstream
     public Dictionary<int, Item> allItems;
+=======
+    public Dictionary<int, Item> allProps;
+>>>>>>> Stashed changes
     
     //指令字典，管理的是 按照演出id区分的DialogueOrderBlock；
     //DialogueOrderBlock在 Dialogue文件夹下；
@@ -99,8 +103,13 @@ public class LoadManager : Singleton<LoadManager>
     }
     private void LoadItems()
     {
+<<<<<<< Updated upstream
         allItems = new Dictionary<int, Item>();
         string path = Path.Combine(Application.dataPath, "Resources/ItemData/AllItems.csv");
+=======
+        allProps = new Dictionary<int, Item>();
+        string path = Path.Combine(Application.dataPath, "Resources/PropData/AllProps.csv");
+>>>>>>> Stashed changes
 
         if (File.Exists(path))
         {
@@ -113,10 +122,17 @@ public class LoadManager : Singleton<LoadManager>
                 if (values.Length > 3)
                 {
                     //此处进行道具分类
+<<<<<<< Updated upstream
                     Item Item = ItemManager.Instance.ClassifyItems(int.Parse(values[1]));
                     Item.name = values[0];                              //A列
                     Item.id = int.Parse(values[1]);                     //B列
                     Item.type = (Item.ItemType)int.Parse(values[2]);    //C列
+=======
+                    Item prop = ItemManager.Instance.ClassifyItems(int.Parse(values[1]));
+                    prop.name = values[0];                              //A列
+                    prop.id = int.Parse(values[1]);                     //B列
+                    prop.type = (Item.ItemType)int.Parse(values[2]);    //C列
+>>>>>>> Stashed changes
 
                     if (values[3] == "1")                               //D列
                         Item.isImmediate = true;

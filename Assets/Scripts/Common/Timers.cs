@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,24 +10,47 @@ public class Timers : Singleton<Timers>
 
     private class Timer
     {
+        public Action OnStart;
         public Action OnComplete;
-        public float Duration;
+        public float duration;
 
         public float startTime;
         public float elapsedTime;
         public bool isStart;
         public bool isSuspend;
+        public bool itemStartWork;
 
-        public Timer(float duration = 0, Action OnComplete = null)
+        public Timer(float duration = 0, Action OnStart = null, Action OnComplete = null)
         {
             isStart = false;
             isSuspend = false;
+            itemStartWork = false;
+            this.OnStart = OnStart;
             this.OnComplete = OnComplete;
+        }
+
+        public void CheckItemStart()
+        {
+            if (!itemStartWork && OnStart != null)
+            {
+                OnStart();
+                itemStartWork = true;
+            }
+        }
+
+        public void CheckItemEnd(int timerKey)
+        {
+            if (duration > 0f && OnComplete != null)
+            {
+                OnComplete();
+                Timers.Instance.SingleTimerOver(timerKey);
+                Timers.Instance.RemoveTimer(timerKey);
+            }
         }
 
     }
 
-    private int index = -1;
+    private static int index = -1;
     private Dictionary<int, Timer> timers = new Dictionary<int, Timer>();
 
     private float gameStartTime;
@@ -35,29 +59,40 @@ public class Timers : Singleton<Timers>
     public int AddTimer()
     {
         index++;
-        timers.Add(index, new Timer());
+        timers.TryAdd(index, new Timer());
 
-        return index;
+        return index;               //告诉外界当前索引的值是多少
     }
     public void RemoveTimer(int key)
     {
         timers.Remove(key);
         index--;
     }
-    public void StopAllTimers()                         //进入事件 或者 游戏暂停时调用
+    public void SuspendAllTimers()                         //进入事件 或者 游戏暂停时调用
     {
         foreach(Timer timer in timers.Values)
         {
             timer.isSuspend = true;
         }
     }
-    public void ContinueAllTimers()                         //进入事件 或者 游戏暂停时调用
+    public void ContinueAllTimers()                         //游戏恢复时调用
     {
         foreach (Timer timer in timers.Values)
         {
             timer.isSuspend = false;
         }
     }
+    public void FinishAllTimers()                           //游戏结束时调用
+    {
+        foreach (Timer timer in timers.Values)
+        {
+            timer.isStart = false;
+            timer.isSuspend = false;
+        }
+        timers.Clear();
+        index = -1;
+    }
+
     public float GetGameTime()
     {
         return gameTime;
@@ -73,13 +108,16 @@ public class Timers : Singleton<Timers>
     {
         float gameTime = Time.time - gameStartTime;
 
-        foreach(Timer timer in timers.Values)
+        foreach (var pair in timers)
         {
-            if (timer.isStart && !timer.isSuspend)
+            if (pair.Value.isStart && !pair.Value.isSuspend)
             {
-                timer.elapsedTime = Time.time - timer.startTime;
+                pair.Value.elapsedTime = Time.time - pair.Value.startTime;
+                pair.Value.CheckItemStart();
+                pair.Value.CheckItemEnd(pair.Key);
             }
         }
+
     }
 
     public void SingleTimerStart(int key)
