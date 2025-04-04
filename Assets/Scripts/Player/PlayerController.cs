@@ -68,7 +68,7 @@ public class PlayerController : PlayerBase
     // Start is called before the first frame update
     void Start()
     { 
-          
+        isLightShrinking = true;
         lightShrinkingTime = 0;
         L2 = L0 * (1 - 0.2f * 2);             
         L5 = L2 * (1 - 0.2f * 2); 
@@ -177,21 +177,37 @@ public class PlayerController : PlayerBase
     }
     private void OnPlayerDead()
     {
-        //重置位置
-        ResetPosition();
+        // //重置位置
+        // ResetPosition();
 
-        //重置灯光相关
-        isLightShrinking = true;
-        L = L0;
-        lightShrinkingTime = 0;
+        //角色死亡之后，重置一些内容之后，直接传送回对应的安全屋：
+        
 
         //重置伤害相关
         damageTime = 0;
         StopCoroutine(damageCoroutine);
         isDamaging = false;
 
+        //加载安全屋的场景：
+        //激活所有需要失活的过场景不移除的对象：
+        //该方法定义在TestCanvas中，该脚本挂载在Canvas上；        
+        LoadSceneManager.Instance.LoadSceneAsync("ShelterScene", SwitchSceneCallback);
+
+
+        
+
+
+    }
+
+    //这个是切换场景的时候的回调函数：
+    private void SwitchSceneCallback()
+    {
+        EventHub.Instance.EventTrigger("TestClearFunction", true);
+        //重置灯光相关
+
         //重置血量相关
         PlayerManager.Instance.player.HP.value = 100;
+        PlayerManager.Instance.player.LVL.value = 300;
     }
 
     private void ResetPosition()

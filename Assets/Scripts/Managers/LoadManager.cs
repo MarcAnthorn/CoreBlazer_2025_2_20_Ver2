@@ -11,7 +11,7 @@ public class LoadManager : Singleton<LoadManager>
     public Dictionary<int, Event> startEvents;
     public Dictionary<int, Event> optionEvents;
     public Dictionary<int, Event.EventResult> eventResults;         //表示所有事件的所有结果(性能优化)
-    public Dictionary<int, Prop> allProps;
+    public Dictionary<int, Item> allItems;
     
     //指令字典，管理的是 按照演出id区分的DialogueOrderBlock；
     //DialogueOrderBlock在 Dialogue文件夹下；
@@ -37,7 +37,7 @@ public class LoadManager : Singleton<LoadManager>
         LoadAVGDialogues();
         //LoadDialogues(0);
         LoadEvents();
-        // LoadProps();
+        // LoadItems();
     }
 
 
@@ -97,10 +97,10 @@ public class LoadManager : Singleton<LoadManager>
             Debug.LogError("对话文件未找到。");
         }
     }
-    private void LoadProps()
+    private void LoadItems()
     {
-        allProps = new Dictionary<int, Prop>();
-        string path = Path.Combine(Application.dataPath, "Resources/PropData/AllProps.csv");
+        allItems = new Dictionary<int, Item>();
+        string path = Path.Combine(Application.dataPath, "Resources/ItemData/AllItems.csv");
 
         if (File.Exists(path))
         {
@@ -113,48 +113,48 @@ public class LoadManager : Singleton<LoadManager>
                 if (values.Length > 3)
                 {
                     //此处进行道具分类
-                    Prop prop = PropManager.Instance.ClassifyProps(int.Parse(values[1]));
-                    prop.name = values[0];                              //A列
-                    prop.id = int.Parse(values[1]);                     //B列
-                    prop.type = (Prop.PropType)int.Parse(values[2]);    //C列
+                    Item Item = ItemManager.Instance.ClassifyItems(int.Parse(values[1]));
+                    Item.name = values[0];                              //A列
+                    Item.id = int.Parse(values[1]);                     //B列
+                    Item.type = (Item.ItemType)int.Parse(values[2]);    //C列
 
                     if (values[3] == "1")                               //D列
-                        prop.isImmediate = true;
+                        Item.isImmediate = true;
                     else
-                        prop.isImmediate = false;
+                        Item.isImmediate = false;
 
-                    prop.useTimes = int.Parse(values[4]);               //E列
+                    Item.useTimes = int.Parse(values[4]);               //E列
                     char[] envs = values[5].ToCharArray();              //F列
                     for (int j = 0; j < 3; j++)
-                        prop.usableScene[j] = (int)envs[j];
+                        Item.usableScene[j] = (int)envs[j];
 
                     if (values[6] == "0")                               //G列
-                        prop.resetAfterDeath = true;
+                        Item.resetAfterDeath = true;
                     else
-                        prop.resetAfterDeath = false;
+                        Item.resetAfterDeath = false;
 
                     if (values[7] == "0")                               //H列
-                        prop.quickEquip = true;
+                        Item.quickEquip = true;
                     else
-                        prop.quickEquip = false;
+                        Item.quickEquip = false;
 
                     if (values[8] == "0")                               //I列
-                        prop.reObtain = true;
+                        Item.reObtain = true;
                     else
-                        prop.reObtain = false;
+                        Item.reObtain = false;
 
-                    prop.maxLimit = int.Parse(values[9]);               //J列
+                    Item.maxLimit = int.Parse(values[9]);               //J列
 
                     if (values[10] == "0")                              //K列
-                        prop.isPermanent = true;
+                        Item.isPermanent = true;
                     else
-                        prop.isPermanent = false;
+                        Item.isPermanent = false;
 
-                    prop.EffectiveTime = float.Parse(values[11]);       //L列
-                    prop.instruction = values[12];                      //M列
-                    prop.description = values[13];                      //N列
+                    Item.EffectiveTime = float.Parse(values[11]);       //L列
+                    Item.instruction = values[12];                      //M列
+                    Item.description = values[13];                      //N列
 
-                    allProps.Add(prop.id, prop);
+                    allItems.Add(Item.id, Item);
                 }
                 else
                 {

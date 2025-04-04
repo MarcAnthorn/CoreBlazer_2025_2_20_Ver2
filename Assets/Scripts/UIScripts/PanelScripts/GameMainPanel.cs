@@ -48,6 +48,13 @@ public class GameMainPanel : BasePanel
             UIManager.Instance.HidePanel<GodItemPanel>();
         });
 
+        btnQuit.onClick.AddListener(()=>{
+            if(isDetectingCloseInput)
+            {
+                UIManager.Instance.HidePanel<GameMainPanel>();
+            }
+        });
+
 
         //当前面板显示，更新面板内容：
         //测试用：
@@ -76,13 +83,7 @@ public class GameMainPanel : BasePanel
     {
 
         //如果当前处在检测任意键关闭的状态，则检测鼠标左键是否按下；如果按下，关闭面板；
-        if(isDetectingCloseInput)
-        {
-            if(Input.GetKeyDown(KeyCode.Q))
-            {
-                UIManager.Instance.HidePanel<GameMainPanel>();
-            }
-        }
+        
     }
 
     private void OnDestroy()
