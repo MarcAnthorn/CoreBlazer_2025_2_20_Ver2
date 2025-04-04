@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class ItemCheckPanel : BasePanel
 {
-    // private Item currentShownItem;
+    private Item currentShownItem;
     public TextMeshProUGUI txtItemName;
-    public TextMeshProUGUI txtItemLeftNotice;
+    public TextMeshProUGUI txtItemCount;
     public TextMeshProUGUI txtItemEffectDescription;
     public TextMeshProUGUI txtItemOtherDescription;
     public Button btnUse;
@@ -19,11 +19,11 @@ public class ItemCheckPanel : BasePanel
         InitItemInfo();
 
         btnUse.onClick.AddListener(()=>{
-
+            Debug.Log("Item is used");
         });
 
         btnClose.onClick.AddListener(()=>{
-
+            UIManager.Instance.HidePanel<ItemCheckPanel>();
         });
     }
 

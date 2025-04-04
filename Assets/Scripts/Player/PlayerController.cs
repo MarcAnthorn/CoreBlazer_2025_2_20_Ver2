@@ -78,9 +78,6 @@ public class PlayerController : PlayerBase
     }
 
     // Update is called once per frame
-    void Update()
-    {
-    }
 
     protected override void FixedUpdate()
     {
@@ -185,7 +182,8 @@ public class PlayerController : PlayerBase
 
         //重置伤害相关
         damageTime = 0;
-        StopCoroutine(damageCoroutine);
+        if(damageCoroutine != null)
+            StopCoroutine(damageCoroutine);
         isDamaging = false;
 
         //加载安全屋的场景：
@@ -237,7 +235,9 @@ public class PlayerController : PlayerBase
 
         //补充灯光之后，开启灯光衰减，关闭伤害判定协程；
         isLightShrinking = true;
-        StopCoroutine(damageCoroutine);
+        if(damageCoroutine != null)
+            StopCoroutine(damageCoroutine);
+
         isDamaging = false;
        
     }

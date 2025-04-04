@@ -23,6 +23,15 @@ public class PlayerBase : MonoBehaviour
         ControlPlayerMove();
     }
 
+    protected virtual void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            UIManager.Instance.ShowPanel<InventoryPanel>();
+            EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        }
+    }
+
 
     protected void ControlPlayerMove()
     {

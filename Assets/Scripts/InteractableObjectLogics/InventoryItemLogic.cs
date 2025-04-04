@@ -51,7 +51,7 @@ public class InventoryItemLogic : MonoBehaviour
             //如果什么状态都不属于，就会进入当前item对应的展示面板；
             else
             {
-                Debug.Log("Item展示框触发");
+                UIManager.Instance.ShowPanel<ItemCheckPanel>();
             }
 
         });

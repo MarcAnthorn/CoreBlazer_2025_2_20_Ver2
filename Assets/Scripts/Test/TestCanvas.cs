@@ -11,6 +11,7 @@ public class TestCanvas : MonoBehaviour
     void Awake()
     {
         EventHub.Instance.AddEventListener<bool>("TestClearFunction", TestClearFunction);
+        DontDestroyOnLoad(this.gameObject);
     }
 
     void OnDestroy()

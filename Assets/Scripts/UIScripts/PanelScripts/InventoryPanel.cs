@@ -18,6 +18,8 @@ public class InventoryPanel : BasePanel
     public Button btnSlotRightOff;
     //用于取消插槽提示的Button：
     public Button btnCancelSlotHighLight;
+    public Button btnExit;
+    public Button btnSetting;
     public TextMeshProUGUI txtStrength;
     public TextMeshProUGUI txtSpeed;
 
@@ -64,6 +66,15 @@ public class InventoryPanel : BasePanel
 
     protected override void Init()
     {
+        btnExit.onClick.AddListener(()=>{
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            UIManager.Instance.HidePanel<InventoryPanel>();
+        });
+
+        btnSetting.onClick.AddListener(()=>{
+            
+        });
+
         // UIManager.Instance.ShowPanel<GodItemPanelInventory>();
         btnCommonPanelReveal.onClick.AddListener(()=>{
 

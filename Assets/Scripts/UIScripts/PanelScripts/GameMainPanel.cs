@@ -17,6 +17,8 @@ public class GameMainPanel : BasePanel
     public TextMeshProUGUI txtHealth;
     public TextMeshProUGUI txtSanity;
     public TextMeshProUGUI txtLight;
+    public TextMeshProUGUI txtStrength;
+    public TextMeshProUGUI txtSpeed;
     // public TextMeshProUGUI txtIntroduction;
     public TextMeshProUGUI txtEventDescription;
     public TextMeshProUGUI txtRiddleTip; 
@@ -36,6 +38,7 @@ public class GameMainPanel : BasePanel
 
     protected override void Init()
     {
+        UpdateAttributeText();
         //默认显示的是神明道具面板；
         // UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
         btnToGodItem.onClick.AddListener(()=>{
@@ -65,7 +68,6 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.EventTrigger<bool>("Freeze", true);
 
         UpdateEvent();          //更新事件相关内容
-        UpdateAttribute();      //更新当前玩家属性显示
 
         
     }
@@ -76,14 +78,8 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.AddEventListener("UpdateEvent", UpdateEvent);
         EventHub.Instance.AddEventListener("UpdateOptions", UpdateOptions);   
         EventHub.Instance.AddEventListener("ClearOptions", ClearOptions);
+        EventHub.Instance.AddEventListener("UpdateAttributeText", UpdateAttributeText);
     
-    }
-
-    private void Update()
-    {
-
-        //如果当前处在检测任意键关闭的状态，则检测鼠标左键是否按下；如果按下，关闭面板；
-        
     }
 
     private void OnDestroy()
@@ -91,10 +87,22 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.RemoveEventListener("UpdateEvent", UpdateEvent);
         EventHub.Instance.RemoveEventListener("UpdateOptions", UpdateOptions);
         EventHub.Instance.RemoveEventListener("ClearOptions", ClearOptions);
+        EventHub.Instance.RemoveEventListener("UpdateAttributeText", UpdateAttributeText);
     
 
         //解冻玩家
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
+    }
+
+    //更新面板属性的方法，所有存在属性更新（如道具使用等等，最后都需要调用这个方法以确保显示的属性文本的更新）
+    private void UpdateAttributeText()
+    {
+        txtHealth.text = $"{(int)PlayerManager.Instance.player.HP.value} / {(int)PlayerManager.Instance.player.HP.value_limit}";
+        txtSanity.text = $"{(int)PlayerManager.Instance.player.SAN.value} / {(int)PlayerManager.Instance.player.SAN.value_limit}";
+        txtLight.text = $"{(int)PlayerManager.Instance.player.LVL.value} / {(int)PlayerManager.Instance.player.LVL.value_limit}";
+
+        txtStrength.text = $"力量：{(int)PlayerManager.Instance.player.STR.value}";
+        txtSpeed.text = $"速度：{(int)PlayerManager.Instance.player.SPD.value}";
     }
 
 
@@ -130,23 +138,10 @@ public class GameMainPanel : BasePanel
         if(currentEvent.hasResult)
         {
             currentEvent.ExecuteResult(PlayerManager.Instance.player);
-            PlayerManager.Instance.player.DebugInfo();
+            UpdateAttributeText();
         }      
 
     }
-
-    //更新当前UI显示玩家属性的方法：
-    private void UpdateAttribute()
-    {
-        //此处只是读取Player暴露给外部的属性数值：
-        //如果需要Slider额外的实现效果（如属性增减时的数值条变化效果），可以使用LeanTween
-        //如：将血量更新为当前玩家血量：
-        //（未完成所有调整，有待讨论）
-        sliderHealth.value = PlayerManager.Instance.Health;
-        txtHealth.SetText("生命属性值：{0}", PlayerManager.Instance.Health);
-        
-    }
-
 
     //由于选项需要等待文本输出之后再显示，因此额外设置一个更新方法：
     //这个方法在文本显示之后，通过事件中心进行调用；
