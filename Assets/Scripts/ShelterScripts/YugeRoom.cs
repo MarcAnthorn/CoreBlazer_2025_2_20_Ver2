@@ -11,7 +11,7 @@ public class YugeRoom : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
-                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction("Yuge");;
+                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(E_NPCName.优格);;
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
         }

@@ -113,6 +113,13 @@ public class InventoryPanel : BasePanel
                 //让leftSlottedItem指向该Item，使其被记录下来，用于之后需要的同步操作；
                 leftSlottedOriginalItem = currentSelectedItem;
                 leftSlottedInventoryItem = Instantiate(currentSelectedItem, leftSlotItemAnchor, false);
+//----------------------测试-------------------------------------------------------
+                //为了防止Awake中的随机id覆盖了Instantiate出来的Item的正确的id而设置的callbackId；
+                //之后肯定不是在Awake中随机生成的，所以这段只是暂时的逻辑；
+                InventoryItemLogic script =  leftSlottedInventoryItem.GetComponentInChildren<InventoryItemLogic>();
+                script.callbackId = currentScript.myItemId;
+
+//----------------------测试-------------------------------------------------------
                 RectTransform rt = leftSlottedInventoryItem.GetComponent<RectTransform>();
                 rt.anchorMin = new Vector2(0.5f, 0.5f); 
                 rt.anchorMax = new Vector2(0.5f, 0.5f); 
@@ -169,6 +176,15 @@ public class InventoryPanel : BasePanel
                 rightSlottedOriginalItem = currentSelectedItem;
 
                 rightSlottedInventoryItem = Instantiate(currentSelectedItem, rightSlotItemAnchor, false);
+
+//----------------------测试-------------------------------------------------------
+
+                InventoryItemLogic script =  rightSlottedInventoryItem.GetComponentInChildren<InventoryItemLogic>();
+                script.callbackId = currentScript.myItemId;
+
+//----------------------测试-------------------------------------------------------
+
+
                 RectTransform rt = rightSlottedInventoryItem.GetComponent<RectTransform>();
                 rt.anchorMin = new Vector2(0.5f, 0.5f); 
                 rt.anchorMax = new Vector2(0.5f, 0.5f); 

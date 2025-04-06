@@ -893,7 +893,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a83cb07d83e4a629c74a054c435002, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 0.4
+  fadingTime: 0.2
+  Id: 0
   txtItemName: {fileID: 4680328347555630091}
   txtItemCount: {fileID: 0}
   txtItemEffectDescription: {fileID: 36684479446895744}

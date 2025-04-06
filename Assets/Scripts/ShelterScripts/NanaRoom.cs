@@ -11,7 +11,7 @@ public class NanaRoom : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
-                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction("Nana");
+                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(E_NPCName.奈亚拉);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
         }

@@ -11,7 +11,7 @@ public class ShabuRoom : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
-                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction("Shabu");
+                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(E_NPCName.纱布);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
         }

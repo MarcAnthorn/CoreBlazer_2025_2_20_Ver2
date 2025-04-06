@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class NPCInteractionPanel : BasePanel
 {
     //不管是什么NPC都公用的内容；
-    public Image imgNPC;
+    public GameObject npcObj;
+    public Transform npcPos;
     public TextMeshProUGUI txtSanity;
     public TextMeshProUGUI txtConversation;
 
@@ -17,27 +18,37 @@ public class NPCInteractionPanel : BasePanel
     public Button btnChooseBelief;
 
     //设置当前面板显示的NPC，因为没有数据结构类，所以暂时使用GameObject;
-    public UnityAction<string> setNPCAction;
+    public UnityAction<E_NPCName> setNPCAction;
 
     //测试用：当前交互的NPC：
-    public string currentNPCName;
+    public E_NPCName currentNPCName;
 
     protected override void Awake()
     {
         base.Awake();
         setNPCAction += SetCurrentNPC;
         //根据当前的NPC类型实例化btn；
+        if(currentNPCName == E_NPCName.奈亚拉 || currentNPCName == E_NPCName.优格 || currentNPCName == E_NPCName.纱布)
+        {
+            btnChooseBelief.gameObject.SetActive(true);
+        }
+        else
+        {
+            btnDiscardBelief.gameObject.SetActive(true);
+        }
 
 
-        EventHub.Instance.AddEventListener<UnityAction<string>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
+        EventHub.Instance.AddEventListener<UnityAction<E_NPCName>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
     }
     protected override void Init()
     {
-        btnDiscardBelief?.onClick.AddListener(()=>{
-
+        btnDiscardBelief.onClick.AddListener(()=>{
+            
         });
 
-        btnChooseBelief?.onClick.AddListener(()=>{
+        btnChooseBelief.onClick.AddListener(()=>{
+            UIManager.Instance.ShowPanel<ChooseBeliefPanel>().setNPCAction(currentNPCName);
+            UIManager.Instance.HidePanel<NPCInteractionPanel>();
 
         });
     }
@@ -46,7 +57,7 @@ public class NPCInteractionPanel : BasePanel
     {
         setNPCAction -= SetCurrentNPC;
 
-        EventHub.Instance.RemoveEventListener<UnityAction<string>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
+        EventHub.Instance.RemoveEventListener<UnityAction<E_NPCName>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
     }
 
     protected void Update()
@@ -58,14 +69,17 @@ public class NPCInteractionPanel : BasePanel
         }
     }
 
-    private void SetCurrentNPC(string _npcName)
+    private void SetCurrentNPC(E_NPCName _npcName)
     {
-        Debug.Log($"NPC交互面板已显示，显示NPC为：{_npcName}");
+        Debug.Log($"NPC交互面板已显示，显示NPC为：{_npcName.ToString()}");
         //将当前交互的NPC
+        currentNPCName = _npcName;
+        string path = currentNPCName.ToString();
+        npcObj = Instantiate(Resources.Load<GameObject>("NPC/" + path), npcPos, false);
     }
 
     //测试用：
-    private void BroadcastCurrentInteractingNPC(UnityAction<string> action)
+    private void BroadcastCurrentInteractingNPC(UnityAction<E_NPCName> action)
     {
         action?.Invoke(currentNPCName);
     }
