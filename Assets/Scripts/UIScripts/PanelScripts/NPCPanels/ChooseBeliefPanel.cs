@@ -7,16 +7,18 @@ using UnityEngine.UI;
 
 public class ChooseBeliefPanel : BasePanel
 {
-    public Image imgNPC;
+    public GameObject npcObj;
     public TextMeshProUGUI txtSanity;
     public TextMeshProUGUI txtConversation;
     public Button btnExit;
     public Button btnLastPage;
     public Button btnNextPage;
     public Transform choiceContent;
+    public Transform npcPos;
 
     //测试用：
-    private string currentNPCName;
+    private E_NPCName currentNPCName;
+    public UnityAction<E_NPCName> setNPCAction;
 
     //用于装载当前选项对象的List；
     private List<GameObject> optionList = new List<GameObject>();
@@ -26,10 +28,17 @@ public class ChooseBeliefPanel : BasePanel
     private int optionPerPage = 3;
     private int currentPage; 
     private int allPageCount;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        setNPCAction += SetCurrentNPC;
+    }
     protected override void Init()
     {
         btnExit.onClick.AddListener(()=>{
             UIManager.Instance.HidePanel<ChooseBeliefPanel>();
+            UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(currentNPCName);
         }); 
 
         btnLastPage.onClick.AddListener(()=>{
@@ -43,11 +52,16 @@ public class ChooseBeliefPanel : BasePanel
         InitCurrentPanel();
     }
 
+    void OnDestroy()
+    {
+        setNPCAction -= SetCurrentNPC;
+    }
+
     //初始化当前需要的所有面板信息：
     private void InitCurrentPanel()
     {
         //通过事件中心获取当前面板的交互NPC:
-        EventHub.Instance.EventTrigger<UnityAction<string>>("BroadcastCurrentInteractingNPC", (_name)=>{
+        EventHub.Instance.EventTrigger<UnityAction<E_NPCName>>("BroadcastCurrentInteractingNPC", (_name)=>{
             currentNPCName = _name;
         });
 
@@ -103,5 +117,14 @@ public class ChooseBeliefPanel : BasePanel
 
 
         Debug.Log($"已更新，当前页：{currentPage}, 当前显示的范围是：{leftIndex} 到{rightIndex}");
+    }
+
+    private void SetCurrentNPC(E_NPCName _npcName)
+    {
+        Debug.Log($"NPC交互面板已显示，显示NPC为：{_npcName.ToString()}");
+        //将当前交互的NPC
+        currentNPCName = _npcName;
+        string path = currentNPCName.ToString();
+        npcObj = Instantiate(Resources.Load<GameObject>("NPC/" + path), npcPos, false);
     }
 }
