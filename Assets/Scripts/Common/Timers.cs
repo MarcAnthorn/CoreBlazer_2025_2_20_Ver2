@@ -1,5 +1,6 @@
-using System;
+ï»¿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,55 +10,89 @@ public class Timers : Singleton<Timers>
 
     private class Timer
     {
+        public Action OnStart;
         public Action OnComplete;
-        public float Duration;
+        public float duration;
 
         public float startTime;
         public float elapsedTime;
         public bool isStart;
         public bool isSuspend;
+        public bool itemStartWork;
 
-        public Timer(float duration = 0, Action OnComplete = null)
+        public Timer(float duration = 0, Action OnStart = null, Action OnComplete = null)
         {
             isStart = false;
             isSuspend = false;
+            itemStartWork = false;
+            this.OnStart = OnStart;
             this.OnComplete = OnComplete;
+        }
+
+        public void CheckItemStart()
+        {
+            if (!itemStartWork && OnStart != null)
+            {
+                OnStart();
+                itemStartWork = true;
+            }
+        }
+
+        public void CheckItemEnd(int timerKey)
+        {
+            if (duration > 0f && OnComplete != null)
+            {
+                OnComplete();
+                Timers.Instance.SingleTimerOver(timerKey);
+                Timers.Instance.RemoveTimer(timerKey);
+            }
         }
 
     }
 
-    private int index = -1;
+    private static int index = -1;
     private Dictionary<int, Timer> timers = new Dictionary<int, Timer>();
 
     private float gameStartTime;
     private float gameTime;
 
-    public int AddTimer()
+    public int AddTimer(float duration, Action OnStart, Action OnComplete)
     {
         index++;
-        timers.Add(index, new Timer());
+        timers.TryAdd(index, new Timer(duration, OnStart, OnComplete));
 
-        return index;
+        return index;               //å‘Šè¯‰å¤–ç•Œå½“å‰ç´¢å¼•çš„å€¼æ˜¯å¤šå°‘
     }
     public void RemoveTimer(int key)
     {
         timers.Remove(key);
         index--;
     }
-    public void StopAllTimers()                         //½øÈëÊÂ¼ş »òÕß ÓÎÏ·ÔİÍ£Ê±µ÷ÓÃ
+    public void SuspendAllTimers()                         //è¿›å…¥äº‹ä»¶ æˆ–è€… æ¸¸æˆæš‚åœæ—¶è°ƒç”¨
     {
         foreach(Timer timer in timers.Values)
         {
             timer.isSuspend = true;
         }
     }
-    public void ContinueAllTimers()                         //½øÈëÊÂ¼ş »òÕß ÓÎÏ·ÔİÍ£Ê±µ÷ÓÃ
+    public void ContinueAllTimers()                         //æ¸¸æˆæ¢å¤æ—¶è°ƒç”¨
     {
         foreach (Timer timer in timers.Values)
         {
             timer.isSuspend = false;
         }
     }
+    public void FinishAllTimers()                           //æ¸¸æˆç»“æŸæ—¶è°ƒç”¨
+    {
+        foreach (Timer timer in timers.Values)
+        {
+            timer.isStart = false;
+            timer.isSuspend = false;
+        }
+        timers.Clear();
+        index = -1;
+    }
+
     public float GetGameTime()
     {
         return gameTime;
@@ -73,13 +108,16 @@ public class Timers : Singleton<Timers>
     {
         float gameTime = Time.time - gameStartTime;
 
-        foreach(Timer timer in timers.Values)
+        foreach (var pair in timers)
         {
-            if (timer.isStart && !timer.isSuspend)
+            if (pair.Value.isStart && !pair.Value.isSuspend)
             {
-                timer.elapsedTime = Time.time - timer.startTime;
+                pair.Value.elapsedTime = Time.time - pair.Value.startTime;
+                pair.Value.CheckItemStart();
+                pair.Value.CheckItemEnd(pair.Key);
             }
         }
+
     }
 
     public void SingleTimerStart(int key)
@@ -113,7 +151,7 @@ public class Timers : Singleton<Timers>
         }
         else
         {
-            Debug.LogWarning("»¹Ã»ÓĞ¿ªÊ¼¼ÆÊ±£¡");
+            Debug.LogWarning("è¿˜æ²¡æœ‰å¼€å§‹è®¡æ—¶ï¼");
             return -1;
         }
     }
