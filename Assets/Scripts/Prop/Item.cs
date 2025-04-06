@@ -106,8 +106,14 @@ public class Item_103 : Item
         BuffManager.Instance.RemoveBuff(index);
     }
 
-    public Action DamageWall;                   //由Marc将实现方法写入其中
-
+    private Action DamageWall = null;                   //由Marc将实现方法写入其中
+    public void SubscribeHandler(Action handler)
+    {
+        if (DamageWall == null)
+        {
+            DamageWall += handler;
+        }
+    }
 }
 
 public class Item_104 : Item
