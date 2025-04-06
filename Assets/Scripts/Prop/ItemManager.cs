@@ -36,12 +36,12 @@ public class ItemManager : Singleton<ItemManager>
         {
             case 101:
                 return new Item_101();
-            case 201:
-                return new Item_Tatakai();
+            case 102:
+                return new Item_102();
             case 301:
-                return new Item_LightUP();
+                return new Item_103();
             case 401:
-                return new Item_Alive();
+                return new Item_104();
             case 501:
                 return new Item_BloodMedicine();
             case 601:

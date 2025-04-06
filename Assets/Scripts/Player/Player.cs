@@ -18,7 +18,6 @@ public class Player               //存储角色信息等
     public PlayerAttribute HIT;         //连击     Hit               id = 9 
     public PlayerAttribute AVO;         //闪避值   AVO               id = 10
     //动态特殊属性
-    public int lightLockTime;
 
     public Dictionary<int, Item> bag;   //??感觉用List来存会好一些??
 
@@ -85,6 +84,7 @@ public class Player               //存储角色信息等
         public int type;
         public float value;
         public float value_limit;           //角色属性的上限值
+        //public float extra_value;           //属性值额外获得的量
 
         public PlayerAttribute(int id, int level = 0, int type = 0, string name = null, string icon = null)
         {
@@ -95,6 +95,7 @@ public class Player               //存储角色信息等
             this.type = type;
             this.value = 0f;         //初始化为0
             this.value_limit = 100;
+            //this.extra_value = 0;
         }
 
         public void ChangeValue(float change)     //用于调整角色属性

@@ -4,6 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum AttributeType
+{
+    NONE = 0,
+    HP = 1,
+    STR = 2,
+    DEF = 3,
+    LVL = 4,
+    SAN = 5,
+    SPD = 6,
+    CRIT_Rate = 7,
+    CRIT_DMG = 8,
+    HIT = 9,
+    AVO = 10
+}
+
 public class PlayerManager : Singleton<PlayerManager>          //用于管理角色的事件
 {
     public Player player;               //当前角色
@@ -75,7 +90,79 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         };
     }
 
+    private BuffType GetBuffType(AttributeType type)
+    {
+        switch (type) 
+        {
+            case AttributeType.HP:
+                return BuffType.HP_Change;
+            case AttributeType.STR:
+                return BuffType.STR_Change;
+            case AttributeType.DEF:
+                return BuffType.DEF_Change;
+            case AttributeType.LVL:
+                return BuffType.LVL_Change;
+            case AttributeType.SAN:
+                return BuffType.SAN_Change;
+            case AttributeType.SPD:
+                return BuffType.SPD_Change;
+            case AttributeType.CRIT_Rate:
+                return BuffType.CRIT_Rate_Change;
+            case AttributeType.CRIT_DMG:
+                return BuffType.CRIT_DMG_Change;
+            case AttributeType.HIT:
+                return BuffType.HIT_Change;
+            case AttributeType.AVO:
+                return BuffType.AVO_Change;
+            default:
+                return BuffType.NONE;
+        }
+    }
 
+    private void ValueChange(AttributeType type, float extraValue)
+    {
+        switch (type)
+        {
+            case AttributeType.HP:
+                PlayerManager.Instance.player.HP.value += extraValue;
+                break;
+            case AttributeType.STR:
+                PlayerManager.Instance.player.STR.value += extraValue;
+                break;
+            case AttributeType.DEF:
+                PlayerManager.Instance.player.DEF.value += extraValue;
+                break;
+            case AttributeType.LVL:
+                PlayerManager.Instance.player.LVL.value += extraValue;
+                break;
+            case AttributeType.SAN:
+                PlayerManager.Instance.player.SAN.value += extraValue;
+                break;
+            case AttributeType.SPD:
+                PlayerManager.Instance.player.SPD.value += extraValue;
+                break;
+            case AttributeType.CRIT_Rate:
+                PlayerManager.Instance.player.CRIT_Rate.value += extraValue;
+                break;
+            case AttributeType.CRIT_DMG:
+                PlayerManager.Instance.player.CRIT_DMG.value += extraValue;
+                break;
+            case AttributeType.HIT:
+                PlayerManager.Instance.player.HIT.value += extraValue;
+                break;
+            case AttributeType.AVO:
+                PlayerManager.Instance.player.AVO.value += extraValue;
+                break;
+            default:
+                break;
+        }
+    }
 
+    public void PlayerAttributeChange(AttributeType type, float value)      //供外部调用的 角色属性调整方法
+    {
+        BuffType buffType = GetBuffType(type);
+        BuffManager.Instance.ModifyPlayerAttribute(buffType);
+        PlayerManager.Instance.ValueChange(type, value);
+    }
 
 }

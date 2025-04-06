@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Unity.Mathematics;
 using UnityEngine;
 
 [System.Serializable]
@@ -22,6 +23,7 @@ public abstract class Item                  //所有道具类的基类
     public float EffectiveTime;                         //表示回合时：(int)(EffectiveTime/2)
     public string instruction;                          //表示使用说明
     public string description;                          //表示道具文案
+    public Buff buff;
 
     public enum ItemType
     {
@@ -56,60 +58,82 @@ public class Item_101 : Item
     {
         Debug.Log($"道具 灯火助燃剂 使用！");
         //可视范围扩大5格
-        Thread thread = new Thread(() => InOperation());
-        thread.Start();
-    }
-
-    private void InOperation()
-    {
         int timerIndex;
-        lock (PlayerManager._lock)
-        {
-            timerIndex = Timers.Instance.AddTimer();
-            Timers.Instance.SingleTimerStart(timerIndex);
-            //在此处理持续时间内的增益效果
-            PlayerManager.Instance.player.LVL.value += 20;
-        }
+        timerIndex = Timers.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
+    }
 
-        while (Timers.Instance.GetSingleTime(timerIndex) < EffectiveTime)
-        {
-            //在此阻塞，或者处理持续时间内的逻辑
-        }
-        lock (PlayerManager._lock)
-        {
-            Timers.Instance.RemoveTimer(timerIndex);
-            PlayerManager.Instance.player.LVL.value -= 20;
-        }
+    private void OnStart()
+    {
+        PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +20f);
+    }
+
+    private void OnComplete()
+    {
+        PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, -20f);
     }
 
 }
 
-public class Item_Tatakai : Item
+public class Item_102 : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Item_Tatakai 使用！");
-        PlayerManager.Instance.player.STR.value += 10;
+        Debug.Log($"道具 封存的灯火 使用！");
+        //获得后，后续每次额外获得2灯光值
+        BuffManager.Instance.AddBuff(BuffType.LVL_Change, +2f);     //代表加成
     }
 
 }
 
-public class Item_LightUP : Item
+public class Item_103 : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Item_LightUP 使用！");
-        PlayerManager.Instance.player.LVL.value += 20;
+        Debug.Log($"道具 大力出奇迹 使用！");
+        //使用后靠近特殊墙壁可砸碎
+        int timerIndex;
+        timerIndex = Timers.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
     }
+
+    int index;
+    private void OnStart()
+    {
+        index = BuffManager.Instance.AddBuff(BuffType.DamageWall, DamageWall);
+    }
+
+    private void OnComplete()
+    {
+        BuffManager.Instance.RemoveBuff(index);
+    }
+
+    public Action DamageWall;                   //由Marc将实现方法写入其中
+
 }
 
-public class Item_Alive : Item
+public class Item_104 : Item
 {
     public override void Use()
     {
-        Debug.Log($"道具 Item_Alive 使用！");
-        PlayerManager.Instance.player.HP.value_limit += 10;
+        Debug.Log($"道具 传送门 使用！");
+        //使用后有50%概率直接到达该层迷宫终点，也有50%概率回到起点
+        OnUse();
     }
+
+    private void OnUse()
+    {
+        int randomNum = UnityEngine.Random.Range(0, 2);
+        if (randomNum == 0)
+        {
+            //到达该层迷宫终点
+
+        }
+        else if(randomNum == 1)
+        {
+            //回到起点
+
+        }
+    }
+
 }
 
 public class Item_BloodMedicine : Item

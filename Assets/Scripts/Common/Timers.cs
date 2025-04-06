@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -56,33 +56,33 @@ public class Timers : Singleton<Timers>
     private float gameStartTime;
     private float gameTime;
 
-    public int AddTimer()
+    public int AddTimer(float duration, Action OnStart, Action OnComplete)
     {
         index++;
-        timers.TryAdd(index, new Timer());
+        timers.TryAdd(index, new Timer(duration, OnStart, OnComplete));
 
-        return index;               //¸æËßÍâ½çµ±Ç°Ë÷ÒıµÄÖµÊÇ¶àÉÙ
+        return index;               //å‘Šè¯‰å¤–ç•Œå½“å‰ç´¢å¼•çš„å€¼æ˜¯å¤šå°‘
     }
     public void RemoveTimer(int key)
     {
         timers.Remove(key);
         index--;
     }
-    public void SuspendAllTimers()                         //½øÈëÊÂ¼ş »òÕß ÓÎÏ·ÔİÍ£Ê±µ÷ÓÃ
+    public void SuspendAllTimers()                         //è¿›å…¥äº‹ä»¶ æˆ–è€… æ¸¸æˆæš‚åœæ—¶è°ƒç”¨
     {
         foreach(Timer timer in timers.Values)
         {
             timer.isSuspend = true;
         }
     }
-    public void ContinueAllTimers()                         //ÓÎÏ·»Ö¸´Ê±µ÷ÓÃ
+    public void ContinueAllTimers()                         //æ¸¸æˆæ¢å¤æ—¶è°ƒç”¨
     {
         foreach (Timer timer in timers.Values)
         {
             timer.isSuspend = false;
         }
     }
-    public void FinishAllTimers()                           //ÓÎÏ·½áÊøÊ±µ÷ÓÃ
+    public void FinishAllTimers()                           //æ¸¸æˆç»“æŸæ—¶è°ƒç”¨
     {
         foreach (Timer timer in timers.Values)
         {
@@ -151,7 +151,7 @@ public class Timers : Singleton<Timers>
         }
         else
         {
-            Debug.LogWarning("»¹Ã»ÓĞ¿ªÊ¼¼ÆÊ±£¡");
+            Debug.LogWarning("è¿˜æ²¡æœ‰å¼€å§‹è®¡æ—¶ï¼");
             return -1;
         }
     }
