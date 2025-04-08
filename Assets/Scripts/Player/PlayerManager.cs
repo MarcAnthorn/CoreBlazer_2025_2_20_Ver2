@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.Rendering.DebugUI;
 
 public enum AttributeType
 {
@@ -90,7 +91,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         };
     }
 
-    private BuffType GetBuffType(AttributeType type)
+    private BuffType GetPlayerBuffType(AttributeType type)
     {
         switch (type) 
         {
@@ -119,50 +120,108 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         }
     }
 
-    private void ValueChange(AttributeType type, float extraValue)
+    private void PlayerValueChange(AttributeType type, float finalValue)
     {
         switch (type)
         {
             case AttributeType.HP:
-                PlayerManager.Instance.player.HP.value += extraValue;
+                PlayerManager.Instance.player.HP.value += finalValue;
                 break;
             case AttributeType.STR:
-                PlayerManager.Instance.player.STR.value += extraValue;
+                PlayerManager.Instance.player.STR.value += finalValue;
                 break;
             case AttributeType.DEF:
-                PlayerManager.Instance.player.DEF.value += extraValue;
+                PlayerManager.Instance.player.DEF.value += finalValue;
                 break;
             case AttributeType.LVL:
-                PlayerManager.Instance.player.LVL.value += extraValue;
+                PlayerManager.Instance.player.LVL.value += finalValue;
                 break;
             case AttributeType.SAN:
-                PlayerManager.Instance.player.SAN.value += extraValue;
+                PlayerManager.Instance.player.SAN.value += finalValue;
                 break;
             case AttributeType.SPD:
-                PlayerManager.Instance.player.SPD.value += extraValue;
+                PlayerManager.Instance.player.SPD.value += finalValue;
                 break;
             case AttributeType.CRIT_Rate:
-                PlayerManager.Instance.player.CRIT_Rate.value += extraValue;
+                PlayerManager.Instance.player.CRIT_Rate.value += finalValue;
                 break;
             case AttributeType.CRIT_DMG:
-                PlayerManager.Instance.player.CRIT_DMG.value += extraValue;
+                PlayerManager.Instance.player.CRIT_DMG.value += finalValue;
                 break;
             case AttributeType.HIT:
-                PlayerManager.Instance.player.HIT.value += extraValue;
+                PlayerManager.Instance.player.HIT.value += finalValue;
                 break;
             case AttributeType.AVO:
-                PlayerManager.Instance.player.AVO.value += extraValue;
+                PlayerManager.Instance.player.AVO.value += finalValue;
                 break;
             default:
                 break;
         }
     }
 
-    public void PlayerAttributeChange(AttributeType type, float value)      //供外部调用的 角色属性调整方法
+    //暂时将对敌人的数值处理放在这里
+    private void EnemyValueChange(AttributeType type, float finalValue)
     {
-        BuffType buffType = GetBuffType(type);
-        BuffManager.Instance.ModifyPlayerAttribute(buffType);
-        PlayerManager.Instance.ValueChange(type, value);
+        switch (type)
+        {
+            case AttributeType.HP:
+                PlayerManager.Instance.player.HP.value += finalValue;
+                break;
+            case AttributeType.STR:
+                PlayerManager.Instance.player.STR.value += finalValue;
+                break;
+            case AttributeType.DEF:
+                PlayerManager.Instance.player.DEF.value += finalValue;
+                break;
+            case AttributeType.LVL:
+                PlayerManager.Instance.player.LVL.value += finalValue;
+                break;
+            case AttributeType.SAN:
+                PlayerManager.Instance.player.SAN.value += finalValue;
+                break;
+            case AttributeType.SPD:
+                PlayerManager.Instance.player.SPD.value += finalValue;
+                break;
+            case AttributeType.CRIT_Rate:
+                PlayerManager.Instance.player.CRIT_Rate.value += finalValue;
+                break;
+            case AttributeType.CRIT_DMG:
+                PlayerManager.Instance.player.CRIT_DMG.value += finalValue;
+                break;
+            case AttributeType.HIT:
+                PlayerManager.Instance.player.HIT.value += finalValue;
+                break;
+            case AttributeType.AVO:
+                PlayerManager.Instance.player.AVO.value += finalValue;
+                break;
+            default:
+                break;
+        }
+    }
+
+    //战斗外的 角色属性调整方法(角色成长)
+    public void PlayerAttributeChange(AttributeType type, float value)
+    {
+        //这是为了明确buff要对什么属性产生影响(根据buffType来判断)
+        BuffType buffType = GetPlayerBuffType(type);
+        //finalValue表示 角色成长 造成的实际数值变化
+        float finalValue = BuffManager.Instance.BuffEffectInGrowUp(buffType, value);
+        PlayerManager.Instance.PlayerValueChange(type, finalValue);
+    }
+
+    //战斗内的 角色对敌人造成影响的方法(一般来说就是HP的伤害，不过也可能会存在减速(SPD)，削弱敌人攻击(STR)等情况)
+    public void PlayerInfluenceToEnemy(AttributeType type, float value)
+    {
+        //这是为了明确buff要不要执行(根据buffType来判断)
+        BuffType buffType = GetPlayerBuffType(type);
+        //finalValue表示 战斗过程 造成的实际数值变化
+        float finalValue = BuffManager.Instance.BuffEffectInBattle(buffType, value);
+        PlayerManager.Instance.EnemyValueChange(type, finalValue);
+    }
+
+    public void CalculationPlayerFinalDamage()
+    {
+        // 注意!!! 此处应该按照给出的伤害计算公式计算 角色发出的 攻击伤害量
     }
 
 }

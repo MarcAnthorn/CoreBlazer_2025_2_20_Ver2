@@ -43,9 +43,9 @@ public class ItemManager : Singleton<ItemManager>
             case 401:
                 return new Item_104();
             case 501:
-                return new Item_BloodMedicine();
+                return new Item_201();
             case 601:
-                return new Item_Tarot1();
+                return new Item_202();
             default:
                 Debug.LogWarning($"未找到id为 {ItemId} 的道具");
                 return null;

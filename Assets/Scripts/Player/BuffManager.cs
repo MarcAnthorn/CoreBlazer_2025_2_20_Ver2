@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class BuffManager : Singleton<BuffManager>
 {
@@ -11,14 +12,18 @@ public class BuffManager : Singleton<BuffManager>
         
     }
 
-    // Update is called once per frame
+    //仔细想了一下Buff的执行逻辑，似乎除开特殊Buff外的Buff只在数值将要变动时 起到增益/减益效果
+    //故只用检测特殊情况下的Buff，并对其buffFunction进行调用即可
     void Update()
     {
-        foreach(Buff buff in buffs.Values)
+        foreach (KeyValuePair<int, Buff> pair in buffs)
         {
-            if (buff.isTrigger && buff.buffAction != null)
+            //一旦isTrigger被赋值为true，则代表该buff触发了
+            if (pair.Value.isTrigger && pair.Value.buffFunction != null
+                && pair.Value.useCase == UseCase.Maze)      //迷宫环境中才会触发
             {
-                buff.buffAction.Invoke();
+                pair.Value.buffFunction.Invoke();
+                buffs.Remove(pair.Key);
             }
         }
     }
@@ -26,18 +31,18 @@ public class BuffManager : Singleton<BuffManager>
     private int count = -1;
     public Dictionary<int, Buff> buffs = new Dictionary<int, Buff>();
 
-    public int AddBuff(BuffType buffType, float extraChange, Action buffAction = null)
+    public int AddBuff(UseCase useCase, BuffType buffType, CalculationType calculationType, float extraChange)
     {
-        Buff buff = new Buff(buffType, extraChange);
+        Buff buff = new Buff(useCase, buffType, calculationType, extraChange);
         count++;
         buffs.Add(count, buff);
 
         return count;
     }
 
-    public int AddBuff(BuffType buffType, Action buffAction)
+    public int AddBuff(UseCase useCase, BuffType buffType, SpecialBuffType specialBuffType, Func<float> buffFunction)
     {
-        Buff buff = new Buff(buffType, buffAction);
+        Buff buff = new Buff(useCase, buffType, specialBuffType, buffFunction);
         count++;
         buffs.Add(count, buff);
 
@@ -50,54 +55,126 @@ public class BuffManager : Singleton<BuffManager>
         count--;
     }
 
-    public void ModifyPlayerAttribute(BuffType type)
-    {
-        for(int i = 0; i < buffs.Count; i++)
-        {
-            if (buffs[i].buffType == type)
-            {
-                //按照该buff进行处理
-                ValueChangeFromBuff(type, buffs[i].extraValue);
-            }
-        }
-    }
 
-    private void ValueChangeFromBuff(BuffType type, float extraValue)
+    private void ExecuteSpecialBuff(Buff buff, ref float finalValue)    //用来进行特殊处理
     {
-        switch (type)
+        switch (buff.specialBuffType)
         {
-            case BuffType.HP_Change:
-                PlayerManager.Instance.player.HP.value += extraValue;
+            case SpecialBuffType.DamageWall:
                 break;
-            case BuffType.STR_Change:
-                PlayerManager.Instance.player.STR.value += extraValue;
-                break;
-            case BuffType.DEF_Change:
-                PlayerManager.Instance.player.DEF.value += extraValue;
-                break;
-            case BuffType.LVL_Change:
-                PlayerManager.Instance.player.LVL.value += extraValue;
-                break;
-            case BuffType.SAN_Change:
-                PlayerManager.Instance.player.SAN.value += extraValue;
-                break;
-            case BuffType.SPD_Change:
-                PlayerManager.Instance.player.SPD.value += extraValue;
-                break;
-            case BuffType.CRIT_Rate_Change:
-                PlayerManager.Instance.player.CRIT_Rate.value += extraValue;
-                break;
-            case BuffType.CRIT_DMG_Change:
-                PlayerManager.Instance.player.CRIT_DMG.value += extraValue;
-                break;
-            case BuffType.HIT_Change:
-                PlayerManager.Instance.player.HIT.value += extraValue;
-                break;
-            case BuffType.AVO_Change:
-                PlayerManager.Instance.player.AVO.value += extraValue;
+            case SpecialBuffType.NoDamage:
+                finalValue = buff.buffFunction.Invoke();
                 break;
             default:
                 break;
+        }
+    }
+
+    //角色在受到Buff影响下的 战斗外的 成长变动
+    public float BuffEffectInGrowUp(BuffType type, float value)            
+    {
+        for(int i = 0; i < buffs.Count; i++)
+        {
+            if (buffs[i].buffType == type && buffs[i].useCase == UseCase.GrowUp)     //成长类加成
+            {
+                float finalValue;
+                finalValue = GetFinalValueFromBuff(buffs[i], value, buffs[i].extraValue);
+
+                //如果有特殊处理:
+                if (buffs[i].specialBuffType != SpecialBuffType.NONE && buffs[i].buffType == type)
+                {
+                    ExecuteSpecialBuff(buffs[i], ref finalValue);
+                }
+
+                return finalValue;
+            }
+        }
+
+        return 0f;
+    }
+
+    //角色在受到Buff影响下的 战斗内的 属性(基本就是HP或者SAN值)变动
+    public float BuffEffectInBattle(BuffType type, float value)
+    {
+        for (int i = 0; i < buffs.Count; i++)
+        {
+            if (buffs[i].buffType == type && buffs[i].useCase == UseCase.Battle)    //战斗时增益/减益
+            {
+                float finalValue;
+                finalValue = GetFinalValueFromBuff(buffs[i], value, buffs[i].extraValue);
+
+                //如果有特殊处理:
+                if (buffs[i].specialBuffType != SpecialBuffType.NONE && buffs[i].buffType == type)
+                {
+                    ExecuteSpecialBuff(buffs[i], ref finalValue);
+                }
+            }
+        }
+
+        return 0f;
+    }
+
+    //按照BuffType处理
+    private float GetFinalValueFromBuff(Buff buff, float value, float extraValue)
+    {
+        //switch (buff.buffType)
+        //{
+        //    case BuffType.HP_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.HP.value);
+        //        break;
+        //    case BuffType.STR_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.STR.value);
+        //        break;
+        //    case BuffType.DEF_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.DEF.value);
+        //        break;
+        //    case BuffType.LVL_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.LVL.value);
+        //        break;
+        //    case BuffType.SAN_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.SAN.value);
+        //        break;
+        //    case BuffType.SPD_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.SPD.value);
+        //        break;
+        //    case BuffType.CRIT_Rate_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.CRIT_Rate.value);
+        //        break;
+        //    case BuffType.CRIT_DMG_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.CRIT_DMG.value);
+        //        break;
+        //    case BuffType.HIT_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.HIT.value);
+        //        break;
+        //    case BuffType.AVO_Change:
+        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.AVO.value);
+        //        break;
+        //    default:
+        //        break;
+        //}
+
+        float finalValue;
+        finalValue = CalculationAfterBuff(buff.calculationType, value, extraValue);
+
+        return finalValue;
+    }
+
+    //按照CalculationType处理
+    private float CalculationAfterBuff(CalculationType type, float value, float extraValue)
+    {
+        switch (type)
+        {
+            case CalculationType.Add:
+                value += extraValue;
+                return value;
+            case CalculationType.Multiply:
+                value *= extraValue;
+                return value;
+            case CalculationType.NONE:      //如果CalculationType为NONE其实就说明了该buff不涉及到伤害计算
+                value = 0;
+                return value;
+            default:
+                return 0;
         }
     }
 

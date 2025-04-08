@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player               //存储角色信息等
 {
     //静态基本属性
-    public int HP_limit = 100;
+    //public int HP_limit = 100;
     //动态基本属性
     public PlayerAttribute HP;          //生命     Health point      id = 1
     public PlayerAttribute STR;         //力量     Strength          id = 2  
