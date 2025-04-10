@@ -28,7 +28,6 @@ public class PlayerBase : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             UIManager.Instance.ShowPanel<InventoryPanel>();
-            EventHub.Instance.EventTrigger<bool>("Freeze", true);
         }
     }
 
@@ -51,7 +50,20 @@ public class PlayerBase : MonoBehaviour
 
     protected virtual void Freeze(bool _isFrozen)
     {
+        if(this == null)
+        {
+            return;
+        }
         isMoving = !_isFrozen;
+
+        if(_isFrozen)
+        {
+            TimeManager.Instance.SuspendAllTimers();
+        }
+        else
+        {
+            TimeManager.Instance.StartAllTimers();
+        }
     }
 
 }

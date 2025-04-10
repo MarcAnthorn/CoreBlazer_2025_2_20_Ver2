@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Timers : Singleton<Timers>
+public class TimeManager : Singleton<TimeManager>
 {
 
     private class Timer
@@ -43,8 +43,8 @@ public class Timers : Singleton<Timers>
             if (duration > 0f && OnComplete != null)
             {
                 OnComplete();
-                Timers.Instance.SingleTimerOver(timerKey);
-                Timers.Instance.RemoveTimer(timerKey);
+                TimeManager.Instance.SingleTimerOver(timerKey);
+                TimeManager.Instance.RemoveTimer(timerKey);
             }
         }
 
@@ -62,6 +62,15 @@ public class Timers : Singleton<Timers>
         timers.TryAdd(index, new Timer(duration, OnStart, OnComplete));
 
         return index;               //告诉外界当前索引的值是多少
+    }
+
+    //Marc添加：
+    public void StartAllTimers()
+    {
+        foreach(Timer timer in timers.Values)
+        {
+            timer.isStart = true;
+        }
     }
     public void RemoveTimer(int key)
     {

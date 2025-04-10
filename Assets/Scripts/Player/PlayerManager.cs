@@ -20,10 +20,21 @@ public enum AttributeType
     AVO = 10
 }
 
+public enum E_PlayerSceneIndex{
+    Event = 1,
+    Battle = 2,
+    Maze = 3,
+}
 public class PlayerManager : Singleton<PlayerManager>          //用于管理角色的事件
 {
     public Player player;               //当前角色
     public Vector3 initPosition;
+
+    //特殊字段：当前玩家所处的场景；
+    //用于是否能使用道具的判断；
+    //对应关系如下：1-事件选择 2-战斗场景 3-迷宫内；为此声明了一个枚举；
+    //分别在：事件UI触发、战斗事件触发、迷宫内的时候进行更新；
+    public E_PlayerSceneIndex playerSceneIndex;
     public static object _lock = new object();
 
     protected override void Awake()

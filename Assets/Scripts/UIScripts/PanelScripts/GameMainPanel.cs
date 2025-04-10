@@ -38,6 +38,9 @@ public class GameMainPanel : BasePanel
 
     protected override void Init()
     {
+        //事件面板出现，更新玩家的所处场景的index：
+        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;
+
         UpdateAttributeText();
         //默认显示的是神明道具面板；
         // UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
@@ -92,6 +95,9 @@ public class GameMainPanel : BasePanel
 
         //解冻玩家
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
+
+        //事件面板销毁，更新会迷宫场景：
+        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;
     }
 
     //更新面板属性的方法，所有存在属性更新（如道具使用等等，最后都需要调用这个方法以确保显示的属性文本的更新）

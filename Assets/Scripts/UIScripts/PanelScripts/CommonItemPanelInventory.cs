@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GodItemPanelInventory : BasePanel
+public class CommonItemPanelInventory : BasePanel
 {
     public Transform itemContent;
     public List<InventoryItemLogic> itemScriptList = new List<InventoryItemLogic>();
@@ -15,7 +15,6 @@ public class GodItemPanelInventory : BasePanel
     public Button btnExitInteraction; 
     protected override void Init()
     {
-
         btnExitInteraction.onClick.AddListener(()=>{
             //首先是所有的Item都要取消高亮：
             HighLightItemsOrNot(false);
@@ -38,14 +37,11 @@ public class GodItemPanelInventory : BasePanel
         EventHub.Instance.AddEventListener<int>("RefreshItemsInPanel", RefreshItemsInPanel);
     }
 
+
     void OnEnable()
     {
         EventHub.Instance.AddEventListener<bool>("HighLightItemsOrNot", HighLightItemsOrNot);
         EventHub.Instance.AddEventListener("ResetItem", ResetItem);
-
-        //测试用生成道具：
-        //根据当前背包中所有的道具进行筛选，将ItemType为1 & 2的加入到自己的面板中
-        
     }
 
     void OnDisable()
@@ -68,7 +64,7 @@ public class GodItemPanelInventory : BasePanel
         isHighLight = _isHighLight;
 
         //对每一个道具都进行高光 / 取消高光处理：
-        foreach(var script in itemScriptList)
+       foreach(var script in itemScriptList)
         {
             //注意：实际上的脚本在我们存储的游戏对象的子对象上：
             script.outlineObjects.SetActive(_isHighLight);
@@ -78,6 +74,7 @@ public class GodItemPanelInventory : BasePanel
             }
 
         }
+        
         
         //最后更新isStillSelecting（先更新的话会出错， if(!isStillSelecting)语句进不去）
         //当前处在选择状态；选择状态之后「取消选择」& 「成功插入插槽」之后才会重置；这些都在ResetItem方法中；
@@ -92,18 +89,17 @@ public class GodItemPanelInventory : BasePanel
         isStillSelecting = false;
     }
 
-    //整理面板的方法，在初始化和使用立刻生效的道具后调用；
     private void RefreshPanel()
     {
-        //清空List：
         itemScriptList.Clear();
+        //根据当前背包中所有的道具进行筛选，将ItemType为Common的加入到自己的面板中
         foreach(int itemId in ItemManager.Instance.itemList)
         {
             //只有神明道具初始化：
             //ItemType == 1 or 2
             //通过item ID 去获取这个Item的固定信息（如Item的类型）
             Item infoItem = LoadManager.Instance.allItems[itemId];
-            if(infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze)
+            if(infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType. Battle || infoItem.type == Item.ItemType.Normal)
             {
                 GameObject nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
                 InventoryItemLogic script = nowItem.GetComponentInChildren<InventoryItemLogic>();
@@ -122,7 +118,6 @@ public class GodItemPanelInventory : BasePanel
     }
 
     //广播的方法：更新UI：
-    //参数int，表示的是需要刷新的目标ItemId；
     private void RefreshItemsInPanel(int targetId)
     {
         InventoryItemLogic temp = null;
@@ -142,7 +137,6 @@ public class GodItemPanelInventory : BasePanel
         //刷新UI：
         temp.RefreshSelf();
         //如果为0，执行移除：
-        //如果道具已经没了，那么就不需要处理了：
         if(!ItemManager.Instance.itemCountDic.ContainsKey(targetId))
         {            
             Destroy(temp.gameObject);
@@ -160,5 +154,5 @@ public class GodItemPanelInventory : BasePanel
 
     }
 
-  
+
 }

@@ -43,6 +43,8 @@ public class StatueRoom : MonoBehaviour
     private void TipConfirmAction()
     {
         Debug.Log("进入对应的关卡");
+        //更新PlayerManager中的玩家所处的场景：
+        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
         UIManager.Instance.HidePanel<TipPanel>(()=>{
             //失活所有需要失活的过场景不移除的对象：
             //该方法定义在TestCanvas中，该脚本挂载在Canvas上；

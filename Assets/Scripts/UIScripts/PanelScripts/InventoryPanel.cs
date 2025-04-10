@@ -35,6 +35,7 @@ public class InventoryPanel : BasePanel
     public Transform tarotContent;
     public Transform leftSlotItemAnchor;
     public Transform rightSlotItemAnchor;
+    public Transform itemPanelContainer;
     public List<GameObject> tarotList = new List<GameObject>();
 
     //当前的快速插槽（左和右）是否处在等待插入道具的状态：
@@ -58,6 +59,8 @@ public class InventoryPanel : BasePanel
     private GameObject rightSlottedInventoryItem;
     private InventoryItemLogic leftItemScript;
     private InventoryItemLogic rightItemScript;
+    public GameObject godItemPanelObject;
+    public GameObject commonItemPanelObject;
 
 
     
@@ -66,6 +69,12 @@ public class InventoryPanel : BasePanel
 
     protected override void Init()
     {
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        
+        //初始化的时候，显示的是GodItemPanel:
+        godItemPanelObject.SetActive(true);
+
+
         btnExit.onClick.AddListener(()=>{
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
             UIManager.Instance.HidePanel<InventoryPanel>();
@@ -75,13 +84,14 @@ public class InventoryPanel : BasePanel
             
         });
 
-        // UIManager.Instance.ShowPanel<GodItemPanelInventory>();
         btnCommonPanelReveal.onClick.AddListener(()=>{
-
+            commonItemPanelObject.SetActive(true);
+            godItemPanelObject.SetActive(false);
         });
 
         btnGodPanelReveal.onClick.AddListener(()=>{
-
+            godItemPanelObject.SetActive(true);
+            commonItemPanelObject.SetActive(false);
         });
 
         btnQuickSlotLeft.onClick.AddListener(()=>{
@@ -113,13 +123,18 @@ public class InventoryPanel : BasePanel
                 //让leftSlottedItem指向该Item，使其被记录下来，用于之后需要的同步操作；
                 leftSlottedOriginalItem = currentSelectedItem;
                 leftSlottedInventoryItem = Instantiate(currentSelectedItem, leftSlotItemAnchor, false);
-//----------------------测试-------------------------------------------------------
+
                 //为了防止Awake中的随机id覆盖了Instantiate出来的Item的正确的id而设置的callbackId；
                 //之后肯定不是在Awake中随机生成的，所以这段只是暂时的逻辑；
                 InventoryItemLogic script =  leftSlottedInventoryItem.GetComponentInChildren<InventoryItemLogic>();
-                script.callbackId = currentScript.myItemId;
 
-//----------------------测试-------------------------------------------------------
+                //初始化它的Item信息：
+                script.Init(currentScript.myItem);
+
+
+                script.isItemInSlot = true;
+
+
                 RectTransform rt = leftSlottedInventoryItem.GetComponent<RectTransform>();
                 rt.anchorMin = new Vector2(0.5f, 0.5f); 
                 rt.anchorMax = new Vector2(0.5f, 0.5f); 
@@ -140,14 +155,6 @@ public class InventoryPanel : BasePanel
                 //装载之后，将「卸下」Button恢复；
                 btnSlotLeftOff.gameObject.SetActive(true);
             }
-
-            // else if(leftSlottedOriginalItem != null)
-            // {
-            //     //如果没有预备，同时当前左侧有Item，
-            //     //那么就会执行卸下有关的后续操作；
-                
-            //     //首先：
-            // }
 
         });
 
@@ -177,12 +184,14 @@ public class InventoryPanel : BasePanel
 
                 rightSlottedInventoryItem = Instantiate(currentSelectedItem, rightSlotItemAnchor, false);
 
-//----------------------测试-------------------------------------------------------
+
 
                 InventoryItemLogic script =  rightSlottedInventoryItem.GetComponentInChildren<InventoryItemLogic>();
-                script.callbackId = currentScript.myItemId;
+                script.Init(currentScript.myItem);
 
-//----------------------测试-------------------------------------------------------
+                script.isItemInSlot = true;
+
+
 
 
                 RectTransform rt = rightSlottedInventoryItem.GetComponent<RectTransform>();
@@ -249,7 +258,7 @@ public class InventoryPanel : BasePanel
 
     void OnDestroy()
     {
-         EventHub.Instance.RemoveEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
+        EventHub.Instance.RemoveEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
     }
 
 
@@ -261,6 +270,7 @@ public class InventoryPanel : BasePanel
 
 
     }
+
 
 
 }

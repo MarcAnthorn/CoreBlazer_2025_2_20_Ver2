@@ -40,6 +40,7 @@ public abstract class BasePanel : MonoBehaviour
         canvasGroup.alpha = 0;
         canvasGroup.LeanAlpha(1, fadingTime);
 
+
     }
     public virtual void HideMe(UnityAction callBack)
     {
@@ -48,7 +49,6 @@ public abstract class BasePanel : MonoBehaviour
         {
             callBack?.Invoke();
         });
-
     }
 
 }

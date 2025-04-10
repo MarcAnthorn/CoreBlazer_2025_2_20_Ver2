@@ -5,26 +5,27 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+
+//这个是可使用的Item逻辑（Item会处在背包面板中、ItemPanel中）
 public class InventoryItemLogic : MonoBehaviour
 {
-    //当前持有的数据结构类Item：
+    //当前持有的Item（存储了相关Item信息的，通过id访问LoadManager实现获取）
     public Item myItem;
     //当前持有的Item其对应的id：
     public int myItemId;
 
-//------------------------------------------------------------------------
-    //为了防止Awake中的随机id覆盖了Instantiate出来的Item的正确的id而设置的callbackId；
-    //之后肯定不是在Awake中随机生成的，所以这段只是暂时的逻辑；
-    public int callbackId = -1;
-//------------------------------------------------------------------------
 
     public Image imgSelf;
     public TextMeshProUGUI txtSelfName;
+    public TextMeshProUGUI txtSelfItemCount;
     //是否处在预选阶段；
     public bool isInPreselecting;
     //是否已经插入插槽；
     //只有在卸下当前道具之后才会重置；
     public bool isSelectedToSlot;
+    //这个布尔标识是用于区分插入插槽和处在背包中的Item的；
+    //防止使用Item的时候，插入快捷插槽和背包中的同Id的Item双重响应：
+    public bool isItemInSlot;
     public bool isOutlineActivated;
     private Button btnSelf;
     public GameObject outlineObjects;
@@ -42,28 +43,15 @@ public class InventoryItemLogic : MonoBehaviour
         txtSelfName = this.GetComponentInChildren<TextMeshProUGUI>();
         isOutlineActivated = false;
 
-
         
         EventHub.Instance.AddEventListener("ResetItem", ResetItem);
         EventHub.Instance.AddEventListener<int>("ItemUsedCallback", ItemUsedCallback);
 
-        
-
-//------------------------------------------------------------------------
-        //测试用：随机分配id：
-        myItemId = Random.Range(0, 100001);
-
-//------------------------------------------------------------------------
 
     }
     void Start()
     {
-//----------------------测试-------------------------------------------------------
-        if(callbackId != -1)
-        {
-            myItemId = callbackId;
-        }
-//----------------------测试-------------------------------------------------------
+
         btnSelf.onClick.AddListener(()=>{
             //点击当前按钮会有多个不同的相应逻辑；取决于我当前所处的状态是什么；
             //如果处在高亮态（isHighLight），那么再次点击我会进入预选中（isPreSelected）；
@@ -82,8 +70,7 @@ public class InventoryItemLogic : MonoBehaviour
             //如果什么状态都不属于，就会进入当前item对应的展示面板；
             else
             {
-//----------------------测试-------------------------------------------------------
-                UIManager.Instance.ShowPanel<ItemCheckPanel>().Id = myItemId;
+                UIManager.Instance.ShowPanel<ItemCheckPanel>().InitItemInfo(myItem);
                 
             }
 
@@ -112,6 +99,34 @@ public class InventoryItemLogic : MonoBehaviour
         EventHub.Instance.RemoveEventListener<int>("ItemUsedCallback", ItemUsedCallback);
     }
 
+    //初始化方法Item和信息Item；
+    //以及初始化部分显示的内容
+    public void Init(Item _item)
+    {
+        myItem = _item;
+        myItemId = _item.id;
+        //初始化名称和使用剩余次数；
+        txtSelfName.text = myItem.name;
+        txtSelfItemCount.text = ItemManager.Instance.itemCountDic[myItem.id].ToString();
+    }
+
+    //刷新自己UI显示的方法，在使用之后，通过Panel中的回调RemoveItemInPanel触发
+    public void RefreshSelf()
+    {
+        //如果道具已经没了，那么就不需要处理了：
+        if(!ItemManager.Instance.itemCountDic.ContainsKey(myItemId))
+            return;
+            
+        txtSelfItemCount.text = ItemManager.Instance.itemCountDic[myItem.id].ToString();
+
+        //如果我不是永久的，那么说明是我的生效时间到了；
+        //移除蒙版：
+        if(!myItem.isPermanent)
+        {
+            takeEffectMaskObject.SetActive(false);
+        }
+    }
+
     //用于重置当前Item的方法，在GodItemPanelInventory中取消交互方法调用的时候，通过外部调用委托触发：
     private void ResetItem()
     {
@@ -120,16 +135,19 @@ public class InventoryItemLogic : MonoBehaviour
 
     //事件：道具响应事件；
     //当一个道具使用之后，会进行该事件的调用；传入的参数是对应Item的id：
-    //如果我的id符合，那么我就会执行某个逻辑；比如这里就是执行激活黑色蒙版；表示道具生效中；
+    //如果我的id符合，那么我就会执行逻辑: 这里就是执行激活黑色蒙版；表示道具生效中；
+    //不需要蒙版的只有isImmediate的Item；
     private void ItemUsedCallback(int targetItemId)
     {
-        if(targetItemId == myItemId)
+        //Item响应的要求有两个：
+        // 1.目前广播的目标id和我的id是一样的；
+        // 2.我不是处在插槽中的Item；也就是说，始终只有背包中的Item会进行响应；
+        if(targetItemId == myItemId && !isItemInSlot)
         {
             //和我对应上了，说明是广播给我的；
             //那么我就执行这个逻辑：
-
-            //测试逻辑：加上蒙版：
             takeEffectMaskObject.SetActive(true);
+
         }
     }
 

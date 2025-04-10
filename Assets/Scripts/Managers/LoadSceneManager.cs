@@ -9,8 +9,6 @@ public class LoadSceneManager : SingletonBaseManager<LoadSceneManager>
 {
     private LoadSceneManager() { }
 
-    //不管是加载什么场景，在那之前都先重置ballIndex；
-    //注意；以后的游戏需要将这些重置的语句删除：
 
     //实现同步加载场景的方法：
     public void LoadSceneSync(string sceneName, UnityAction callback = null)

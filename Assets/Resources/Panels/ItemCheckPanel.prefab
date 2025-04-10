@@ -168,8 +168,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 119, y: 287}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 107.57173, y: 293.60696}
+  m_SizeDelta: {x: 268.85, y: 73.1247}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6611801774041473903
 CanvasRenderer:
@@ -894,9 +894,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadingTime: 0.2
-  Id: 0
+  currentItemId: 0
   txtItemName: {fileID: 4680328347555630091}
-  txtItemCount: {fileID: 0}
+  txtItemCount: {fileID: 3112500960630665527}
   txtItemEffectDescription: {fileID: 36684479446895744}
   txtItemOtherDescription: {fileID: 945572241179591465}
   btnUse: {fileID: 914767273188594806}
@@ -1131,8 +1131,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 126, y: 228}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 106.55, y: 200}
+  m_SizeDelta: {x: 243.11, y: 53.3035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7933603598778900902
 CanvasRenderer:

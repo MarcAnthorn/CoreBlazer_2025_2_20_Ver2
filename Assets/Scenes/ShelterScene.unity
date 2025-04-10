@@ -683,13 +683,14 @@ GameObject:
   m_Component:
   - component: {fileID: 223086354}
   - component: {fileID: 223086353}
+  - component: {fileID: 223086355}
   m_Layer: 0
   m_Name: TestStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &223086353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,7 +698,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223086352}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4302d63153be2418fab0e7211bc20d10, type: 3}
   m_Name: 
@@ -717,6 +718,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &223086355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223086352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f203f4224c9c46a285d358d92a08388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &224324133
 GameObject:
   m_ObjectHideFlags: 0

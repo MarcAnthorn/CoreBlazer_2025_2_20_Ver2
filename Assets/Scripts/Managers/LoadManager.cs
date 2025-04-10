@@ -24,20 +24,20 @@ public class LoadManager : Singleton<LoadManager>
 
     protected override void Awake()
     {
-        base.Awake();   //单例初始化
-
+        base.Awake();
         //测试：加载资源
         LoadResources();
     }
 
     public void LoadResources()
     {
+     
         LoadMapElements(1);
         InitMap1Elements(1);
         LoadAVGDialogues();
         //LoadDialogues(0);
         LoadEvents();
-        // LoadItems();
+        LoadItems();
     }
 
 
@@ -105,7 +105,7 @@ public class LoadManager : Singleton<LoadManager>
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path);
-            for (int i = 1; i < lines.Length; i++)
+            for (int i = 0; i < lines.Length; i++)
             {
                 string line = lines[i];
                 string[] values = line.Split(',');
@@ -115,18 +115,22 @@ public class LoadManager : Singleton<LoadManager>
                     //此处进行道具分类
                     Item Item = ItemManager.Instance.ClassifyItems(int.Parse(values[1]));
                     Item.name = values[0];                              //A列
+
                     Item.id = int.Parse(values[1]);                     //B列
+       
                     Item.type = (Item.ItemType)int.Parse(values[2]);    //C列
 
-                    if (values[3] == "1")                               //D列
+
+                    if (values[3] == "0")                               //D列
                         Item.isImmediate = true;
                     else
                         Item.isImmediate = false;
 
+
                     Item.useTimes = int.Parse(values[4]);               //E列
                     char[] envs = values[5].ToCharArray();              //F列
                     for (int j = 0; j < 3; j++)
-                        Item.usableScene[j] = (int)envs[j];
+                        Item.usableScene[j] = (int)(envs[j] - '0');
 
                     if (values[6] == "0")                               //G列
                         Item.resetAfterDeath = true;
@@ -144,8 +148,9 @@ public class LoadManager : Singleton<LoadManager>
                         Item.reObtain = false;
 
                     Item.maxLimit = int.Parse(values[9]);               //J列
+                    Debug.Log(Item.maxLimit);
 
-                    if (values[10] == "0")                              //K列
+                    if (values[10] == "1")                              //K列
                         Item.isPermanent = true;
                     else
                         Item.isPermanent = false;
@@ -445,7 +450,6 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadAVGDialogues()
     {
-        Debug.Log("开始加载AVG内容");
         string path = Path.Combine(Application.dataPath, "Resources/DialogueData/AVGDialogues.csv");
         int showIndex = 1;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
