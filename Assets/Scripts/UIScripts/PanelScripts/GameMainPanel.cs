@@ -33,11 +33,16 @@ public class GameMainPanel : BasePanel
     //当前的事件对象
     private Event currentEvent;
 
+    //持有的两个道具面板：
+    public GameObject commonItemPanelObject;
+    public GameObject godItemPanelObject;
+
     private bool isDetectingCloseInput = false;
 
 
     protected override void Init()
     {
+        godItemPanelObject.SetActive(true);
         //事件面板出现，更新玩家的所处场景的index：
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;
 
@@ -45,13 +50,13 @@ public class GameMainPanel : BasePanel
         //默认显示的是神明道具面板；
         // UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
         btnToGodItem.onClick.AddListener(()=>{
-            UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
-            UIManager.Instance.HidePanel<CommonItemPanel>();
+            godItemPanelObject.SetActive(true);
+            commonItemPanelObject.SetActive(false);
         });
 
         btnToCommonItem.onClick.AddListener(()=>{
-            UIManager.Instance.ShowPanel<CommonItemPanel>().transform.SetParent(rightSection, false);
-            UIManager.Instance.HidePanel<GodItemPanel>();
+            commonItemPanelObject.SetActive(true);
+            godItemPanelObject.SetActive(false);
         });
 
         btnQuit.onClick.AddListener(()=>{

@@ -149,6 +149,39 @@ public class InventoryItemLogic : MonoBehaviour
             takeEffectMaskObject.SetActive(true);
 
         }
+
+        //如果我也是这个id，但是我是插槽中的Item，那么我也需要进行对应的逻辑处理：
+        if(targetItemId == myItemId && isItemInSlot)
+        {
+            //首先：如果我不是持续时间内生效的，那么我就需要删除我自己，然后对插槽状态进行重置：
+            if(!myItem.isPermanent && myItem.EffectiveTime == 0)
+            {
+                EventHub.Instance.EventTrigger("ResetItem");
+                EventHub.Instance.EventTrigger<int>("RemoveSlotItem", targetItemId);         
+            }
+            else if(!myItem.isPermanent)
+            {
+                //先加上蒙版：
+                takeEffectMaskObject.SetActive(true);
+                //因为我只是一个插槽中的复制品，所以只需要在结束之后处理自己的显示相关就行：
+                myItem.onCompleteCallback = null;
+                myItem.isInUse = true;
+                //移除蒙版的处理也在RefreshItemsInPanel中；
+                myItem.onCompleteCallback += () => {
+                    myItem.isInUse = false;
+                    
+                    //同时，如果数量减少到0了，那么就会从背包中移除：
+                    if(ItemManager.Instance.itemCountDic[myItem.id] == 0)
+                    {
+                        EventHub.Instance.EventTrigger("ResetItem");
+                        //该Item对应的背包中的本体的处理中，已经包含了对于背包内容的调整；
+                        //因此，此处不应该出现逻辑的重复：
+                        //只是删除自己：
+                        EventHub.Instance.EventTrigger<int>("RemoveSlotItem", targetItemId);               
+                    }
+                };
+            }
+        }
     }
 
 

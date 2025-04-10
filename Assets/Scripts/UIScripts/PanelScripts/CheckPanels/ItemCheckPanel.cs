@@ -17,6 +17,9 @@ public class ItemCheckPanel : BasePanel
     public TextMeshProUGUI txtItemOtherDescription;
     public Button btnUse;
     public Button btnClose;
+
+    //展示用的时候取消的Button;默认是失活的；
+    public Button btnCloseWhenDisplay;
     
 
     protected override void Init()
@@ -34,20 +37,20 @@ public class ItemCheckPanel : BasePanel
                 EventHub.Instance.EventTrigger<int>("ItemUsedCallback", currentItemId);
 
             }
-            else
-            {
-                Debug.LogWarning("使用失败，应该弹出弹窗");
-            }
         
         });
 
         btnClose.onClick.AddListener(()=>{
             UIManager.Instance.HidePanel<ItemCheckPanel>();
         });
+
+        btnCloseWhenDisplay.onClick.AddListener(()=>{
+            UIManager.Instance.HidePanel<ItemCheckPanel>();
+        });
     }
 
     //初始化Item显示面板信息的方法：
-    public void InitItemInfo(Item _item)
+    public void InitItemInfo(Item _item, bool _isToUse = true)
     {
         myItem = _item;
         currentItemId = myItem.id;
@@ -55,6 +58,17 @@ public class ItemCheckPanel : BasePanel
         txtItemCount.text = $"持有道具数量:{ItemManager.Instance.itemCountDic[currentItemId]}";
         txtItemEffectDescription.text = myItem.instruction;
         txtItemOtherDescription.text = myItem.description;
+
+        //如果不是用于使用的，而是展览的，那么进行额外的处理：
+        if(!_isToUse)
+        {
+            btnUse.gameObject.SetActive(false);
+            btnClose.gameObject.SetActive(false);
+            txtItemCount.gameObject.SetActive(false);
+            
+            btnCloseWhenDisplay.gameObject.SetActive(true);
+            
+        }
 
     }
 

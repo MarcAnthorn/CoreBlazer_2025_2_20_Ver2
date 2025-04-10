@@ -6,35 +6,84 @@ using UnityEngine.UI;
 public class CommonItemPanel : ItemPanel
 {
 
-    public ScrollRect srCommonItemContainer;
-    public List<GameObject> itemList = new List<GameObject>();
+    public Transform itemContent;
+    public List<InventoryItemLogic> itemScriptList = new List<InventoryItemLogic>();
+    public List<GameObject> itemObjectList = new List<GameObject>();
     protected override void Init()
-    {
-        //测试用
-        // InitContent();   
-        // foreach(var item in itemList)
-        // {
-        //     item.transform.SetParent(srCommonItemContainer.content, false);
-        // }
+    {       
+        RefreshItem();
     }
 
+
+
+    //整理面板的方法，在初始化和使用立刻生效的道具后调用；
     protected override void RefreshItem()
     {
-        //在刷新item的方法中，获取外部数据结构中存储的item；
-        // foreach
+        //清空List：
+        itemScriptList.Clear();
+        foreach(int itemId in ItemManager.Instance.itemList)
+        {
+            //只有神明道具初始化：
+            //ItemType == 1 or 2
+            //通过item ID 去获取这个Item的固定信息（如Item的类型）
+            Item infoItem = LoadManager.Instance.allItems[itemId];
+            if(infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType. Battle || infoItem.type == Item.ItemType.Normal)
+            {
+                if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
+                    continue;
+
+                GameObject nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                InventoryItemLogic script = nowItem.GetComponentInChildren<InventoryItemLogic>();
+                script.Init(infoItem);
+
+                //更新面板的时候，如果Item已经在使用中，那么加上蒙版：
+                if(infoItem.isInUse)
+                {
+                    script.takeEffectMaskObject.SetActive(true);
+                }
+
+                itemScriptList.Add(script);
+                itemObjectList.Add(nowItem);
+            }
+        }
     }
 
+    //广播的方法：更新UI：
+    //参数int，表示的是需要刷新的目标ItemId；
+    private void RefreshItemsInPanel(int targetId)
+    {
+        InventoryItemLogic temp = null;
+        //先找到你：
+        foreach(var script in itemScriptList)
+        {
+            if(script.myItem.id == targetId)
+            {
+                temp = script;
+            }   
+        }
 
-    // //测试用：初始化道具列表
-    // private void InitContent()
-    // {
-    //     for(int i = 0; i < 20; i++)
-    //     {
-    //         GameObject prefab = Resources.Load<GameObject>("Item");
-    //         itemList.Add(Instantiate<GameObject>(prefab));
-    //     }
-    // }
+        //如果找不到，那么就终止：
+        if(temp == null)
+            return;
 
-    //外部实现一个单例Item管理器，存储所有当前持有的Item
+        //刷新UI：
+        temp.RefreshSelf();
+        //如果为0，执行移除：
+        //如果道具已经没了，那么就不需要处理了：
+        if(!ItemManager.Instance.itemCountDic.ContainsKey(targetId))
+        {            
+            Destroy(temp.gameObject);
+            itemScriptList.Remove(temp);
+        }
+
+        //整理UI：
+        foreach (GameObject obj in itemObjectList)
+        {
+            Destroy(obj);
+        }
+
+        RefreshItem();
+    }
+
 }
 

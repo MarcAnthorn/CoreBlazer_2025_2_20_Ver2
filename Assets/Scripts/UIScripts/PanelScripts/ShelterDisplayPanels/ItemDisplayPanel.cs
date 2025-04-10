@@ -17,13 +17,15 @@ public class ItemDisplayPanel : BasePanel
 
     //测试用：
     //-------------------------------------------------
-    private int itemCount = 40;
+    private int itemCount;
     private int itemPerPage = 12;
     //-------------------------------------------------
 
 
     protected override void Init()
     {
+        itemCount = LoadManager.Instance.allItems.Count;
+
         btnLastPage.onClick.AddListener(()=>{
             SwitchPage(-1);
         });
@@ -37,22 +39,27 @@ public class ItemDisplayPanel : BasePanel
             UIManager.Instance.HidePanel<ItemDisplayPanel>();
         });
 
-
+        GameObject itemObj = Resources.Load<GameObject>("TestResources/Item");
         //测试用：
         //-------------------------------------------------
-        for(int i = 0; i < itemCount; i++)
+        foreach(var item in LoadManager.Instance.allItems.Values)
         {
-            GameObject itemObj = Resources.Load<GameObject>("TestResources/Item");
-            itemList.Add(itemObj);
+            GameObject currentObj = Instantiate(itemObj);
+            currentObj.SetActive(false);
+            var script = currentObj.GetComponent<ItemLogic>();
+            script.Init(item);
+            itemList.Add(currentObj);
         }
+
 
         for(int i = 0; i < itemPerPage; i++)
         {
-            GameObject currentObj = Instantiate(itemList[i]);
+            GameObject currentObj = itemList[i];
+            currentObj.SetActive(true);
+
             shownList.Add(currentObj);
             currentObj.gameObject.transform.SetParent(content, false);
         }
-        //-------------------------------------------------
 
         currentPage = 1;
         allPageCount = (itemCount + itemPerPage - 1) / itemPerPage;
@@ -62,7 +69,7 @@ public class ItemDisplayPanel : BasePanel
     {
         foreach(var itemObj in shownList)
         {
-            Destroy(itemObj);
+            itemObj.SetActive(false);
         }
         shownList.Clear();
 
@@ -81,7 +88,8 @@ public class ItemDisplayPanel : BasePanel
 
         for(int i = leftIndex; i <= rightIndex; i++)
         {
-            GameObject currentObj = Instantiate(itemList[i]);
+            GameObject currentObj = itemList[i];
+            currentObj.SetActive(true);
             shownList.Add(currentObj);
             currentObj.gameObject.transform.SetParent(content, false);
         }

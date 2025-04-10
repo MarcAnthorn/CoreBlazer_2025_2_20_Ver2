@@ -101,6 +101,9 @@ public class CommonItemPanelInventory : BasePanel
             Item infoItem = LoadManager.Instance.allItems[itemId];
             if(infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType. Battle || infoItem.type == Item.ItemType.Normal)
             {
+                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
+                    continue;
+
                 GameObject nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
                 InventoryItemLogic script = nowItem.GetComponentInChildren<InventoryItemLogic>();
                 script.Init(infoItem);
@@ -109,6 +112,16 @@ public class CommonItemPanelInventory : BasePanel
                 if(infoItem.isInUse)
                 {
                     script.takeEffectMaskObject.SetActive(true);
+                }
+
+                //如果该Item是快捷装备中，那么就需要调用InventoryPanel中的方法，进行插槽
+                if(infoItem.isSlottedToLeft)
+                {
+                    EventHub.Instance.EventTrigger<GameObject>("SlotItemToLeft", nowItem);
+                }
+                else if(infoItem.isSlottedToRight)
+                {
+                    EventHub.Instance.EventTrigger<GameObject>("SlotItemToRight", nowItem);
                 }
 
                 itemScriptList.Add(script);

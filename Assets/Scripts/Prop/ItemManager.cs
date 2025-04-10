@@ -116,11 +116,17 @@ public class ItemManager : Singleton<ItemManager>
             EventHub.Instance.EventTrigger<int>("RefreshItemsInPanel", item.id); 
             return true;
         }
-        else
+        else if(item.isInUse)
         {
-            Debug.LogWarning($"当前尝试使用的道具不可使用，道具id：{item.id},该道具的可使用场景是:{item.usableScene[0]}, {item.usableScene[1]}, {item.usableScene[2]}");
-            return false;
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("该道具使用中，不可重复使用");
         }
+        else if(!item.CanUseOrNot((int)PlayerManager.Instance.playerSceneIndex))
+        {
+            
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("当前场景下不可使用该道具");
+            // Debug.LogWarning($"当前尝试使用的道具不可使用，道具id：{item.id},该道具的可使用场景是:{item.usableScene[0]}, {item.usableScene[1]}, {item.usableScene[2]}");
+        }
+        return false;
     }
 
 

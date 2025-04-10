@@ -32,6 +32,10 @@ public abstract class Item                  //所有道具类的基类
     //Marc添加：道具生效结束之后的回调函数：
     public UnityAction onCompleteCallback = null; 
 
+    //Marc添加：该道具是否被插入左/右插槽：
+    public bool isSlottedToLeft;
+    public bool isSlottedToRight;
+
     public enum ItemType
     {
         None = 0,
@@ -61,19 +65,6 @@ public abstract class Item                  //所有道具类的基类
 
 public class Item_101 : Item
 {
-    public Item_101()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
 
     public override void Use()
     {
@@ -81,18 +72,22 @@ public class Item_101 : Item
         //可视范围扩大5格
         int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
-
-        PlayerManager.Instance.player.DebugInfo();
     }
 
     private void OnStart()
     {
         PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +20f);
+        PlayerManager.Instance.player.DebugInfo();
+        //锁定玩家的灯光值：
+        EventHub.Instance.EventTrigger("TriggerLightShrinking", false);
     }
 
     private void OnComplete(){
         onCompleteCallback?.Invoke();
         PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, -20f);
+        PlayerManager.Instance.player.DebugInfo();
+        //解锁：
+        EventHub.Instance.EventTrigger("TriggerLightShrinking", true);
     }
 
 }
@@ -126,19 +121,6 @@ public class Item_102 : Item
 
 public class Item_103 : Item
 {
-    public Item_103()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"大力出奇迹\" 使用！");
@@ -171,19 +153,6 @@ public class Item_103 : Item
 
 public class Item_104 : Item
 {
-    public Item_104()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"传送门\" 使用！");
@@ -220,19 +189,6 @@ public class Item_104 : Item
 
 public class Item_201 : Item
 {
-    public Item_201()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"除你武器!\" 使用！");
@@ -254,19 +210,6 @@ public class Item_201 : Item
 
 public class Item_202 : Item
 {
-    public Item_202()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"燃血战神\" 使用！");
@@ -301,19 +244,6 @@ public class Item_202 : Item
 
 public class Item_203 : Item
 {
-    public Item_203()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"神愈术\" 使用！");
@@ -326,19 +256,6 @@ public class Item_203 : Item
 
 public class Item_204 : Item
 {
-    public Item_204()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"最强防御\" 使用！");
@@ -366,19 +283,6 @@ public class Item_204 : Item
 
 public class Item_205 : Item
 {
-    public Item_205()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"最强攻击\" 使用！");
@@ -406,19 +310,6 @@ public class Item_205 : Item
 
 public class Item_206 : Item
 {
-    public Item_206()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"最强闪避\" 使用！");
@@ -446,19 +337,6 @@ public class Item_206 : Item
 
 public class Item_207 : Item
 {
-    public Item_207()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"最强苟命王\" 使用！");
@@ -489,19 +367,6 @@ public class Item_207 : Item
 
 public class Item_208 : Item
 {
-    public Item_208()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"绝地反击\" 使用！");
@@ -527,19 +392,6 @@ public class Item_208 : Item
 
 public class Item_301 : Item
 {
-    public Item_301()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"灯光up\" 使用！");
@@ -552,19 +404,6 @@ public class Item_301 : Item
 
 public class Item_302 : Item
 {
-    public Item_302()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"速!速!速!\" 使用！");
@@ -588,19 +427,6 @@ public class Item_302 : Item
 
 public class Item_303 : Item
 {
-    public Item_303()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"精神恢复剂\" 使用！");
@@ -613,19 +439,6 @@ public class Item_303 : Item
 
 public class Item_401 : Item
 {
-    public Item_401()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"生命果实\" 使用！");
@@ -651,19 +464,6 @@ public class Item_401 : Item
 
 public class Item_402 : Item
 {
-    public Item_402()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"防御果实\" 使用！");
@@ -689,19 +489,6 @@ public class Item_402 : Item
 
 public class Item_403 : Item
 {
-    public Item_403()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"攻击果实\" 使用！");
@@ -728,19 +515,6 @@ public class Item_403 : Item
 
 public class Item_404 : Item
 {
-    public Item_404()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"嫁衣\" 使用！");
@@ -759,19 +533,6 @@ public class Item_404 : Item
 
 public class Item_501 : Item
 {
-    public Item_501()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"回血药\" 使用！");
@@ -784,19 +545,6 @@ public class Item_501 : Item
 
 public class Item_502 : Item
 {
-    public Item_502()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"护身甲\" 使用！");
@@ -809,19 +557,6 @@ public class Item_502 : Item
 
 public class Item_503 : Item
 {
-    public Item_503()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"闪避\" 使用！");
@@ -834,19 +569,6 @@ public class Item_503 : Item
 
 public class Item_504 : Item
 {
-    public Item_504()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"重拳出击\" 使用！");
@@ -859,19 +581,6 @@ public class Item_504 : Item
 
 public class Item_505 : Item
 {
-    public Item_505()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"精神恍惚\" 使用！");
@@ -884,19 +593,6 @@ public class Item_505 : Item
 
 public class Item_506 : Item
 {
-    public Item_506()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"木剑\" 使用！");
@@ -909,19 +605,6 @@ public class Item_506 : Item
 
 public class Item_507 : Item
 {
-    public Item_507()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"宝剑\" 使用！");
@@ -934,19 +617,6 @@ public class Item_507 : Item
 
 public class Item_508 : Item
 {
-    public Item_508()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-    }
     public override void Use()
     {
         Debug.Log($"道具 \"神奇四面骰\" 使用！");

@@ -16,6 +16,7 @@ public class NPCInteractionPanel : BasePanel
     //需要判断当前的NPC是什么类型的，根据这个进行信仰Button的实例化；
     public Button btnDiscardBelief;
     public Button btnChooseBelief;
+    public Button btnQuit;
 
     //设置当前面板显示的NPC，因为没有数据结构类，所以暂时使用GameObject;
     public UnityAction<E_NPCName> setNPCAction;
@@ -50,6 +51,11 @@ public class NPCInteractionPanel : BasePanel
             UIManager.Instance.ShowPanel<ChooseBeliefPanel>().setNPCAction(currentNPCName);
             UIManager.Instance.HidePanel<NPCInteractionPanel>();
 
+        });
+
+        btnQuit.onClick.AddListener(()=>{
+            UIManager.Instance.HidePanel<NPCInteractionPanel>();
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
         });
     }
 
