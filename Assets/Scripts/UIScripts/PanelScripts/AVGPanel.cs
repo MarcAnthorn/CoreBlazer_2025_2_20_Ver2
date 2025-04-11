@@ -30,8 +30,14 @@ public class AVGPanel : BasePanel
     //是否准备进行选项的处理（在监测到下一行是中断指令的时候）
     private bool isReadyToUpdateOptions = false;
 
+    //当前AVG演出是否结束：
+    //入股结束，下一次点击就会退出AVG交互：
+    private bool isAvgOver = false;
+
     public string currentBackgroundName;
     public string bgmName;
+    [Range(0, 1)]
+    public float intervalTime = 1f;
     //当前对话场景中包含的所有NPC（以NPC名字的形式存储）
     public Dictionary<string, GameObject> currentNPCDic = new Dictionary<string, GameObject>();
     //当前所有可能的立绘的RGB颜色字典，用于恢复NPC立绘的亮度：
@@ -49,6 +55,20 @@ public class AVGPanel : BasePanel
         EventHub.Instance.AddEventListener<int>("ChoiceIsMade", ChoiceIsMade);
     }
 
+    void Update()
+    {
+        if(isAvgOver)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                Debug.Log($"AVG演出已关闭，关闭的AVG演出ID：{orderBlock.rootId}");
+                //将玩家解冻：
+                EventHub.Instance.EventTrigger<bool>("Freeze", false);
+                UIManager.Instance.HidePanel<AVGPanel>();
+            }
+        }
+    }
+
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
@@ -57,6 +77,11 @@ public class AVGPanel : BasePanel
 
     protected override void Init()
     {
+        isAvgOver = false;
+
+        //冻结玩家
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
+
         btnContinue.onClick.AddListener(()=>{
             isContinueButtonClicked = true;
         });
@@ -175,15 +200,16 @@ public class AVGPanel : BasePanel
                 //如果对话者名字为空，同时无对话文本，那么就是过场order（即：处理人物出现 / 消失等等的order）
                 else if(currentOrder.orderText == "0")
                 {
-                    //等待一定时间就继续：先设置等一秒；
-                    yield return new WaitForSeconds(1f);
+                    //等待一定时间就继续：先设置等设定的时间；
+                    yield return new WaitForSeconds(intervalTime);
                 }
 
                 //更新当前order（只有Common的指令才是顺序的， Option & Break都不是严格顺序的）
                 if(currentOrder.nextOrderId == -1)
                 {
                     Debug.LogWarning("演出已终止");
-                    UIManager.Instance.HidePanel<AVGPanel>();
+                    //将锁开启，下一次点击就会关闭avg；
+                    isAvgOver = true;
                     break;
                 }
                 currentOrder = orderBlock.orderDic[currentOrder.nextOrderId];
@@ -241,11 +267,6 @@ public class AVGPanel : BasePanel
 
 
             }
-
-            //最终处理终止相关的指令：如果当前指令的nextOrderId是-1，说明当前的指令是最终的指令；
-            //需要终止avg的演出:
-
-            
         }
     }
 

@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class TestAVG : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        UIManager.Instance.ShowPanel<AVGPanel>();
+    private bool isTriggerLock = true;
+
+    private void Update() {
+        if(!isTriggerLock)
+        {
+            if(Input.GetKeyDown(KeyCode.F))
+            {
+                UIManager.Instance.ShowPanel<AVGPanel>();
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.gameObject.CompareTag("Player"))
+        {
+            isTriggerLock = false;
+
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.gameObject.CompareTag("Player"))
+        {
+            isTriggerLock = true;
+        }
     }
 }
