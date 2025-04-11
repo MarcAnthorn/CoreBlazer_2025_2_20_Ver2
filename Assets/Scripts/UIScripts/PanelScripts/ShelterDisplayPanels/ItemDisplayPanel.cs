@@ -15,6 +15,7 @@ public class ItemDisplayPanel : BasePanel
     private int currentPage; 
     private int allPageCount;
 
+
     //测试用：
     //-------------------------------------------------
     private int itemCount;

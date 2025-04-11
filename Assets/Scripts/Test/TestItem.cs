@@ -42,12 +42,16 @@ public class TestItem : MonoBehaviour
         //     }
         // }
 
-        //添加道具：
-        foreach(int id in itemIDs)
+        if(!ItemManager.Instance.isAdded)
         {
-            ItemManager.Instance.AddItem(id);
-        }
+            ItemManager.Instance.isAdded = true;
+            //添加道具：
+            foreach(int id in itemIDs)
+            {
+                ItemManager.Instance.AddItem(id);
+            }
 
+        }
         // foreach(var item in ItemManager.Instance.inventory.itemCountDic.Keys)
         // {
         //     Debug.Log($"当前的Item是：{item.id}, 持有的数量是:{ItemManager.Instance.inventory.itemCountDic[item]}");
