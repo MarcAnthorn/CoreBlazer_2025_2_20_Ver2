@@ -137,7 +137,7 @@ public class PlayerController : PlayerBase
             {
                 if(lightShrinkingTime >= 1.96 && lightShrinkingTime <= 2.02)
                 {
-                    l1 = L0 * (1 - 0.1f * lightShrinkingTime);
+                    L0 = L0 * (1 - 0.1f * lightShrinkingTime);
                 }
                 // L = stageOneSpeed * L0 * (1 - 0.1f * lightShrinkingTime);
                 L =  L0 * (1 - 0.1f * lightShrinkingTime);
@@ -146,7 +146,7 @@ public class PlayerController : PlayerBase
             {
                 if(lightShrinkingTime >= 4.96 && lightShrinkingTime <= 5.02)
                 {
-                    l2 = L0 * (1 - 0.1f * lightShrinkingTime);
+                    L2 = L0 * (1 - 0.1f * lightShrinkingTime);
                 }
                 // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (lightShrinkingTime - 2));
                 L =  L2 * (1 - 0.1f * lightShrinkingTime);
@@ -186,6 +186,7 @@ public class PlayerController : PlayerBase
             StopCoroutine(damageCoroutine);
         isDamaging = false;
 
+        // PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
         //加载安全屋的场景：
         //激活所有需要失活的过场景不移除的对象：
         //该方法定义在TestCanvas中，该脚本挂载在Canvas上；        

@@ -150,7 +150,7 @@ public class Event          //
             Debug.LogWarning($"当前san值：{player.SAN.value}");
             if(player.SAN.value <= 0)
             {
-                Debug.LogError("san归零，死亡");
+                EventHub.Instance.EventTrigger("OnPlayerDead");
             }
         }
         else
