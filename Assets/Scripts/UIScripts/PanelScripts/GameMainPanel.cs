@@ -215,7 +215,7 @@ public class GameMainPanel : BasePanel
             {
                 TextDisplayManager.Instance.BuildText(txtEventDescription, 
                 text.text, 
-                Color.white,
+                Color.black,
                 true,
                 false);
             }
@@ -233,7 +233,7 @@ public class GameMainPanel : BasePanel
             {
                 TextDisplayManager.Instance.BuildText(txtEventDescription, 
                 text.text, 
-                Color.white,
+                Color.black,
                 false,
                 true);
             }
