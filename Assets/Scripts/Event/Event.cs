@@ -145,13 +145,6 @@ public class Event          //
             player.AVO.value += this.result.change_AVO;
             player.AVO.value *= (this.result.change_AVO_rate + 1);
 
-
-            //测试用：
-            Debug.LogWarning($"当前san值：{player.SAN.value}");
-            if(player.SAN.value <= 0)
-            {
-                EventHub.Instance.EventTrigger("OnPlayerDead");
-            }
         }
         else
         {

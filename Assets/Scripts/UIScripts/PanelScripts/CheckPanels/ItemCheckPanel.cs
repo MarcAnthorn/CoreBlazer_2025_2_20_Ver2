@@ -35,6 +35,7 @@ public class ItemCheckPanel : BasePanel
 
                 //这个方法在InventoryItemLogic中： 
                 EventHub.Instance.EventTrigger<int>("ItemUsedCallback", currentItemId);
+                UIManager.Instance.ShowPanel<ToastPanel>().SetItemResult(myItem);
 
             }
         

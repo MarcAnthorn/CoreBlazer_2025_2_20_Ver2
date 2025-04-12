@@ -77,7 +77,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             DEF = new Player.PlayerAttribute(3) { value = 5 },           
             // 防御 (Defense)，id = 3，初始值 5
 
-            LVL = new Player.PlayerAttribute(4) { value = 1 },            
+            LVL = new Player.PlayerAttribute(4) { value = 100 },            
             // 灯光值 (Light Value)，id = 4，初始值 1
 
             SAN = new Player.PlayerAttribute(5) { value = 40 },           
@@ -137,6 +137,8 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         {
             case AttributeType.HP:
                 PlayerManager.Instance.player.HP.value += finalValue;
+                //  PlayerManager.Instance.player.HP.value = Math.Min(PlayerManager.Instance.player.HP.value + finalValue, PlayerManager.Instance.player.HP.value);
+                
                 break;
             case AttributeType.STR:
                 PlayerManager.Instance.player.STR.value += finalValue;

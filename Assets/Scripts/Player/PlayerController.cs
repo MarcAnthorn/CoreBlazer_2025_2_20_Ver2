@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -8,14 +9,9 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerController : PlayerBase
 {
-    public float l1;
-    public float l2;
-
-    [Range(100, 300)]
-    public float L0 = 300;
+    public float LMax = 100;
     [Range(0, 200)]
     public float LExtra;
-    private float L2, L5;
     private float _l;
 
 
@@ -31,16 +27,10 @@ public class PlayerController : PlayerBase
     }
     
     private float lightShrinkingTime = 0;
-    [Range(0, 1f)]
-    public float stageOneSpeed;
-    [Range(0, 1f)]
-    public float stageTwoSpeed;
-    [Range(0, 1f)]
-    public float stageThreeSpeed;
 
-    [Range(50, 300f)]
-    [Tooltip("每秒扣除的血量（万分比），如100就是每秒扣除百分之一")]
-    public float bleedSpeed = 100f;
+    // [Range(50, 300f)]
+    // [Tooltip("每秒扣除的血量（万分比），如100就是每秒扣除百分之一")]
+    // public float bleedSpeed = 100f;
 
     public Light2D spriteLight;
 
@@ -70,10 +60,6 @@ public class PlayerController : PlayerBase
     { 
         isLightShrinking = true;
         lightShrinkingTime = 0;
-        L2 = L0 * (1 - 0.2f * 2);             
-        L5 = L2 * (1 - 0.2f * 2); 
-        // L2 = L0 * (1 - 0.2f * 2);             
-        // L5 = L2 * Mathf.Exp(-0.8f * (5 - 2)); 
         spriteLight.pointLightOuterRadius = initialLightScope;
     }
 
@@ -100,65 +86,32 @@ public class PlayerController : PlayerBase
     }
     private void LightShrinking()
     {
-    //     if(isLightShrinking)
-    //     {
-    //         lightShrinkingTime += Time.deltaTime;
-    //         if (lightShrinkingTime >= 0 && lightShrinkingTime <= 2)
-    //         {
-    //             // L = stageOneSpeed * L0 * (1 - 0.1f * lightShrinkingTime);
-    //             L =  L0 * (1 - 0.1f * lightShrinkingTime);
-    //         }
-    //         else if (lightShrinkingTime > 2 && lightShrinkingTime <= 5)
-    //         {
-    //             // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (lightShrinkingTime - 2));
-    //             L =  L2 * Mathf.Exp(-0.6f * (lightShrinkingTime - 2));
-    //         }
-    //         else if (lightShrinkingTime > 5)
-    //         {
-    //             // L = stageThreeSpeed * L5 / (1 + 0.5f * (lightShrinkingTime - 5));
-    //             L = L5 / (1 + 0.5f * (lightShrinkingTime - 5));
-    //         }
-
-    //         spriteLight.pointLightOuterRadius = L / 10;
-
-    //         if(spriteLight.pointLightOuterRadius <= 2.12f)
-    //         {
-    //             spriteLight.pointLightOuterRadius = 2.12f;
-    //             TriggerLightShrinking(false);
-                
-    //         }
-        
-    //     }
-
         if(isLightShrinking)
         {
             lightShrinkingTime += Time.deltaTime;
-            if (lightShrinkingTime >= 0 && lightShrinkingTime <= 2)
+
+            float t = lightShrinkingTime >= 10 ? 10 : lightShrinkingTime;
+
+            //灯光值调整：
+            L = LMax - t * t;
+            switch(GameLevelManager.Instance.gameLevelType)
             {
-                if(lightShrinkingTime >= 1.96 && lightShrinkingTime <= 2.02)
-                {
-                    L0 = L0 * (1 - 0.1f * lightShrinkingTime);
-                }
-                // L = stageOneSpeed * L0 * (1 - 0.1f * lightShrinkingTime);
-                L =  L0 * (1 - 0.1f * lightShrinkingTime);
-            }
-            else if (lightShrinkingTime > 2 && lightShrinkingTime <= 5)
-            {
-                if(lightShrinkingTime >= 4.96 && lightShrinkingTime <= 5.02)
-                {
-                    L2 = L0 * (1 - 0.1f * lightShrinkingTime);
-                }
-                // L = stageTwoSpeed * L2 * Mathf.Exp(-0.6f * (lightShrinkingTime - 2));
-                L =  L2 * (1 - 0.1f * lightShrinkingTime);
-            }
-            else if (lightShrinkingTime > 5)
-            {
-                // L = stageThreeSpeed * L5 / (1 + 0.5f * (lightShrinkingTime - 5));
-                L = L5 / (1 + 0.5f * (lightShrinkingTime - 5));
+                case E_GameLevelType.Tutorial:
+                case E_GameLevelType.Second:
+                    spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
+                break;
+
+                case E_GameLevelType.First:
+                    spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;  
+                break;
+
+                case E_GameLevelType.Third:
+                    spriteLight.pointLightOuterRadius = (0.03f / 20f) * L * L;  
+                break;
             }
 
-            spriteLight.pointLightOuterRadius = L / 10;
 
+            //灯光照射下限值：
             if(spriteLight.pointLightOuterRadius <= 2.12f)
             {
                 spriteLight.pointLightOuterRadius = 2.12f;
@@ -170,7 +123,7 @@ public class PlayerController : PlayerBase
             }
 
         }
-    
+
     }
     private void OnPlayerDead()
     {
@@ -217,22 +170,11 @@ public class PlayerController : PlayerBase
     public void ResumeLight()
     {
         isLightShrinking = false;
-        L = L + LExtra;
-        if (L > 115)  
-        {
-            // 第一阶段：L = L0 * (1 - 0.1f * lightShrinkingTime)
-            lightShrinkingTime = (1 - L / L0) / 0.1f;
-        }
-        else if (L > 78 && L <= 115)  
-        {
-            // 第二阶段：L = L2 * (1 - 0.1f * lightShrinkingTime)
-            lightShrinkingTime = (1 - L / L2) / 0.1f;
-        }
-        else  
-        {
-            // 第三阶段：L = L5 / (1 + 0.5f * (lightShrinkingTime - 5))
-            lightShrinkingTime = 5 + (L5 / L - 1) / 0.5f;
-        }
+        L = Math.Min(L + LExtra, LMax);
+        lightShrinkingTime = Mathf.Sqrt(100f - L);
+
+        Debug.Log(lightShrinkingTime);
+        Debug.Log(L);
 
         //补充灯光之后，开启灯光衰减，关闭伤害判定协程；
         isLightShrinking = true;
@@ -270,7 +212,7 @@ public class PlayerController : PlayerBase
     {
         while(true)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(5f);
 
             if(isFrozen)
             {

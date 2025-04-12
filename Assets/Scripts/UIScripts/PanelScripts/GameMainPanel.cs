@@ -26,6 +26,7 @@ public class GameMainPanel : BasePanel
     public Button btnToCommonItem;
     public Button btnSetting;
     public Button btnQuit;
+    public Button btnQuitBlackSpace;
     public RectTransform rtOptionsContainer;
     private List<GameObject> optionList = new List<GameObject>(); 
 
@@ -38,10 +39,14 @@ public class GameMainPanel : BasePanel
     public GameObject godItemPanelObject;
 
     private bool isDetectingCloseInput = false;
+    private bool isOptionsUpdated = false;
 
 
     protected override void Init()
     {
+        btnQuitBlackSpace.gameObject.SetActive(false);
+        isOptionsUpdated = false;
+
         godItemPanelObject.SetActive(true);
         //事件面板出现，更新玩家的所处场景的index：
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;
@@ -65,6 +70,15 @@ public class GameMainPanel : BasePanel
                 UIManager.Instance.HidePanel<GameMainPanel>();
             }
         });
+
+        btnQuitBlackSpace?.onClick.AddListener(()=>{
+            if(isDetectingCloseInput && btnQuitBlackSpace.gameObject.activeSelf)
+            {
+                UIManager.Instance.HidePanel<GameMainPanel>();
+            }
+        });
+
+
 
 
         //当前面板显示，更新面板内容：
@@ -114,6 +128,12 @@ public class GameMainPanel : BasePanel
 
         txtStrength.text = $"力量：{(int)PlayerManager.Instance.player.STR.value}";
         txtSpeed.text = $"速度：{(int)PlayerManager.Instance.player.SPD.value}";
+
+
+        //更新Sliders：
+        sliderHealth.value = PlayerManager.Instance.player.HP.value / PlayerManager.Instance.player.HP.value_limit;
+        sliderLight.value = PlayerManager.Instance.player.LVL.value / PlayerManager.Instance.player.LVL.value_limit;
+        sliderSanity.value = PlayerManager.Instance.player.SAN.value / PlayerManager.Instance.player.SAN.value_limit;
     }
 
 
@@ -149,6 +169,7 @@ public class GameMainPanel : BasePanel
         if(currentEvent.hasResult)
         {
             currentEvent.ExecuteResult(PlayerManager.Instance.player);
+            UIManager.Instance.ShowPanel<ToastPanel>().SetEventResult(currentEvent.result);
             UpdateAttributeText();
         }      
 
@@ -158,6 +179,10 @@ public class GameMainPanel : BasePanel
     //这个方法在文本显示之后，通过事件中心进行调用；
     private void UpdateOptions()
     {
+        if(isOptionsUpdated)
+            return;
+        
+        isOptionsUpdated = true;
         //事件选项加载：
         int invalidOptionsCount = 0;
         foreach(var option in currentEvent.options)
@@ -167,8 +192,15 @@ public class GameMainPanel : BasePanel
                 invalidOptionsCount++;
                 if(invalidOptionsCount == 3)
                 {
-                    //
+                    //说明文本播放结束了；
                     isDetectingCloseInput = true;
+                    btnQuitBlackSpace.gameObject.SetActive(true);
+
+                    //如果当前玩家生命归零了，那么文本结束后直接死亡：
+                    if(PlayerManager.Instance.player.HP.value <= 0 || PlayerManager.Instance.player.SAN.value <= 0 )
+                    {
+                        EventHub.Instance.EventTrigger("OnPlayerDead");
+                    }
                     break;
                 }
                     
@@ -192,6 +224,9 @@ public class GameMainPanel : BasePanel
             nowButtonScript.setOptionAction(option);
             //将当前事件的选项游戏对象加入optionList：
             optionList.Add(nowButtonScript.gameObject);
+
+            //重新开放锁：
+            isOptionsUpdated = false;
         }
     }
 

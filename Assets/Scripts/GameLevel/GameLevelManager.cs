@@ -14,15 +14,15 @@ public class GameLevelManager : Singleton<GameLevelManager>
 
 //-----------------------------------------------------------------------------
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //当前的关卡是哪个等级：
+    public E_GameLevelType gameLevelType = E_GameLevelType.Tutorial;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+}
+
+public enum E_GameLevelType
+{
+    Tutorial = 0,
+    First = 1,
+    Second = 2,
+    Third = 3,
 }

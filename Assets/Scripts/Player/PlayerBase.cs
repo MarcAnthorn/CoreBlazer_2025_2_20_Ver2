@@ -6,12 +6,15 @@ public class PlayerBase : MonoBehaviour
 {
     public bool isMoving = true;
     [Range(0, 5)]
-    public float moveSpeed;
+    public float moveSpeedBase;
 
     protected virtual void Awake()
     {
         EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
+        moveSpeedBase = 3;
     }
+
+
 
     protected virtual void OnDestroy()
     {
@@ -36,6 +39,7 @@ public class PlayerBase : MonoBehaviour
     {
         if(isMoving)
         {
+            float moveSpeed = moveSpeedBase * (1 + (5 * PlayerManager.Instance.player.SPD.value - 10) / 100);
             if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
             {
                 this.transform.Translate(0, Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed, 0);
