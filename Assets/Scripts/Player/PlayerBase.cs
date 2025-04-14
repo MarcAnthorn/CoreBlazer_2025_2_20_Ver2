@@ -15,6 +15,7 @@ public class PlayerBase : MonoBehaviour
         EventHub.Instance.AddEventListener<E_DetectInputType>("UnlockSpecificDetectInput", UnlockSpecificDetectInput);
         EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
         moveSpeedBase = 3;
+        isDetectingEscape = true;
     }
 
 
@@ -35,6 +36,7 @@ public class PlayerBase : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape) && isDetectingEscape)
         {
+            Debug.Log("Inventory Panel is Revealed");
             UIManager.Instance.ShowPanel<InventoryPanel>();
         }
 

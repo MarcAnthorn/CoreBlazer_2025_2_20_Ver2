@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
+// using System.Numerics;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
@@ -56,6 +56,7 @@ public class PlayerController : PlayerBase
         EventHub.Instance.AddEventListener("OnPlayerDead", OnPlayerDead);
         EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.AddEventListener<bool>("TriggerLightShrinking", TriggerLightShrinking);
+        EventHub.Instance.AddEventListener<Vector3>("SetPlayerPosition", SetPlayerPosition);
 
     }
     // Start is called before the first frame update
@@ -69,7 +70,7 @@ public class PlayerController : PlayerBase
     // Update is called once per frame
     protected override void Update()
     {
-        base.Awake();
+        base.Update();
 
     }
 
@@ -86,7 +87,10 @@ public class PlayerController : PlayerBase
         EventHub.Instance.RemoveEventListener("OnPlayerDead", OnPlayerDead);
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.RemoveEventListener<bool>("TriggerLightShrinking", TriggerLightShrinking);
+        EventHub.Instance.RemoveEventListener<Vector3>("SetPlayerPosition", SetPlayerPosition);
+        
     }
+
 
 
     private void TriggerLightShrinking(bool _isShrinking)
@@ -175,9 +179,9 @@ public class PlayerController : PlayerBase
         PlayerManager.Instance.player.LVL.value = 300;
     }
 
-    private void ResetPosition()
+    private void SetPlayerPosition(Vector3 position)
     {
-        this.transform.position = PlayerManager.Instance.initPosition;
+        this.transform.position = position;
     }
 
     public void ResumeLight()

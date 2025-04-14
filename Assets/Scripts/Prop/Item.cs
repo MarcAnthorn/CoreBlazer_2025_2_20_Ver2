@@ -173,29 +173,29 @@ public class Item_104 : Item
         if (randomNum == 0)
         {
             //到达该层迷宫终点
-            BackToStartPoint.Invoke();
+           StartHander();
         }
         else if (randomNum == 1)
         {
             //回到起点
-            ReachToFinalPoint.Invoke();
+            EndHander();
         }
         PlayerManager.Instance.player.DebugInfo();
     }
 
-    private Action BackToStartPoint = null;             //由Marc将实现方法写入其中
-    private Action ReachToFinalPoint = null;            //由Marc将实现方法写入其中
-    public void SubscribeHandlers(Action handler1, Action handler2)
+    // private Action BackToStartPoint = null;             //由Marc将实现方法写入其中
+    // private Action ReachToFinalPoint = null;            //由Marc将实现方法写入其中
+
+    private void StartHander()
     {
-        if (BackToStartPoint == null)
-        {
-            BackToStartPoint += handler1;
-        }
-        if (ReachToFinalPoint == null)
-        {
-            ReachToFinalPoint += handler2;
-        }
+        EventHub.Instance.EventTrigger<Vector3>("SetPlayerPosition", GameLevelManager.Instance.mapIndexStartPointDic[(int)GameLevelManager.Instance.gameLevelType]);
     }
+
+    private void EndHander()
+    {
+        EventHub.Instance.EventTrigger<Vector3>("SetPlayerPosition", GameLevelManager.Instance.mapIndexEndPointDic[(int)GameLevelManager.Instance.gameLevelType]);
+    }
+
 
 }
 

@@ -12,6 +12,7 @@ public class InventoryPanel : BasePanel
     public Slider sliderLight;
     public Button btnGodPanelReveal;
     public Button btnCommonPanelReveal;
+    public Button btnEquipmentPanelReveal;
     public Button btnQuickSlotLeft;
     public Button btnQuickSlotRight;
     public Button btnSlotLeftOff;
@@ -59,6 +60,7 @@ public class InventoryPanel : BasePanel
     private GameObject rightSlottedInventoryItem;
     private InventoryItemLogic leftItemScript;
     private InventoryItemLogic rightItemScript;
+    public GameObject equiptmentPanelObject;
     public GameObject godItemPanelObject;
     public GameObject commonItemPanelObject;
 
@@ -87,10 +89,18 @@ public class InventoryPanel : BasePanel
         btnCommonPanelReveal.onClick.AddListener(()=>{
             commonItemPanelObject.SetActive(true);
             godItemPanelObject.SetActive(false);
+            equiptmentPanelObject.SetActive(false);
         });
 
         btnGodPanelReveal.onClick.AddListener(()=>{
             godItemPanelObject.SetActive(true);
+            commonItemPanelObject.SetActive(false);
+            equiptmentPanelObject.SetActive(false);
+        });
+
+        btnEquipmentPanelReveal.onClick.AddListener(()=>{
+            equiptmentPanelObject.SetActive(true);
+            godItemPanelObject.SetActive(false);
             commonItemPanelObject.SetActive(false);
         });
 
