@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 
@@ -37,6 +38,7 @@ public class PlayerController : PlayerBase
     private bool isFrozen;
     private bool isLightShrinking = true;
     private bool isDamaging = false;
+    public bool isDamageLocked = false;
     public float initialLightScope = 100;
     public CinemachineVirtualCamera cam;
     private Coroutine damageCoroutine;
@@ -47,6 +49,7 @@ public class PlayerController : PlayerBase
     protected override void Awake()
     {
         base.Awake();
+
         cam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         cam.Follow = this.gameObject.transform;
 
@@ -64,6 +67,11 @@ public class PlayerController : PlayerBase
     }
 
     // Update is called once per frame
+    protected override void Update()
+    {
+        base.Awake();
+
+    }
 
     protected override void FixedUpdate()
     {
@@ -79,6 +87,7 @@ public class PlayerController : PlayerBase
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.RemoveEventListener<bool>("TriggerLightShrinking", TriggerLightShrinking);
     }
+
 
     private void TriggerLightShrinking(bool _isShrinking)
     {
@@ -117,9 +126,16 @@ public class PlayerController : PlayerBase
                 spriteLight.pointLightOuterRadius = 2.12f;
                 L = 21.2f;
                 TriggerLightShrinking(false);
-                isDamaging = true;
-                damageCoroutine = StartCoroutine(DamageCoroutine());
-                damageTime = 0;
+
+                //考虑是否锁血：如果锁血，那么就不会开启伤害协程：
+
+                isDamaging = isDamageLocked ? false : true;
+
+                if(isDamaging)
+                {
+                    damageCoroutine = StartCoroutine(DamageCoroutine());
+                    damageTime = 0;
+                }
             }
 
         }
@@ -144,9 +160,6 @@ public class PlayerController : PlayerBase
         //激活所有需要失活的过场景不移除的对象：
         //该方法定义在TestCanvas中，该脚本挂载在Canvas上；        
         LoadSceneManager.Instance.LoadSceneAsync("ShelterScene", SwitchSceneCallback);
-
-
-        
 
 
     }

@@ -827,7 +827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03118cc0e1f074b5791bdb0ade640c0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 0.2
+  fadingTime: 0.4
   defaultPos: {fileID: 6850149207502907679}
   leftPos: {fileID: 2713620362688125036}
   midPos: {fileID: 420899496419754988}

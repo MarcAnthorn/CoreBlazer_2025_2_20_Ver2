@@ -13,36 +13,21 @@ public abstract class NPCBase : MonoBehaviour
 
 
     protected virtual void Update() {
-        if(!isTriggerLock)
-        {
-            if(Input.GetKeyDown(KeyCode.J))
-            {
-                Debug.Log("J is pressed");
-                DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-                UIManager.Instance.ShowPanel<AVGPanel>().orderBlock = ob;
-                UIManager.Instance.ShowPanel<AVGPanel>().callback = OnComplete;
-                EventHub.Instance.EventTrigger<bool>("Freeze", true);
-            }
-        }
+
     }
 
     protected void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("TriggerEnter");
         if(other.gameObject.CompareTag("Player"))
         {
-            isTriggerLock = false;
+            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
+            UIManager.Instance.ShowPanel<AVGPanel>().orderBlock = ob;
+            UIManager.Instance.ShowPanel<AVGPanel>().callback = OnComplete;
+            EventHub.Instance.EventTrigger<bool>("Freeze", true);
 
         }
     }
 
-    protected void OnTriggerExit2D(Collider2D other) {
-        Debug.Log("TriggerExit");
-        if(other.gameObject.CompareTag("Player"))
-        {
-            isTriggerLock = true;
 
-        }
-    }
 
 
     //抽象方法：在交互完成之后的回调函数：

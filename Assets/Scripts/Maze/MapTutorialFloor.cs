@@ -10,6 +10,7 @@ public class MapTutorialFloor : MonoBehaviour
     {
         originalPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
         originalPoint.z = 0;  
+        
         GameLevelManager.Instance.mapIndexStartPointDic.Add(2, originalPoint + new Vector3(0.41f, -0.91f));
         
         if(endPoint != null)

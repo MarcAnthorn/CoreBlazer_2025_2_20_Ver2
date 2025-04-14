@@ -12,11 +12,11 @@ public class NPC30002  : NPCBase
         PlayerManager.Instance.player.LVL.value += 20;
         Destroy(this.gameObject);
         
-    }
+    } 
 
     void Awake()
     {
         avgId = 1102;
-        GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
+
     }
 }

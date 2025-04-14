@@ -45,7 +45,9 @@ public class AVGPanel : BasePanel
     //当前对话场景中包含的所有NPC（以NPC名字的形式存储）
     public Dictionary<string, GameObject> currentNPCDic = new Dictionary<string, GameObject>();
     //当前所有可能的立绘的RGB颜色字典，用于恢复NPC立绘的亮度：
-    public Dictionary<string, Color> colorDic = new Dictionary<string, Color>();
+    public Dictionary<string, Color> orginalColorDic = new Dictionary<string, Color>();
+    //用于调暗NPC立绘的亮度：
+    public Dictionary<string, Color> darkenColorDic = new Dictionary<string, Color>();
 
     public List<GameObject> optionList = new List<GameObject>();
 
@@ -306,9 +308,9 @@ public class AVGPanel : BasePanel
         //处理其渐显的逻辑：
         Image npcImage = npc.gameObject.GetComponent<Image>();
         Color color = npcImage.color;
-        if(!colorDic.ContainsKey(name))
+        if(!orginalColorDic.ContainsKey(name))
         {
-            colorDic.Add(name, color);
+            orginalColorDic.Add(name, color);
         }
 
         color.a = 0;
@@ -370,20 +372,26 @@ public class AVGPanel : BasePanel
     private void DarkenNPCImage(string name)
     {
         Image targetImage = currentNPCDic[name].GetComponent<Image>();
-        float factor = 0.4f;
-        Color currentColor = targetImage.color;
-        currentColor.r *= factor;       // 调整红色通道
-        currentColor.g *= factor;       // 调整绿色通道
-        currentColor.b *= factor;       // 调整蓝色通道
+        if(!darkenColorDic.ContainsKey(name))
+        {
+            //如果没有调暗过，那么就调暗颜色后加入dic：
+            float factor = 0.4f;
+            Color currentColor = targetImage.color;
+            currentColor.r *= factor;       // 调整红色通道
+            currentColor.g *= factor;       // 调整绿色通道
+            currentColor.b *= factor;       // 调整蓝色通道
 
-        targetImage.color = currentColor;  // 应用新的颜色
+            darkenColorDic.Add(name, currentColor);
+
+        }
+        targetImage.color = darkenColorDic[name];  // 应用新的颜色
     }
 
     //恢复亮度的方法：
     private void LightenNPCImage(string name)
     {
         Image targetImage = currentNPCDic[name].GetComponent<Image>();
-        targetImage.color = colorDic[name];  // 应用原先的的颜色
+        targetImage.color = orginalColorDic[name];  // 应用原先的的颜色
     }
 
     private void NPCEffect(string npcName, int effectId)

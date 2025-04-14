@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//迷宫的初始脚本，处理迷宫的初始化逻辑
 public class TestMazeStart : MonoBehaviour
 {
     GameObject player;
@@ -12,6 +14,8 @@ public class TestMazeStart : MonoBehaviour
         player = Instantiate(Resources.Load<GameObject>("Player"));
         originalPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
         originalPoint.z = 0; 
+
+        PlayerController playerScript = player.GetComponent<PlayerController>();
         //按照当前的GameLevelManager中的标识进行地图的加载：
         switch(GameLevelManager.Instance.gameLevelType)
         {
@@ -25,8 +29,13 @@ public class TestMazeStart : MonoBehaviour
             case E_GameLevelType.Third:
 
             break;
+
+            //新手关卡：灯光初始值60；锁定血量不会死亡：
             case E_GameLevelType.Tutorial:
                 Instantiate(Resources.Load<GameObject>("MapPrefabs/MapTutorialFloor"),originalPoint, Quaternion.identity); ;
+
+                playerScript.isDamageLocked = true;
+                playerScript.LMax = 60;
                 
             break;
         }
