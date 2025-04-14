@@ -36,7 +36,6 @@ public class GameMainPanel : BasePanel
 
     //持有的两个道具面板：
     public GameObject commonItemPanelObject;
-    public GameObject godItemPanelObject;
 
     private bool isDetectingCloseInput = false;
     private bool isOptionsUpdated = false;
@@ -47,22 +46,24 @@ public class GameMainPanel : BasePanel
         btnQuitBlackSpace.gameObject.SetActive(false);
         isOptionsUpdated = false;
 
-        godItemPanelObject.SetActive(true);
+        //关闭PlayerBase中的Escape检测，使其打不开背包面板：
+        EventHub.Instance.EventTrigger<E_DetectInputType>("CloseSpecificDetectInput", E_DetectInputType.Escape);
+
         //事件面板出现，更新玩家的所处场景的index：
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;
 
         UpdateAttributeText();
         //默认显示的是神明道具面板；
         // UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
-        btnToGodItem.onClick.AddListener(()=>{
-            godItemPanelObject.SetActive(true);
-            commonItemPanelObject.SetActive(false);
-        });
+        // btnToGodItem.onClick.AddListener(()=>{
+        //     godItemPanelObject.SetActive(true);
+        //     commonItemPanelObject.SetActive(false);
+        // });
 
-        btnToCommonItem.onClick.AddListener(()=>{
-            commonItemPanelObject.SetActive(true);
-            godItemPanelObject.SetActive(false);
-        });
+        // btnToCommonItem.onClick.AddListener(()=>{
+        //     commonItemPanelObject.SetActive(true);
+        //     godItemPanelObject.SetActive(false);
+        // });
 
         btnQuit.onClick.AddListener(()=>{
             if(isDetectingCloseInput)
@@ -114,6 +115,10 @@ public class GameMainPanel : BasePanel
 
         //解冻玩家
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
+
+        //复原PlayerBase中的Escape检测；
+        EventHub.Instance.EventTrigger<E_DetectInputType>("UnlockSpecificDetectInput", E_DetectInputType.Escape);
+
 
         //事件面板销毁，更新会迷宫场景：
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class AVGPanel : BasePanel
@@ -11,12 +12,15 @@ public class AVGPanel : BasePanel
     public Transform midPos;
     public Transform rightPos;
     public Transform optionContainer;
+    public Transform imgPos;
+     //最新从表中读取出来的位置（可能是出现的位置，可能是目标移动的位置）
+    private Transform currentTargetPos;
     public GameObject optionContainerGameObject;
     public TextMeshProUGUI txtConversation;
     public TextMeshProUGUI txtConverseNPCName;
-    //最新从表中读取出来的位置（可能是出现的位置，可能是目标移动的位置）
-    private Transform currentTargetPos;
-    public Image imgBackground;
+   
+    
+    public GameObject imgBackground;
     public Button btnContinue;
 
     //当前正在处理的指令：
@@ -47,6 +51,9 @@ public class AVGPanel : BasePanel
 
     //当前进行的协程句柄：
     private Coroutine dialogueCoroutine;
+
+    //avg callback:
+    public UnityAction<int> callback = null;
 
     protected override void Awake()
     {
@@ -85,9 +92,6 @@ public class AVGPanel : BasePanel
         btnContinue.onClick.AddListener(()=>{
             isContinueButtonClicked = true;
         });
-
-        //测试用：初始化当前持有的DialogueOrderBlock:
-        orderBlock = LoadManager.Instance.orderBlockDic[1];
         ExecuteOrder();
     }
 
@@ -125,7 +129,8 @@ public class AVGPanel : BasePanel
                 currentBackgroundName = currentOrder.backgroundName;
                 if(currentBackgroundName != "0")
                 {
-                    // imgBackground.sprite = Resources.Load<Sprite>(currentBackgroundName);
+                    imgBackground = Resources.Load<GameObject>("AVG/" + currentBackgroundName);
+                    Instantiate(imgBackground, imgPos, false);
                     Debug.Log($"背景资源加载，资源名：{currentBackgroundName}");
                 }
 
@@ -175,6 +180,7 @@ public class AVGPanel : BasePanel
                 npcName = currentOrder.disappearNPCName.ToString();
                 if(currentOrder.disappearNPCName != E_NPCName.None)
                 {
+                    Debug.Log($"Erased, name{npcName}");
                     EraseNPC(npcName);
                 }
 
@@ -197,8 +203,16 @@ public class AVGPanel : BasePanel
                     yield return new WaitUntil(() => isContinueButtonClicked);
                 }
 
+                else if(currentOrder.conversationNPCName == E_NPCName.None && currentOrder.orderText != "0")
+                {
+                    ConverseWithNPC("", currentOrder.orderText);
+                    //等待玩家点击后再进行：
+                    isContinueButtonClicked = false;    //等待；
+                    yield return new WaitUntil(() => isContinueButtonClicked);
+                }
+
                 //如果对话者名字为空，同时无对话文本，那么就是过场order（即：处理人物出现 / 消失等等的order）
-                else if(currentOrder.orderText == "0")
+                else 
                 {
                     //等待一定时间就继续：先设置等设定的时间；
                     yield return new WaitForSeconds(intervalTime);
@@ -208,6 +222,8 @@ public class AVGPanel : BasePanel
                 if(currentOrder.nextOrderId == -1)
                 {
                     Debug.LogWarning("演出已终止");
+                    //trigger the callback:
+                    callback?.Invoke(orderBlock.rootId);
                     //将锁开启，下一次点击就会关闭avg；
                     isAvgOver = true;
                     break;
@@ -319,7 +335,7 @@ public class AVGPanel : BasePanel
         currentNPCDic.Remove(name);
 
         Image npcImage = nowRemoveNPC.gameObject.GetComponent<Image>();
-        float moveDuration = 0.4f;
+        float moveDuration = 0.2f;
         LeanTween.alpha(npcImage.rectTransform, 0, moveDuration)
             .setOnComplete(()=>{
                 Destroy(nowRemoveNPC);
@@ -418,6 +434,8 @@ public enum E_NPCName{
     奈亚拉 = 0,
     优格 = 1,
     纱布 = 2,  
+    妇人 = 3,
+    施耐德太太 = 4,
 }
 
 public enum E_OrderType{

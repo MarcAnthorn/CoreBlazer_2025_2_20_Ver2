@@ -11,7 +11,7 @@ public class StatueRoom : MonoBehaviour
     private void Update() {
         if(!isTriggerLock)
         {
-            if(Input.GetKeyDown(KeyCode.F))
+            if(Input.GetKeyDown(KeyCode.J))
             {
                 tipPanel = UIManager.Instance.ShowPanel<TipPanel>();
                 tipPanel.setTipAction("是否离开安全屋进入关卡");
@@ -49,6 +49,8 @@ public class StatueRoom : MonoBehaviour
             //失活所有需要失活的过场景不移除的对象：
             //该方法定义在TestCanvas中，该脚本挂载在Canvas上；
             EventHub.Instance.EventTrigger<bool>("TestClearFunction", false);
+
+            GameLevelManager.Instance.gameLevelType = E_GameLevelType.Tutorial;
             //进行场景的切换：
             LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
         });

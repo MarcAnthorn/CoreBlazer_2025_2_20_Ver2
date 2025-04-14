@@ -40,7 +40,9 @@ public class CommonItemPanel : ItemPanel
             //ItemType == 1 or 2
             //通过item ID 去获取这个Item的固定信息（如Item的类型）
             Item infoItem = LoadManager.Instance.allItems[itemId];
-            if(infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType. Battle || infoItem.type == Item.ItemType.Normal)
+
+            //只有事件内道具显示
+            if(infoItem.type == Item.ItemType.Normal)
             {
                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                     continue;

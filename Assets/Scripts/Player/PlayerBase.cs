@@ -7,9 +7,12 @@ public class PlayerBase : MonoBehaviour
     public bool isMoving = true;
     [Range(0, 5)]
     public float moveSpeedBase;
+    public bool isDetectingEscape = true;
 
     protected virtual void Awake()
     {
+        EventHub.Instance.AddEventListener<E_DetectInputType>("CloseSpecificDetectInput", CloseSpecificDetectInput);
+        EventHub.Instance.AddEventListener<E_DetectInputType>("UnlockSpecificDetectInput", UnlockSpecificDetectInput);
         EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
         moveSpeedBase = 3;
     }
@@ -18,6 +21,8 @@ public class PlayerBase : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
+        EventHub.Instance.RemoveEventListener<E_DetectInputType>("CloseSpecificDetectInput", CloseSpecificDetectInput);
+        EventHub.Instance.RemoveEventListener<E_DetectInputType>("UnlockSpecificDetectInput", UnlockSpecificDetectInput);
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
     }
 
@@ -28,11 +33,18 @@ public class PlayerBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && isDetectingEscape)
         {
             UIManager.Instance.ShowPanel<InventoryPanel>();
         }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            TextDisplayManager.Instance.DisplayTextImmediately();
+        }
     }
+
+      
 
 
     protected void ControlPlayerMove()
@@ -69,5 +81,35 @@ public class PlayerBase : MonoBehaviour
             TimeManager.Instance.StartAllTimers();
         }
     }
+
+    private void CloseSpecificDetectInput(E_DetectInputType type)
+    {
+        switch(type)
+        {
+            case E_DetectInputType.Escape:
+                isDetectingEscape = false;
+            break;
+        }
+    }
+
+    private void UnlockSpecificDetectInput(E_DetectInputType type)
+    {
+        switch(type)
+        {
+            case E_DetectInputType.Escape:
+                isDetectingEscape = true;
+            break;
+        }
+    }
+
+
+
+}
+
+public enum E_DetectInputType
+{
+    Escape = 1,
+    F = 2,
+    Move = 3,
 
 }

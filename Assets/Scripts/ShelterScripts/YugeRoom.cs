@@ -9,7 +9,7 @@ public class YugeRoom : MonoBehaviour
     private void Update() {
         if(!isTriggerLock)
         {
-            if(Input.GetKeyDown(KeyCode.F))
+            if(Input.GetKeyDown(KeyCode.J))
             {
                 UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(E_NPCName.优格);;
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);

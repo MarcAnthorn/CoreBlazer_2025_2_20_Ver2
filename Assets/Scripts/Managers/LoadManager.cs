@@ -18,8 +18,14 @@ public class LoadManager : Singleton<LoadManager>
     //int -> rootId;
     public Dictionary<int, DialogueOrderBlock> orderBlockDic = new Dictionary<int, DialogueOrderBlock>();
 
-    public int[,] map1Index;
-    public MapElement[,] map1;
+
+    //教学关：
+    public int[,] mapTutorialFloorIndex =  new int[21, 21];
+    public MapElement[,] mapTutorialFloor;
+
+    //第二层
+    public int[,] mapSecondFloorIndex = new int[41, 41];
+    public MapElement[,] mapSecondFloor;
 
 
     protected override void Awake()
@@ -32,9 +38,17 @@ public class LoadManager : Singleton<LoadManager>
     public void LoadResources()
     {
      
-        LoadMapElements(1);
-        InitMap1Elements(1);
-        LoadAVGDialogues();
+        LoadMaps();
+
+
+
+
+        //加载新手关卡的avg：
+        for(int i = 1101; i <= 1105; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+        
         //LoadDialogues(0);
         LoadEvents();
         LoadItems();
@@ -170,30 +184,37 @@ public class LoadManager : Singleton<LoadManager>
 
     }
 
-    private void InitMap1Elements(int mapId)                     //!!先设定一个地图，之后再想办法拓展!!
+    private void LoadMaps()
     {
-        map1 = new MapElement[41, 41];
-        for (int i = 0; i < map1Index.GetLength(0); i++)        //map1Index.GetLength(0) ==> 行数
-        {
-            for (int j = 0; j < map1Index.GetLength(1); j++)     //map1Index.GetLength(1) ==> 列数
-            {
-                map1[i, j] = MapManager.Instance.CreateMapElement(map1Index[i, j]);
-            }
-        }
+        LoadMapElements(0);
+        InitMapElements(0);
 
+        LoadMapElements(2);
+        InitMapElements(2);
     }
+    //MapId对应：0 -> 新手关； 2 -> 第二层
     private void LoadMapElements(int mapId)
     {
-        map1Index = new int[41, 41];
         for (int i = 0; i < MapManager.Instance[mapId].row; i++)              //根据地图长宽来进行打印
         {
             for (int j = 0; j < MapManager.Instance[mapId].colume; j++)         //初始化地图上所有的地块Id
             {
-                map1Index[i, j] = -1;
+                // Debug.Log($"行：{MapManager.Instance[mapId].row} 列：{MapManager.Instance[mapId].colume}");
+                switch(mapId){
+                    case 0:
+                        mapTutorialFloorIndex[i, j] = -1;
+                    break;
+
+                    case 2:
+                        mapSecondFloorIndex[i, j] = -1;
+                    break;
+                }
             }
         }
+
+
         string path = null;
-        if (mapId >= 1 && mapId <= 3)
+        if (mapId >= 0 && mapId <= 3)
         {
             path = Path.Combine(Application.dataPath, $"Resources/MapDatas/Map{mapId}.csv");    //命名规范！！！
 
@@ -217,22 +238,20 @@ public class LoadManager : Singleton<LoadManager>
                 {
                     for (int j = 0; j < MapManager.Instance[mapId].colume; j++)
                     {
-                        if (mapId == 1)
-                        {
-                            map1Index[i, j] = int.Parse(values[j]);
-                        }
-                        else if (mapId == 2)
-                        {
+                        //遇到空字符串就跳过：这样就是维持-1；
+                        if(values[j] == "")
+                            continue;
 
-                        }
-                        else if (mapId == 3)
-                        {
+                        switch(mapId){
+                        case 0:
+                            mapTutorialFloorIndex[i, j] = int.Parse(values[j]);
+                        break;
 
-                        }
-                        //else
-                        //{
-                        //    Debug.LogError($"地图Id为 {mapId} 的地图不存在");
-                        //}
+                        case 2:
+                            mapSecondFloorIndex[i, j] = int.Parse(values[j]);
+                        break;
+                    }
+   
                     }
                 }
                 else if (values.Length <= 4)    //遇到空行主动退出
@@ -246,6 +265,35 @@ public class LoadManager : Singleton<LoadManager>
         {
             Debug.LogError($"找不到Id为 {mapId} 的地图");          //表示没有在路径中找到该文件
         }
+    }
+
+    private void InitMapElements(int mapId)                     //!!先设定一个地图，之后再想办法拓展!!
+    {
+        switch(mapId){
+            case 0:
+                mapTutorialFloor = new MapElement[21, 21];
+                for (int i = 0; i < mapTutorialFloor.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
+                {
+                    for (int j = 0; j < mapTutorialFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
+                    {
+                        mapTutorialFloor[i, j] = MapManager.Instance.CreateMapElement(mapTutorialFloorIndex[i, j]);
+                    }
+                }
+            break;
+
+
+            case 2:
+                mapSecondFloor = new MapElement[41, 41];
+                for (int i = 0; i < mapSecondFloorIndex.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
+                {
+                    for (int j = 0; j < mapSecondFloorIndex.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
+                    {
+                        mapSecondFloor[i, j] = MapManager.Instance.CreateMapElement(mapSecondFloorIndex[i, j]);
+                    }
+                }
+            break;
+        }
+
     }
 
     private void LoadEvents()           //在关卡初始化时调用(根据传入的库Id来加载对应库中的文本)
@@ -448,10 +496,10 @@ public class LoadManager : Singleton<LoadManager>
         }
     }
 
-    private void LoadAVGDialogues()
+    private void LoadAVGDialogues(int avgId)
     {
-        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/AVGDialogues.csv");
-        int showIndex = 1;
+        string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/{avgId}.csv");
+        int showIndex = avgId;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
 
         if (File.Exists(path))
@@ -478,14 +526,21 @@ public class LoadManager : Singleton<LoadManager>
                     dialogue.orderId = int.Parse(values[1]);                //B列
                     dialogue.backgroundName = values[2];                    //C列
 
+
                     if (values[3] == "奈亚拉")                               //D列
                         dialogue.showUpNPCName = E_NPCName.奈亚拉;
                     else if (values[3] == "优格")
                         dialogue.showUpNPCName = E_NPCName.优格;
                     else if (values[3] == "纱布")
                         dialogue.showUpNPCName = E_NPCName.纱布;
+                    else if(values[3] == "妇人")
+                        dialogue.showUpNPCName = E_NPCName.妇人; 
+                    else if(values[3] == "施耐德太太")
+                        dialogue.showUpNPCName = E_NPCName.施耐德太太; 
                     else
                         dialogue.showUpNPCName = E_NPCName.None; 
+                    
+
 
                     dialogue.positionId = int.Parse(values[4]);             //E列
 
@@ -495,8 +550,13 @@ public class LoadManager : Singleton<LoadManager>
                         dialogue.disappearNPCName = E_NPCName.优格;
                     else if (values[5] == "纱布")
                         dialogue.disappearNPCName = E_NPCName.纱布;
+                    else if(values[5] == "妇人")
+                        dialogue.disappearNPCName = E_NPCName.妇人; 
+                    else if(values[5] == "施耐德太太")
+                        dialogue.disappearNPCName = E_NPCName.施耐德太太; 
                     else
                         dialogue.disappearNPCName = E_NPCName.None; 
+                        
 
                     dialogue.effectId = int.Parse(values[6]);               //G列
 
@@ -506,8 +566,12 @@ public class LoadManager : Singleton<LoadManager>
                         dialogue.conversationNPCName = E_NPCName.优格;
                     else if (values[7] == "纱布")
                         dialogue.conversationNPCName = E_NPCName.纱布;
+                    else if (values[7] == "妇人")
+                        dialogue.conversationNPCName = E_NPCName.妇人;
+                    else if (values[7] == "施耐德太太")
+                        dialogue.conversationNPCName = E_NPCName.施耐德太太;
                     else
-                        dialogue.conversationNPCName = E_NPCName.None;    
+                        dialogue.conversationNPCName = E_NPCName.None;
 
                     dialogue.orderText = values[8];                         //I列
                     dialogue.nextOrderId = int.Parse(values[9]);            //J列
@@ -540,7 +604,6 @@ public class LoadManager : Singleton<LoadManager>
                     string firstValue = line.Substring(0, charToFind);
                     if (int.Parse(firstValue) != showIndex)          //代表下一行开始是新的演出id
                     {
-                        Debug.Log("???");
                         orderBlockDic.Add(showIndex, tempBlock);
                         tempBlock = new DialogueOrderBlock();
                         showIndex++;
