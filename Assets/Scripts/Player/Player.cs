@@ -4,6 +4,59 @@ using UnityEngine;
 
 public class Player               //存储角色信息等
 {
+    public struct PlayerAttribute           //角色属性（在读取角色信息表时再实例化）
+    {
+        public int id;
+        public string name;
+        public int level;
+        public string icon;
+        public int type;
+        public float value;
+        public float value_limit;           //角色属性的上限值
+        public float minLimit;
+        //public float extra_value;           //属性值额外获得的量
+
+        public PlayerAttribute(int id, int level = 0, int type = 0, string name = null, string icon = null)
+        {
+            this.id = id;
+            this.name = name;
+            this.level = level;
+            this.icon = icon;
+            this.type = type;
+            this.value = 0f;         //初始化为0
+            this.value_limit = 100;
+            this.minLimit = 1;
+            //this.extra_value = 0;
+        }
+
+        public void ChangeValue(float change)     //用于调整角色属性
+        {
+            if (type == 0)          //整数
+            {
+                value += change;
+            }
+            else                    //万分比
+            {
+                //Marc调整：调整前：
+                //value += change * 0.0001f;
+                value += value * change * 0.0001f;
+            }
+
+            if (value < 0)
+            {
+                Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最小值");
+                value = 0;          //假设 属性值 不能为负值
+            }
+
+            if (value > 100 && type == 0)
+            {
+                Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最大值");
+                value = 100;        //假设 整数类型属性值 最大为100
+            }
+        }
+
+    }
+
     //静态基本属性
     //public int HP_limit = 100;
     //动态基本属性
@@ -70,60 +123,45 @@ public class Player               //存储角色信息等
 
     }
 
+    //普通攻击
+    public void BasicAttack(Enemy enemy)    //传入攻击的enemy实例
+    {
+        Debug.Log("角色普通攻击发动！");
+        //将STR属性值转化为 攻击值 
+        float rowDamage = STR.value * 1f;   //?? 假设伤害倍率就是100% ??
+        float damage = PlayerManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
+        List<Damage> damages = PlayerManager.Instance.CauseDamage(damage);
+        if(damages.Count == 0)
+        {
+            Debug.Log("角色发出的伤害被闪避了!");
+        }
+        else
+        {
+            foreach(var dmg in damages)
+            {
+                //调用敌人受击方法
+            }
+        }
+
+    }
+
+    public void BeHurted(Damage damage)
+    {
+
+    }
+
     public void DebugInfo()
     {
         Debug.LogWarning($"HP: {HP.value}, \n STR:{STR.value}, \n DEF:{DEF.value}, \n SAN:{SAN.value}, \n LVL:{LVL.value}, \n SPD:{SPD.value}, \n CRIT_Rate:{CRIT_Rate.value}, \n CRIT_DMG:{CRIT_DMG.value}, \n HIT:{HIT.value}, \n AVO:{AVO.value}");
     }
 
-    public struct PlayerAttribute           //角色属性（在读取角色信息表时再实例化）
-    {
-        public int id;
-        public string name;
-        public int level;
-        public string icon;
-        public int type;
-        public float value;
-        public float value_limit;           //角色属性的上限值
-        //public float extra_value;           //属性值额外获得的量
+}
 
-        public PlayerAttribute(int id, int level = 0, int type = 0, string name = null, string icon = null)
-        {
-            this.id = id;
-            this.name = name;
-            this.level = level;
-            this.icon = icon;
-            this.type = type;
-            this.value = 0f;         //初始化为0
-            this.value_limit = 100;
-            //this.extra_value = 0;
-        }
 
-        public void ChangeValue(float change)     //用于调整角色属性
-        {
-            if (type == 0)          //整数
-            {
-                value += change;
-            }
-            else                    //万分比
-            {
-                //Marc调整：调整前：
-                //value += change * 0.0001f;
-                value += value * change * 0.0001f;
-            }
-
-            if (value < 0)
-            {
-                Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最小值");
-                value = 0;          //假设 属性值 不能为负值
-            }
-
-            if (value > 100 && type == 0)
-            {
-                Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最大值");
-                value = 100;        //假设 整数类型属性值 最大为100
-            }
-        }
-
-    }
-
+public class Damage
+{
+    //是否是暴击伤害
+    public bool isCritical;
+    //伤害量
+    public float damage;
 }
