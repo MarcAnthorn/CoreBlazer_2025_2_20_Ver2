@@ -19,7 +19,7 @@ public class SkillCheckPanel : BasePanel
     {
         if(Input.GetMouseButtonDown(0) || Input.anyKeyDown)
         {
-            UIManager.Instance.HidePanel<ToastPanel>();
+            UIManager.Instance.HidePanel<SkillCheckPanel>();
         }
     }
 

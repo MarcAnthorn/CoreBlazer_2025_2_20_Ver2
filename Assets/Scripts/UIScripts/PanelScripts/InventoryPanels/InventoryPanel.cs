@@ -188,6 +188,11 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.AddEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
         EventHub.Instance.AddEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.AddEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
+        EventHub.Instance.AddEventListener("UpdateAttributeText", UpdateAttributeText);
+    }
+
+    private void Update() {
+        
     }
 
 
@@ -197,6 +202,7 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.RemoveEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
         EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
+        EventHub.Instance.RemoveEventListener("UpdateAttributeText", UpdateAttributeText);
     }
 
 
@@ -363,6 +369,27 @@ public class InventoryPanel : BasePanel
         btnSlotRightOff.gameObject.SetActive(true);
                     
         item = null;
+    }
+
+    private void UpdateAttributeText()
+    {
+        txtStrength.text = $"力量：{(int)PlayerManager.Instance.player.STR.value}";
+        txtSpeed.text = $"速度：{(int)PlayerManager.Instance.player.STR.value}";
+
+        txtDefense.text = $"防御：{(int)PlayerManager.Instance.player.STR.value}";
+
+        txtCriticalRate.text = $"暴击率：{(int)PlayerManager.Instance.player.STR.value}";
+
+        txtComboRate.text = $"连击率：{(int)PlayerManager.Instance.player.STR.value}";
+
+        txtDodgeRate.text = $"闪避率：{(int)PlayerManager.Instance.player.STR.value}";
+
+        txtCriticalMultiplier.text = $"暴击伤害：{(int)PlayerManager.Instance.player.STR.value}"; 
+
+        //更新Sliders：
+        sliderHealth.value = PlayerManager.Instance.player.HP.value / PlayerManager.Instance.player.HP.value_limit;
+        sliderLight.value = PlayerManager.Instance.player.LVL.value / PlayerManager.Instance.player.LVL.value_limit;
+        sliderSanity.value = PlayerManager.Instance.player.SAN.value / PlayerManager.Instance.player.SAN.value_limit;
     }
 
 

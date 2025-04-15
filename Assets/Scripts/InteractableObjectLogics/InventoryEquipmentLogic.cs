@@ -11,6 +11,9 @@ public class InventoryEquipmentLogic : MonoBehaviour
     public TextMeshProUGUI txtDurationCount;
     public TextMeshProUGUI txtEquipmentName;
     public Button btnSelf;
+
+    //当前持有的装备是：
+    public Equipment myEquipment;
     // Start is called before the first frame update
     void Start()
     {

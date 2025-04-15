@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
@@ -182,6 +183,9 @@ public class InventoryItemLogic : MonoBehaviour
                 };
             }
         }
+
+        //更新玩家的属性面板：
+        EventHub.Instance.EventTrigger("UpdateAttributeText");
     }
 
 

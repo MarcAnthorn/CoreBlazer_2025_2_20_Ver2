@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8660489122999163113}
   - component: {fileID: 2686556902922170900}
   - component: {fileID: 6736765829575510587}
+  - component: {fileID: 3423026841344346861}
   m_Layer: 5
   m_Name: Equipment
   m_TagString: Untagged
@@ -91,6 +92,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6095bc8a8b3e8407cab9419ad1bca820, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equippedMask: {fileID: 1306752397019299420}
+  imgEquipment: {fileID: 2686556902922170900}
+  txtDurationCount: {fileID: 6001346200320787469}
+  txtEquipmentName: {fileID: 8485204935778887831}
+  btnSelf: {fileID: 3423026841344346861}
+--- !u!114 &3423026841344346861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545703607008665990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2686556902922170900}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &605713387919916060
 GameObject:
   m_ObjectHideFlags: 0
