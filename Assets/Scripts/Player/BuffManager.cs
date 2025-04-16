@@ -30,6 +30,7 @@ public class BuffManager : Singleton<BuffManager>
 
     private int count = -1;
     public Dictionary<int, Buff> buffs = new Dictionary<int, Buff>();
+    public Dictionary<int, Buff> EnemyBuffs = new Dictionary<int, Buff>();
 
     public int AddBuff(UseCase useCase, BuffType buffType, CalculationType calculationType, float extraChange)
     {

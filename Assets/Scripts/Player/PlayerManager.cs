@@ -172,46 +172,6 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         }
     }
 
-    //暂时将对敌人的数值处理放在这里
-    private void EnemyValueChange(AttributeType type, float finalValue)
-    {
-        switch (type)
-        {
-            case AttributeType.HP:
-                PlayerManager.Instance.player.HP.value += finalValue;
-                break;
-            case AttributeType.STR:
-                PlayerManager.Instance.player.STR.value += finalValue;
-                break;
-            case AttributeType.DEF:
-                PlayerManager.Instance.player.DEF.value += finalValue;
-                break;
-            case AttributeType.LVL:
-                PlayerManager.Instance.player.LVL.value += finalValue;
-                break;
-            case AttributeType.SAN:
-                PlayerManager.Instance.player.SAN.value += finalValue;
-                break;
-            case AttributeType.SPD:
-                PlayerManager.Instance.player.SPD.value += finalValue;
-                break;
-            case AttributeType.CRIT_Rate:
-                PlayerManager.Instance.player.CRIT_Rate.value += finalValue;
-                break;
-            case AttributeType.CRIT_DMG:
-                PlayerManager.Instance.player.CRIT_DMG.value += finalValue;
-                break;
-            case AttributeType.HIT:
-                PlayerManager.Instance.player.HIT.value += finalValue;
-                break;
-            case AttributeType.AVO:
-                PlayerManager.Instance.player.AVO.value += finalValue;
-                break;
-            default:
-                break;
-        }
-    }
-
     //战斗外的 角色属性调整方法(角色成长)
     public void PlayerAttributeChange(AttributeType type, float value)
     {
@@ -223,18 +183,90 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     }
 
     //战斗内的 角色对敌人造成影响的方法(一般来说就是HP的伤害，不过也可能会存在减速(SPD)，削弱敌人攻击(STR)等情况)
-    public void PlayerInfluenceToEnemy(AttributeType type, float value)
+    public float CalculateDamageAfterBuff(AttributeType type, float value)
     {
         //这是为了明确buff要不要执行(根据buffType来判断)
         BuffType buffType = GetPlayerBuffType(type);
         //finalValue表示 战斗过程 造成的实际数值变化
         float finalValue = BuffManager.Instance.BuffEffectInBattle(buffType, value);
-        PlayerManager.Instance.EnemyValueChange(type, finalValue);
+
+        return finalValue;
     }
 
-    public void CalculationPlayerFinalDamage()
+    public List<Damage> CauseDamage(float singleDamage)
     {
-        // 注意!!! 此处应该按照给出的伤害计算公式计算 角色发出的 攻击伤害量
+        List<Damage> damages= new List<Damage>();
+        if (JugdeAvoid())
+        {
+            return damages;
+        }
+        else
+        {
+            JudgeHit(singleDamage, out damages);
+        }
+
+        return damages;
+    }
+
+    //命中判定
+    private bool JugdeAvoid()
+    {
+        float avo = PlayerManager.Instance.player.AVO.value;        //!!先假设这是敌人的闪避值!!
+        float random = UnityEngine.Random.Range(0f, 1f);
+        if (random < avo)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    //连击判定
+    public void JudgeHit(float singleDamage, out List<Damage> damages)
+    {
+        /*连击判定(由Player类来处理每一次连击的效果)
+         *  对每一次连击进行暴击判定
+         */
+        List<Damage> damages_return = new List<Damage>();
+
+        float hit = PlayerManager.Instance.player.HIT.value;
+        int baseHit = (int)Math.Ceiling(hit);       //向上取整
+        float hitRate = hit - baseHit;
+        float crit_rate = PlayerManager.Instance.player.CRIT_Rate.value;
+        float crit_dmg = PlayerManager.Instance.player.CRIT_DMG.value;
+        for (int i=0;i<baseHit+1;i++)
+        {
+            Damage tempDamage = new Damage();
+            float random1 = UnityEngine.Random.Range(0f, 1f);
+            if (random1 < crit_rate)
+            {
+                tempDamage.damage = singleDamage * (1 + crit_dmg);
+                tempDamage.isCritical = true;
+            }
+            else
+            {
+                tempDamage.isCritical = false;
+            }
+
+            if(baseHit == 0)
+            {
+                float random2 = UnityEngine.Random.Range(0f, 1f);
+                if (random2 < hitRate)
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            damages_return.Add(tempDamage);
+            baseHit--;
+        }
+
+        damages = damages_return;
+
     }
 
 }
