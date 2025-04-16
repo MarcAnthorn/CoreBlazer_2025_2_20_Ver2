@@ -12,6 +12,15 @@ public class LoadManager : Singleton<LoadManager>
     public Dictionary<int, Event> optionEvents;
     public Dictionary<int, Event.EventResult> eventResults;         //表示所有事件的所有结果(性能优化)
     public Dictionary<int, Item> allItems;
+
+    //装备管理容器，存储了所有可能的装备种类（和Item实现基本一致）
+    //用于存储策划表中的基本装备信息；
+    //类似的，Classify方法在EquipmentManager中；
+    public Dictionary<int, Equipment> allEquipment;
+
+    //技能管理容器，存储了所有可能的技能种类（和Item一致）
+    //类似的，Classify方法也在EquipmentManager中；
+    public Dictionary<int, Skill> allSkills;
     
     //指令字典，管理的是 按照演出id区分的DialogueOrderBlock；
     //DialogueOrderBlock在 Dialogue文件夹下；
@@ -42,12 +51,13 @@ public class LoadManager : Singleton<LoadManager>
 
 
 
-
+//--------------测试--------------------------------------------
         //加载新手关卡的avg：
         for(int i = 1101; i <= 1105; i++)
         {
             LoadAVGDialogues(i);
         }
+//--------------测试--------------------------------------------
         
         //LoadDialogues(0);
         LoadEvents();
