@@ -123,7 +123,54 @@ public class Player               //存储角色信息等
 
     }
 
-    //普通攻击
+    // 进入角色回合
+    public void EnterPlayerTurn()
+    {
+        int target = 1;
+        int skillId = 0;
+        bool isSelectEnemy = false;
+
+        while (!isSelectEnemy)
+        {
+            isSelectEnemy = IsSelectEnemy(out target);
+        }
+
+        ReleaseSkill(skillId, EnemyManager.Instance.enemies[target]);
+
+    }
+
+    // 选择要攻击的敌人的位置id(现在先假设是 1V1 情况)
+    // 在
+    public bool IsSelectEnemy(out int positionId)
+    {
+        foreach(var e in EnemyManager.Instance.enemies)
+        {
+            positionId = e.Value.positionId;
+            return true;
+        }
+        
+        positionId = -1;
+        return false;
+    }
+
+    // 释放技能
+    public void ReleaseSkill(int skillId, Enemy enemy)
+    {
+        switch (skillId) 
+        {
+            case 1:
+                BasicAttack(enemy);
+                break;
+            case 2:
+                // 其他技能
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    // 普通攻击
     public void BasicAttack(Enemy enemy)    //传入攻击的enemy实例
     {
         Debug.Log("角色普通攻击发动！");
@@ -140,6 +187,7 @@ public class Player               //存储角色信息等
             foreach(var dmg in damages)
             {
                 //调用敌人受击方法
+                EnemyManager.Instance.EnemyValueChange(enemy.positionId, dmg);
             }
         }
 
