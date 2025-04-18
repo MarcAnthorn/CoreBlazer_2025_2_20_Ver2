@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -85,16 +86,21 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         originalPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
         originalPoint.z = 0;  
 
+        //对于不同的地图，地块会资源路径会不同：
+        string levelPath = null;
+
         //当前要加载的Map数据结构：
         MapElement[,] currentMap = null;
         switch(mapIndex){
             case 0:
                 currentMap = LoadManager.Instance.mapTutorialFloor;
+                levelPath = "Grids/LevelZeroGrids";
             break;
             case 1:
             break;
             case 2:
                 currentMap = LoadManager.Instance.mapSecondFloor;
+                levelPath = "Grids/LevelTwoGrids";
             break;
             case 3:
             break;
@@ -109,7 +115,11 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         //传入参数分别是：GridMap尺寸x, y、cell尺寸、基础GridMap的偏移量（此处就是视框左上角），以及内部初始化cell时候的回调；
         pathMap = new GridMap<PathGrid>(sizeX / 2, sizeY / 2, cellSize, originalPoint, (pathMap, i, j)=>{
             //回调：实例化地块游戏对象
-            GameObject pathGridObj = Resources.Load<GameObject>("TestGrids/PathGrid");
+            //2种差分，随机生成1～2就行：
+            int randomNum = Random.Range(1, 2);
+
+            string path = Path.Combine(levelPath, "PathGrid" + randomNum.ToString());
+            GameObject pathGridObj = Resources.Load<GameObject>(path);
             PathGrid gridScript = pathGridObj.GetComponent<PathGrid>();
  
             //获取数据结构中的信息：
@@ -187,8 +197,12 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             int id;
             MapElement me = null;
 
+            //三种差分，随机生成1～3就行：
+            int randomNum = Random.Range(1, 4);
+
             if(i % 2 == 1)  //水平墙体
             {
+                string wallHorizontalPath = "WallGridHorizontal" + randomNum.ToString();
                 //获取数据结构中的信息：
                 int realX = i + 1;
                 int realY = j * 2 + 1;
@@ -205,14 +219,19 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 if(me.GetId() == 10001 || me.GetId() == 10014)
                 {
                     //加载水平墙体：
-                    gridObj = Resources.Load<GameObject>("TestGrids/WallGridHorizontal"); 
+                    gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,wallHorizontalPath)); 
+                    //设置水平墙体的OrderInLayer，以策划表中的Y值为唯一标准：
+                    gridObj.GetComponent<SpriteRenderer>().sortingOrder = realX;
 
                 }
                 else
                 {
                     //加载水平通路：
-                    gridObj = Resources.Load<GameObject>("TestGrids/PathGridHorizontal"); 
+                    gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,"PathGridHorizontal")); 
                 }
+
+
+                
 
                 
             }
@@ -222,6 +241,8 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 int realX = i + 1;
                 int realY = j * 2 + 2;
                 me = currentMap[realX, realY];
+
+                string wallVerticalPath = "WallGridVertical" + randomNum.ToString();
 
                 //如果是空的话，直接return：
                 if(me == null){
@@ -233,16 +254,20 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
                 if(me.GetId() == 10001 || me.GetId() == 10014)
                 {
-                    //加载水平墙体：
-                    gridObj = Resources.Load<GameObject>("TestGrids/WallGridVertical");
+                    //加载竖直墙体：
+                    gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,wallVerticalPath));
 
-
+                    //同样的，对于竖直墙体，也是处理Order in layer:
+                    //以策划表中的X值为唯一标准：
+                    gridObj.GetComponent<SpriteRenderer>().sortingOrder = realX;
                 }
                 else
                 {
                     //加载水平通路：
-                    gridObj = Resources.Load<GameObject>("TestGrids/PathGridVertical");
+                    gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,"PathGridVertical"));
                 }
+
+                
 
                 
             }
@@ -269,6 +294,9 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         wallCornerMap = new GridMap<WallCornerGrid>(sizeX / 2, sizeY / 2, cellSize, originalPoint, (wallCornerMap, i, j)=>{
             GameObject cornerGridObj;
 
+            //2种差分，随机生成1～2就行：
+            int randomNum = Random.Range(1, 3);
+
             //获取数据结构中的信息：
             int realX = i * 2 + 2;
             int realY = j * 2 + 2;
@@ -281,15 +309,19 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             int id = me.GetId();
             if(me.GetId() == 10001)
             {
+                string wallCornerPath = "WallCornerGrid" + randomNum.ToString();
                 //加载墙体：
-                cornerGridObj = Resources.Load<GameObject>("TestGrids/WallCornerGrid");
+                cornerGridObj = Resources.Load<GameObject>(Path.Combine(levelPath, wallCornerPath));
+
+                //同样的，对于拐角墙体，也是处理Order in layer:
+                cornerGridObj.GetComponent<SpriteRenderer>().sortingOrder = realX;
 
 
             }
             else
             {
                 //加载通路：
-                cornerGridObj = Resources.Load<GameObject>("TestGrids/PathCornerGrid");
+                cornerGridObj = Resources.Load<GameObject>(Path.Combine(levelPath,"PathCornerGrid"));
             }
             WallCornerGrid gridScript = cornerGridObj.GetComponent<WallCornerGrid>();
             gridScript.Init(wallCornerMap, i, j, originalPoint, cellSize, id);
@@ -300,7 +332,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         });
 
         //补充生成上方和左侧的墙壁：
-        GenerateExtraWall();
+        GenerateExtraWall(mapIndex);
 
 
         //最后将所有的父对象归总到SaveObject中：
@@ -332,39 +364,69 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
     }
 
 
-    private void GenerateExtraWall()
+    private void GenerateExtraWall(int mapIndex)
     {
         Vector2 basicOffset = originalPoint + new Vector3(-cellSize / 8, cellSize / 8);
         float offset = cellSize / 8 + cellSize / 2;
         GameObject wallObj;
+
+        string levelPath = null;
+        switch(mapIndex){
+            case 0:
+                levelPath = "Grids/LevelZeroGrids";
+            break;
+            case 1:
+            break;
+            case 2:
+                levelPath = "Grids/LevelTwoGrids";
+            break;
+            case 3:
+            break;
+
+        }
+        
         for(int j = 0; j < sizeX; j++)
         {
+            //三种差分，随机生成1～3就行：
+            int randomNum = Random.Range(1, 4);
+            string wallHorizontalPath = "WallGridHorizontal" + randomNum.ToString();
+
             Vector2 currentOffset = basicOffset;
             if(j % 2 == 0)
             {
-                wallObj = Resources.Load<GameObject>("TestGrids/WallCornerGrid");
-
+                wallObj = Resources.Load<GameObject>(Path.Combine(levelPath, "WallCornerGrid1"));
             }
             else
             {
-                wallObj = Resources.Load<GameObject>("TestGrids/WallGridHorizontal");
+                wallObj = Resources.Load<GameObject>(Path.Combine(levelPath, wallHorizontalPath));
             }
+
+            wallObj.GetComponent<SpriteRenderer>().sortingOrder = j;
+
+
+
+
             currentOffset += j * new Vector2(offset, 0);
             Instantiate(wallObj, currentOffset, wallObj.transform.rotation).gameObject.transform.SetParent(pathGridObject.transform, false);
         }
 
         for(int i = 1; i < sizeY; i++)
         {   
+            //三种差分，随机生成1～3就行：
+            int randomNum = Random.Range(1, 4);
+            string wallVerticalPath = "WallGridVertical" + randomNum.ToString();
+
             Vector2 currentOffset = basicOffset;
             if(i % 2 == 0)
             {
-                wallObj = Resources.Load<GameObject>("TestGrids/WallCornerGrid");
-
+                wallObj = Resources.Load<GameObject>(Path.Combine(levelPath, "WallCornerGrid1"));
             }
             else
             {
-                wallObj = Resources.Load<GameObject>("TestGrids/WallGridVertical");
+                wallObj = Resources.Load<GameObject>(Path.Combine(levelPath, wallVerticalPath));
             }
+
+            wallObj.GetComponent<SpriteRenderer>().sortingOrder = i;
             currentOffset += i * new Vector2(0, -offset);
             Instantiate(wallObj, currentOffset, wallObj.transform.rotation).gameObject.transform.SetParent(pathGridObject.transform, false);
         }
