@@ -118,42 +118,6 @@ public class BuffManager : Singleton<BuffManager>
     //按照BuffType处理
     private float GetFinalValueFromBuff(Buff buff, float value, float extraValue)
     {
-        //switch (buff.buffType)
-        //{
-        //    case BuffType.HP_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.HP.value);
-        //        break;
-        //    case BuffType.STR_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.STR.value);
-        //        break;
-        //    case BuffType.DEF_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.DEF.value);
-        //        break;
-        //    case BuffType.LVL_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.LVL.value);
-        //        break;
-        //    case BuffType.SAN_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.SAN.value);
-        //        break;
-        //    case BuffType.SPD_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.SPD.value);
-        //        break;
-        //    case BuffType.CRIT_Rate_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.CRIT_Rate.value);
-        //        break;
-        //    case BuffType.CRIT_DMG_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.CRIT_DMG.value);
-        //        break;
-        //    case BuffType.HIT_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.HIT.value);
-        //        break;
-        //    case BuffType.AVO_Change:
-        //        CalculationAfterBuff(buff.calculationType, extraValue, ref PlayerManager.Instance.player.AVO.value);
-        //        break;
-        //    default:
-        //        break;
-        //}
-
         float finalValue;
         finalValue = CalculationAfterBuff(buff.calculationType, value, extraValue);
 

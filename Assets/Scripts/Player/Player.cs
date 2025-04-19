@@ -1,6 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.UIElements;
+
+public enum AttributeType
+{
+    NONE = 0,
+    HP = 1,
+    STR = 2,
+    DEF = 3,
+    LVL = 4,
+    SAN = 5,
+    SPD = 6,
+    CRIT_Rate = 7,
+    CRIT_DMG = 8,
+    HIT = 9,
+    AVO = 10
+}
 
 public class Player               //存储角色信息等
 {
@@ -14,7 +31,6 @@ public class Player               //存储角色信息等
         public float value;
         public float value_limit;           //角色属性的上限值
         public float minLimit;
-        //public float extra_value;           //属性值额外获得的量
 
         public PlayerAttribute(int id, int level = 0, int type = 0, string name = null, string icon = null)
         {
@@ -26,7 +42,6 @@ public class Player               //存储角色信息等
             this.value = 0f;         //初始化为0
             this.value_limit = 100;
             this.minLimit = 1;
-            //this.extra_value = 0;
         }
 
         public void ChangeValue(float change)     //用于调整角色属性
@@ -76,81 +91,13 @@ public class Player               //存储角色信息等
 
     public Player()
     {
-        //初始化列表在PlayerManager中；
-        // HP = new playerAttribute(1);
-        // HP.value = 100;
-        // HP.type = 1;
-
-        // STR = new playerAttribute(2);
-        // STR.value = 10;
-
-        // DEF = new playerAttribute(3);
-        // DEF.value = 1;
-
-        // LVL = new playerAttribute(4);
-        // LVL.value = 1;
-
-        // SAN = new playerAttribute(5);
-        // SAN.value = 40;
-
-        // SPD = new playerAttribute(6);
-        // SPD.value = 10;
-
-        // CRIT_Rate = new playerAttribute(7);
-        // CRIT_Rate.value = 0.1f;
-        // CRIT_Rate.type = 1;
-
-        // CRIT_DMG = new playerAttribute(8);
-        // HIT = new playerAttribute(9);
-
-        // AVO = new playerAttribute(10);
-        // AVO.value = 0.3f;
-        // AVO.type = 1;
-
         DebugInfo();
-
-        // bag = new Dictionary<int, Item>();
     }
 
-    //这是啥？析构函数吗（Marc疑问）(是滴，对性能优化时用，但非必要)
-    // ~Player()
-    // {
-    //     bag = null;
-    // }
-
+    // 游戏(暂时)结束
     public void GameOver()
     {
 
-    }
-
-    // 进入角色回合
-    public void EnterPlayerTurn()
-    {
-        int target = 1;
-        int skillId = 0;
-        bool isSelectEnemy = false;
-
-        while (!isSelectEnemy)
-        {
-            isSelectEnemy = IsSelectEnemy(out target);
-        }
-
-        ReleaseSkill(skillId, EnemyManager.Instance.enemies[target]);
-
-    }
-
-    // 选择要攻击的敌人的位置id(现在先假设是 1V1 情况)
-    // 在
-    public bool IsSelectEnemy(out int positionId)
-    {
-        foreach(var e in EnemyManager.Instance.enemies)
-        {
-            positionId = e.Value.positionId;
-            return true;
-        }
-        
-        positionId = -1;
-        return false;
     }
 
     // 释放技能
@@ -170,14 +117,14 @@ public class Player               //存储角色信息等
 
     }
 
-    // 普通攻击
-    public void BasicAttack(Enemy enemy)    //传入攻击的enemy实例
+    // 普通攻击(平A技能)
+    private void BasicAttack(Enemy enemy)    //传入攻击的enemy实例
     {
-        Debug.Log("角色普通攻击发动！");
+        Debug.Log("角色发动普通攻击！");
         //将STR属性值转化为 攻击值 
         float rowDamage = STR.value * 1f;   //?? 假设伤害倍率就是100% ??
         float damage = PlayerManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
-        List<Damage> damages = PlayerManager.Instance.CauseDamage(damage);
+        List<Damage> damages = PlayerManager.Instance.CauseDamage(enemy, damage);
         if(damages.Count == 0)
         {
             Debug.Log("角色发出的伤害被闪避了!");
@@ -187,7 +134,7 @@ public class Player               //存储角色信息等
             foreach(var dmg in damages)
             {
                 //调用敌人受击方法
-                EnemyManager.Instance.EnemyValueChange(enemy.positionId, dmg);
+                EnemyManager.Instance.EnemyHurted(enemy.positionId, dmg);
             }
         }
 
@@ -195,7 +142,12 @@ public class Player               //存储角色信息等
 
     public void BeHurted(Damage damage)
     {
-
+        HP.value -= damage.damage;
+        if (HP.value <= 0)
+        {
+            Debug.Log("玩家死亡!");
+            GameOver();
+        }
     }
 
     public void DebugInfo()

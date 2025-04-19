@@ -94,6 +94,8 @@ public class Battle : Singleton<Battle>
 
     // 退出角色回合
     // 当玩家按下攻击键后调用此方法
+    // 解释：在方法EnterPlayerTurn()与方法ExitPlayerTurn()中间进行 敌人选择，技能选择等行动
+    // 按下攻击键则代表角色主动结束该回合(使用道具包含在中间那段逻辑里)
     public void ExitPlayerTurn()
     {
         StopCoroutine(InPlayerTurn());

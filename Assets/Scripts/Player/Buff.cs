@@ -64,9 +64,9 @@ public class Buff
 {
     public BuffType buffType = BuffType.NONE;
     public CalculationType calculationType = CalculationType.NONE;
-    public UseCase useCase = UseCase.NONE;       //是否是成长类buff
-
     public SpecialBuffType specialBuffType = SpecialBuffType.NONE;
+    public UseCase useCase = UseCase.NONE;
+    // 表示Buff加成的数值
     public float extraValue = 0f;
 
     public Func<float> buffFunction;        //用作其他特殊处理(比如破墙)

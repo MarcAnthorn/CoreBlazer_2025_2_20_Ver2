@@ -5,21 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.Rendering.DebugUI;
 
-public enum AttributeType
-{
-    NONE = 0,
-    HP = 1,
-    STR = 2,
-    DEF = 3,
-    LVL = 4,
-    SAN = 5,
-    SPD = 6,
-    CRIT_Rate = 7,
-    CRIT_DMG = 8,
-    HIT = 9,
-    AVO = 10
-}
-
 public enum E_PlayerSceneIndex{
     Event = 1,
     Battle = 2,
@@ -193,10 +178,11 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         return finalValue;
     }
 
-    public List<Damage> CauseDamage(float singleDamage)
+    // 造成伤害
+    public List<Damage> CauseDamage(Enemy enemy, float singleDamage)
     {
         List<Damage> damages= new List<Damage>();
-        if (JugdeAvoid())
+        if (JugdeAvoid(enemy))
         {
             return damages;
         }
@@ -209,9 +195,9 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     }
 
     //命中判定
-    private bool JugdeAvoid()
+    private bool JugdeAvoid(Enemy enemy)
     {
-        float avo = PlayerManager.Instance.player.AVO.value;        //!!先假设这是敌人的闪避值!!
+        float avo = enemy.AVO;        //!!先假设这是敌人的闪避值!!
         float random = UnityEngine.Random.Range(0f, 1f);
         if (random < avo)
         {
