@@ -44,38 +44,77 @@ public class Player               //存储角色信息等
             this.minLimit = 1;
         }
 
-        public void ChangeValue(float change)     //用于调整角色属性
+        public void AddValue(float change)
         {
-            if (type == 0)          //整数
-            {
-                value += change;
-            }
-            else                    //万分比
-            {
-                //Marc调整：调整前：
-                //value += change * 0.0001f;
-                value += value * change * 0.0001f;
-            }
-
-            if (value < 0)
-            {
-                Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最小值");
-                value = 0;          //假设 属性值 不能为负值
-            }
-
-            if (value > 100 && type == 0)
-            {
-                Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最大值");
-                value = 100;        //假设 整数类型属性值 最大为100
-            }
+            value += change;
         }
+
+        public void MultipleValue(float change)
+        {
+            value *= change;
+        }
+
+        public void SetValue(float value)
+        {
+            this.value = value;
+        }
+
+        public void AddValueLimit(float change)
+        {
+            value += change;
+        }
+
+        public void MultipleValueLimit(float change)
+        {
+            value *= change;
+        }
+
+        public void SetValueLimit(float value)
+        {
+            this.value = value;
+        }
+
+        //public void ChangeValue(float change)     //用于调整角色属性
+        //{
+        //    if (type == 0)          //整数
+        //    {
+        //        value += change;
+        //    }
+        //    else                    //万分比
+        //    {
+        //        //Marc调整：调整前：
+        //        //value += change * 0.0001f;
+        //        value += value * change * 0.0001f;
+        //    }
+
+        //    if (value < 0)
+        //    {
+        //        Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最小值");
+        //        value = 0;          //假设 属性值 不能为负值
+        //    }
+
+        //    if (value > 100 && type == 0)
+        //    {
+        //        Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最大值");
+        //        value = 100;        //假设 整数类型属性值 最大为100
+        //    }
+        //}
 
     }
 
     //静态基本属性
     //public int HP_limit = 100;
     //动态基本属性
-    public PlayerAttribute HP;          //生命     Health point      id = 1
+    private PlayerAttribute _HP;
+    public PlayerAttribute HP           //生命     Health point      id = 1
+    {
+        get { return _HP; }
+        set 
+        {
+            _HP = value;
+            if (_HP.value <= 0) isDie = true;
+        }
+    }
     public PlayerAttribute STR;         //力量     Strength          id = 2  
     public PlayerAttribute DEF;         //防御     Defense           id = 3 
     public PlayerAttribute LVL;         //灯光值   Light Value       id = 4  
@@ -87,6 +126,7 @@ public class Player               //存储角色信息等
     public PlayerAttribute AVO;         //闪避值   AVO               id = 10
     //动态特殊属性
 
+    public bool isDie = false;
     public Dictionary<int, Item> bag;   //??感觉用List来存会好一些??
 
     public Player()
@@ -142,7 +182,7 @@ public class Player               //存储角色信息等
 
     public void BeHurted(Damage damage)
     {
-        HP.value -= damage.damage;
+        HP.AddValue(damage.damage);
         if (HP.value <= 0)
         {
             Debug.Log("玩家死亡!");

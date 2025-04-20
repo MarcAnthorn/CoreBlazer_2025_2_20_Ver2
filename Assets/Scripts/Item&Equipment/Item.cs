@@ -242,7 +242,7 @@ public class Item_202 : Item
         bool condition1 = (PlayerManager.Instance.player.HP.value / PlayerManager.Instance.player.HP.value_limit) >= 0.5;
         if (condition1)
         {
-            PlayerManager.Instance.player.HP.value *= 0.2f;
+            PlayerManager.Instance.player.HP.MultipleValue(0.2f);
             PlayerManager.Instance.player.CRIT_Rate.value += 1f;
             isEffected = true;
         }
@@ -253,7 +253,7 @@ public class Item_202 : Item
         onCompleteCallback?.Invoke();
         if (isEffected)
         {
-            PlayerManager.Instance.player.HP.value /= 0.2f;
+            PlayerManager.Instance.player.HP.MultipleValue(1 / 0.2f);
             PlayerManager.Instance.player.CRIT_Rate.value -= 1f;
         }
     }
@@ -270,7 +270,7 @@ public class Item_203 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HP.value_limit);
 
         //使用后生命值回满
-        PlayerManager.Instance.player.HP.value = PlayerManager.Instance.player.HP.value_limit;
+        PlayerManager.Instance.player.HP.SetValue(PlayerManager.Instance.player.HP.value_limit);
         PlayerManager.Instance.player.DebugInfo();
     }
 
@@ -391,7 +391,7 @@ public class Item_207 : Item
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.HP.value = 0;
+        PlayerManager.Instance.player.HP.SetValue(0);
         BuffManager.Instance.RemoveBuff(index);
     }
 
@@ -513,16 +513,16 @@ public class Item_401 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.HP.value_limit += 10f;
-        PlayerManager.Instance.player.HP.value += 10f;          //当前value随着limit_value一同变化
+        PlayerManager.Instance.player.HP.AddValueLimit(10f);
+        PlayerManager.Instance.player.HP.AddValue(10f);          //当前value随着limit_value一同变化
         
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.HP.value_limit -= 10f;
-        PlayerManager.Instance.player.HP.value -= 10f;
+        PlayerManager.Instance.player.HP.AddValueLimit(-10f);
+        PlayerManager.Instance.player.HP.AddValue(-10f);
     }
 
 }
@@ -616,7 +616,7 @@ public class Item_501 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, Mathf.Min(PlayerManager.Instance.player.HP.value + 5,PlayerManager.Instance.player.HP.value_limit));
 
         //当前生命值+5
-        PlayerManager.Instance.player.HP.value += 5f;
+        PlayerManager.Instance.player.HP.AddValue(5f);
         PlayerManager.Instance.player.DebugInfo();
 
         

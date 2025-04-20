@@ -175,7 +175,7 @@ public class PlayerController : PlayerBase
         //重置灯光相关
 
         //重置血量相关
-        PlayerManager.Instance.player.HP.value = 100;
+        PlayerManager.Instance.player.HP.SetValue(100);
         PlayerManager.Instance.player.LVL.value = 300;
     }
 
@@ -240,7 +240,7 @@ public class PlayerController : PlayerBase
             damageTime += 1;
             currentDamage = initDamageValue * (1 + damageTime) >= 20 ? 20 : initDamageValue * (1 + damageTime);
             
-            PlayerManager.Instance.player.HP.ChangeValue(-currentDamage);
+            PlayerManager.Instance.player.HP.AddValue(-currentDamage);
             Debug.Log(PlayerManager.Instance.player.HP.value);
 
             if(PlayerManager.Instance.player.HP.value <= 0)

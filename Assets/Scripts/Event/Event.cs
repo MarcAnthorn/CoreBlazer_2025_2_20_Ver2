@@ -115,8 +115,8 @@ public class Event          //
     {
         if (hasResult)
         {
-            player.HP.value += this.result.change_HP;
-            player.HP.value *= (this.result.change_HP_rate + 1);
+            player.HP.AddValue(this.result.change_HP);
+            player.HP.MultipleValue(this.result.change_HP_rate + 1);
 
             player.STR.value += this.result.change_STR;
             player.STR.value *= (this.result.change_STR_rate + 1);

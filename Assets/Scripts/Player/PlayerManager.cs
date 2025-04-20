@@ -121,7 +121,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         switch (type)
         {
             case AttributeType.HP:
-                PlayerManager.Instance.player.HP.value += finalValue;
+                PlayerManager.Instance.player.HP.AddValue(finalValue);
                 //  PlayerManager.Instance.player.HP.value = Math.Min(PlayerManager.Instance.player.HP.value + finalValue, PlayerManager.Instance.player.HP.value);
                 
                 break;
