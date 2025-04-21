@@ -11,7 +11,7 @@ public class Battle : Singleton<Battle>
     // 行动队列
     private Queue actionQueue = new Queue();
     // 回合计数器
-    private TurnCounter turnCounter;
+    // public TurnCounter turnCounter;
     // 角色攻击目标
     public int playerTarget;
     // 角色发动技能
@@ -19,7 +19,8 @@ public class Battle : Singleton<Battle>
     // 角色行动点
     public int actionPoint;
 
-    public Battle(Player player, params Enemy[] enemies)
+    // 初始化战斗
+    public void BattleInit(Player player, params Enemy[] enemies)
     {
         this.player = player;
         for (int i = 0; i < enemies.Length; i++)
@@ -28,13 +29,8 @@ public class Battle : Singleton<Battle>
             this.enemies.Add(enemies[i]);
         }
 
-        // 初始化战斗信息
-        turnCounter = new TurnCounter(enemies);
-    }
-
-    public void BattleInit()
-    {
-
+        // 初始化回合计数器
+        TurnCounter.Instance.InitTurnCounter(enemies);
     }
 
     // 角色攻击动画(假设有)
@@ -106,7 +102,7 @@ public class Battle : Singleton<Battle>
             Debug.Log("角色行动点不足！");
             return;
         }
-        player.ReleaseSkill(playerSkill, enemies[playerTarget]);
+        SkillManager.Instance.ReleaseSkill(playerSkill, enemies[playerTarget]);
         if(playerSkill == 1003)        // 如果释放了某些特殊技能，需要额外扣除一点行动点
         {
             actionPoint--;
@@ -187,7 +183,7 @@ public class Battle : Singleton<Battle>
     public void ExitPlayerTurn()
     {
         // 更新角色回合(并做出一些Buff处理)
-        turnCounter.UpdatePlayerTurn();
+        TurnCounter.Instance.UpdatePlayerTurn();
         // 判断游戏状态
         if (player.isDie)
         {
@@ -211,7 +207,7 @@ public class Battle : Singleton<Battle>
         }
 
         // 更新敌人回合(并做出一些Buff处理)
-        turnCounter.UpdateEnemyTurn(positionId);
+        TurnCounter.Instance.UpdateEnemyTurn(positionId);
 
         // 排到队尾
         actionQueue.Enqueue(actionQueue.Dequeue());
@@ -240,6 +236,8 @@ public class Battle : Singleton<Battle>
         {
             Debug.Log("玩家落败！");
         }
+
+        TurnCounter.Instance.ClearTurnCounter();
 
         // 下面接奖励结算界面
 

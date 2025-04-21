@@ -140,46 +140,6 @@ public class Player               //存储角色信息等
 
     }
 
-    // 释放技能
-    public void ReleaseSkill(int skillId, Enemy enemy)
-    {
-        switch (skillId) 
-        {
-            case 1:
-                BasicAttack(enemy);
-                break;
-            case 2:
-                // 其他技能
-                break;
-            default:
-                break;
-        }
-
-    }
-
-    // 普通攻击(平A技能)
-    private void BasicAttack(Enemy enemy)    //传入攻击的enemy实例
-    {
-        Debug.Log("角色发动普通攻击！");
-        //将STR属性值转化为 攻击值 
-        float rowDamage = STR.value * 1f;   //?? 假设伤害倍率就是100% ??
-        float damage = PlayerManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
-        List<Damage> damages = PlayerManager.Instance.CauseDamage(enemy, damage);
-        if(damages.Count == 0)
-        {
-            Debug.Log("角色发出的伤害被闪避了!");
-        }
-        else
-        {
-            foreach(var dmg in damages)
-            {
-                //调用敌人受击方法
-                EnemyManager.Instance.EnemyHurted(enemy.positionId, dmg);
-            }
-        }
-
-    }
-
     public void BeHurted(Damage damage)
     {
         HP.AddValue(damage.damage);

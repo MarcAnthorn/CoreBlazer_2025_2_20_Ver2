@@ -54,29 +54,6 @@ public abstract class Equipment
    public abstract void Use();
 }
 
-//数据结构类：技能：
-public abstract class Skill
-{
-    //技能id
-    public int id;
-    //技能名称：
-    public string skillName;
-    //技能图标名：
-    public string skillIconPath;
-    //技能伤害效果描述：
-    public string skillDamageText;
-    //技能buff / debuff 描述：
-    public string skillBuffText;
-    //技能消耗费用：
-    public int skillCost;   
-    //技能的使用：
-    public abstract void Use();
-
-
-
-}
-
-
 //和道具一样，不同的装备会有不同的实现
 public class Equipment_1001 : Equipment
 {
@@ -91,17 +68,6 @@ public class Equipment_1001 : Equipment
         
     }
 }
-
-
-//技能也应该是不同的实现，需要手动完成；
-public class Skill_1001 : Skill
-{
-    public override void Use()
-    {
-        
-    }
-}
-
 
 
 //对装备进行分级的枚举：

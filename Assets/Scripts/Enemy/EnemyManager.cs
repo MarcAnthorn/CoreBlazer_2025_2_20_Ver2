@@ -90,6 +90,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         // 在这里可以添加一些对伤害的检测(比如检测是否是暴击伤害) + 局内效果实现
 
+
         enemies[id].BeHurted(damage);
     }
 

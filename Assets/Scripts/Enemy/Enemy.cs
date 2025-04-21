@@ -12,6 +12,8 @@ public class Enemy
     public int positionId;          // 假设存在多个敌人时，能够通过positionId来进行选择并攻击
     public bool isDie = false;
 
+    public List<BattleBuff> buffs = new List<BattleBuff>();
+
     public Enemy()
     {
         HP = 100;
@@ -37,6 +39,8 @@ public class Enemy
         }
         else
         {
+            // 造成伤害之前进行一些加成计算
+            damage.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDamage, damage.damage);
             //调用玩家受击方法
             PlayerManager.Instance.player.BeHurted(damage);
         }

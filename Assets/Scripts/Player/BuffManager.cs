@@ -125,7 +125,7 @@ public class BuffManager : Singleton<BuffManager>
     }
 
     //按照CalculationType处理
-    private float CalculationAfterBuff(CalculationType type, float value, float extraValue)
+    public float CalculationAfterBuff(CalculationType type, float value, float extraValue)
     {
         switch (type)
         {
