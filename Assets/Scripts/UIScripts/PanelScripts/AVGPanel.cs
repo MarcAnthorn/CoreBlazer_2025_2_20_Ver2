@@ -140,7 +140,25 @@ public class AVGPanel : BasePanel
                 //这个需要分情况，
                 //如果是NPC已经在场景中存在，那么就是移动位置
                 //如果不存在，才是浮现的效果出现在对应的位置；
+
+                
+                
                 string npcName = currentOrder.showUpNPCName.ToString();
+                string loadName;
+
+                bool isDiff = false;
+                if(currentOrder.diffNPCName == E_NPCName.None)
+                {
+                    //如果差分栏是0，那么npcName就是showUpNPCName；
+                    loadName = currentOrder.showUpNPCName.ToString();
+                }
+                else
+                {
+                    //如果差分栏不是0，那么npcName就是diffNPCName；对应要加载的资源就是showUpNPCName;
+                    loadName = currentOrder.diffNPCName.ToString();
+                    isDiff = true;
+                }
+                
                 if(currentOrder.showUpNPCName != E_NPCName.None)
                 {
                     //处理当前的位置：
@@ -166,16 +184,30 @@ public class AVGPanel : BasePanel
                     //处理NPC的出现（或者是位置重置）
                     if(currentNPCDic.ContainsKey(npcName))
                     {
-                        //如果包含，那么就是重置位置:
-                        MoveNPC(npcName, currentTargetPos);
+                        //如果包含,并且不是差分指令，那么就是重置位置:
+                        if(!isDiff)
+                            MoveNPC(npcName, currentTargetPos);
+
+                        else 
+                        {
+                            //差分：获取当前NPC位置；
+                            //并且将差分立绘加载到当前位置，并且替换currentNPCDic中的value:
+
+                            //修改：不要加载prefab，直接将美术资源加载出来，附上去就行：
+                            Sprite newSprite = Resources.Load<Sprite>("NPC/AllDifferences" + loadName);
+
+                            currentNPCDic[npcName].GetComponent<SpriteRenderer>().sprite = newSprite;
+                        }
                     }
                     else
                     {
                         //不包含，就是加入Dictionary，同时让NPC出现在对应的位置
-                        InitNPC(npcName, currentTargetPos);
+                        InitNPC(loadName, currentTargetPos);
                     }
-
                 }
+
+                //如果存在差分指令，那么就是处理差分：
+                //将currentNPCDic中的NPCGameObject替换成当前的立绘：
 
                 //处理NPC消失的逻辑：
                 //直接复用npcName这个变量：
@@ -479,6 +511,8 @@ public class DialogueOrder
     
     //当前要展示的NPC名称（枚举类）
     public E_NPCName showUpNPCName;
+    //当前的差分NPC（如果有差分的话），如果有（比方说优格疑惑），那么此处就是优格；
+    public E_NPCName diffNPCName;
     //当前要消失的NPC名称
     public E_NPCName disappearNPCName;
     //当前对话的NPC名称
