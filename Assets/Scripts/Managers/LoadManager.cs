@@ -53,10 +53,14 @@ public class LoadManager : Singleton<LoadManager>
 
 //--------------测试--------------------------------------------
         //加载新手关卡的avg：
-        for(int i = 1101; i <= 1105; i++)
-        {
-            LoadAVGDialogues(i);
-        }
+        // for(int i = 1101; i <= 1105; i++)
+        // {
+        //     LoadAVGDialogues(i);
+        // }
+
+
+        //新表的补充测试：
+        LoadAVGDialogues(1108);
 //--------------测试--------------------------------------------
         
         //LoadDialogues(0);
@@ -508,6 +512,7 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadAVGDialogues(int avgId)
     {
+        Debug.Log($"AVG Loaded, id:{avgId}");
         string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/{avgId}.csv");
         int showIndex = avgId;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
@@ -537,56 +542,72 @@ public class LoadManager : Singleton<LoadManager>
                     dialogue.backgroundName = values[2];                    //C列
 
 
-                    if (values[3] == "奈亚拉")                               //D列
-                        dialogue.showUpNPCName = E_NPCName.奈亚拉;
-                    else if (values[3] == "优格")
-                        dialogue.showUpNPCName = E_NPCName.优格;
-                    else if (values[3] == "纱布")
-                        dialogue.showUpNPCName = E_NPCName.纱布;
-                    else if(values[3] == "妇人")
-                        dialogue.showUpNPCName = E_NPCName.妇人; 
-                    else if(values[3] == "施耐德太太")
-                        dialogue.showUpNPCName = E_NPCName.施耐德太太; 
-                    else
-                        dialogue.showUpNPCName = E_NPCName.None; 
+                    dialogue.showUpNPCName = values[3];
+                    // if (values[3] == "奈亚拉")                               //D列
+                    //     dialogue.showUpNPCName = E_NPCName.奈亚拉;
+                    // else if (values[3] == "优格")
+                    //     dialogue.showUpNPCName = E_NPCName.优格;
+                    // else if (values[3] == "纱布")
+                    //     dialogue.showUpNPCName = E_NPCName.纱布;
+                    // else if(values[3] == "妇人")
+                    //     dialogue.showUpNPCName = E_NPCName.妇人; 
+                    // else if(values[3] == "施耐德太太")
+                    //     dialogue.showUpNPCName = E_NPCName.施耐德太太; 
+                    // else
+                    //     dialogue.showUpNPCName = E_NPCName.None; 
                     
 
 
                     dialogue.positionId = int.Parse(values[4]);             //E列
 
-                    if (values[5] == "奈亚拉")                               //F列
-                        dialogue.disappearNPCName = E_NPCName.奈亚拉;
-                    else if (values[5] == "优格")
-                        dialogue.disappearNPCName = E_NPCName.优格;
-                    else if (values[5] == "纱布")
-                        dialogue.disappearNPCName = E_NPCName.纱布;
-                    else if(values[5] == "妇人")
-                        dialogue.disappearNPCName = E_NPCName.妇人; 
-                    else if(values[5] == "施耐德太太")
-                        dialogue.disappearNPCName = E_NPCName.施耐德太太; 
-                    else
-                        dialogue.disappearNPCName = E_NPCName.None; 
+
+                    dialogue.disappearNPCName = values[5];
+                    // if (values[5] == "奈亚拉")                               //F列
+                    //     dialogue.disappearNPCName = E_NPCName.奈亚拉;
+                    // else if (values[5] == "优格")
+                    //     dialogue.disappearNPCName = E_NPCName.优格;
+                    // else if (values[5] == "纱布")
+                    //     dialogue.disappearNPCName = E_NPCName.纱布;
+                    // else if(values[5] == "妇人")
+                    //     dialogue.disappearNPCName = E_NPCName.妇人; 
+                    // else if(values[5] == "施耐德太太")
+                    //     dialogue.disappearNPCName = E_NPCName.施耐德太太; 
+                    // else
+                    //     dialogue.disappearNPCName = E_NPCName.None; 
                         
 
                     dialogue.effectId = int.Parse(values[6]);               //G列
 
-                    if (values[7] == "奈亚拉")                               //H列
-                        dialogue.conversationNPCName = E_NPCName.奈亚拉;
-                    else if (values[7] == "优格")
-                        dialogue.conversationNPCName = E_NPCName.优格;
-                    else if (values[7] == "纱布")
-                        dialogue.conversationNPCName = E_NPCName.纱布;
-                    else if (values[7] == "妇人")
-                        dialogue.conversationNPCName = E_NPCName.妇人;
-                    else if (values[7] == "施耐德太太")
-                        dialogue.conversationNPCName = E_NPCName.施耐德太太;
-                    else
-                        dialogue.conversationNPCName = E_NPCName.None;
 
-                    dialogue.orderText = values[8];                         //I列
-                    dialogue.nextOrderId = int.Parse(values[9]);            //J列
-                    dialogue.audioClipStartName = values[10];               //K列
-                    dialogue.audioClipEndName = values[11];                 //L列
+                    dialogue.diffNPCName = values[7]; 
+                    // if (values[7] == "奈亚拉")                               //H列    
+                    //     dialogue.diffNPCName = E_NPCName.奈亚拉;
+                    // else if (values[7] == "优格")
+                    //     dialogue.diffNPCName = E_NPCName.优格;
+                    // else if (values[7] == "纱布")
+                    //     dialogue.diffNPCName = E_NPCName.纱布;
+                    // else
+                    //     dialogue.diffNPCName = E_NPCName.None;                          
+
+
+                     dialogue.conversationNPCName = values[8]; 
+                    // if (values[8] == "奈亚拉")                               
+                    //     dialogue.conversationNPCName = E_NPCName.奈亚拉;
+                    // else if (values[8] == "优格")
+                    //     dialogue.conversationNPCName = E_NPCName.优格;
+                    // else if (values[8] == "纱布")
+                    //     dialogue.conversationNPCName = E_NPCName.纱布;
+                    // else if (values[8] == "妇人")
+                    //     dialogue.conversationNPCName = E_NPCName.妇人;
+                    // else if (values[8] == "施耐德太太")
+                    //     dialogue.conversationNPCName = E_NPCName.施耐德太太;
+                    // else
+                    //     dialogue.conversationNPCName = E_NPCName.None;
+
+                    dialogue.orderText = values[9];                         //I列
+                    dialogue.nextOrderId = int.Parse(values[10]);            //J列
+                    dialogue.audioClipStartName = values[11];               //K列
+                    dialogue.audioClipEndName = values[12];                 //L列
 
                     if ((int.Parse(values[1]) / 1000) == 1)         //进行分类
                         dialogue.orderType = E_OrderType.Common;
