@@ -51,7 +51,7 @@ public class Battle : Singleton<Battle>
             if(temp.GetType() != typeof(Player))
             {
                 Enemy enemy = temp as Enemy;
-                if (enemy.isDie)
+                if (enemy.isDead)
                 {
                     continue;
                 }
@@ -152,7 +152,7 @@ public class Battle : Singleton<Battle>
             int count = 1;      // 用于执行一些范围伤害判定(如果有)
 
             // 进行一些判断
-            if (e.isDie)
+            if (e.isDead)
             {
                 enemies.Remove(e);
                 // 敌人消失动画
