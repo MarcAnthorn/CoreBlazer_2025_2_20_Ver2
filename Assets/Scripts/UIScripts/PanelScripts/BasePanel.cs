@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -36,7 +37,10 @@ public abstract class BasePanel : MonoBehaviour
     public virtual void ShowMe()
     {
         if (canvasGroup == null)
+        {
             Debug.LogError("Canvas Group为空");
+            this.AddComponent<CanvasGroup>();
+        }
         canvasGroup.alpha = 0;
         canvasGroup.LeanAlpha(1, fadingTime);
 

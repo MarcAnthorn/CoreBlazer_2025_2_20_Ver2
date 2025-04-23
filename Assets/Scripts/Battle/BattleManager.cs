@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 战斗类，进入战斗时将玩家与敌人拉入其中
-public class Battle : Singleton<Battle>
+public class BattleManager : Singleton<BattleManager>
 {
     public Player player;
     public List<Enemy> enemies = new List<Enemy>();
@@ -20,6 +20,7 @@ public class Battle : Singleton<Battle>
     public int actionPoint;
 
     // 初始化战斗
+    // 在战斗开始之前调用；
     public void BattleInit(Player player, params Enemy[] enemies)
     {
         this.player = player;
@@ -63,6 +64,9 @@ public class Battle : Singleton<Battle>
     // 战斗开始
     public void BattleStart()
     {
+        //调整当前玩家的playerSceneIndex
+        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Battle;
+
         // 向行动队列中先后加入player和enemy
         actionQueue.Enqueue(player);
         for (int i = 0; i < enemies.Count; i++)
@@ -240,6 +244,10 @@ public class Battle : Singleton<Battle>
         TurnCounter.Instance.ClearTurnCounter();
 
         // 下面接奖励结算界面
+
+
+        //调整当前玩家的playerSceneIndex
+        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
 
     }
 

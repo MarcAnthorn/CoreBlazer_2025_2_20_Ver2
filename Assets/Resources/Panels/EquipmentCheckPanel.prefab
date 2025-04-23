@@ -1554,7 +1554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 164af2f52c1324337a7d68cdd6d50c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 0.4
+  fadingTime: 0.2
   equipmentImageObject: {fileID: 6875697139475483918}
   btnSkillCheck: {fileID: 6443395551871857138}
   btnQuit: {fileID: 4912879470718682290}

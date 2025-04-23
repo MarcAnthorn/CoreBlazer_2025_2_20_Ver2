@@ -8,6 +8,7 @@ using UnityEngine;
 //通过id访问LoadManager中的对应dic，获取该道具的实例；
 public class EquipmentManager : SingletonBaseManager<EquipmentManager>
 {
+    private EquipmentManager(){}
     //当前持有的所有装备：存储的是实例，不是id；
     //这是因为相同的装备不是叠加放置，而是独立放置；
     //这样的话，要想通过一个装备访问到它的耐久，那么使用id是不行的；
@@ -25,12 +26,15 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
     public void AddEquipment(int id)
     {
         Equipment depulicateSource = LoadManager.Instance.allEquipment[id];
+
         //对这个新的实例进行成员的填充： 
         //通过已有的同类装备，通过深拷贝进行内容的填充：
         Equipment depulicatedResult = ClassifyEquipment(depulicateSource);
         
         //相同的装备不是叠放的，而是独立放置的；因此有一个就加一个；
         equipmentList.Add(depulicatedResult);
+        Debug.LogWarning(depulicatedResult.maxDuration);
+
         equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);    
     }
 
@@ -51,7 +55,7 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         //测试：
         switch(id)
         {
-            case 10001:
+            case 1001:
             return new Equipment_1001();
 
             default:
@@ -66,7 +70,7 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         //测试：
         switch(equipment.id)
         {
-            case 10001:
+            case 1001:
             return new Equipment_1001(equipment);
 
             default:
@@ -80,7 +84,7 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         //测试：
         switch(id)
         {
-            case 10001:
+            case 1001:
             return new Skill_1002();
 
             default:

@@ -16,11 +16,13 @@ public class LoadManager : Singleton<LoadManager>
     //装备管理容器，存储了所有可能的装备种类（和Item实现基本一致）
     //用于存储策划表中的基本装备信息；
     //类似的，Classify方法在EquipmentManager中；
-    public Dictionary<int, Equipment> allEquipment;
+
+    //这个是正式版的语句：public Dictionary<int, Equipment> allEquipment 
+    public Dictionary<int, Equipment> allEquipment = new Dictionary<int, Equipment>();
 
     //技能管理容器，存储了所有可能的技能种类（和Item一致）
     //类似的，Classify方法也在EquipmentManager中；
-    public Dictionary<int, Skill> allSkills;
+    public Dictionary<int, Skill> allSkills = new Dictionary<int, Skill>();
     
     //指令字典，管理的是 按照演出id区分的DialogueOrderBlock；
     //DialogueOrderBlock在 Dialogue文件夹下；
@@ -61,6 +63,38 @@ public class LoadManager : Singleton<LoadManager>
 
         //新表的补充测试：
         LoadAVGDialogues(1108);
+
+
+        //测试：装备填充：
+        Equipment_1001 test = new Equipment_1001();
+
+
+        Skill_1002 skill = new Skill_1002();
+        skill.id = 1;
+        skill.skillName = "Skill1002";
+        skill.skillIconPath = "";
+        skill.skillDamageText = "This is damage text";
+        skill.skillBuffText = "This is buff text";
+        skill.skillCost = 3;
+
+
+
+        test.currentDuration = 6;
+        test.id = 1001;
+        test.name = "ThisIsA";
+        test.descriptionText = "此处是描述";
+        test.effectDescriptionText = "此处是道具的效果描述";
+
+        test.iconPath = "";
+        test.level = (E_EquiptmentLevel)1;
+        test.isEquipped = false;
+        test.maxDuration = 6;
+        test.mySkill = skill;
+
+        allEquipment.Add(1001, test);
+        allSkills.Add(1, skill);
+
+
 //--------------测试--------------------------------------------
         
         //LoadDialogues(0);

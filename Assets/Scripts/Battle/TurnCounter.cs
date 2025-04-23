@@ -77,7 +77,7 @@ public class TurnCounter : Singleton<TurnCounter>
         DealWithEnemyBuff(TriggerTiming.AfterTurn, positionId);
 
         enemyTurns[positionId]++;
-        Enemy enemy = Battle.Instance.enemies[positionId];
+        Enemy enemy = BattleManager.Instance.enemies[positionId];
         int n = enemy.buffs.Count;
         bool cleanBattleBuff_1001 = false;
         for (int i = 0; i < n; i++)
@@ -128,7 +128,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 添加敌人Buff
     public void AddEnemyBuff(BattleBuff buff, int positionId)
     {
-        Battle.Instance.enemies[positionId].buffs.Add(buff);
+        BattleManager.Instance.enemies[positionId].buffs.Add(buff);
         if (buff.GetOverlyingCount() < buff.overlyingLimit)
         {
             buff.OverlyingCountPlus(1);
@@ -150,7 +150,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 移除敌人Buff
     public void RemoveEnemyBuff(BattleBuff buff, int positionId)
     {
-        Battle.Instance.enemies[positionId].buffs.Add(buff);
+        BattleManager.Instance.enemies[positionId].buffs.Add(buff);
 
         buff.OverlyingCountPlus(-1);
     }
@@ -170,7 +170,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 结算指定敌人Buff
     private void DealWithEnemyBuff(TriggerTiming triggerTiming, int positionId)
     {
-        foreach (var buff in Battle.Instance.enemies[positionId].buffs)
+        foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
             if (buff.triggerTiming == triggerTiming)
             {
@@ -203,7 +203,7 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
-        foreach (var buff in Battle.Instance.enemies[positionId].buffs)
+        foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
             calType = buff.calculationType;
             if (buff.triggerTiming == triggerTiming)

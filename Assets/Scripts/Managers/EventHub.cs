@@ -27,6 +27,18 @@ public class EventInfo<T> : EventInfoBaseClass
     }
 }
 
+// 新增：支持两个参数的事件容器类
+public class EventInfo<T1, T2> : EventInfoBaseClass
+{
+    public UnityAction<T1, T2> action_;
+
+    public EventInfo(UnityAction<T1, T2> actions)
+    {
+        action_ += actions;
+    }
+}
+
+
 
 
 //事件中心的数据容器单元（不含参数）
@@ -71,6 +83,17 @@ public class EventHub : SingletonBaseManager<EventHub>
     }
 
 
+    //双参数的事件：
+    public void EventTrigger<T1, T2>(string eventName, T1 arg1, T2 arg2)
+    {
+        if (eventDictionary.ContainsKey(eventName))
+        {
+            (eventDictionary[eventName] as EventInfo<T1, T2>)?.action_?.Invoke(arg1, arg2);
+        }
+    }
+
+
+
     //支持多播委托的事件订阅；
     public void AddEventListener<T>(string eventName, UnityAction<T> function)
     {
@@ -94,6 +117,20 @@ public class EventHub : SingletonBaseManager<EventHub>
     }
 
 
+    //多参数事件监听：
+    public void AddEventListener<T1, T2>(string eventName, UnityAction<T1, T2> function)
+    {
+        if (eventDictionary.ContainsKey(eventName))
+        {
+            (eventDictionary[eventName] as EventInfo<T1, T2>).action_ += function;
+        }
+        else
+        {
+            eventDictionary.Add(eventName, new EventInfo<T1, T2>(function));
+        }
+    }
+
+
 
 
     //从特定key下指定移除订阅的方法
@@ -102,6 +139,16 @@ public class EventHub : SingletonBaseManager<EventHub>
         if (eventDictionary.ContainsKey(eventName))
             (eventDictionary[eventName] as EventInfo<T>).action_ -= function;   //根据里氏替换原则，就算父类对象中装载了子类实例，要想访问子类中的成员，也必须要使用as进行转换
     }
+
+    //双参数的移除事件监听：
+    public void RemoveEventListener<T1, T2>(string eventName, UnityAction<T1, T2> function)
+    {
+        if (eventDictionary.ContainsKey(eventName))
+        {
+            (eventDictionary[eventName] as EventInfo<T1, T2>).action_ -= function;
+        }
+    }
+
 
 
     //清楚所有订阅的方法
