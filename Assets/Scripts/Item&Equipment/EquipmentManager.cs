@@ -33,7 +33,6 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         
         //相同的装备不是叠放的，而是独立放置的；因此有一个就加一个；
         equipmentList.Add(depulicatedResult);
-        Debug.LogWarning(depulicatedResult.maxDuration);
 
         equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);    
     }

@@ -54,16 +54,9 @@ public class LoadManager : Singleton<LoadManager>
 
 
 //--------------测试--------------------------------------------
-        //加载新手关卡的avg：
-        // for(int i = 1101; i <= 1105; i++)
-        // {
-        //     LoadAVGDialogues(i);
-        // }
 
-
-        //新表的补充测试：
-        LoadAVGDialogues(1108);
-
+        //加载所有的avg：
+        LoadAllAvgs();
 
         //测试：装备填充：
         Equipment_1001 test = new Equipment_1001();
@@ -103,7 +96,48 @@ public class LoadManager : Singleton<LoadManager>
     }
 
 
+    private void LoadAllAvgs()
+    {
+        for(int i = 1101; i <= 1122; i++)
+        {
+            LoadAVGDialogues(i);
+        }
 
+        for(int i = 1201; i <= 1207; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for(int i = 1301; i <= 1303; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for(int i = 2101; i <= 2112; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for(int i = 2201; i <= 2208; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for(int i = 3101; i <= 3103; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for(int i = 3201; i <= 3203; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for(int i = 3301; i <= 3303; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+    }
 
     private void LoadDialogues(int libIndex)
     {
@@ -546,8 +580,13 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadAVGDialogues(int avgId)
     {
+        //1107特殊处理：不存在该avg文件：
+        if(avgId == 1107)
+            return;
+
         Debug.Log($"AVG Loaded, id:{avgId}");
-        string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/{avgId}.csv");
+
+        string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/AVG/{avgId}.csv");
         int showIndex = avgId;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
 
@@ -572,7 +611,7 @@ public class LoadManager : Singleton<LoadManager>
                 {
                     dialogue = new DialogueOrder();
                     dialogue.rootId = int.Parse(values[0]);                 //A列
-                    dialogue.orderId = int.Parse(values[1]);                //B列
+                    dialogue.orderId = int.Parse(values[1]);                //B列                   
                     dialogue.backgroundName = values[2];                    //C列
 
 
@@ -639,7 +678,9 @@ public class LoadManager : Singleton<LoadManager>
                     //     dialogue.conversationNPCName = E_NPCName.None;
 
                     dialogue.orderText = values[9];                         //I列
+
                     dialogue.nextOrderId = int.Parse(values[10]);            //J列
+
                     dialogue.audioClipStartName = values[11];               //K列
                     dialogue.audioClipEndName = values[12];                 //L列
 
@@ -666,6 +707,7 @@ public class LoadManager : Singleton<LoadManager>
                 {
                     line = lines[i + 1];
                     int charToFind = line.IndexOf(",");
+
                     string firstValue = line.Substring(0, charToFind);
                     if (int.Parse(firstValue) != showIndex)          //代表下一行开始是新的演出id
                     {
@@ -677,7 +719,6 @@ public class LoadManager : Singleton<LoadManager>
 
                 if(i + 1 == lines.Length)
                 {
-                    Debug.Log("orderBlock已添加2");
                     orderBlockDic.Add(showIndex, tempBlock);
                 }
 
