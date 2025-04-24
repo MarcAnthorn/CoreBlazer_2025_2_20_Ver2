@@ -113,19 +113,12 @@ public class AVGPanel : BasePanel
     //执行指令的方法；是一个协同程序
     private void ExecuteOrder()
     {
-        //此处应该会有向我广播当前的orderBlock的逻辑；
-        //也就是初始化当前需要处理的avg orderBlock 的逻辑；
-
-
+        //当前演出的id由触碰的NPC事件决定；外部会给的；
 
         //首个指令必定是1001：
         DialogueOrder first = orderBlock.orderDic[1001];
         //开启协程：
         dialogueCoroutine = StartCoroutine(ProcessOrder(first));
-        
-
-
-
     }
 
     //接收首指令，并且顺序处理指令
@@ -136,7 +129,6 @@ public class AVGPanel : BasePanel
         {    
             E_OrderType type = currentOrder.orderType;
 
-            Debug.Log($"当前指令代号：{currentOrder.orderId}");
             //当前指令是：普通指令 / 选项后对话指令
             if(type == E_OrderType.Common)
             {
@@ -146,7 +138,6 @@ public class AVGPanel : BasePanel
                 {
                     string spritePath = Path.Combine("ArtResources", currentBackgroundName);
 
-                    Debug.Log($"当前加载路径为：{spritePath}");
                     imgBackground.sprite = Resources.Load<Sprite>(spritePath);
                     imgBackground.SetNativeSize();
                 }
@@ -232,7 +223,6 @@ public class AVGPanel : BasePanel
                 npcName = currentOrder.disappearNPCName.ToString();
                 if(currentOrder.disappearNPCName != "0")
                 {
-                    Debug.Log($"Erased, name{npcName}");
                     EraseNPC(npcName);
                 }
 

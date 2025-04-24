@@ -18,6 +18,7 @@ public class BattlePanel : BasePanel
     public Button btnInventory;
     public Button btnEndThisRound;
     public TextMeshProUGUI txtLeftCost;
+    public TextMeshProUGUI txtMaxCost;
     public int maxCost;
     public int currentCost;
 
@@ -73,6 +74,9 @@ public class BattlePanel : BasePanel
                     //将该装备装入Slot：
                     slotScript.InitSlot(equipment);
 
+                    //调用UI更新委托：
+                    EventHub.Instance.EventTrigger("UpdateAllUIElements");
+
                     //调整该装备的内部字段：
                     equipment.isEquipped = true;
 
@@ -105,6 +109,9 @@ public class BattlePanel : BasePanel
                {
                     //调用Slot中的卸下方法，更新UI：
                     slotScript.UnequipMyself();
+
+                    //调用UI更新委托：
+                    EventHub.Instance.EventTrigger("UpdateAllUIElements");
                     
                     // myEquipment.Unuse();
 
@@ -126,5 +133,20 @@ public class BattlePanel : BasePanel
           Debug.LogWarning("未找到对应可以卸下的装备");
      }
 
+
+     //BattlePanel的UI更新委托，会加入UpdateAllUIElements中；
+     public void UpdateBattlePanelUI()
+     {
+          //更新Sliders；
+          sliderPlayerHealth.value = PlayerManager.Instance.player.HP.value /  PlayerManager.Instance.player.HP.value_limit;
+
+          //敌人的Slider暂时不知道如何更新：
+
+          //可能还有buff的显示更新；
+          
+          //以及剩余行动点数、最大行动点数的更新：
+          // txtLeftCost.text = ;
+          // txtMaxCost.text = ;
+     }
 
 }

@@ -36,9 +36,7 @@ public class EquipmentCheckPanel : BasePanel
         btnEquip.onClick.AddListener(()=>{
             //调用处在BattlePanel中的事件：
             //是否能用的检查和字段调整，全部交给内部的事件去做；
-            EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);
-
-            
+            EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);    
         });
 
         btnUnequip.onClick.AddListener(()=>{
@@ -50,9 +48,6 @@ public class EquipmentCheckPanel : BasePanel
             //将卸下Button切换成装备：
             btnEquip.gameObject.SetActive(true);
             btnUnequip.gameObject.SetActive(false);
-
-
-
         });
     }
 

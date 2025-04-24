@@ -200,7 +200,9 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.AddEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
         EventHub.Instance.AddEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.AddEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
-        EventHub.Instance.AddEventListener("UpdateAttributeText", UpdateAttributeText);
+
+        //这是一个多播委托：存在任何对玩家属性做出调整的地方，都需要调用这个委托；
+        EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateAttributeText);
     }
 
     private void Update() {
@@ -214,7 +216,7 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.RemoveEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
         EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
-        EventHub.Instance.RemoveEventListener("UpdateAttributeText", UpdateAttributeText);
+        EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateAttributeText);
     }
 
 
