@@ -95,17 +95,59 @@ public class CommonItemPanelInventory : BasePanel
         //根据当前背包中所有的道具进行筛选，将ItemType为Common的加入到自己的面板中
         foreach(int itemId in ItemManager.Instance.itemList)
         {
+
             //只有神明道具初始化：
             //ItemType == 1 or 2
             //通过item ID 去获取这个Item的固定信息（如Item的类型）
             Item infoItem = LoadManager.Instance.allItems[itemId];
-            if(infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType. Battle || infoItem.type == Item.ItemType.Normal)
+            GameObject nowItem = null;
+            InventoryItemLogic script = null;
+
+            //如果该Item是快捷装备中，那么就需要调用InventoryPanel中的方法，进行插槽
+            if(infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Normal)
             {
-                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
+                nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                script = nowItem.GetComponentInChildren<InventoryItemLogic>();
+                script.Init(infoItem);
+
+                if(infoItem.isSlottedToLeft)
+                {
+                    EventHub.Instance.EventTrigger<GameObject>("SlotItemToLeft", nowItem);
+                }
+                else if(infoItem.isSlottedToRight)
+                {
+                    EventHub.Instance.EventTrigger<GameObject>("SlotItemToRight", nowItem);
+                }
+            }
+
+            //处在战斗，才会初始化神明战斗道具：
+            if(infoItem.type == Item.ItemType.Battle  && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
+            {
+                if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                     continue;
 
-                GameObject nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
-                InventoryItemLogic script = nowItem.GetComponentInChildren<InventoryItemLogic>();
+                nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                script = nowItem.GetComponentInChildren<InventoryItemLogic>();
+                script.Init(infoItem);
+
+                //更新面板的时候，如果Item已经在使用中，那么加上蒙版：
+                if(infoItem.isInUse)
+                {
+                    script.takeEffectMaskObject.SetActive(true);
+                }
+
+                itemScriptList.Add(script);
+                itemObjectList.Add(nowItem);
+            }
+
+            //不然就是初始化迷宫道具：
+            else if((infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType.Normal) && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
+            {
+                if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
+                    continue;
+
+                nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                script = nowItem.GetComponentInChildren<InventoryItemLogic>();
                 script.Init(infoItem);
 
                 //更新面板的时候，如果Item已经在使用中，那么加上蒙版：

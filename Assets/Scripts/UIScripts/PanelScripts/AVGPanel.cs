@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,7 +21,7 @@ public class AVGPanel : BasePanel
     public TextMeshProUGUI txtConverseNPCName;
    
     
-    public GameObject imgBackground;
+    public Image imgBackground;
     public Button btnContinue;
 
     //当前正在处理的指令：
@@ -57,11 +58,23 @@ public class AVGPanel : BasePanel
     //avg callback:
     public UnityAction<int> callback = null;
 
+    public GameObject npcObjectTarget1;
+    public GameObject npcObjectTarget2;
+    public GameObject npcObjectTarget3;
+
+    public Queue<GameObject> npcObjectQueue;
+
     protected override void Awake()
     {
         base.Awake();
         EventHub.Instance.AddEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
         EventHub.Instance.AddEventListener<int>("ChoiceIsMade", ChoiceIsMade);
+
+        npcObjectQueue = new Queue<GameObject>();
+        npcObjectQueue.Enqueue(npcObjectTarget1);
+        npcObjectQueue.Enqueue(npcObjectTarget2);
+        npcObjectQueue.Enqueue(npcObjectTarget3);
+
     }
 
     void Update()
@@ -100,19 +113,12 @@ public class AVGPanel : BasePanel
     //执行指令的方法；是一个协同程序
     private void ExecuteOrder()
     {
-        //此处应该会有向我广播当前的orderBlock的逻辑；
-        //也就是初始化当前需要处理的avg orderBlock 的逻辑；
-
-
+        //当前演出的id由触碰的NPC事件决定；外部会给的；
 
         //首个指令必定是1001：
         DialogueOrder first = orderBlock.orderDic[1001];
         //开启协程：
         dialogueCoroutine = StartCoroutine(ProcessOrder(first));
-        
-
-
-
     }
 
     //接收首指令，并且顺序处理指令
@@ -123,7 +129,6 @@ public class AVGPanel : BasePanel
         {    
             E_OrderType type = currentOrder.orderType;
 
-            Debug.Log($"当前指令代号：{currentOrder.orderId}");
             //当前指令是：普通指令 / 选项后对话指令
             if(type == E_OrderType.Common)
             {
@@ -131,23 +136,23 @@ public class AVGPanel : BasePanel
                 currentBackgroundName = currentOrder.backgroundName;
                 if(currentBackgroundName != "0")
                 {
-                    imgBackground = Resources.Load<GameObject>("AVG/" + currentBackgroundName);
-                    Instantiate(imgBackground, imgPos, false);
-                    Debug.Log($"背景资源加载，资源名：{currentBackgroundName}");
+                    string spritePath = Path.Combine("ArtResources", currentBackgroundName);
+
+                    imgBackground.sprite = Resources.Load<Sprite>(spritePath);
+                    imgBackground.SetNativeSize();
                 }
 
                 //处理出现的NPC
                 //这个需要分情况，
                 //如果是NPC已经在场景中存在，那么就是移动位置
-                //如果不存在，才是浮现的效果出现在对应的位置；
-
-                
-                
+                //如果不存在，才是浮现的效果出现在对应的位置；         
                 string npcName = currentOrder.showUpNPCName.ToString();
+
+                //当前要显示的NPC名称，用于加载npc美术资源；
                 string loadName;
 
                 bool isDiff = false;
-                if(currentOrder.diffNPCName == E_NPCName.None)
+                if(currentOrder.diffNPCName == "0")
                 {
                     //如果差分栏是0，那么npcName就是showUpNPCName；
                     loadName = currentOrder.showUpNPCName.ToString();
@@ -159,7 +164,7 @@ public class AVGPanel : BasePanel
                     isDiff = true;
                 }
                 
-                if(currentOrder.showUpNPCName != E_NPCName.None)
+                if(currentOrder.showUpNPCName != "0")
                 {
                     //处理当前的位置：
                     switch(currentOrder.positionId)
@@ -194,15 +199,19 @@ public class AVGPanel : BasePanel
                             //并且将差分立绘加载到当前位置，并且替换currentNPCDic中的value:
 
                             //修改：不要加载prefab，直接将美术资源加载出来，附上去就行：
-                            Sprite newSprite = Resources.Load<Sprite>("NPC/AllDifferences" + loadName);
+                            Sprite newSprite = Resources.Load<Sprite>("ArtResources/" + loadName);
 
-                            currentNPCDic[npcName].GetComponent<SpriteRenderer>().sprite = newSprite;
+                            Image nowImage = currentNPCDic[npcName].GetComponent<Image>();
+                            nowImage.sprite = newSprite;
+                            nowImage.SetNativeSize();
                         }
                     }
-                    else
+
+                    //如果名字不是？？？，那么就是加载NPC：
+                    else if(npcName != "???")
                     {
                         //不包含，就是加入Dictionary，同时让NPC出现在对应的位置
-                        InitNPC(loadName, currentTargetPos);
+                        InitNPC(npcName, loadName, currentTargetPos);
                     }
                 }
 
@@ -212,32 +221,33 @@ public class AVGPanel : BasePanel
                 //处理NPC消失的逻辑：
                 //直接复用npcName这个变量：
                 npcName = currentOrder.disappearNPCName.ToString();
-                if(currentOrder.disappearNPCName != E_NPCName.None)
+                if(currentOrder.disappearNPCName != "0")
                 {
-                    Debug.Log($"Erased, name{npcName}");
                     EraseNPC(npcName);
                 }
 
 
                 npcName = currentOrder.conversationNPCName.ToString();
                 //处理NPC立绘动效的逻辑：
-                if(currentOrder.effectId != 0 && currentOrder.conversationNPCName != E_NPCName.None)
+                if(currentOrder.effectId != 0 && currentOrder.conversationNPCName != "0")
                 {
                     NPCEffect(npcName, currentOrder.effectId);
                 }
 
                 //处理对话者逻辑：
                 //注意：如果没有对话需要处理，说明是过程动画，给一个固定的时间间隔，然后就会继续处理下一个order；
-                if(currentOrder.conversationNPCName != E_NPCName.None)
+                if(currentOrder.conversationNPCName != "0")
                 {
                     ConverseWithNPC(npcName, currentOrder.orderText);
+
+                    Debug.Log($"当前对话对象：{npcName}");
 
                     //等待玩家点击后再进行：
                     isContinueButtonClicked = false;    //等待；
                     yield return new WaitUntil(() => isContinueButtonClicked);
                 }
 
-                else if(currentOrder.conversationNPCName == E_NPCName.None && currentOrder.orderText != "0")
+                else if(currentOrder.conversationNPCName == "0" && currentOrder.orderText != "0")
                 {
                     ConverseWithNPC("", currentOrder.orderText);
                     //等待玩家点击后再进行：
@@ -331,26 +341,33 @@ public class AVGPanel : BasePanel
     }
 
     //初始化NPC的方法：出现并且将其放置在对应的位置：
-    private void InitNPC(string name, Transform targetPos)
+    private void InitNPC(string keyName, string loadName, Transform targetPos)
     {
-        Debug.Log($"当前出现的NPC是:{name}");
-        GameObject npc = Instantiate(Resources.Load<GameObject>("NPC/" + name), targetPos, false);
-        currentNPCDic.Add(name, npc);
+        Debug.Log($"当前出现的NPC是:{keyName}");
+        GameObject npc = npcObjectQueue.Dequeue();
+        npc.transform.SetParent(targetPos, false);
+        
+        //加载对应的资源到SpriteRenderer上：
+        Image img = npc.GetComponent<Image>();
+        img.sprite = Resources.Load<Sprite>("ArtResources/" + loadName);
+        img.SetNativeSize();
+
+        currentNPCDic.Add(keyName, npc);
 
         //处理其渐显的逻辑：
-        Image npcImage = npc.gameObject.GetComponent<Image>();
-        Color color = npcImage.color;
-        if(!orginalColorDic.ContainsKey(name))
+        Color color = img.color;
+        if(!orginalColorDic.ContainsKey(keyName))
         {
-            orginalColorDic.Add(name, color);
+            color.a = 255;
+            orginalColorDic.Add(keyName, color);
         }
 
         color.a = 0;
-        npcImage.color = color;
+        img.color = color;
 
 
         float moveDuration = 0.4f;
-        LeanTween.alpha(npcImage.rectTransform, 1, moveDuration);
+        LeanTween.alpha(img.rectTransform, 1, moveDuration);
 
     }
 
@@ -368,40 +385,44 @@ public class AVGPanel : BasePanel
         GameObject nowRemoveNPC = currentNPCDic[name];
         currentNPCDic.Remove(name);
 
-        Image npcImage = nowRemoveNPC.gameObject.GetComponent<Image>();
+        Image img = nowRemoveNPC.gameObject.GetComponent<Image>();
         float moveDuration = 0.2f;
-        LeanTween.alpha(npcImage.rectTransform, 0, moveDuration)
+        LeanTween.alpha(img.rectTransform, 0, moveDuration)
             .setOnComplete(()=>{
-                Destroy(nowRemoveNPC);
+                npcObjectQueue.Enqueue(nowRemoveNPC);
             });     
     }
 
     //处理NPC对话逻辑：
     private void ConverseWithNPC(string name, string conversation)
     {
+        //然后在对话框中显示对话内容，并且调整对话者的名字：
+        txtConversation.text = conversation;
+        txtConverseNPCName.text = name;
+
+        //如果是？？？那么一定就不是显示在场景上的对象；直接返回，避免访问不存在的key：
+        if(name == "???")   
+            return;
+
         foreach(var key in currentNPCDic.Keys)
         {
             if(key != name)
             {
                 //如果不是当前对话的NPC，则调暗Image；
-                DarkenNPCImage(key);
+                Darkenimg(key);
             }
             else
             {
                 //如果是当前对话的NPC，则调整Image维正常亮度；
-                LightenNPCImage(key);
+                Lightenimg(key);
             }
         }
-
-        //然后在对话框中显示对话内容，并且调整对话者的名字：
-        txtConversation.text = conversation;
-        txtConverseNPCName.text = name;
 
     }
 
     //处理NPC的Image暗化的逻辑：参数是NPC名字
     //用于在对话的时候，将所有不是当前对话的Image调暗；
-    private void DarkenNPCImage(string name)
+    private void Darkenimg(string name)
     {
         Image targetImage = currentNPCDic[name].GetComponent<Image>();
         if(!darkenColorDic.ContainsKey(name))
@@ -420,7 +441,7 @@ public class AVGPanel : BasePanel
     }
 
     //恢复亮度的方法：
-    private void LightenNPCImage(string name)
+    private void Lightenimg(string name)
     {
         Image targetImage = currentNPCDic[name].GetComponent<Image>();
         targetImage.color = orginalColorDic[name];  // 应用原先的的颜色
@@ -433,7 +454,7 @@ public class AVGPanel : BasePanel
         {
             case 1:
                 //抖动
-                Debug.LogWarning("抖动");
+                ShakeUIObject(npc);
             break;
             case 2:
                 //镜像
@@ -442,6 +463,26 @@ public class AVGPanel : BasePanel
         }
     }
 
+    public static void ShakeUIObject(GameObject uiObject, float duration = 0.3f, float magnitude = 15f)
+    {
+        if (uiObject == null) return;
+
+        RectTransform rectTransform = uiObject.GetComponent<RectTransform>();
+        if (rectTransform == null) return;
+
+        Vector3 originalPos = rectTransform.anchoredPosition;
+
+        // 使用 LeanTween 来实现 DOShake 效果
+        LeanTween.value(uiObject, 0f, 1f, duration).setOnUpdate((float t) =>
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+            rectTransform.anchoredPosition = originalPos + new Vector3(x, y);
+        }).setOnComplete(() =>
+        {
+            rectTransform.anchoredPosition = originalPos;
+        });
+    }
 
     //方法：外部调用，通过广播当前需要显示的对话的orderBlock，执行对话：
     private void BroadcastCurrentOrderBlock(DialogueOrderBlock _orderBlock)
@@ -510,13 +551,13 @@ public class DialogueOrder
     public E_OrderType orderType;
     
     //当前要展示的NPC名称（枚举类）
-    public E_NPCName showUpNPCName;
+    public string showUpNPCName;
     //当前的差分NPC（如果有差分的话），如果有（比方说优格疑惑），那么此处就是优格；
-    public E_NPCName diffNPCName;
+    public string diffNPCName;
     //当前要消失的NPC名称
-    public E_NPCName disappearNPCName;
+    public string disappearNPCName;
     //当前对话的NPC名称
-    public E_NPCName conversationNPCName;
+    public string conversationNPCName;
 
     //当前需要展示的背景名（也是背景资源相对路径）
     public string backgroundName;

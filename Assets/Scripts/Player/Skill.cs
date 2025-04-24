@@ -21,6 +21,14 @@ public abstract class Skill
     //技能的使用：
     abstract public void Use(Enemy enemy);    //传入攻击的enemy实例
 
+
+    //调用后返回当前该技能的伤害的属性：
+    //需要按照Skill的伤害结算公式 结合当前的玩家属性进行结算后返回
+    //此处假设是1；
+    public int SkillDamage => 1;
+    //如：8 + 玩家力量值的Skill：
+    // public int SkillDamage => 8 + PlayerManager.Instance.player.STR.value;
+
 }
 
 

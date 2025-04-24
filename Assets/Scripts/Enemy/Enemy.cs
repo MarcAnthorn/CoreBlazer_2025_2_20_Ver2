@@ -19,7 +19,7 @@ public abstract class Enemy
 
     // 敌人在场景内的位置id
     public int positionId;          // 假设存在多个敌人时，能够通过positionId来进行选择并攻击
-    public bool isDie = false;
+    public bool isDead = false;
 
     public List<BattleBuff> buffs = new List<BattleBuff>();
 
@@ -37,7 +37,7 @@ public abstract class Enemy
         if (HP <= 0)
         {
             Debug.Log($"敌人 {positionId} 死亡!");
-            isDie = true;
+            isDead = true;
         }
     }
 

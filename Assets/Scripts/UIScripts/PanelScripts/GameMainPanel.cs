@@ -101,7 +101,9 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.AddEventListener("UpdateEvent", UpdateEvent);
         EventHub.Instance.AddEventListener("UpdateOptions", UpdateOptions);   
         EventHub.Instance.AddEventListener("ClearOptions", ClearOptions);
-        EventHub.Instance.AddEventListener("UpdateAttributeText", UpdateAttributeText);
+
+        //这是一个多播委托：存在任何对玩家属性做出调整的地方，都需要调用这个委托；
+        EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateAttributeText);
     
     }
 
@@ -110,7 +112,7 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.RemoveEventListener("UpdateEvent", UpdateEvent);
         EventHub.Instance.RemoveEventListener("UpdateOptions", UpdateOptions);
         EventHub.Instance.RemoveEventListener("ClearOptions", ClearOptions);
-        EventHub.Instance.RemoveEventListener("UpdateAttributeText", UpdateAttributeText);
+        EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateAttributeText);
     
 
         //解冻玩家

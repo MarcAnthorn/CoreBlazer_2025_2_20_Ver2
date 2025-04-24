@@ -37,6 +37,9 @@ public class ItemCheckPanel : BasePanel
                 EventHub.Instance.EventTrigger<int>("ItemUsedCallback", currentItemId);
                 UIManager.Instance.ShowPanel<ToastPanel>().SetItemResult(myItem);
 
+                //调用UI更新委托：
+                EventHub.Instance.EventTrigger("UpdateAllUIElements");
+
             }
         
         });

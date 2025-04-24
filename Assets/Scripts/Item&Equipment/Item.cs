@@ -183,7 +183,7 @@ public class Item_104 : Item
         PlayerManager.Instance.player.DebugInfo();
     }
 
-    // private Action BackToStartPoint = null;             //由Marc将实现方法写入其中
+    // private Action BackToStartPoint = null;             //由Marc将实现方法写入其中（已完成）
     // private Action ReachToFinalPoint = null;            //由Marc将实现方法写入其中
 
     private void StartHander()

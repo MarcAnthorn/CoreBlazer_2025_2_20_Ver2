@@ -15,10 +15,14 @@ public class InventoryEquipmentLogic : MonoBehaviour
     //当前持有的装备是：
     public Equipment myEquipment;
     // Start is called before the first frame update
+    void Awake()
+    {
+        EventHub.Instance.AddEventListener<Equipment>("ItemUsedCallback", EquipmentUsedCallback);
+    }
     void Start()
     {
         btnSelf.onClick.AddListener(()=>{
-            UIManager.Instance.ShowPanel<EquipmentCheckPanel>();
+            UIManager.Instance.ShowPanel<EquipmentCheckPanel>().InitInfo(myEquipment);
         });
     }
 
@@ -26,5 +30,37 @@ public class InventoryEquipmentLogic : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener<Equipment>("ItemUsedCallback", EquipmentUsedCallback);
+    }
+
+    //初始化当前的背包装备内容的方法，供外部使用：
+    public void Init(Equipment _equipment)
+    {
+        myEquipment = _equipment;
+        imgEquipment.sprite = Resources.Load<Sprite>("ArtResources/" + _equipment.iconPath);
+        txtDurationCount.text = $"{myEquipment.currentDuration}/{myEquipment.maxDuration}";
+        txtEquipmentName.text = myEquipment.name;
+    }
+
+    //事件：装备使用后的响应事件；
+    //当一个道具使用之后，会进行该事件的调用；传入的参数是对应装备的实例：
+    //如果我的实例符合，那么我就会执行逻辑: 这里就是执行激活「装备中」蒙版；表示道具生效中；
+    private void EquipmentUsedCallback(Equipment target)
+    {
+        // 目前广播的目标和我的实例是一样的；
+        if(target == myEquipment)
+        {
+            //和我对应上了，说明是广播给我的；
+            //那么我就执行这个逻辑：
+            equippedMask.SetActive(true);
+
+        }
+
+        //更新玩家的属性面板：
+        EventHub.Instance.EventTrigger("UpdateAttributeText");
     }
 }

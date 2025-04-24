@@ -73,8 +73,20 @@ public class InventoryPanel : BasePanel
     {
         EventHub.Instance.EventTrigger<bool>("Freeze", true);
         
-        //初始化的时候，显示的是GodItemPanel:
-        godItemPanelObject.SetActive(true);
+        //初始化的时候，按照PlayerManager中的playerSceneIndex进行选择性显示UI：
+        //如果是当前是战斗中，那么就显示装备背包栏
+        if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
+        {
+            equiptmentPanelObject.SetActive(true);
+            Debug.LogWarning("Now is equipment panel");
+        }
+
+        //不然就是commonItemPanelObject；同时禁用让equiptmentPanelObject显示的Button：
+        else
+        {
+            commonItemPanelObject.SetActive(true);
+            btnEquipmentPanelReveal.gameObject.SetActive(false);
+        }
 
 
         btnExit.onClick.AddListener(()=>{
@@ -188,7 +200,9 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.AddEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
         EventHub.Instance.AddEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.AddEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
-        EventHub.Instance.AddEventListener("UpdateAttributeText", UpdateAttributeText);
+
+        //这是一个多播委托：存在任何对玩家属性做出调整的地方，都需要调用这个委托；
+        EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateAttributeText);
     }
 
     private void Update() {
@@ -202,7 +216,7 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.RemoveEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
         EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
-        EventHub.Instance.RemoveEventListener("UpdateAttributeText", UpdateAttributeText);
+        EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateAttributeText);
     }
 
 
@@ -249,6 +263,18 @@ public class InventoryPanel : BasePanel
     private void SlotItemToLeft(GameObject item)
     {
         InventoryItemLogic currentScript =  item.GetComponentInChildren<InventoryItemLogic>();
+
+        //如果当前的道具是神明道具，那么不可使用插槽：
+        if(currentScript.myItem.type == Item.ItemType.God_Battle || currentScript.myItem.type == Item.ItemType.God_Maze)
+        {
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("不可选择神明道具到快捷插槽中");
+            EventHub.Instance.EventTrigger("ResetItem");
+
+            //需要重新点击Slot才能再次尝试插入：
+            isLeftSlotReadyForItem = false;
+            return;
+        }
+
         if(currentScript.isSelectedToSlot)
         {
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("不可重复选择道具到快捷插槽中");
@@ -314,13 +340,24 @@ public class InventoryPanel : BasePanel
     private void SlotItemToRight(GameObject item)
     {
         InventoryItemLogic currentScript =  item.GetComponentInChildren<InventoryItemLogic>();
+
+        //如果当前的道具是神明道具，那么不可使用插槽：
+        if(currentScript.myItem.type == Item.ItemType.God_Battle || currentScript.myItem.type == Item.ItemType.God_Maze)
+        {
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("不可选择神明道具到快捷插槽中");
+            EventHub.Instance.EventTrigger("ResetItem");
+
+            //需要重新点击Slot才能再次尝试插入：
+            isRightSlotReadyForItem = false;
+            return;
+        }
         if(currentScript.isSelectedToSlot)
         {
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("不可重复选择道具到快捷插槽中");
             EventHub.Instance.EventTrigger("ResetItem");
 
             //需要重新点击Slot才能再次尝试插入：
-            isLeftSlotReadyForItem = false;
+            isRightSlotReadyForItem = false;
             return;
         }
         else if(!currentScript.myItem.quickEquip)
@@ -329,7 +366,7 @@ public class InventoryPanel : BasePanel
             EventHub.Instance.EventTrigger("ResetItem");
 
             //需要重新点击Slot才能再次尝试插入：
-            isLeftSlotReadyForItem = false;
+            isRightSlotReadyForItem = false;
             return;
         }
         Debug.Log("右侧装备");
@@ -339,7 +376,7 @@ public class InventoryPanel : BasePanel
 
 
 
-        InventoryItemLogic script =  rightSlottedInventoryItem.GetComponentInChildren<InventoryItemLogic>();
+        InventoryItemLogic script = rightSlottedInventoryItem.GetComponentInChildren<InventoryItemLogic>();
 
         //如果本体处在使用中，那么该复制品也需要加上蒙版：
         if(currentScript.myItem.isInUse)

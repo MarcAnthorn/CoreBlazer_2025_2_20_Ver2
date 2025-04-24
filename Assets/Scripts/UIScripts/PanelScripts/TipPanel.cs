@@ -10,10 +10,14 @@ using UnityEngine.UI;
 public class TipPanel : BasePanel
 {
     public UnityAction<string> setTipAction;
+
+    //将结束回调设置默认值为空函数;
     //TipPanel的确认逻辑交给外部确认；
-    public UnityAction setOnConfirmAction;
+    public UnityAction setOnConfirmAction = () => {      
+    };
     //TipPanel的取消逻辑也交给外部确认：
-    public UnityAction setOnCancelAction;
+    public UnityAction setOnCancelAction = () => {
+    };
     public TextMeshProUGUI txtTipText;
     public Button btnConfirm;
     public Button btnCancel;
@@ -21,6 +25,7 @@ public class TipPanel : BasePanel
     {
         base.Awake();
         setTipAction += SetTipText;
+
     }
     protected override void Init()
     {
