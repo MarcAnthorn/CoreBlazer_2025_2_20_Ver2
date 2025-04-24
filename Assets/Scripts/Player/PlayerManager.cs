@@ -217,10 +217,10 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
 
         float hit = PlayerManager.Instance.player.HIT.value;
         int baseHit = (int)Math.Ceiling(hit);       //向上取整
-        float hitRate = hit - baseHit;
+        float hitRate = hit + 1 - baseHit;
         float crit_rate = PlayerManager.Instance.player.CRIT_Rate.value;
         float crit_dmg = PlayerManager.Instance.player.CRIT_DMG.value;
-        for (int i=0;i<baseHit+1;i++)
+        for (int i = 0; i < baseHit + 1; i++)
         {
             Damage tempDamage = new Damage();
             float random1 = UnityEngine.Random.Range(0f, 1f);
@@ -234,7 +234,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
                 tempDamage.isCritical = false;
             }
 
-            if(baseHit == 0)
+            if (baseHit == 0)
             {
                 float random2 = UnityEngine.Random.Range(0f, 1f);
                 if (random2 < hitRate)

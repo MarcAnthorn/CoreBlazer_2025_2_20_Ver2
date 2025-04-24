@@ -197,7 +197,7 @@ public class Battle : Singleton<Battle>
     public void EnterEnemyTurn(int positionId)
     {
         Debug.Log("敌人发动攻击！");
-        enemies[positionId].BasicAttack(player);
+        enemies[positionId].Attack(player);
 
         // 判断游戏状态
         if (player.isDie)
