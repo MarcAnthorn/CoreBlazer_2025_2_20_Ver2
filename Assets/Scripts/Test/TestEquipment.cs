@@ -16,8 +16,6 @@ public class TestEquipment : MonoBehaviour
         EquipmentManager.Instance.AddEquipment(1001);
         EquipmentManager.Instance.AddEquipment(1001);
 
-
-        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Battle;
     }
 
     // Update is called once per frame

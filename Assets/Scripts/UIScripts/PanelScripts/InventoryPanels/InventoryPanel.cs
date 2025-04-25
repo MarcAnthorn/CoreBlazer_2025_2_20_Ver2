@@ -130,7 +130,7 @@ public class InventoryPanel : BasePanel
             }
             else if(currentSelectedItem != null)
             {
-                SlotItemToLeft(currentSelectedItem);
+                SlotItemToLeft(currentSelectedItem, currentSelectedItem.GetComponentInChildren<InventoryItemLogic>().myItem.name);
             }
 
         });
@@ -148,7 +148,7 @@ public class InventoryPanel : BasePanel
             }
             else if(currentSelectedItem != null)
             {
-                SlotItemToRight(currentSelectedItem);
+                SlotItemToRight(currentSelectedItem, currentSelectedItem.GetComponentInChildren<InventoryItemLogic>().myItem.name);
             }
             
         });
@@ -198,8 +198,8 @@ public class InventoryPanel : BasePanel
         base.Awake();
         EventHub.Instance.AddEventListener<int>("RemoveSlotItem", RemoveSlotItem);
         EventHub.Instance.AddEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
-        EventHub.Instance.AddEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
-        EventHub.Instance.AddEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
+        EventHub.Instance.AddEventListener<GameObject, string>("SlotItemToLeft", SlotItemToLeft);
+        EventHub.Instance.AddEventListener<GameObject, string>("SlotItemToRight", SlotItemToRight);
 
         //这是一个多播委托：存在任何对玩家属性做出调整的地方，都需要调用这个委托；
         EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateAttributeText);
@@ -214,8 +214,8 @@ public class InventoryPanel : BasePanel
     {
         EventHub.Instance.RemoveEventListener<int>("RemoveSlotItem", RemoveSlotItem);
         EventHub.Instance.RemoveEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
-        EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToLeft", SlotItemToLeft);
-        EventHub.Instance.RemoveEventListener<GameObject>("SlotItemToRight", SlotItemToRight);
+        EventHub.Instance.RemoveEventListener<GameObject, string>("SlotItemToLeft", SlotItemToLeft);
+        EventHub.Instance.RemoveEventListener<GameObject, string>("SlotItemToRight", SlotItemToRight);
         EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateAttributeText);
     }
 
@@ -230,6 +230,7 @@ public class InventoryPanel : BasePanel
     //移除左侧 / 右侧插槽Item的方法：
     private void RemoveSlotItem(int itemId)
     {
+        Debug.LogWarning($"尝试删除 Slot Item, id：{itemId}");
         //这两处基本就是直接对点击「卸下」之后的逻辑复用；
         if(leftItemScript.myItemId == itemId)
         {
@@ -260,9 +261,10 @@ public class InventoryPanel : BasePanel
     }
 
     //将指定的Item复制之后，插入Slot：
-    private void SlotItemToLeft(GameObject item)
+    private void SlotItemToLeft(GameObject item, string itemName)
     {
         InventoryItemLogic currentScript =  item.GetComponentInChildren<InventoryItemLogic>();
+        leftItemScript = currentScript;
 
         //如果当前的道具是神明道具，那么不可使用插槽：
         if(currentScript.myItem.type == Item.ItemType.God_Battle || currentScript.myItem.type == Item.ItemType.God_Maze)
@@ -277,6 +279,11 @@ public class InventoryPanel : BasePanel
 
         if(currentScript.isSelectedToSlot)
         {
+            //如果currentSelectedItem是null，那么说明不是选中之后尝试重复插入，而是初始化面板的时候尝试重复更新；
+            //直接return就行，避免弹出WarningPanel；
+            if(currentSelectedItem == null)
+                return;
+
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("不可重复选择道具到快捷插槽中");
             EventHub.Instance.EventTrigger("ResetItem");
 
@@ -286,7 +293,7 @@ public class InventoryPanel : BasePanel
         }
         else if(!currentScript.myItem.quickEquip)
         {
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"该道具:{item.name}不可插入快捷插槽");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"道具「{itemName}」不可插入快捷插槽");
             EventHub.Instance.EventTrigger("ResetItem");
 
             //需要重新点击Slot才能再次尝试插入：
@@ -321,7 +328,6 @@ public class InventoryPanel : BasePanel
 
         //处理GodItemPanel中的当前被装载道具的逻辑
         //它需要持续高亮，以及快捷道具的使用等等需要数据同步（相当于就是绑定）
-        leftItemScript = currentScript;
         leftItemScript.isSelectedToSlot = true;
 
         //这个是对Item本身的字段调整，用于下次面板显示的时候，快捷插槽可以重新正确显示对应的Item
@@ -337,9 +343,10 @@ public class InventoryPanel : BasePanel
         btnSlotLeftOff.gameObject.SetActive(true);
     }
 
-    private void SlotItemToRight(GameObject item)
+    private void SlotItemToRight(GameObject item, string itemName)
     {
         InventoryItemLogic currentScript =  item.GetComponentInChildren<InventoryItemLogic>();
+        rightItemScript = currentScript;
 
         //如果当前的道具是神明道具，那么不可使用插槽：
         if(currentScript.myItem.type == Item.ItemType.God_Battle || currentScript.myItem.type == Item.ItemType.God_Maze)
@@ -353,6 +360,9 @@ public class InventoryPanel : BasePanel
         }
         if(currentScript.isSelectedToSlot)
         {
+            if(currentSelectedItem == null)
+                return;
+
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("不可重复选择道具到快捷插槽中");
             EventHub.Instance.EventTrigger("ResetItem");
 
@@ -362,7 +372,7 @@ public class InventoryPanel : BasePanel
         }
         else if(!currentScript.myItem.quickEquip)
         {
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"该道具:{item.name}不可插入快捷插槽");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"道具「{itemName}」不可插入快捷插槽");
             EventHub.Instance.EventTrigger("ResetItem");
 
             //需要重新点击Slot才能再次尝试插入：

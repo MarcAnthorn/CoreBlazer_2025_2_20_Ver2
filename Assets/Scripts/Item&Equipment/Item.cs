@@ -50,6 +50,9 @@ public abstract class Item                  //所有道具类的基类
 
     public bool CanUseOrNot(int sceneId)        // 1-事件选择 2-战斗场景 3-迷宫内
     {
+        //如果是安全屋，直接拒绝使用：
+        if(sceneId == 4)
+            return false;
         if (usableScene[sceneId - 1] == 1)
         {
             return true;
@@ -64,6 +67,7 @@ public abstract class Item                  //所有道具类的基类
 
 
 
+//使用后灯光值立刻+20，短时间内不会衰减
 public class Item_101 : Item
 {
 
@@ -72,7 +76,6 @@ public class Item_101 : Item
         effectFinalValueDic.Clear();
 
         Debug.Log($"道具 \"灯火助燃剂\" 使用！");
-        //可视范围扩大5格
         int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
 
@@ -102,21 +105,6 @@ public class Item_101 : Item
 
 public class Item_102 : Item
 {
-    public Item_102()
-    {
-        string className = GetType().Name; // 获取类名
-        string idStr = className.Substring(className.LastIndexOf('_') + 1); // 提取后缀数字部分
-        if (int.TryParse(idStr, out int parsedId))
-        {
-            id = parsedId;
-        }
-        else
-        {
-            Debug.LogError($"Item类名格式错误，无法从 {className} 提取id");
-        }
-
-    }
-
     public override void Use()
     {
         effectFinalValueDic.Clear();

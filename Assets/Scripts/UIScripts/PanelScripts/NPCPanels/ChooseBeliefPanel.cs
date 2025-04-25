@@ -36,6 +36,13 @@ public class ChooseBeliefPanel : BasePanel
     protected override void Awake()
     {
         base.Awake();
+
+        EventHub.Instance.AddEventListener<int>("BuyItemCallback", UpdateConversation);
+    }
+
+    void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener<int>("BuyItemCallback", UpdateConversation);
     }
     
     protected override void Init()
@@ -52,11 +59,6 @@ public class ChooseBeliefPanel : BasePanel
         // btnLastPage.onClick.AddListener(()=>{
         //     SwitchPage(1);
         // });
-    }
-
-    void OnDestroy()
-    {
-
     }
 
     //初始化当前需要的所有面板信息：
@@ -106,6 +108,26 @@ public class ChooseBeliefPanel : BasePanel
         // optionCount = optionList.Count;
         // currentPage = 1;
         // allPageCount = (optionCount + optionPerPage - 1) / optionPerPage;
+    }
+
+    //购买之后的更新对话的回调函数：
+    //参数用不上，只是为了匹配事件中心的回调签名
+    private void UpdateConversation(int _int)
+    {
+        switch(currentNPCName){
+            case E_NPCName.奈亚拉:
+                txtConversation.text = "欢迎光临，下次再来！！";
+            break;
+            case E_NPCName.优格:
+                txtConversation.text = "愿你不会停下对真理的探索。";
+            break;
+            case E_NPCName.莎布:
+                txtConversation.text = "希望这些能让你转危为安。";
+            break;
+            default:    //此处是格赫罗斯
+                txtConversation.text = "......";
+            break;
+        }
     }
 
     //翻页：暂时用不到；

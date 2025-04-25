@@ -98,7 +98,9 @@ public class EventHub : SingletonBaseManager<EventHub>
     public void AddEventListener<T>(string eventName, UnityAction<T> function)
     {
         if (eventDictionary.ContainsKey(eventName))
+        {
             (eventDictionary[eventName] as EventInfo<T>).action_ += function;  //as父转子实现子类成员委托调用
+        }
         else
         {
             eventDictionary.Add(eventName, new EventInfo<T>(function));     //里氏替换父装载子类实例

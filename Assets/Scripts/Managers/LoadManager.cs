@@ -196,7 +196,11 @@ public class LoadManager : Singleton<LoadManager>
     private void LoadItems()
     {
         allItems = new Dictionary<int, Item>();
-        string path = Path.Combine(Application.dataPath, "Resources/ItemData/AllItems.csv");
+        
+        // string path = Path.Combine(Application.dataPath, "Resources/ItemData/AllItems.csv");
+        //读取新表：
+        string path = Path.Combine(Application.dataPath, "Resources/ItemData/ItemSheet.csv");
+        
 
         if (File.Exists(path))
         {
@@ -217,7 +221,7 @@ public class LoadManager : Singleton<LoadManager>
                     Item.type = (Item.ItemType)int.Parse(values[2]);    //C列
 
 
-                    if (values[3] == "0")                               //D列
+                    if (values[3] == "1")                               //D列
                         Item.isImmediate = true;
                     else
                         Item.isImmediate = false;
@@ -226,19 +230,19 @@ public class LoadManager : Singleton<LoadManager>
                     Item.useTimes = int.Parse(values[4]);               //E列
                     char[] envs = values[5].ToCharArray();              //F列
                     for (int j = 0; j < 3; j++)
-                        Item.usableScene[j] = (int)(envs[j] - '0');
+                        Item.usableScene[j] = (int)(envs[j] - '0');     // 1-事件选择 2-战斗场景 3-迷宫内
 
-                    if (values[6] == "0")                               //G列
+                    if (values[6] == "1")                               //G列
                         Item.resetAfterDeath = true;
                     else
                         Item.resetAfterDeath = false;
 
-                    if (values[7] == "0")                               //H列
+                    if (values[7] == "1")                               //H列
                         Item.quickEquip = true;
                     else
                         Item.quickEquip = false;
 
-                    if (values[8] == "0")                               //I列
+                    if (values[8] == "1")                               //I列
                         Item.reObtain = true;
                     else
                         Item.reObtain = false;
@@ -583,8 +587,6 @@ public class LoadManager : Singleton<LoadManager>
         //1107特殊处理：不存在该avg文件：
         if(avgId == 1107)
             return;
-
-        Debug.Log($"AVG Loaded, id:{avgId}");
 
         string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/AVG/{avgId}.csv");
         int showIndex = avgId;

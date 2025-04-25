@@ -158,6 +158,8 @@ public class InventoryItemLogic : MonoBehaviour
             if(!myItem.isPermanent && myItem.EffectiveTime == 0)
             {
                 EventHub.Instance.EventTrigger("ResetItem");
+
+                //该事件在InventoryPanel中注册：
                 EventHub.Instance.EventTrigger<int>("RemoveSlotItem", targetItemId);         
             }
             else if(!myItem.isPermanent)

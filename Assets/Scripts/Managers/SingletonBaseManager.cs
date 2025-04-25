@@ -39,4 +39,26 @@ public abstract class SingletonBaseManager<T> where T : class  //new()    //注�
         }
     }
 
+    //  // 在类加载时就创建好实例（饿汉式）
+    // private static readonly T instance;
+
+    // static SingletonBaseManager()
+    // {
+    //     Type type = typeof(T);
+    //     ConstructorInfo info = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic,
+    //                                                 null,
+    //                                                 Type.EmptyTypes,
+    //                                                 null);
+    //     if (info != null)
+    //     {
+    //         instance = info.Invoke(null) as T;
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError($"[SingletonBaseManager] 类 {type.FullName} 缺少私有无参构造函数。");
+    //     }
+    // }
+
+    // public static T Instance => instance;
+
 }

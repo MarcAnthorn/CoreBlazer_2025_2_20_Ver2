@@ -9,6 +9,7 @@ public enum E_PlayerSceneIndex{
     Event = 1,
     Battle = 2,
     Maze = 3,
+    Shelter = 4,    //安全屋下；
 }
 public class PlayerManager : Singleton<PlayerManager>          //用于管理角色的事件
 {

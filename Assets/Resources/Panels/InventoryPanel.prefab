@@ -3808,6 +3808,7 @@ MonoBehaviour:
   fadingTime: 0.4
   equipmentContainer: {fileID: 5684071700044693977}
   equipmentList: []
+  equipmentScriptList: []
 --- !u!1 &3198563935160482720
 GameObject:
   m_ObjectHideFlags: 0

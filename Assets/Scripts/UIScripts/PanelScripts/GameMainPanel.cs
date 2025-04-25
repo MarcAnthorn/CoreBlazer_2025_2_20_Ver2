@@ -123,7 +123,7 @@ public class GameMainPanel : BasePanel
 
 
         //事件面板销毁，更新会迷宫场景：
-        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;
+        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
     }
 
     //更新面板属性的方法，所有存在属性更新（如道具使用等等，最后都需要调用这个方法以确保显示的属性文本的更新）

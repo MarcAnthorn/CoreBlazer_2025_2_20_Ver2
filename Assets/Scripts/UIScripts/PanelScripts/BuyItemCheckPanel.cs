@@ -23,9 +23,11 @@ public class BuyItemCheckPanel : BasePanel
         btnBuy.onClick.AddListener(()=>{
             ItemManager.Instance.AddItem(myItemId);
 
-            //更新购买Button处的遮罩：
-            EventHub.Instance.EventTrigger<int>("RefreshMask", myItemId);
-            
+            //更新购买Button处的遮罩，位于ChooseBeliefButton中：
+            //以及更新对话，位于ChooseBeliefPanel中：
+            //两个都被封装在BuyItemCallback这个事件key中：
+            EventHub.Instance.EventTrigger<int>("BuyItemCallback", myItemId);
+          
             UIManager.Instance.HidePanel<BuyItemCheckPanel>();
         });
 

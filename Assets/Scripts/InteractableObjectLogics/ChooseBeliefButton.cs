@@ -20,15 +20,18 @@ public class ChooseBeliefButton : MonoBehaviour
     public int myItemId; 
     public Button btnSelf;
 
+    //如果精神值不够，那么需要限制购买；这是一个实现这个的锁：
+    private bool isSanityEnoughToBuy = true;
+
     void Awake()
     {
         btnSelf = this.GetComponent<Button>();
-        EventHub.Instance.AddEventListener<int>("RefreshMask", RefreshMask);
+        EventHub.Instance.AddEventListener<int>("BuyItemCallback", RefreshMask);
     }
 
     void OnDestroy()
     {
-        EventHub.Instance.RemoveEventListener<int>("RefreshMask", RefreshMask);
+        EventHub.Instance.RemoveEventListener<int>("BuyItemCallback", RefreshMask);
     }
 
 
@@ -37,8 +40,19 @@ public class ChooseBeliefButton : MonoBehaviour
     {
         myItemId = _itemId;
 
+        if(PlayerManager.Instance.player.SAN.value < 20)
+        {
+            txtSanityCost.color = new Color(0.8f, 0.3f, 0.3f);  //红色字体；
+            isSanityEnoughToBuy = false;
+        }
+
         btnSelf.onClick.AddListener(()=>{
-            UIManager.Instance.ShowPanel<BuyItemCheckPanel>().InitPanel(_itemId);
+            if(isSanityEnoughToBuy)
+                UIManager.Instance.ShowPanel<BuyItemCheckPanel>().InitPanel(_itemId);
+
+            else
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("精神值不足，不能购买");
+
         });
 
         switch(myItemId)

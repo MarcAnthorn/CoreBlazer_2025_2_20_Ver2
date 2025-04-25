@@ -20,6 +20,8 @@ public class ItemManager : Singleton<ItemManager>
 
     public void AddItem(int id)
     {
+        Debug.Log($"Try Add Item, id is{id}");
+        
         if(itemList.Contains(id))
         {
             //如果存在，那就是调整dic中的数量：
@@ -32,6 +34,14 @@ public class ItemManager : Singleton<ItemManager>
             //不存在，那么就是加入List，然后初始化Dic数量为1；
             itemList.Add(id);
             itemCountDic.Add(id, 1);
+        }
+
+        //如果这个道具是持有就使用，那么直接使用：
+        if(LoadManager.Instance.allItems[id].isImmediate)
+        {
+            Item item = LoadManager.Instance.allItems[id];
+            item.Use();
+            item.isInUse = true;
         }
 
 
