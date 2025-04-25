@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,24 +60,51 @@ public class EnemyManager : Singleton<EnemyManager>
         return finalValue;
     }
 
-    // 造成伤害
-    public Damage CauseDamage(Player player, float singleDamage)
+    // 计算敌人造成的伤害
+    public void DamageCalculation(Player player, Enemy enemy, float rowDamage)
     {
-        Damage damage = new Damage();
-        if (JugdeAvoid(player))
+        // 计算防御收益
+        rowDamage -= player.DEF.value;
+        // 计算敌人身上的Buff
+        float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
+        List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue);
+        if (damages.Count == 0)
         {
-            damage.damage = -1;
-            return damage;
+            Debug.Log("敌人发出的伤害被闪避了!");
+        }
+        else
+        {
+            foreach (var dmg in damages)
+            {
+                // 造成伤害之前进行一些加成计算
+                dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDamage, dmg.damage);
+                //调用玩家受击方法
+                PlayerManager.Instance.player.BeHurted(dmg);
+            }
+
+        }
+    }
+
+    // 造成伤害
+    public List<Damage> CauseDamage(Enemy enemy, float singleDamage)
+    {
+        List<Damage> damages = new List<Damage>();
+        if (JugdeAvoid(enemy))
+        {
+            return damages;
+        }
+        else
+        {
+            JudgeHit(enemy, singleDamage, out damages);
         }
 
-        damage.damage = singleDamage;
-        return damage;
+        return damages;
     }
 
     //命中判定
-    private bool JugdeAvoid(Player player)
+    private bool JugdeAvoid(Enemy enemy)
     {
-        float avo = PlayerManager.Instance.player.AVO.value;        //!!先假设这是敌人的闪避值!!
+        float avo = enemy.AVO;
         float random = UnityEngine.Random.Range(0f, 1f);
         if (random < avo)
         {
@@ -84,6 +112,54 @@ public class EnemyManager : Singleton<EnemyManager>
         }
 
         return false;
+    }
+
+    //连击判定
+    private void JudgeHit(Enemy enemy, float singleDamage, out List<Damage> damages)
+    {
+        /*连击判定(由Player类来处理每一次连击的效果)
+         *  对每一次连击进行暴击判定
+         */
+        List<Damage> damages_return = new List<Damage>();
+
+        float hit = enemy.HIT;
+        int baseHit = (int)Math.Ceiling(hit);       //向上取整
+        float hitRate = hit + 1 - baseHit;
+        float crit_rate = enemy.CRIT_Rate;
+        float crit_dmg = enemy.CRIT_DMG;
+        for (int i = 0; i < baseHit + 1; i++)
+        {
+            Damage tempDamage = new Damage();
+            float random1 = UnityEngine.Random.Range(0f, 1f);
+            if (random1 < crit_rate)
+            {
+                tempDamage.damage = singleDamage * (1 + crit_dmg);
+                tempDamage.isCritical = true;
+            }
+            else
+            {
+                tempDamage.isCritical = false;
+            }
+
+            if (baseHit == 0)
+            {
+                float random2 = UnityEngine.Random.Range(0f, 1f);
+                if (random2 < hitRate)
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            damages_return.Add(tempDamage);
+            baseHit--;
+        }
+
+        damages = damages_return;
+
     }
 
     public void EnemyHurted(int id, Damage damage)
