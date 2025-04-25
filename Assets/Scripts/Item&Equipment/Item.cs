@@ -768,6 +768,51 @@ public class Item_508 : Item
 
 }
 
+public class Item_611 : Item
+{
+    public override void Use()
+    {
+       
+    }
+}
+public class Item_612 : Item
+{
+    public override void Use()
+    {
+       
+    }
+}
+public class Item_613 : Item
+{
+    public override void Use()
+    {
+       
+    }
+}
+
+public class Item_614 : Item
+{
+    public override void Use()
+    {
+       
+    }
+}
+
+public class Item_615 : Item
+{
+    public override void Use()
+    {
+       
+    }
+}
+
+public class Item_616 : Item
+{
+    public override void Use()
+    {
+       
+    }
+}
 //标识Item的作用属性
 public enum E_AffectPlayerAttributeType
 {

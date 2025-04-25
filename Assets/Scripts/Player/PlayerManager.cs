@@ -65,7 +65,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             LVL = new Player.PlayerAttribute(4) { value = 100 },            
             // 灯光值 (Light Value)，id = 4，初始值 1
 
-            SAN = new Player.PlayerAttribute(5) { value = 40 },           
+            SAN = new Player.PlayerAttribute(5) { value = 41 },           
             // SAN 值 (Sanity)，id = 5，初始值 40
 
             SPD = new Player.PlayerAttribute(6) { value = 10 },          

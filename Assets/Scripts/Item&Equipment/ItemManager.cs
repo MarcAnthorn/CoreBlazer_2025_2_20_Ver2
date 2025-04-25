@@ -193,6 +193,21 @@ public class ItemManager : Singleton<ItemManager>
                 return new Item_507();
             case 508:
                 return new Item_508();
+
+        //新增商店交易道具：
+            case 611:
+                return new Item_611();
+            case 612:
+                return new Item_612();
+            case 613:
+                return new Item_613();
+            case 614:
+                return new Item_614();
+            case 615:
+                return new Item_615();
+            case 616:
+                return new Item_616();
+
             default:
                 Debug.LogWarning($"未找到id为 {ItemId} 的道具");
                 return null;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 public class NPCInteractionPanel : BasePanel
 {
     //不管是什么NPC都公用的内容；
-    public GameObject npcObj;
+    public Image imgNPC;
     public Transform npcPos;
     public TextMeshProUGUI txtSanity;
     public TextMeshProUGUI txtConversation;
@@ -18,52 +19,61 @@ public class NPCInteractionPanel : BasePanel
     public Button btnChooseBelief;
     public Button btnQuit;
 
+    //继续当前对话的Button：
+    public Button btnContinue;
+
     //设置当前面板显示的NPC，因为没有数据结构类，所以暂时使用GameObject;
     public UnityAction<E_NPCName> setNPCAction;
 
     //测试用：当前交互的NPC：
     public E_NPCName currentNPCName;
+    private bool isContinueButtonClicked;
 
     protected override void Awake()
     {
         base.Awake();
         setNPCAction += SetCurrentNPC;
-        //根据当前的NPC类型实例化btn；
-        if(currentNPCName == E_NPCName.奈亚拉 || currentNPCName == E_NPCName.优格 || currentNPCName == E_NPCName.纱布)
-        {
-            btnChooseBelief.gameObject.SetActive(true);
-        }
-        else
-        {
-            btnDiscardBelief.gameObject.SetActive(true);
-        }
+        // //根据当前的NPC类型实例化btn；
+        // if(currentNPCName == E_NPCName.奈亚拉 || currentNPCName == E_NPCName.优格 || currentNPCName == E_NPCName.莎布)
+        // {
+        //     btnChooseBelief.gameObject.SetActive(true);
+        // }
+        // else
+        // {
+        //     btnDiscardBelief.gameObject.SetActive(true);
+        // }
 
 
-        EventHub.Instance.AddEventListener<UnityAction<E_NPCName>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
+        // EventHub.Instance.AddEventListener<UnityAction<E_NPCName>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
     }
     protected override void Init()
     {
-        btnDiscardBelief.onClick.AddListener(()=>{
+        // btnDiscardBelief.onClick.AddListener(()=>{
             
-        });
+        // });
 
-        btnChooseBelief.onClick.AddListener(()=>{
-            UIManager.Instance.ShowPanel<ChooseBeliefPanel>().setNPCAction(currentNPCName);
-            UIManager.Instance.HidePanel<NPCInteractionPanel>();
+        // btnChooseBelief.onClick.AddListener(()=>{
+        //     UIManager.Instance.ShowPanel<ChooseBeliefPanel>().setNPCAction(currentNPCName);
+        //     UIManager.Instance.HidePanel<NPCInteractionPanel>();
 
-        });
+        // });
 
         btnQuit.onClick.AddListener(()=>{
             UIManager.Instance.HidePanel<NPCInteractionPanel>();
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
         });
+
+        btnContinue.onClick.AddListener(()=>{
+            isContinueButtonClicked = true;
+        });
+
     }
 
     void OnDestroy()
     {
         setNPCAction -= SetCurrentNPC;
 
-        EventHub.Instance.RemoveEventListener<UnityAction<E_NPCName>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
+        // EventHub.Instance.RemoveEventListener<UnityAction<E_NPCName>>("BroadcastCurrentInteractingNPC", BroadcastCurrentInteractingNPC);
     }
 
     protected void Update()
@@ -77,17 +87,66 @@ public class NPCInteractionPanel : BasePanel
 
     private void SetCurrentNPC(E_NPCName _npcName)
     {
-        Debug.Log($"NPC交互面板已显示，显示NPC为：{_npcName.ToString()}");
         //将当前交互的NPC
         currentNPCName = _npcName;
-        string path = currentNPCName.ToString();
-        npcObj = Instantiate(Resources.Load<GameObject>("NPC/" + path), npcPos, false);
+        string path = Path.Combine("ArtResources", currentNPCName.ToString());
+
+        Debug.Log($"当前尝试加载的NPC路径：{path}");
+        imgNPC.sprite = Resources.Load<Sprite>(path);
+        imgNPC.SetNativeSize();
+    
+        StartCoroutine(WaitForContinue(_npcName));
     }
 
     //测试用：
-    private void BroadcastCurrentInteractingNPC(UnityAction<E_NPCName> action)
+    // private void BroadcastCurrentInteractingNPC(UnityAction<E_NPCName> action)
+    // {
+    //     action?.Invoke(currentNPCName);
+    // }
+
+    private IEnumerator WaitForContinue(E_NPCName _npcName)  
     {
-        action?.Invoke(currentNPCName);
+        switch(_npcName){
+            case E_NPCName.奈亚拉:
+                txtConversation.text = "哦，你还对那位有兴趣？";
+            break;
+            case E_NPCName.优格:
+                txtConversation.text = "空间与时间，一切法则基于此而衍生。";
+            break;
+            case E_NPCName.莎布:
+                txtConversation.text = "世上有诸多不公，但生命永远平等，即使是在祂的职责里面也是如此。";
+            break;
+            default:    //此处是格赫罗斯
+                txtConversation.text = "......";
+            break;
+        }
+        isContinueButtonClicked = false;
+        yield return new WaitUntil(() => isContinueButtonClicked);
+
+        switch(_npcName){
+            case E_NPCName.奈亚拉:
+                txtConversation.text = "那可以看看祂的好东西，不保证物有所值哦。";
+            break;
+            case E_NPCName.优格:
+                txtConversation.text = "想了解点什么？宇宙的真理可不是能轻易参透的。";
+            break;
+            case E_NPCName.莎布:
+                txtConversation.text = "祂也给我了不少好东西，来看看吧！";
+            break;
+            default:    //此处是格赫罗斯
+                txtConversation.text = "......";
+            break;
+        }
+
+        isContinueButtonClicked = false;
+        yield return new WaitUntil(() => isContinueButtonClicked);
+
+        //进入购买界面：
+        UIManager.Instance.HidePanel<NPCInteractionPanel>();
+        UIManager.Instance.ShowPanel<ChooseBeliefPanel>().InitCurrentPanel(_npcName);
+        yield break;
+        
+
     }
 
  
