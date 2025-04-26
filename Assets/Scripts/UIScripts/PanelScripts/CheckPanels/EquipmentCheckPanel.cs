@@ -34,9 +34,23 @@ public class EquipmentCheckPanel : BasePanel
         });
 
         btnEquip.onClick.AddListener(()=>{
-            //调用处在BattlePanel中的事件：
-            //是否能用的检查和字段调整，全部交给内部的事件去做；
-            EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);    
+            if(EquipmentManager.Instance.NowLeftSlotsCount() < 4)
+            {
+                //调用处在BattlePanel中的事件：
+                //是否能用的检查和字段调整，全部交给内部的事件去做；
+                EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);   
+                
+                EventHub.Instance.EventTrigger("MaskEquipmentOrNot", true, myEquipment);
+                myEquipment.isEquipped = true;
+                UIManager.Instance.HidePanel<EquipmentCheckPanel>();
+
+                //此处还需调用Equipment的Use方法：
+                //myEquipment.Use();
+            }
+            else
+            {
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("精神值接近阈值! 装备数量达上限");
+            }
         });
 
         btnUnequip.onClick.AddListener(()=>{
@@ -44,8 +58,12 @@ public class EquipmentCheckPanel : BasePanel
 
             //取消装备的方法：
             EventHub.Instance.EventTrigger<Equipment>("UnequipTarget", myEquipment);
+            EventHub.Instance.EventTrigger("MaskEquipmentOrNot", false, myEquipment);
+            myEquipment.isEquipped = false;
 
-            //将卸下Button切换成装备：
+            // myEquipment.Unuse();
+
+            //将卸下button切换成装备button：
             btnEquip.gameObject.SetActive(true);
             btnUnequip.gameObject.SetActive(false);
         });

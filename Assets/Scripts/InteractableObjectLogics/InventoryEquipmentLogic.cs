@@ -17,7 +17,8 @@ public class InventoryEquipmentLogic : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        EventHub.Instance.AddEventListener<Equipment>("ItemUsedCallback", EquipmentUsedCallback);
+        //此处的事件注册好像和 EquipmentPanelInventory 中的 MaskEquipmentOrNot 逻辑重复了；
+        // EventHub.Instance.AddEventListener<Equipment>("EquipmentUsedCallback", EquipmentUsedCallback);
     }
     void Start()
     {
@@ -34,7 +35,7 @@ public class InventoryEquipmentLogic : MonoBehaviour
 
     void OnDestroy()
     {
-        EventHub.Instance.RemoveEventListener<Equipment>("ItemUsedCallback", EquipmentUsedCallback);
+        // EventHub.Instance.RemoveEventListener<Equipment>("EquipmentUsedCallback", EquipmentUsedCallback);
     }
 
     //初始化当前的背包装备内容的方法，供外部使用：

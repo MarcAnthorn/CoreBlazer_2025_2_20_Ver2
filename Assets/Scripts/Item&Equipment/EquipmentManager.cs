@@ -77,6 +77,19 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         }
     }
 
+    //给外界提供当前剩余的装备插槽数量的API：
+    public int NowLeftSlotsCount()
+    {
+        int count = 0;
+
+        foreach(var equipment in equipmentList)
+        {
+            if(equipment.isEquipped)
+                count++;
+        }
+        return count;
+    }
+
     //传入id，分类Skill的方法：用于LoadManager中Chery的表读取；
     public Skill ClassifySkill(int id)
     {

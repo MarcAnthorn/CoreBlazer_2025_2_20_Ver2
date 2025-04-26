@@ -135,7 +135,6 @@ public class GodItemPanelInventory : BasePanel
             //安全屋，显示所有的神明道具：
             if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Shelter && (infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze))
             {
-                Debug.Log("????");
                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                     continue;
 

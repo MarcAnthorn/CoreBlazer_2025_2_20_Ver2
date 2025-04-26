@@ -28,6 +28,7 @@ public class PlayerController : PlayerBase
     }
     
     private float lightShrinkingTime = 0;
+    private float t;
 
     // [Range(50, 300f)]
     // [Tooltip("每秒扣除的血量（万分比），如100就是每秒扣除百分之一")]
@@ -71,7 +72,7 @@ public class PlayerController : PlayerBase
     protected override void Update()
     {
         base.Update();
-
+    
     }
 
     protected override void FixedUpdate()
@@ -103,7 +104,7 @@ public class PlayerController : PlayerBase
         {
             lightShrinkingTime += Time.deltaTime;
 
-            float t = lightShrinkingTime >= 10 ? 10 : lightShrinkingTime;
+            t = lightShrinkingTime >= 10 ? 10 : lightShrinkingTime;
 
             //灯光值调整：
             L = LMax - t * t;
@@ -188,10 +189,11 @@ public class PlayerController : PlayerBase
     {
         isLightShrinking = false;
         L = Math.Min(L + LExtra, LMax);
-        lightShrinkingTime = Mathf.Sqrt(100f - L);
+        lightShrinkingTime = Mathf.Sqrt(LMax - L);
+        t = lightShrinkingTime;
 
-        Debug.Log(lightShrinkingTime);
-        Debug.Log(L);
+        Debug.LogWarning($"灯光值L：{L}");
+        Debug.LogWarning($"实际灯光值：{PlayerManager.Instance.player.LVL.value}");
 
         //补充灯光之后，开启灯光衰减，关闭伤害判定协程；
         isLightShrinking = true;
@@ -206,6 +208,7 @@ public class PlayerController : PlayerBase
     protected override void Freeze(bool _isFrozen)
     {
         base.Freeze(_isFrozen);
+        
         isFrozen = _isFrozen;
         isLightShrinking = !_isFrozen;
         if(_isFrozen)
@@ -239,6 +242,8 @@ public class PlayerController : PlayerBase
 
             damageTime += 1;
             currentDamage = initDamageValue * (1 + damageTime) >= 20 ? 20 : initDamageValue * (1 + damageTime);
+            
+            Debug.Log(currentDamage);
             
             PlayerManager.Instance.player.HP.AddValue(-currentDamage);
             Debug.Log(PlayerManager.Instance.player.HP.value);

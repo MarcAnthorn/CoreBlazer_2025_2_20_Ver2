@@ -75,10 +75,9 @@ public class InventoryPanel : BasePanel
         
         //初始化的时候，按照PlayerManager中的playerSceneIndex进行选择性显示UI：
         //如果是当前是战斗中，那么就显示装备背包栏
-        if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
+        if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle || PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Shelter)
         {
             equiptmentPanelObject.SetActive(true);
-            Debug.LogWarning("Now is equipment panel");
         }
 
         //不然就是commonItemPanelObject；同时禁用让equiptmentPanelObject显示的Button：
@@ -102,18 +101,24 @@ public class InventoryPanel : BasePanel
             commonItemPanelObject.SetActive(true);
             godItemPanelObject.SetActive(false);
             equiptmentPanelObject.SetActive(false);
+
+            ResetCurrentSelectedItem();
         });
 
         btnGodPanelReveal.onClick.AddListener(()=>{
             godItemPanelObject.SetActive(true);
             commonItemPanelObject.SetActive(false);
             equiptmentPanelObject.SetActive(false);
+
+            ResetCurrentSelectedItem();
         });
 
         btnEquipmentPanelReveal.onClick.AddListener(()=>{
             equiptmentPanelObject.SetActive(true);
             godItemPanelObject.SetActive(false);
             commonItemPanelObject.SetActive(false);
+
+            ResetCurrentSelectedItem();
         });
 
         btnQuickSlotLeft.onClick.AddListener(()=>{
@@ -200,6 +205,8 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.AddEventListener<GameObject>("BroadcastCurrentItem", BroadcastCurrentItem);
         EventHub.Instance.AddEventListener<GameObject, string>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.AddEventListener<GameObject, string>("SlotItemToRight", SlotItemToRight);
+        EventHub.Instance.AddEventListener("ResetCurrentSelectedItem", ResetCurrentSelectedItem);
+
 
         //这是一个多播委托：存在任何对玩家属性做出调整的地方，都需要调用这个委托；
         EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateAttributeText);
@@ -217,6 +224,9 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.RemoveEventListener<GameObject, string>("SlotItemToLeft", SlotItemToLeft);
         EventHub.Instance.RemoveEventListener<GameObject, string>("SlotItemToRight", SlotItemToRight);
         EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateAttributeText);
+        EventHub.Instance.RemoveEventListener("ResetCurrentSelectedItem", ResetCurrentSelectedItem);
+
+        ResetCurrentSelectedItem();
     }
 
 
@@ -225,6 +235,14 @@ public class InventoryPanel : BasePanel
     {
         //规定：如果触发的时候传入的是null，表示的是当前取消了选择；
         currentSelectedItem = _currentSelectedItem;
+    }
+
+    private void ResetCurrentSelectedItem()
+    {
+        currentSelectedItem = null;
+        EventHub.Instance.EventTrigger("ResetItem");
+        isLeftSlotReadyForItem = false;
+        isRightSlotReadyForItem = false;
     }
 
     //移除左侧 / 右侧插槽Item的方法：

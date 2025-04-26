@@ -23,7 +23,9 @@ public class TestMazeStart : MonoBehaviour
             
             break;
             case E_GameLevelType.Second:             
-                Instantiate(Resources.Load<GameObject>("MapPrefabs/MapSecondFloor"), originalPoint, Quaternion.identity);  
+                Instantiate(Resources.Load<GameObject>("MapPrefabs/MapSecondFloor"), originalPoint, Quaternion.identity); 
+                playerScript.isDamageLocked = false;
+                playerScript.LMax = 100; 
          
             break;
             case E_GameLevelType.Third:
@@ -33,7 +35,6 @@ public class TestMazeStart : MonoBehaviour
             //新手关卡：灯光初始值60；锁定血量不会死亡：
             case E_GameLevelType.Tutorial:
                 Instantiate(Resources.Load<GameObject>("MapPrefabs/MapTutorialFloor"),originalPoint, Quaternion.identity); ;
-
                 playerScript.isDamageLocked = true;
                 playerScript.LMax = 60;
                 

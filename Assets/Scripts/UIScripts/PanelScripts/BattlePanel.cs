@@ -63,9 +63,10 @@ public class BattlePanel : BasePanel
     }
 
     //广播方法：将某一个装备装备后调用；
+    //注意，后续将这个方法的空闲Slot数量检查、UI面板关闭、遮罩调用全部迁移出去，到EquipmentCheckPanel中；
+    //这是因为出现了 允许装上装备但是BattlePanel不在的情况（安全屋）；
     private void EquipTarget(Equipment equipment)
      {
-          Debug.Log("尝试装备");
           //找到第一个空闲的Slot：
           foreach(var slotScript in equipmentSlotList)
           {
@@ -77,18 +78,21 @@ public class BattlePanel : BasePanel
                     //调用UI更新委托：
                     EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
+//------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
                     //调整该装备的内部字段：
-                    equipment.isEquipped = true;
+                    // equipment.isEquipped = true;
 
                     //此处还需调用Equipment的Use方法：
                     //myEquipment.Use();
 
                     //成功就关闭当前的检查面板：
-                    UIManager.Instance.HidePanel<EquipmentCheckPanel>();
+                    // UIManager.Instance.HidePanel<EquipmentCheckPanel>();
 
                     //调用装备后的回调；位于EquipmentPanelInventory；
-                    EventHub.Instance.EventTrigger("MaskEquipmentOrNot", true, equipment);
-
+                    //将这部分的逻辑迁移到BattlePanel外部，防止在一些场景中（如安全屋中）
+                    //允许装上装备但是BattlePanel不在的情况；
+                    // EventHub.Instance.EventTrigger("MaskEquipmentOrNot", true, equipment);
+//------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
                     //找到就return：
                     return;
                }
@@ -113,16 +117,17 @@ public class BattlePanel : BasePanel
                     //调用UI更新委托：
                     EventHub.Instance.EventTrigger("UpdateAllUIElements");
                     
-                    // myEquipment.Unuse();
+                   
 
-                    //调整内部的标识字段：
-                    equipment.isEquipped = false;
-
-                    //成功就关闭当前的检查面板：
-                    UIManager.Instance.HidePanel<EquipmentCheckPanel>();
-
+//------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
                     //调用取消装备后的回调；位于EquipmentPanelInventory；
-                    EventHub.Instance.EventTrigger("MaskEquipmentOrNot", false, equipment);
+                    //将这部分的逻辑迁移到BattlePanel外部，防止在一些场景中（如安全屋中）
+                    //允许装上装备但是BattlePanel不在的情况；
+                    // myEquipment.Unuse();
+                    // equipment.isEquipped = false;
+                    // UIManager.Instance.HidePanel<EquipmentCheckPanel>();
+                    // EventHub.Instance.EventTrigger("MaskEquipmentOrNot", false, equipment);
+//------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
 
                     //找到就return：
                     return;

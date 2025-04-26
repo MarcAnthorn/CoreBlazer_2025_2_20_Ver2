@@ -467,7 +467,9 @@ public class AVGPanel : BasePanel
             break;
             case 2:
                 //镜像
-                Debug.LogWarning("镜像");
+                Vector3 scale = npc.transform.localScale;
+                scale.x *= -1;   // 反转X轴
+                npc.transform.localScale = scale;
             break;
         }
     }

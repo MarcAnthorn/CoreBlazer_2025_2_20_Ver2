@@ -105,16 +105,16 @@ public class Player               //存储角色信息等
     //静态基本属性
     //public int HP_limit = 100;
     //动态基本属性
-    private PlayerAttribute _HP;
-    public PlayerAttribute HP           //生命     Health point      id = 1
-    {
-        get { return _HP; }
-        set 
-        {
-            _HP = value;
-            if (_HP.value <= 0) isDie = true;
-        }
-    }
+    public PlayerAttribute HP;
+    // public PlayerAttribute HP           //生命     Health point      id = 1
+    // {
+    //     get { return _HP; }
+    //     set 
+    //     {
+    //         _HP = value;
+    //         if (_HP.value <= 0) isDie = true;
+    //     }
+    // }
     public PlayerAttribute STR;         //力量     Strength          id = 2  
     public PlayerAttribute DEF;         //防御     Defense           id = 3 
     public PlayerAttribute LVL;         //灯光值   Light Value       id = 4  
