@@ -16,6 +16,10 @@ public class TestMazeStart : MonoBehaviour
         originalPoint.z = 0; 
 
         PlayerController playerScript = player.GetComponent<PlayerController>();
+        
+        //尝试调用：Item_616的buff
+        EventHub.Instance.EventTrigger("RandomBenifit");
+        
         //按照当前的GameLevelManager中的标识进行地图的加载：
         switch(GameLevelManager.Instance.gameLevelType)
         {

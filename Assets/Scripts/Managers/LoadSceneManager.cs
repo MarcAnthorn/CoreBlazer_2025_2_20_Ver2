@@ -13,7 +13,6 @@ public class LoadSceneManager : SingletonBaseManager<LoadSceneManager>
     //实现同步加载场景的方法：
     public void LoadSceneSync(string sceneName, UnityAction callback = null)
     {
-        ResetAllStaticManagers();
         SceneManager.LoadScene(sceneName);
         callback?.Invoke();
     }
@@ -21,7 +20,6 @@ public class LoadSceneManager : SingletonBaseManager<LoadSceneManager>
     //实现异步加载场景的方法：
     public void LoadSceneAsync(string sceneName, UnityAction callback = null)
     {
-        ResetAllStaticManagers();
         MonoManager.Instance.StartCoroutine(LoadAsync(sceneName, callback));
         //这样写，不能保证异步结束之后再进行回调；回调在协程中触发可以保证这点
         //callback?.Invoke();
@@ -30,7 +28,6 @@ public class LoadSceneManager : SingletonBaseManager<LoadSceneManager>
     //重载：实现异步加载场景的方法：
     public void LoadSceneAsync(int sceneIndex, UnityAction callback = null)
     {
-        ResetAllStaticManagers();
         MonoManager.Instance.StartCoroutine(LoadAsync(sceneIndex, callback));
         //这样写，不能保证异步结束之后再进行回调；回调在协程中触发可以保证这点
         //callback?.Invoke();
@@ -74,11 +71,11 @@ public class LoadSceneManager : SingletonBaseManager<LoadSceneManager>
 
     }
 
-    //重置所有的静态管理器：
-    private void ResetAllStaticManagers()
-    {
-        EventHub.Instance.ClearListener();
-    }
+    // //重置所有的静态管理器：
+    // private void ResetAllStaticManagers()
+    // {
+    //     EventHub.Instance.ClearListener();
+    // }
 
 
 

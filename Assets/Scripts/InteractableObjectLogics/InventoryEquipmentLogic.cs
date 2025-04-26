@@ -19,6 +19,8 @@ public class InventoryEquipmentLogic : MonoBehaviour
     {
         //此处的事件注册好像和 EquipmentPanelInventory 中的 MaskEquipmentOrNot 逻辑重复了；
         // EventHub.Instance.AddEventListener<Equipment>("EquipmentUsedCallback", EquipmentUsedCallback);
+        EventHub.Instance.AddEventListener<Equipment>("UpdateEquipmentUI", UpdateEquipmentUI);
+        
     }
     void Start()
     {
@@ -36,6 +38,7 @@ public class InventoryEquipmentLogic : MonoBehaviour
     void OnDestroy()
     {
         // EventHub.Instance.RemoveEventListener<Equipment>("EquipmentUsedCallback", EquipmentUsedCallback);
+        EventHub.Instance.RemoveEventListener<Equipment>("UpdateEquipmentUI", UpdateEquipmentUI);
     }
 
     //初始化当前的背包装备内容的方法，供外部使用：
@@ -50,18 +53,28 @@ public class InventoryEquipmentLogic : MonoBehaviour
     //事件：装备使用后的响应事件；
     //当一个道具使用之后，会进行该事件的调用；传入的参数是对应装备的实例：
     //如果我的实例符合，那么我就会执行逻辑: 这里就是执行激活「装备中」蒙版；表示道具生效中；
-    private void EquipmentUsedCallback(Equipment target)
+    // private void EquipmentUsedCallback(Equipment target)
+    // {
+    //     // 目前广播的目标和我的实例是一样的；
+    //     if(target == myEquipment)
+    //     {
+    //         //和我对应上了，说明是广播给我的；
+    //         //那么我就执行这个逻辑：
+    //         equippedMask.SetActive(true);
+
+    //     }
+
+    //     //更新玩家的属性面板：
+    //     EventHub.Instance.EventTrigger("UpdateAttributeText");
+    // }
+
+    //更新UI的事件：
+    private void UpdateEquipmentUI(Equipment target)
     {
-        // 目前广播的目标和我的实例是一样的；
         if(target == myEquipment)
         {
-            //和我对应上了，说明是广播给我的；
-            //那么我就执行这个逻辑：
-            equippedMask.SetActive(true);
-
+            //主要就是更新耐久的UI：
+            txtDurationCount.text = $"{myEquipment.currentDuration}/{myEquipment.maxDuration}";
         }
-
-        //更新玩家的属性面板：
-        EventHub.Instance.EventTrigger("UpdateAttributeText");
     }
 }

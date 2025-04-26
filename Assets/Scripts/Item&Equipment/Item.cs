@@ -758,47 +758,157 @@ public class Item_508 : Item
 
 public class Item_611 : Item
 {
+    //获得本道具后，处于装备状态的所有怪谈装备当前耐久度及其上限+1
     public override void Use()
     {
-       
+       foreach(var equipment in EquipmentManager.Instance.equipmentList)
+       {
+            if(equipment.isEquipped)
+            {
+                equipment.currentDuration++;
+                equipment.maxDuration++;
+
+                //应该还需要更新Equipment的UI；
+                EventHub.Instance.EventTrigger("UpdateEquipmentUI", equipment);
+            }
+       }
     }
 }
 public class Item_612 : Item
 {
+    //获得本道具后，处于未装备状态的随机3件装备耐久度及其上限+3
     public override void Use()
     {
-       
+       foreach(var equipment in EquipmentManager.Instance.equipmentList)
+        {
+            if(!equipment.isEquipped)
+            {
+                equipment.currentDuration += 3;
+                equipment.maxDuration += 3;
+
+                //应该还需要更新Equipment的UI；
+                EventHub.Instance.EventTrigger("UpdateEquipmentUI", equipment);
+            }
+        }
     }
+
+
 }
 public class Item_613 : Item
 {
+    //使用后：当前生命值+100，防御+10
     public override void Use()
     {
-       
+        PlayerManager.Instance.player.HP.value += 100;
+        PlayerManager.Instance.player.DEF.value += 100;
     }
+
+
 }
 
 public class Item_614 : Item
 {
+    //使用后：当前灯光值与生命值以及他们的上限+50。
     public override void Use()
     {
-       
+        PlayerManager.Instance.player.LVL.value += 50;
+        PlayerManager.Instance.player.LVL.value_limit += 50;
+        PlayerManager.Instance.player.HP.value += 50;
+        PlayerManager.Instance.player.HP.value_limit += 50;
     }
+
 }
 
 public class Item_615 : Item
 {
+    //持有该道具时：每次战斗胜利后随机获得2件怪谈道具。
     public override void Use()
     {
-       
+        //战斗后调用该事件：
+        EventHub.Instance.AddEventListener("GetRandomTwoItemsAfterBattle", GetRandomTwoItemsAfterBattle);
+    }
+
+    //取消持有的方法：
+    public void Unuse()
+    {
+        EventHub.Instance.RemoveEventListener("GetRandomTwoItemsAfterBattle", GetRandomTwoItemsAfterBattle);
+    }
+
+
+    private void GetRandomTwoItemsAfterBattle()
+    {
+        var dic = LoadManager.Instance.allItems;
+
+        List<int> keys = new List<int>(dic.Keys);
+
+        // 随机打乱
+        for (int i = 0; i < keys.Count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(i, keys.Count);
+            (keys[i], keys[randomIndex]) = (keys[randomIndex], keys[i]);
+        }
+
+        // 抽前两个
+        int key1 = keys[0];
+        int key2 = keys[1];
+
+        ItemManager.Instance.AddItem(key1);
+        ItemManager.Instance.AddItem(key2);
     }
 }
 
 public class Item_616 : Item
 {
+    //持有该道具时：进入下一层关卡以及安全屋后，当前力量/防御/速度以及其上限随机一项属性+10
     public override void Use()
     {
-       
+        //进入关卡 / 安全屋调用；
+        //进入关卡在TestMazeStart中；
+        Debug.Log("Item_616 Used");
+        EventHub.Instance.AddEventListener("RandomBenifit", RandomBenifit);
+    }
+
+    //取消持有的方法：
+    public void Unuse()
+    {
+        EventHub.Instance.RemoveEventListener("RandomBenifit", RandomBenifit);
+    }
+
+    private void RandomBenifit()
+    {
+        Debug.LogWarning("RandomBenifit is triggerd!");
+        int randomNum = UnityEngine.Random.Range(1, 7); // 注意上限是4，不包含4！
+        switch(randomNum){
+            case 1:
+                PlayerManager.Instance.player.STR.value += 10;
+                PlayerManager.Instance.player.STR.value_limit += 10;
+            break;
+                
+            case 2:
+                PlayerManager.Instance.player.SPD.value += 10;
+                PlayerManager.Instance.player.SPD.value_limit += 10;
+            break;
+                    
+            case 3:
+                PlayerManager.Instance.player.DEF.value += 10;
+                PlayerManager.Instance.player.DEF.value_limit += 10;
+            break;
+
+            case 4:
+                PlayerManager.Instance.player.STR.value -= 10;
+                PlayerManager.Instance.player.STR.value_limit -= 10;
+            break;
+                
+            case 5:
+                PlayerManager.Instance.player.SPD.value -= 10;
+                PlayerManager.Instance.player.SPD.value_limit -= 10;
+            break;
+                    
+            case 6:
+                PlayerManager.Instance.player.DEF.value -= 10;
+                PlayerManager.Instance.player.DEF.value_limit -= 10;
+            break;
+        }
     }
 }
 //标识Item的作用属性

@@ -47,12 +47,6 @@ public class TestItem : MonoBehaviour
                     ItemManager.Instance.AddItem(id);
             }
 
-//---------------测试：加入新的可购买道具--------------------------
-
-            // ItemManager.Instance.AddItem(611);
-
-//---------------测试：加入新的可购买道具--------------------------
-
         }
     }
 
