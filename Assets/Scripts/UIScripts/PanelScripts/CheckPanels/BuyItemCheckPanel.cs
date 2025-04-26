@@ -26,8 +26,14 @@ public class BuyItemCheckPanel : BasePanel
             //更新购买Button处的遮罩，位于ChooseBeliefButton中：
             //以及更新对话，位于ChooseBeliefPanel中：
             //两个都被封装在BuyItemCallback这个事件key中：
-            EventHub.Instance.EventTrigger<int>("BuyItemCallback", myItemId);
+
+            //先扣除精神值：
+            PlayerManager.Instance.player.SAN.value -= 20;
+            PlayerManager.Instance.player.DebugInfo();
           
+            //再广播：
+            EventHub.Instance.EventTrigger<int>("BuyItemCallback", myItemId);
+
             UIManager.Instance.HidePanel<BuyItemCheckPanel>();
         });
 

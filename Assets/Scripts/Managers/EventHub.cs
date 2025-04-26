@@ -99,6 +99,12 @@ public class EventHub : SingletonBaseManager<EventHub>
     {
         if (eventDictionary.ContainsKey(eventName))
         {
+            if(eventDictionary == null)
+                Debug.LogWarning("add eventDictionary is null");
+
+            if(function == null)
+                Debug.LogWarning("add function is null");
+
             (eventDictionary[eventName] as EventInfo<T>).action_ += function;  //as父转子实现子类成员委托调用
         }
         else
@@ -196,7 +202,18 @@ public class EventHub : SingletonBaseManager<EventHub>
     }
 
 
+    public void PrintKeys()
+    {
+        foreach(var key in eventDictionary.Keys){
+            Debug.LogWarning(key);
+        }
+    }
+
+
 }
+
+
+
 
 
 

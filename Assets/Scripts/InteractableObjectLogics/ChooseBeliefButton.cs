@@ -13,7 +13,7 @@ public class ChooseBeliefButton : MonoBehaviour
     //消耗精神值Cost文本：
     public TextMeshProUGUI txtSanityCost; 
     //售卖后的遮罩：
-    public GameObject soldMaskObject;
+    public SoldMaskLogic soldMaskScript;
     //图标：
     public Image imgItem;
     //当前售卖的ItemId:
@@ -44,6 +44,12 @@ public class ChooseBeliefButton : MonoBehaviour
         {
             txtSanityCost.color = new Color(0.8f, 0.3f, 0.3f);  //红色字体；
             isSanityEnoughToBuy = false;
+        }
+
+        else
+        {
+            txtSanityCost.color = new Color(0.3f, 0.8f, 0.3f);  // 绿色字体
+            isSanityEnoughToBuy = true;
         }
 
         btnSelf.onClick.AddListener(()=>{
@@ -97,13 +103,29 @@ public class ChooseBeliefButton : MonoBehaviour
 
     private void RefreshMask(int _itemId)
     {
-        Debug.Log($"当前尝试刷新的道具是：{_itemId}");
-        //如果背包中存有该道具，那么就激活蒙版：
-        if(ItemManager.Instance.itemList.Contains(_itemId) && _itemId == myItemId)
+        //如果精神值不足，同时还持有我，那么就是先显示售罄：
+        if(PlayerManager.Instance.player.SAN.value < 20 && ItemManager.Instance.itemList.Contains(_itemId) && _itemId == myItemId)
         {
-            soldMaskObject.gameObject.SetActive(true);
+            soldMaskScript.gameObject.SetActive(true);
+            soldMaskScript.flag = 0;
+        }
+
+        //如果背包中存有该道具，那么就激活蒙版：
+        else if(ItemManager.Instance.itemList.Contains(myItemId))
+        {
+            soldMaskScript.gameObject.SetActive(true);
+            soldMaskScript.flag = 0;
+        }
+
+        //精神值不足，那么就是更新蒙版的显示内容
+        else if(PlayerManager.Instance.player.SAN.value < 20)
+        {
+            soldMaskScript.gameObject.SetActive(true);
+            soldMaskScript.flag = 1;
+            soldMaskScript.SetText("精神值不足");
         }
 
 
+    
     }
 }

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Empty
+  m_text: "\u5DF2\u552E\u7F44"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
   m_sharedMaterial: {fileID: 5724969808464279161, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Empty
+  m_text: "\u5DF2\u552E\u7F44"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
   m_sharedMaterial: {fileID: 5724969808464279161, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
@@ -374,6 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f514bfc06eb97495fbedcfc63f20e01f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtSelf: {fileID: 8304647858623218893}
 --- !u!114 &3206439366291867864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,10 +728,10 @@ RectTransform:
   - {fileID: 6790361281872117473}
   m_Father: {fileID: 8903096475240606870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 675, y: -105}
+  m_SizeDelta: {x: 1350, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8080904072562030469
 CanvasRenderer:
@@ -829,7 +830,7 @@ MonoBehaviour:
   txtItemName: {fileID: 8816746526595485045}
   txtItemDes: {fileID: 957387579567137725}
   txtSanityCost: {fileID: 3260948454984834215}
-  soldMaskObject: {fileID: 8316616295528841753}
+  soldMaskScript: {fileID: 2077498867380188931}
   imgItem: {fileID: 6559085009377503671}
   myItemId: 0
   btnSelf: {fileID: 0}
@@ -2387,10 +2388,10 @@ RectTransform:
   - {fileID: 2486931411829391251}
   m_Father: {fileID: 8903096475240606870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 675, y: -265}
+  m_SizeDelta: {x: 1350, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3057733598183637139
 CanvasRenderer:
@@ -2489,7 +2490,7 @@ MonoBehaviour:
   txtItemName: {fileID: 283092733891037697}
   txtItemDes: {fileID: 811323290332165174}
   txtSanityCost: {fileID: 4556422809558714496}
-  soldMaskObject: {fileID: 1196161828536387279}
+  soldMaskScript: {fileID: 1307504075222269290}
   imgItem: {fileID: 9189962114027199047}
   myItemId: 0
   btnSelf: {fileID: 0}
@@ -2733,6 +2734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f514bfc06eb97495fbedcfc63f20e01f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtSelf: {fileID: 2624385233437479823}
 --- !u!114 &135085405064990838
 MonoBehaviour:
   m_ObjectHideFlags: 0

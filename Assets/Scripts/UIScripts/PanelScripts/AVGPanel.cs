@@ -515,8 +515,7 @@ public enum E_NPCName{
     奈亚拉 = 0,
     优格 = 1,
     莎布 = 2,  
-    莎布妇人 = 3,
-    施耐德太太 = 4,
+    格赫罗斯 = 3,
 }
 
 public enum E_OrderType{

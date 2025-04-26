@@ -134,16 +134,26 @@ public class NPCInteractionPanel : BasePanel
                 txtConversation.text = "祂也给我了不少好东西，来看看吧！";
             break;
             default:    //此处是格赫罗斯
-                txtConversation.text = "......";
+                txtConversation.text = "............";
             break;
         }
 
         isContinueButtonClicked = false;
         yield return new WaitUntil(() => isContinueButtonClicked);
 
-        //进入购买界面：
         UIManager.Instance.HidePanel<NPCInteractionPanel>();
-        UIManager.Instance.ShowPanel<ChooseBeliefPanel>().InitCurrentPanel(_npcName);
+        switch(_npcName){
+            case E_NPCName.奈亚拉:
+            case E_NPCName.优格:
+            case E_NPCName.莎布:
+                //进入购买界面：
+                UIManager.Instance.ShowPanel<ChooseBeliefPanel>().InitCurrentPanel(_npcName);
+            break;
+            default:    //此处是格赫罗斯
+                UIManager.Instance.ShowPanel<DiscardBeliefPanel>();
+            break;
+        }
+       
         yield break;
         
 

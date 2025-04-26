@@ -97,10 +97,8 @@ public class ChooseBeliefPanel : BasePanel
                 btnScript1.Init(615);
                 btnScript2.Init(616);
             break;
-            default:    //此处是格赫罗斯
-                txtConversation.text = "......";
-                // btnScript1.Init(611);
-                // btnScript2.Init(612);
+            default:  
+                Debug.LogWarning("当前的NPC面板显示的NPC不存在");
             break;
         }
 
@@ -124,8 +122,8 @@ public class ChooseBeliefPanel : BasePanel
             case E_NPCName.莎布:
                 txtConversation.text = "希望这些能让你转危为安。";
             break;
-            default:    //此处是格赫罗斯
-                txtConversation.text = "......";
+            default:   
+                Debug.LogWarning("当前的NPC面板显示的NPC不存在");
             break;
         }
     }
