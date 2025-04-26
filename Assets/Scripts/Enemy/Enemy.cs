@@ -15,7 +15,7 @@ public abstract class Enemy
     public float AVO;
     public float HIT;
     public float SPD;
-    public List<Skill> skills = new List<Skill>();
+    public List<EnemySkill> enemySkills = new List<EnemySkill>();
 
     // 敌人在场景内的位置id
     public int positionId;          // 假设存在多个敌人时，能够通过positionId来进行选择并攻击
@@ -29,7 +29,7 @@ public abstract class Enemy
 
     }
 
-    public abstract void Attack(Player player);
+    // public abstract void Attack(Player player);
 
     public void BeHurted(Damage damage)
     {
@@ -46,7 +46,7 @@ public abstract class Enemy
 
 public class Enemy_1001 : Enemy
 {
-    public Enemy_1001(params Skill[] skills)
+    public Enemy_1001(params EnemySkill[] enemySkills)
     {
         id = 1001;
         name = "哥布林";
@@ -59,17 +59,17 @@ public class Enemy_1001 : Enemy
         AVO = 0.2f;
         HIT = 0.3f;
         SPD = 9;
-        foreach (var skl in skills)
+        foreach (var skl in enemySkills)
         {
-            this.skills.Add(skl);
+            this.enemySkills.Add(skl);
         }
     }
 
-    override public void Attack(Player player)    //传入攻击的player实例
-    {
-        Debug.Log("敌人发动攻击！");
-        //将STR属性值转化为 攻击值 
-        float rowDamage = STR * 1f;   //?? 假设伤害倍率就是100% ??
-        EnemyManager.Instance.DamageCalculation(player, this, rowDamage);
-    }
+    //override public void Attack(Player player)    //传入攻击的player实例
+    //{
+    //    Debug.Log("敌人发动攻击！");
+    //    //将STR属性值转化为 攻击值 
+    //    float rowDamage = STR * 1f;   //?? 假设伤害倍率就是100% ??
+    //    EnemyManager.Instance.DamageCalculation(player, this, rowDamage);
+    //}
 }

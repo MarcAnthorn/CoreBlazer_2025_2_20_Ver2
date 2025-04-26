@@ -14,8 +14,10 @@ public class BattleManager : Singleton<BattleManager>
     // public TurnCounter turnCounter;
     // 角色攻击目标
     public int playerTarget;
-    // 角色发动技能
+    // 角色发动的技能id
     public int playerSkill;             // 即点即放：需要将对应技能按键点击设置为 为该字段赋值的功能
+    // 角色使用的道具id
+    public int itemId;
     // 角色行动点
     public int actionPoint;
 
@@ -71,9 +73,22 @@ public class BattleManager : Singleton<BattleManager>
         actionQueue.Enqueue(player);
         for (int i = 0; i < enemies.Count; i++)
         {
-            actionQueue.Enqueue(enemies[i + 1]);
+            actionQueue.Enqueue(enemies[i]);
         }
+        TestBattle.Instance.ViewActionQueue(actionQueue);
 
+        if(player.SPD.value >= enemies[0].SPD)
+        {
+            Debug.Log("角色速度：" + player.SPD.value + "  >=  " + "敌人速度：" + enemies[0].SPD);
+            Debug.Log("角色优先攻击！");
+            EnterPlayerTurn();
+        }
+        else
+        {
+            Debug.Log("角色速度：" + player.SPD.value + "  <  " + "敌人速度：" + enemies[0].SPD);
+            Debug.Log("敌人优先攻击！");
+            EnterEnemyTurn(1);
+        }
     }
 
     // 进入角色回合
@@ -99,14 +114,14 @@ public class BattleManager : Singleton<BattleManager>
 
     private void PlayerAttack()
     {
-        Debug.Log("角色释放技能！");
-        actionPoint--;
+        Debug.Log($"角色释放技能{playerSkill}");
         if(actionPoint == 1 && playerSkill == 1003)
         {
             Debug.Log("角色行动点不足！");
             return;
         }
-        SkillManager.Instance.ReleaseSkill(playerSkill, enemies[playerTarget]);
+        actionPoint--;
+        SkillManager.Instance.ReleaseSkill(playerSkill, enemies[playerTarget - 1]);
         if(playerSkill == 1003)        // 如果释放了某些特殊技能，需要额外扣除一点行动点
         {
             actionPoint--;
@@ -124,7 +139,8 @@ public class BattleManager : Singleton<BattleManager>
 
     private void PlayerUseItem()
     {
-        Debug.Log("角色使用道具！");
+        Debug.Log($"角色使用道具{itemId}");
+        actionPoint--;
         // 调用角色使用道具的方法
 
 
@@ -139,16 +155,6 @@ public class BattleManager : Singleton<BattleManager>
             PlayerAttack();
         else
             PlayerUseItem();
-
-        // 行动点检查
-        if (actionPoint > 0)
-        {
-            Debug.Log($"当前剩余{actionPoint}个行动点!");
-        }
-        else
-        {
-            Debug.Log("当前剩余0个行动点，轮到敌方行动!");
-        }
 
         // 检查敌人状态
         foreach (var e in enemies)
@@ -165,19 +171,33 @@ public class BattleManager : Singleton<BattleManager>
 
             count++;
         }
+
         // 判断游戏状态
         if(enemies.Count == 0)
         {
             GameOver(true);
             return;
         }
+
         // 更新行动队列
         UpdateActionQueue();
+
         // 更新敌人位置
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].positionId = i + 1;
         }
+
+        // 行动点检查
+        if (actionPoint > 0)
+        {
+            Debug.Log($"当前剩余{actionPoint}个行动点!");
+        }
+        else
+        {
+            Debug.Log("当前剩余0个行动点，轮到敌方行动!");
+        }
+
         // 排到队尾
         actionQueue.Enqueue(actionQueue.Dequeue());
     }
@@ -200,8 +220,13 @@ public class BattleManager : Singleton<BattleManager>
     // 进入敌人回合
     public void EnterEnemyTurn(int positionId)
     {
+        int index = positionId - 1;
         Debug.Log("敌人发动攻击！");
-        enemies[positionId].Attack(player);
+        foreach(var s in enemies[index].enemySkills)
+        {
+            s.Use(enemies[index]);
+        }
+        // enemies[positionId].Attack(player);
 
         // 判断游戏状态
         if (player.isDie)
@@ -211,7 +236,7 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         // 更新敌人回合(并做出一些Buff处理)
-        TurnCounter.Instance.UpdateEnemyTurn(positionId);
+        TurnCounter.Instance.UpdateEnemyTurn(index);
 
         // 排到队尾
         actionQueue.Enqueue(actionQueue.Dequeue());
@@ -223,7 +248,7 @@ public class BattleManager : Singleton<BattleManager>
         }
         else
         {
-            EnterEnemyTurn(positionId + 1);
+            EnterEnemyTurn(index + 1);
         }
     }
 
@@ -267,5 +292,21 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 下面是要与Button进行绑定的使用不同道具的方法(Marc应该已经实现了一些道具使用的方法了吧？)
+    // 玩家使用道具1
+    public void UseItem1()
+    {
+        itemId = 1002;
+        PlayerAction(false);
+    }
+
+    // 玩家使用道具2
+    public void UseItem2()
+    {
+        itemId = 1003;
+        PlayerAction(false);
+    }
+
+
+
 
 }
