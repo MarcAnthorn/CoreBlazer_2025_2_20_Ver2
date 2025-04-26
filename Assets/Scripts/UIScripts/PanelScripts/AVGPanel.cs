@@ -34,10 +34,12 @@ public class AVGPanel : BasePanel
     private bool isChoiceMade = false;
     //是否准备进行选项的处理（在监测到下一行是中断指令的时候）
     private bool isReadyToUpdateOptions = false;
+    private bool isTimerDone = false;
 
     //当前AVG演出是否结束：
     //入股结束，下一次点击就会退出AVG交互：
     private bool isAvgOver = false;
+    private bool isErased = false;
 
     public string currentBackgroundName;
     public string bgmName;
@@ -128,10 +130,23 @@ public class AVGPanel : BasePanel
         while(true)
         {    
             E_OrderType type = currentOrder.orderType;
+            isErased = false;
+            isTimerDone = false;
 
             //当前指令是：普通指令 / 选项后对话指令
             if(type == E_OrderType.Common)
             {
+                LeanTween.delayedCall(0.3f, () => {
+                    isTimerDone = true;
+                });
+                //处理NPC消失的逻辑：
+                //直接复用npcName这个变量：
+                string npcName = currentOrder.disappearNPCName.ToString();
+                if(currentOrder.disappearNPCName != "0")
+                {
+                    EraseNPC(npcName);
+                }
+
                 //处理背景：
                 currentBackgroundName = currentOrder.backgroundName;
                 if(currentBackgroundName != "0")
@@ -146,7 +161,7 @@ public class AVGPanel : BasePanel
                 //这个需要分情况，
                 //如果是NPC已经在场景中存在，那么就是移动位置
                 //如果不存在，才是浮现的效果出现在对应的位置；         
-                string npcName = currentOrder.showUpNPCName.ToString();
+                npcName = currentOrder.showUpNPCName.ToString();
 
                 //当前要显示的NPC名称，用于加载npc美术资源；
                 string loadName;
@@ -218,15 +233,6 @@ public class AVGPanel : BasePanel
                 //如果存在差分指令，那么就是处理差分：
                 //将currentNPCDic中的NPCGameObject替换成当前的立绘：
 
-                //处理NPC消失的逻辑：
-                //直接复用npcName这个变量：
-                npcName = currentOrder.disappearNPCName.ToString();
-                if(currentOrder.disappearNPCName != "0")
-                {
-                    EraseNPC(npcName);
-                }
-
-
                 npcName = currentOrder.conversationNPCName.ToString();
                 //处理NPC立绘动效的逻辑：
                 if(currentOrder.effectId != 0 && currentOrder.conversationNPCName != "0")
@@ -244,7 +250,8 @@ public class AVGPanel : BasePanel
 
                     //等待玩家点击后再进行：
                     isContinueButtonClicked = false;    //等待；
-                    yield return new WaitUntil(() => isContinueButtonClicked);
+                    yield return new WaitUntil(() => isContinueButtonClicked && isTimerDone);
+                    isContinueButtonClicked = false;    //等待；
                 }
 
                 else if(currentOrder.conversationNPCName == "0" && currentOrder.orderText != "0")
@@ -252,7 +259,8 @@ public class AVGPanel : BasePanel
                     ConverseWithNPC("", currentOrder.orderText);
                     //等待玩家点击后再进行：
                     isContinueButtonClicked = false;    //等待；
-                    yield return new WaitUntil(() => isContinueButtonClicked);
+                    yield return new WaitUntil(() => isContinueButtonClicked && isTimerDone);
+                    isContinueButtonClicked = false;    //等待；
                 }
 
                 //如果对话者名字为空，同时无对话文本，那么就是过场order（即：处理人物出现 / 消失等等的order）
@@ -386,10 +394,11 @@ public class AVGPanel : BasePanel
         currentNPCDic.Remove(name);
 
         Image img = nowRemoveNPC.gameObject.GetComponent<Image>();
-        float moveDuration = 0.2f;
+        float moveDuration = 0.1f;
         LeanTween.alpha(img.rectTransform, 0, moveDuration)
             .setOnComplete(()=>{
                 npcObjectQueue.Enqueue(nowRemoveNPC);
+                isErased = true;
             });     
     }
 
@@ -409,12 +418,12 @@ public class AVGPanel : BasePanel
             if(key != name)
             {
                 //如果不是当前对话的NPC，则调暗Image；
-                Darkenimg(key);
+                DarkenImage(key);
             }
             else
             {
                 //如果是当前对话的NPC，则调整Image维正常亮度；
-                Lightenimg(key);
+                LightenImage(key);
             }
         }
 
@@ -422,7 +431,7 @@ public class AVGPanel : BasePanel
 
     //处理NPC的Image暗化的逻辑：参数是NPC名字
     //用于在对话的时候，将所有不是当前对话的Image调暗；
-    private void Darkenimg(string name)
+    private void DarkenImage(string name)
     {
         Image targetImage = currentNPCDic[name].GetComponent<Image>();
         if(!darkenColorDic.ContainsKey(name))
@@ -441,7 +450,7 @@ public class AVGPanel : BasePanel
     }
 
     //恢复亮度的方法：
-    private void Lightenimg(string name)
+    private void LightenImage(string name)
     {
         Image targetImage = currentNPCDic[name].GetComponent<Image>();
         targetImage.color = orginalColorDic[name];  // 应用原先的的颜色
@@ -454,7 +463,7 @@ public class AVGPanel : BasePanel
         {
             case 1:
                 //抖动
-                ShakeUIObject(npc);
+                ShakeUIObject(npcName, npc);
             break;
             case 2:
                 //镜像
@@ -463,7 +472,7 @@ public class AVGPanel : BasePanel
         }
     }
 
-    public static void ShakeUIObject(GameObject uiObject, float duration = 0.3f, float magnitude = 15f)
+    public void ShakeUIObject(string npcName, GameObject uiObject, float duration = 0.2f, float magnitude = 15f)
     {
         if (uiObject == null) return;
 
@@ -481,6 +490,12 @@ public class AVGPanel : BasePanel
         }).setOnComplete(() =>
         {
             rectTransform.anchoredPosition = originalPos;
+            if(!isErased && currentOrder.disappearNPCName != "0")
+            {
+                //如果erase没有执行成功，那么就再执行一次：
+                EraseNPC(npcName);
+                isErased = true;
+            }
         });
     }
 
