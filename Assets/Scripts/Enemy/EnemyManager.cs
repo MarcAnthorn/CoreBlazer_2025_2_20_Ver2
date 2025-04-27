@@ -5,10 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
+
+
+//该脚本中的enemies已弃用；
 public class EnemyManager : Singleton<EnemyManager>
 {
     //所有的敌方buff存在于Enemy中的buffs中；
-    public Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();   // <positionId, enemy>
+    // public Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();   // <positionId, enemy>
 
     // Start is called before the first frame update
     void Start()
@@ -174,7 +177,7 @@ public class EnemyManager : Singleton<EnemyManager>
         // 在这里可以添加一些对伤害的检测(比如检测是否是暴击伤害) + 局内效果实现
 
 
-        enemies[id].BeHurted(damage);
+        BattleManager.Instance.enemies[id].BeHurted(damage);
     }
 
     // 敌人技能定义处

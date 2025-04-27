@@ -72,4 +72,5 @@ public class Enemy_1001 : Enemy
     //    float rowDamage = STR * 1f;   //?? 假设伤害倍率就是100% ??
     //    EnemyManager.Instance.DamageCalculation(player, this, rowDamage);
     //}
+
 }

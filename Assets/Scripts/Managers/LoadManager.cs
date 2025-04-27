@@ -248,7 +248,6 @@ public class LoadManager : Singleton<LoadManager>
                         Item.reObtain = false;
 
                     Item.maxLimit = int.Parse(values[9]);               //J列
-                    Debug.Log(Item.maxLimit);
 
                     if (values[10] == "1")                              //K列
                         Item.isPermanent = true;

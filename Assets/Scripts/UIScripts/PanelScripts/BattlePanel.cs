@@ -60,6 +60,59 @@ public class BattlePanel : BasePanel
                BattleManager.Instance.isRoundEndTriggered = true;
 
           });
+
+//----------------测试战斗：----------------------------
+          TestBattle();
+//----------------测试战斗：----------------------------
+          
+          //初步更新UI：
+          UpdateBattlePanelUI();
+     }
+
+
+
+     private void TestBattle()
+     {
+          PlayerManager.Instance.InitPlayer();
+          EnemySkill[] enemySkills = new EnemySkill[] { new EnemySkill_1001(), new EnemySkill_1002() };
+
+          Enemy enemy = new Enemy_1001(enemySkills);
+
+          //尝试给敌人加buff：
+          //中毒：
+          BattleBuff buff = new BattleBuff_1001();
+          BattleBuff buff1 = new BattleBuff_1001();
+
+
+
+          //易伤：
+          BattleBuff buff2 = new BattleBuff_1002();
+          BattleBuff buff3 = new BattleBuff_1002();
+          
+          Enemy[] enemies = new Enemy[] { enemy };
+
+          //开始战斗：
+          BattleManager.Instance.BattleInit(PlayerManager.Instance.player, enemies);
+
+          //先加敌人再加buff，不然会BattleManager.Instance.enemies越界：
+          //添加buff：
+          TurnCounter.Instance.AddEnemyBuff(buff);
+          TurnCounter.Instance.AddEnemyBuff(buff1);
+          TurnCounter.Instance.AddEnemyBuff(buff2);
+          TurnCounter.Instance.AddEnemyBuff(buff3);
+
+          //玩家buff：
+          BattleBuff buff4 = new BattleBuff_1001();
+          BattleBuff buff5 = new BattleBuff_1001();
+
+          TurnCounter.Instance.AddPlayerBuff(buff4);
+          TurnCounter.Instance.AddPlayerBuff(buff5);
+
+
+
+
+          BattleManager.Instance.BattleStart();
+
      }
 
      void OnDestroy()
@@ -152,9 +205,9 @@ public class BattlePanel : BasePanel
      public void UpdateBattlePanelUI()
      {
           //获取当前的敌人：
-          var dic = EnemyManager.Instance.enemies;
+          var list = BattleManager.Instance.enemies;
           Enemy enemy = null;
-          foreach(var val in dic.Values)
+          foreach(var val in list)
           {
                enemy = val;
           }
@@ -166,16 +219,40 @@ public class BattlePanel : BasePanel
           sliderEnemyHealth.value = enemy.HP / enemy.HP_limit;
 
           //可能还有buff的显示更新；
-          foreach(var playerBuff in TurnCounter.Instance.PlayerBuffs)
+          foreach(var playerBuff in TurnCounter.Instance.playerBuffs)
           {
+               Debug.LogWarning($"尝试更新我方buff：{playerBuff.name}");
+
+
                //此处是我方的buff；
+               //如果没有显示过，那么就执行游戏对象的实例化：
+               if(!playerBuff.isShownOnUI)
+               {
+                    Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), playerBuffContainer, false);
+               }
+
+               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
+               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
+               EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", playerBuff);
+
           }
 
           //敌方buff的更新:
-
           foreach(var enemyBuff in enemy.buffs)
           {
+               Debug.LogWarning($"尝试更新敌方buff：{enemyBuff.name}");
+
+
                //此处是敌方的buff：
+               //如果没有显示过，那么就执行游戏对象的实例化：
+               if(!enemyBuff.isShownOnUI)
+               {
+                    Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), enemyBuffContainer, false);
+               }
+
+               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
+               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
+               EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", enemyBuff);
           }
           
           //以及剩余行动点数、最大行动点数的更新：

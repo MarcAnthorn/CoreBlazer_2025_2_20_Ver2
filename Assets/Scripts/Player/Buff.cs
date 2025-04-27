@@ -72,21 +72,6 @@ public class Buff
     public Func<float> buffFunction;        //用作其他特殊处理(比如破墙)
     public bool isTrigger;                  //若满足触发条件 或 主动触发 设置为true(配合buffFunction使用)
 
-//----------------------------Marc添加字段----------------------------------------
-    //buff的图标路径（用于在战斗面板显示）：
-    public string buffIconPath;
-
-    //当前叠加层数：
-    public int overlyingLayerCount;
-
-    //当前剩余生效次数（可能不一定是回合数）
-    public int remainingLayerCount;
-
-    //buff文本描述：
-    public string buffDescriptionText;
-
-
-//----------------------------Marc添加字段----------------------------------------
 
     public Buff(UseCase useCase, BuffType buffType, CalculationType calculationType, float extraChange = 0f)
     {

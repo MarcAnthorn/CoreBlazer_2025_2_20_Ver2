@@ -15,7 +15,7 @@ public class TurnCounter : Singleton<TurnCounter>
     private List<int> enemyTurns = new List<int>();
 
     //当前的玩家buff：(原先为什么是private,我更新为了public,我在BattlePanel中需要访问这个Buff列表)
-    public List<BattleBuff> PlayerBuffs = new List<BattleBuff>();
+    public List<BattleBuff> playerBuffs = new List<BattleBuff>();
 
     // 更新回合计数器
     public void InitTurnCounter(params Enemy[] enemies)
@@ -32,7 +32,7 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         playerTurn = -1;
         enemyTurns.Clear();
-        PlayerBuffs.Clear();
+        playerBuffs.Clear();
     }
 
     
@@ -42,36 +42,43 @@ public class TurnCounter : Singleton<TurnCounter>
         DealWithPlayerBuff(TriggerTiming.AfterTurn);
 
         playerTurn++;
-        int n = PlayerBuffs.Count;
+        int n = playerBuffs.Count;
         bool cleanBattleBuff_1001 = false;
         for (int i = 0; i < n; i++)
         {
-            PlayerBuffs[i].lastTurns--;
-            if (PlayerBuffs[i].isEnd)
+            playerBuffs[i].lastTurns--;
+
+            Debug.Log($"buff:{playerBuffs[i]} current left rounds:{playerBuffs[i].lastTurns}, index is {i}, now i is{i}");
+
+            if (playerBuffs[i].isEnd)
             {
-                RemovePlayerBuff(PlayerBuffs[i]);
-                if (PlayerBuffs[i].GetType() == typeof(BattleBuff_1001) && !cleanBattleBuff_1001)
+                EventHub.Instance.EventTrigger("UpdateBuffUI", playerBuffs[i]);
+                BattleBuff _buff = playerBuffs[i];
+
+                RemovePlayerBuff(playerBuffs[i]);
+                i--; // 在这里立刻执行 i--，不然还是会越界（上界）
+
+                if (_buff.GetType() == typeof(BattleBuff_1001) && !cleanBattleBuff_1001)
                 {
-                    for (int j = 0; j < n; j++)
+                    cleanBattleBuff_1001 = true; // 少了这个变量控制，会无限删，补上！
+                    for (int j = 0; j < playerBuffs.Count; j++)
                     {
-                        if (PlayerBuffs[i].GetType() == typeof(BattleBuff_1001))
+                        if (playerBuffs[j].GetType() == typeof(BattleBuff_1001))
                         {
-                            if (j < i)
-                            {
-                                i--;
-                            }
-                            RemovePlayerBuff(PlayerBuffs[j]);
-                            j--;
-                                
-                            n = PlayerBuffs.Count;        // buff数量更新
+                            RemovePlayerBuff(playerBuffs[j]);
+                            j--; // 删除元素后，j--，防止跳过下一个
                         }
                     }
                 }
-                i--;
-
-                n = PlayerBuffs.Count;        // buff数量更新
+                
             }
+            n = playerBuffs.Count;        // buff数量更新
+            
         }
+
+        //更新Buff的回调函数：(位于BattlePanel)
+        Debug.LogWarning("player's buff is updated");
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
     }
 
@@ -87,38 +94,57 @@ public class TurnCounter : Singleton<TurnCounter>
         for (int i = 0; i < n; i++)
         {
             enemy.buffs[i].lastTurns--;
+
+            Debug.Log($"buff:{enemy.buffs[i]} current left rounds:{enemy.buffs[i].lastTurns}, index is {i}, now i is{i}");
+
             if (enemy.buffs[i].isEnd)
             {
-                RemoveEnemyBuff(enemy.buffs[i], positionId);
-                if (enemy.buffs[i].GetType() == typeof(BattleBuff_1001) && !cleanBattleBuff_1001)
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        if (enemy.buffs[i].GetType() == typeof(BattleBuff_1001))
-                        {
-                            if (j < i)
-                            {
-                                i--;
-                            }
-                            RemoveEnemyBuff(enemy.buffs[j], positionId);
-                            j--;
+                EventHub.Instance.EventTrigger("UpdateBuffUI",  enemy.buffs[i]);
+                BattleBuff _buff = enemy.buffs[i];
 
-                            n = enemy.buffs.Count;        // buff数量更新
+                RemoveEnemyBuff(enemy.buffs[i], positionId);
+                i--; // 在这里立刻执行 i--，不然还是会越界（上界）
+
+                if (_buff.GetType() == typeof(BattleBuff_1001) && !cleanBattleBuff_1001)
+                {
+                    cleanBattleBuff_1001 = true; // 少了这个变量控制，会无限删，补上！
+                    for (int j = 0; j < enemy.buffs.Count; j++)
+                    {
+                        if (enemy.buffs[j].GetType() == typeof(BattleBuff_1001))
+                        {
+                            RemoveEnemyBuff(enemy.buffs[j], positionId);
+                            j--; // 删除元素后，j--，防止跳过下一个
                         }
                     }
                 }
-                i--;
-
-                n = enemy.buffs.Count;        // buff数量更新
             }
+
+            n =  enemy.buffs.Count; //更新n，不然i会越界；
         }
+
+        //更新Buff的回调函数：
+        Debug.LogWarning("enemy's buff is updated");
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
     }
 
     // 添加角色Buff
     public void AddPlayerBuff(BattleBuff buff)
     {
-        PlayerBuffs.Add(buff);
+        bool isAddLock = false;
+        Type itemType = buff.GetType();
+        foreach (var existingItem in playerBuffs)
+        {
+            if (existingItem.GetType() == itemType)
+            {
+                Debug.Log($"已经有同类 {itemType.Name}，不添加buff");
+                isAddLock = true;
+            }
+        }
+            
+        if(!isAddLock)
+            playerBuffs.Add(buff);
+
         if (buff.GetOverlyingCount() < buff.overlyingLimit)
         {
             buff.OverlyingCountPlus(1);
@@ -130,9 +156,23 @@ public class TurnCounter : Singleton<TurnCounter>
     }
 
     // 添加敌人Buff
-    public void AddEnemyBuff(BattleBuff buff, int positionId)
+    public void AddEnemyBuff(BattleBuff buff, int positionId = 0)
     {
-        BattleManager.Instance.enemies[positionId].buffs.Add(buff);
+        var list = BattleManager.Instance.enemies[positionId].buffs;
+        bool isAddLock = false;
+        Type itemType = buff.GetType();
+        foreach (var existingItem in list)
+        {
+            if (existingItem.GetType() == itemType)
+            {
+                Debug.Log($"已经有同类 {itemType.Name}，不添加buff");
+                isAddLock = true;
+            }
+        }
+            
+        if(!isAddLock)
+            BattleManager.Instance.enemies[positionId].buffs.Add(buff);
+
         if (buff.GetOverlyingCount() < buff.overlyingLimit)
         {
             buff.OverlyingCountPlus(1);
@@ -146,7 +186,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 移除角色Buff
     public void RemovePlayerBuff(BattleBuff buff)
     {
-        PlayerBuffs.Remove(buff);
+        playerBuffs.Remove(buff);
 
         buff.OverlyingCountPlus(-1);
     }
@@ -154,7 +194,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 移除敌人Buff
     public void RemoveEnemyBuff(BattleBuff buff, int positionId)
     {
-        BattleManager.Instance.enemies[positionId].buffs.Add(buff);
+        BattleManager.Instance.enemies[positionId].buffs.Remove(buff);
 
         buff.OverlyingCountPlus(-1);
     }
@@ -162,7 +202,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 结算玩家Buff
     private void DealWithPlayerBuff(TriggerTiming triggerTiming)
     {
-        foreach(var buff in PlayerBuffs)
+        foreach(var buff in playerBuffs)
         {
             if(buff.triggerTiming == triggerTiming)
             {
@@ -188,7 +228,7 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
-        foreach (var buff in PlayerBuffs)
+        foreach (var buff in playerBuffs)
         {
             calType = buff.calculationType;
             if (buff.triggerTiming == triggerTiming)

@@ -90,7 +90,8 @@ public class BattleManager : Singleton<BattleManager>
         }
 
 //----------报错注释：（Marc）---------------------------------------------------------------
-        // TestBattle.Instance.ViewActionQueue(actionQueue);
+        //TestBattle更改为Mono,该方法ViewActionQueue被设置为static;
+        TestBattle.ViewActionQueue(actionQueue);
 
         if(player.SPD.value >= enemies[0].SPD)
         {
@@ -173,7 +174,8 @@ public class BattleManager : Singleton<BattleManager>
     private void PlayerAction(bool isAttack)
     {
 //----------------使用句柄停止协程：（Marc）--------------------------------
-        StopCoroutine(roundCoroutine);
+        if(roundCoroutine != null)
+            StopCoroutine(roundCoroutine);
 
         if (isAttack)
             PlayerAttack();
@@ -256,8 +258,13 @@ public class BattleManager : Singleton<BattleManager>
     // 按下结束键则代表角色主动结束该回合
     public void ExitPlayerTurn()
     {
+        Debug.Log("Exit player's turn");
         // 更新角色回合(并做出一些Buff处理)
         TurnCounter.Instance.UpdatePlayerTurn();
+        
+        // 排到队尾
+        actionQueue.Enqueue(actionQueue.Dequeue());
+
         // 判断游戏状态
         if (player.isDie)
         {

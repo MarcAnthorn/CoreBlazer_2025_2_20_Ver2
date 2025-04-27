@@ -25,16 +25,12 @@ public class BuffCheckPanel : BasePanel
     }
 
     //初始化内部显示的方法：
-    public void InitPanel(Buff _buff)
+    public void InitPanel(BattleBuff _buff)
     {
         imgBuff.sprite = Resources.Load<Sprite>(_buff.buffIconPath);
-        txtRemainingLayerCount.text = _buff.remainingLayerCount.ToString();
-        txtOverlyingLayerCount.text = _buff.overlyingLayerCount.ToString();
+        txtRemainingLayerCount.text = _buff.lastTurns.ToString();
+        txtOverlyingLayerCount.text = _buff.GetOverlyingCount().ToString();
         txtBuffDescription.text = _buff.buffDescriptionText;
     }
-
-    
-
-
 
 }

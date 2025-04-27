@@ -22,7 +22,7 @@ public class ItemManager : Singleton<ItemManager>
 
     public void AddItem(int id)
     {
-        Debug.Log($"Try Add Item, id is{id}");
+        // Debug.Log($"Try Add Item, id is{id}");
         
         if(itemList.Contains(id))
         {
