@@ -78,6 +78,11 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 // 造成伤害之前进行一些加成计算
                 dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDamage, dmg.damage);
+
+                //结算出的对玩家的伤害
+                Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");
+
+
                 //调用玩家受击方法
                 PlayerManager.Instance.player.BeHurted(dmg);
             }

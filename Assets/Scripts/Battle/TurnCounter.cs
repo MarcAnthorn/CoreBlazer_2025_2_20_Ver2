@@ -9,7 +9,9 @@ using UnityEngine;
 // 2.管理战斗回合中的Buff和dot伤害结算
 public class TurnCounter : Singleton<TurnCounter>
 {
+    //玩家回合计数：
     private int playerTurn;
+
     private List<int> enemyTurns = new List<int>();
     private List<BattleBuff> PlayerBuffs = new List<BattleBuff>();
 
