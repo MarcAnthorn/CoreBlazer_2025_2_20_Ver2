@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -173,6 +174,25 @@ public class EnemyManager : Singleton<EnemyManager>
 
 
         enemies[id].BeHurted(damage);
+    }
+
+    // 敌人技能定义处
+    // 拳打脚踢
+    public void EnemySkill_1001(Enemy enemy)
+    {
+        Debug.Log("敌人发动 拳打脚踢！");
+        //将STR属性值转化为 攻击值 
+        float rowDamage = enemy.STR * 1f;   //?? 假设伤害倍率就是100% ??
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
+    }
+
+    // 毒针
+    public void EnemySkill_1002(Enemy enemy)
+    {
+        Debug.Log("敌人发动 毒针！");
+        //将STR属性值转化为 攻击值 
+        float rowDamage = enemy.STR * 0.2f;   //?? 假设伤害倍率就是20% ??
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
     }
 
 }
