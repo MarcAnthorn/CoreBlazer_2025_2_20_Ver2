@@ -14,8 +14,8 @@ public class TurnCounter : Singleton<TurnCounter>
 
     private List<int> enemyTurns = new List<int>();
 
-    //当前的玩家buff：
-    private List<BattleBuff> PlayerBuffs = new List<BattleBuff>();
+    //当前的玩家buff：(原先为什么是private,我更新为了public,我在BattlePanel中需要访问这个Buff列表)
+    public List<BattleBuff> PlayerBuffs = new List<BattleBuff>();
 
     // 更新回合计数器
     public void InitTurnCounter(params Enemy[] enemies)

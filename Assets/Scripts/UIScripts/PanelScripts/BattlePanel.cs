@@ -58,7 +58,7 @@ public class BattlePanel : BasePanel
                
                //触发BattleManager中的bool标识，让回合协程继续：
                BattleManager.Instance.isRoundEndTriggered = true;
-               
+
           });
      }
 
@@ -148,18 +148,39 @@ public class BattlePanel : BasePanel
 
 
      //BattlePanel的UI更新委托，会加入UpdateAllUIElements中；
+     //在对应战斗内容（使用技能、回合结算等）结束之后就会调用：
      public void UpdateBattlePanelUI()
      {
+          //获取当前的敌人：
+          var dic = EnemyManager.Instance.enemies;
+          Enemy enemy = null;
+          foreach(var val in dic.Values)
+          {
+               enemy = val;
+          }
+
           //更新Sliders；
           sliderPlayerHealth.value = PlayerManager.Instance.player.HP.value /  PlayerManager.Instance.player.HP.value_limit;
 
-          //敌人的Slider暂时不知道如何更新：
+          //敌人的Slider：
+          sliderEnemyHealth.value = enemy.HP / enemy.HP_limit;
 
           //可能还有buff的显示更新；
+          foreach(var playerBuff in TurnCounter.Instance.PlayerBuffs)
+          {
+               //此处是我方的buff；
+          }
+
+          //敌方buff的更新:
+
+          foreach(var enemyBuff in enemy.buffs)
+          {
+               //此处是敌方的buff：
+          }
           
           //以及剩余行动点数、最大行动点数的更新：
-          // txtLeftCost.text = ;
-          // txtMaxCost.text = ;
+          txtLeftCost.text = BattleManager.Instance.actionPoint.ToString();
+          txtMaxCost.text = BattleManager.Instance.actionPointMax.ToString();
      }
 
 }

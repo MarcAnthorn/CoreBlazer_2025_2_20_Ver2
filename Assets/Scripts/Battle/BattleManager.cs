@@ -21,6 +21,9 @@ public class BattleManager : Singleton<BattleManager>
     // 角色行动点
     public int actionPoint;
 
+//----------------角色最大行动点（Marc添加）--------------------------------
+    public int actionPointMax;
+
     //是否点击结束回合的bool标识：
     public bool isRoundEndTriggered = false;
 
@@ -41,6 +44,9 @@ public class BattleManager : Singleton<BattleManager>
         // 初始化回合计数器
         TurnCounter.Instance.InitTurnCounter(enemies);
         roundCoroutine = null;
+
+ //----------------------初始化最大行动点是3:(Marc)-----------------------------------
+        actionPointMax = 3;
     }
 
     // 角色攻击动画(假设有)
@@ -83,8 +89,8 @@ public class BattleManager : Singleton<BattleManager>
             actionQueue.Enqueue(enemies[i]);
         }
 
-
-        TestBattle.Instance.ViewActionQueue(actionQueue);
+//----------报错注释：（Marc）---------------------------------------------------------------
+        // TestBattle.Instance.ViewActionQueue(actionQueue);
 
         if(player.SPD.value >= enemies[0].SPD)
         {
@@ -105,7 +111,10 @@ public class BattleManager : Singleton<BattleManager>
     {
         playerTarget = 1;
         playerSkill = 1002;
-        actionPoint = 3;
+    
+//----------------更改（Marc）：------------------------------------------------
+        // actionPoint = 3;
+        actionPoint = actionPointMax;
 
         roundCoroutine = StartCoroutine(InPlayerTurn());
     }
@@ -113,13 +122,15 @@ public class BattleManager : Singleton<BattleManager>
     // 表示现在正处于角色阶段
     IEnumerator InPlayerTurn()
     {
+//----------------协程变动：（原先的逻辑有问题）------------------------------------------------
         Debug.Log("等待玩家行动...");
         isRoundEndTriggered = false;
         
         //外部通过触发isRoundEndTriggered的方式让协程继续：
         yield return new WaitUntil(() => isRoundEndTriggered);
 
-//--------------Marc添加内容-----------------------------------
+
+//--------------Marc添加内容---------------------------------------------------
 
         ExitPlayerTurn();
     }
@@ -161,7 +172,7 @@ public class BattleManager : Singleton<BattleManager>
     // 解释：在方法EnterPlayerTurn()与方法ExitPlayerTurn()中间进行 敌人选择，技能选择等行动
     private void PlayerAction(bool isAttack)
     {
-        //使用句柄停止协程：
+//----------------使用句柄停止协程：（Marc）--------------------------------
         StopCoroutine(roundCoroutine);
 
         if (isAttack)
@@ -170,7 +181,7 @@ public class BattleManager : Singleton<BattleManager>
             PlayerUseItem();
 
         // // 检查敌人状态
-        // 这个写法会导致迭代器失效（边遍历边移除元素）
+// ----------------这个写法会导致迭代器失效（边遍历边移除元素，Marc）--------------------------------
         // foreach (var e in enemies)
         // {
         //     int count = 1;      // 用于执行一些范围伤害判定(如果有)
@@ -186,6 +197,7 @@ public class BattleManager : Singleton<BattleManager>
         //     count++;
         // }
 
+//----------------更新到不会失效的迭代器------------------------------------------------
         // 检查敌人状态
         List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
 
@@ -206,6 +218,7 @@ public class BattleManager : Singleton<BattleManager>
 
         deadEnemies.Clear();
 
+//--------------------------------------------------------------------------------
 
 
         // 判断游戏状态
@@ -308,9 +321,10 @@ public class BattleManager : Singleton<BattleManager>
         // 下面接奖励结算界面
 
 
-        //调整当前玩家的playerSceneIndex
+//----------------调整当前玩家的playerSceneIndex（Marc添加）------------------------------------------------
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
 
+ 
     }
 
     // 下面是要与Button进行绑定的释放不同技能的方法
