@@ -7,6 +7,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    //所有的敌方buff存在于Enemy中的buffs中；
     public Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();   // <positionId, enemy>
 
     // Start is called before the first frame update

@@ -21,6 +21,12 @@ public class BattleManager : Singleton<BattleManager>
     // 角色行动点
     public int actionPoint;
 
+    //是否点击结束回合的bool标识：
+    public bool isRoundEndTriggered = false;
+
+    //协程句柄：
+    private Coroutine roundCoroutine = null;
+
     // 初始化战斗
     // 在战斗开始之前调用；
     public void BattleInit(Player player, params Enemy[] enemies)
@@ -34,6 +40,7 @@ public class BattleManager : Singleton<BattleManager>
 
         // 初始化回合计数器
         TurnCounter.Instance.InitTurnCounter(enemies);
+        roundCoroutine = null;
     }
 
     // 角色攻击动画(假设有)
@@ -75,6 +82,8 @@ public class BattleManager : Singleton<BattleManager>
         {
             actionQueue.Enqueue(enemies[i]);
         }
+
+
         TestBattle.Instance.ViewActionQueue(actionQueue);
 
         if(player.SPD.value >= enemies[0].SPD)
@@ -98,18 +107,21 @@ public class BattleManager : Singleton<BattleManager>
         playerSkill = 1002;
         actionPoint = 3;
 
-        StartCoroutine(InPlayerTurn());
+        roundCoroutine = StartCoroutine(InPlayerTurn());
     }
 
     // 表示现在正处于角色阶段
     IEnumerator InPlayerTurn()
     {
-        while (true)
-        {
-            Debug.Log("等待玩家行动...");
+        Debug.Log("等待玩家行动...");
+        isRoundEndTriggered = false;
+        
+        //外部通过触发isRoundEndTriggered的方式让协程继续：
+        yield return new WaitUntil(() => isRoundEndTriggered);
 
-            yield return new WaitForSeconds(3f);
-        }
+//--------------Marc添加内容-----------------------------------
+
+        ExitPlayerTurn();
     }
 
     private void PlayerAttack()
@@ -149,28 +161,52 @@ public class BattleManager : Singleton<BattleManager>
     // 解释：在方法EnterPlayerTurn()与方法ExitPlayerTurn()中间进行 敌人选择，技能选择等行动
     private void PlayerAction(bool isAttack)
     {
-        StopCoroutine(InPlayerTurn());
+        //使用句柄停止协程：
+        StopCoroutine(roundCoroutine);
 
         if (isAttack)
             PlayerAttack();
         else
             PlayerUseItem();
 
+        // // 检查敌人状态
+        // 这个写法会导致迭代器失效（边遍历边移除元素）
+        // foreach (var e in enemies)
+        // {
+        //     int count = 1;      // 用于执行一些范围伤害判定(如果有)
+
+        //     // 进行一些判断
+        //     if (e.isDead)
+        //     {
+        //         enemies.Remove(e);
+        //         // 敌人消失动画
+        //         e.DieAnimation();
+        //     }
+
+        //     count++;
+        // }
+
         // 检查敌人状态
+        List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
+
         foreach (var e in enemies)
         {
-            int count = 1;      // 用于执行一些范围伤害判定(如果有)
-
-            // 进行一些判断
             if (e.isDead)
             {
-                enemies.Remove(e);
-                // 敌人消失动画
-                e.DieAnimation();
+                deadEnemies.Add(e);   // 先记下来
+                e.DieAnimation();     // 触发死亡动画
             }
-
-            count++;
         }
+
+        // 循环结束后统一移除
+        foreach (var dead in deadEnemies)
+        {
+            enemies.Remove(dead);
+        }
+
+        deadEnemies.Clear();
+
+
 
         // 判断游戏状态
         if(enemies.Count == 0)
@@ -178,6 +214,7 @@ public class BattleManager : Singleton<BattleManager>
             GameOver(true);
             return;
         }
+
 
         // 更新行动队列
         UpdateActionQueue();

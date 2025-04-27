@@ -13,6 +13,8 @@ public class TurnCounter : Singleton<TurnCounter>
     private int playerTurn;
 
     private List<int> enemyTurns = new List<int>();
+
+    //当前的玩家buff：
     private List<BattleBuff> PlayerBuffs = new List<BattleBuff>();
 
     // 更新回合计数器

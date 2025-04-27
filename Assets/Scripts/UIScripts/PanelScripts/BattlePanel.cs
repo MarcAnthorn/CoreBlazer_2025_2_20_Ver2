@@ -29,12 +29,15 @@ public class BattlePanel : BasePanel
     //管理插槽的List：
     public List<EquipmentSlot> equipmentSlotList = new List<EquipmentSlot>();
 
-    protected override void Awake()
-    {
-        EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
-        EventHub.Instance.AddEventListener<Equipment>("UnequipTarget", UnequipTarget);
-    }
-    protected override void Init()
+     protected override void Awake()
+     {
+          EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
+          EventHub.Instance.AddEventListener<Equipment>("UnequipTarget", UnequipTarget);
+
+          //更新BattlePanel UI的事件注册：     
+          EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
+     }
+     protected override void Init()
      {
           //将对应的Slot脚本加入容器：
           equipmentSlotList.Add(equipmentSlot1);
@@ -52,20 +55,25 @@ public class BattlePanel : BasePanel
           });
 
           btnEndThisRound.onClick.AddListener(()=>{
-
+               
+               //触发BattleManager中的bool标识，让回合协程继续：
+               BattleManager.Instance.isRoundEndTriggered = true;
+               
           });
      }
 
-    void OnDestroy()
-    {
-        EventHub.Instance.RemoveEventListener<Equipment>("EquipTarget", EquipTarget);
-        EventHub.Instance.RemoveEventListener<Equipment>("UnequipTarget", UnequipTarget);
-    }
+     void OnDestroy()
+     {
+          EventHub.Instance.RemoveEventListener<Equipment>("EquipTarget", EquipTarget);
+          EventHub.Instance.RemoveEventListener<Equipment>("UnequipTarget", UnequipTarget);
+
+          EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
+     }
 
     //广播方法：将某一个装备装备后调用；
     //注意，后续将这个方法的空闲Slot数量检查、UI面板关闭、遮罩调用全部迁移出去，到EquipmentCheckPanel中；
     //这是因为出现了 允许装上装备但是BattlePanel不在的情况（安全屋）；
-    private void EquipTarget(Equipment equipment)
+     private void EquipTarget(Equipment equipment)
      {
           //找到第一个空闲的Slot：
           foreach(var slotScript in equipmentSlotList)
