@@ -182,24 +182,6 @@ public class BattleManager : Singleton<BattleManager>
         else
             PlayerUseItem();
 
-        // // 检查敌人状态
-// ----------------这个写法会导致迭代器失效（边遍历边移除元素，Marc）--------------------------------
-        // foreach (var e in enemies)
-        // {
-        //     int count = 1;      // 用于执行一些范围伤害判定(如果有)
-
-        //     // 进行一些判断
-        //     if (e.isDead)
-        //     {
-        //         enemies.Remove(e);
-        //         // 敌人消失动画
-        //         e.DieAnimation();
-        //     }
-
-        //     count++;
-        // }
-
-//----------------更新到不会失效的迭代器------------------------------------------------
         // 检查敌人状态
         List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
 
@@ -307,7 +289,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             s.Use(enemy);
 
-            yield return new WaitForSeconds(3f);    //假设设定为3s执行一次进攻；
+            yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
         }
 
         // 更新敌人回合(并做出一些Buff处理)

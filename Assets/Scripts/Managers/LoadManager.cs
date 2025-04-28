@@ -58,34 +58,17 @@ public class LoadManager : Singleton<LoadManager>
         //加载所有的avg：
         LoadAllAvgs();
 
-        //测试：装备填充：
-        Equipment_1001 test = new Equipment_1001();
+        //先技能后装备，因为装备需要LoadManager中的技能实例；
+        Skill_1002 skill2 = new Skill_1002();
+        Skill_1003 skill3 = new Skill_1003();
 
+        allSkills.Add(1002, skill2);
+        allSkills.Add(1003, skill3);
 
-        Skill_1002 skill = new Skill_1002();
-        skill.id = 1;
-        skill.skillName = "Skill1002";
-        skill.skillIconPath = "";
-        skill.skillDamageText = "This is damage text";
-        skill.skillBuffText = "This is buff text";
-        skill.skillCost = 3;
-
-
-
-        test.currentDuration = 6;
-        test.id = 1001;
-        test.name = "ThisIsA";
-        test.descriptionText = "此处是描述";
-        test.effectDescriptionText = "此处是道具的效果描述";
-
-        test.iconPath = "";
-        test.level = (E_EquiptmentLevel)1;
-        test.isEquipped = false;
-        test.maxDuration = 6;
-        test.mySkill = skill;
-
-        allEquipment.Add(1001, test);
-        allSkills.Add(1, skill);
+        //测试：装备：
+        allEquipment.Add(1001, new Equipment_1001());
+        allEquipment.Add(1002, new Equipment_1002());
+        allEquipment.Add(1003, new Equipment_1003());
 
 
 //--------------测试--------------------------------------------

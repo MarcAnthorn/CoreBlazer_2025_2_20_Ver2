@@ -71,9 +71,13 @@ public class EnemyManager : Singleton<EnemyManager>
         // 计算防御收益
         rowDamage -= player.DEF.value;
         Debug.LogWarning($"current defense value:{player.DEF.value}");
+        Debug.LogWarning($"current raw attack value:{rowDamage}");
 
         // 计算敌人身上的Buff
         float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
+
+        Debug.LogWarning($"current damage value:{damageValue}");
+        
         List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue);
         if (damages.Count == 0)
         {
@@ -195,7 +199,7 @@ public class EnemyManager : Singleton<EnemyManager>
         float rowDamage = enemy.STR * 1f;   //?? 假设伤害倍率就是100% ??
 
         Debug.LogWarning($"raw damage is {rowDamage}");
-        
+
         EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
     }
 

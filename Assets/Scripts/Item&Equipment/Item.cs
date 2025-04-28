@@ -280,9 +280,15 @@ public class Item_204 : Item
     }
 
     float temp;
+    float defenseValueTmp;
     private void OnStart()
     {
-        PlayerManager.Instance.player.DEF.value *= 1.5f;
+        //此处是否会存在问题？如如果先*=1.5，而后通过另外的道具加上某个数值，是否会导致最终的/= 1.5f不能回复到原先的数值？
+        //PlayerManager.Instance.player.DEF.value *= 1.5f;
+
+        defenseValueTmp = PlayerManager.Instance.player.DEF.value * 1.5f;
+        PlayerManager.Instance.player.DEF.value += defenseValueTmp;
+
         temp = PlayerManager.Instance.player.CRIT_Rate.value;
         PlayerManager.Instance.player.CRIT_Rate.value = 0f;
     }
@@ -290,7 +296,9 @@ public class Item_204 : Item
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.DEF.value /= 1.5f;
+
+        //通过减去之前加上的百分比数值，恢复到原先的值；
+        PlayerManager.Instance.player.DEF.value -= defenseValueTmp;
         PlayerManager.Instance.player.CRIT_Rate.value += temp;
     }
 
@@ -501,16 +509,14 @@ public class Item_401 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.HP.AddValueLimit(10f);
-        PlayerManager.Instance.player.HP.AddValue(10f);          //当前value随着limit_value一同变化
-        
+        //AddValueLimit方法已修正：所有需要调整数值&上限值的，直接使用这个方法；该方法会同步加成数值和上限值；
+        PlayerManager.Instance.player.HP.AddValueLimit(10f);        
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
         PlayerManager.Instance.player.HP.AddValueLimit(-10f);
-        PlayerManager.Instance.player.HP.AddValue(-10f);
     }
 
 }

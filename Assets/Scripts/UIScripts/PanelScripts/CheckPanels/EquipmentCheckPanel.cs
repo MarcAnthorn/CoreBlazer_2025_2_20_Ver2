@@ -45,7 +45,7 @@ public class EquipmentCheckPanel : BasePanel
                 UIManager.Instance.HidePanel<EquipmentCheckPanel>();
 
                 //此处还需调用Equipment的Use方法：
-                //myEquipment.Use();
+                myEquipment.Equip();
             }
             else
             {
@@ -61,7 +61,7 @@ public class EquipmentCheckPanel : BasePanel
             EventHub.Instance.EventTrigger("MaskEquipmentOrNot", false, myEquipment);
             myEquipment.isEquipped = false;
 
-            // myEquipment.Unuse();
+            myEquipment.Unequip();
 
             //将卸下button切换成装备button：
             btnEquip.gameObject.SetActive(true);
