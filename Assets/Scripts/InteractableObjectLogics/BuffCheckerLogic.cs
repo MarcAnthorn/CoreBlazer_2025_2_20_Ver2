@@ -68,7 +68,6 @@ public class BuffCheckerLogic : MonoBehaviour
         //如果不是空，那么尝试匹配并且更新：
         else if(targetBuff == myBuff)
         {
-            Debug.LogWarning("Update buff, not initialization!");
             int remainCount = targetBuff.lastTurns;
             //如果是，那么执行buff数量的减少：
             txtRamainingLayerCount.text = remainCount.ToString();

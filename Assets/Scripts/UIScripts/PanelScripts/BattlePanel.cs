@@ -21,6 +21,9 @@ public class BattlePanel : BasePanel
     public TextMeshProUGUI txtMaxCost;
     public int maxCost;
     public int currentCost;
+    float lastPlayerHealthValue;
+    float lastEnemyHealthValue;
+
 
     public EquipmentSlot equipmentSlot1;
     public EquipmentSlot equipmentSlot2;
@@ -73,6 +76,10 @@ public class BattlePanel : BasePanel
 
      private void TestBattle()
      {
+          //更新保存的上次血量字段：
+          lastPlayerHealthValue = 0;
+          lastEnemyHealthValue = 0;
+
           PlayerManager.Instance.InitPlayer();
           EnemySkill[] enemySkills = new EnemySkill[] { new EnemySkill_1001(), new EnemySkill_1002() };
 
@@ -107,9 +114,6 @@ public class BattlePanel : BasePanel
 
           TurnCounter.Instance.AddPlayerBuff(buff4);
           TurnCounter.Instance.AddPlayerBuff(buff5);
-
-
-
 
           BattleManager.Instance.BattleStart();
 
@@ -176,9 +180,7 @@ public class BattlePanel : BasePanel
                     slotScript.UnequipMyself();
 
                     //调用UI更新委托：
-                    EventHub.Instance.EventTrigger("UpdateAllUIElements");
-                    
-                   
+                    EventHub.Instance.EventTrigger("UpdateAllUIElements");                  
 
 //------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
                     //调用取消装备后的回调；位于EquipmentPanelInventory；
@@ -213,15 +215,43 @@ public class BattlePanel : BasePanel
           }
 
           //更新Sliders；
-          sliderPlayerHealth.value = PlayerManager.Instance.player.HP.value /  PlayerManager.Instance.player.HP.value_limit;
+
+          //玩家的Slider：
+          if(lastPlayerHealthValue != 0)     //当前不是第一次更新：那么使用上次记录的血量实现平滑减少；
+          {
+               LeanTween.value(sliderPlayerHealth.gameObject, lastPlayerHealthValue / PlayerManager.Instance.player.HP.value_limit,  PlayerManager.Instance.player.HP.value /  PlayerManager.Instance.player.HP.value_limit, 0.5f)
+               .setEase(LeanTweenType.easeInOutQuad)
+               .setOnUpdate((float val) => 
+               {
+                    sliderPlayerHealth.value = val; // 设置血条的实时更新值
+               });
+          }
+          else
+               sliderPlayerHealth.value = PlayerManager.Instance.player.HP.value /  PlayerManager.Instance.player.HP.value_limit;
+
+          lastPlayerHealthValue = PlayerManager.Instance.player.HP.value;
+
 
           //敌人的Slider：
-          sliderEnemyHealth.value = enemy.HP / enemy.HP_limit;
+          if(lastEnemyHealthValue != 0) 
+          {
+               LeanTween.value(sliderEnemyHealth.gameObject, lastEnemyHealthValue / enemy.HP_limit, enemy.HP / enemy.HP_limit, 0.5f)
+               .setEase(LeanTweenType.easeInOutQuad)
+               .setOnUpdate((float val) => 
+               {
+                    sliderEnemyHealth.value = val; // 设置血条的实时更新值
+               });
+          }
+          else
+               sliderEnemyHealth.value = enemy.HP / enemy.HP_limit;
 
-          //可能还有buff的显示更新；
+          lastEnemyHealthValue = enemy.HP;
+
+
+          //buff的显示更新；
           foreach(var playerBuff in TurnCounter.Instance.playerBuffs)
           {
-               Debug.LogWarning($"尝试更新我方buff：{playerBuff.name}");
+               // Debug.LogWarning($"尝试更新我方buff：{playerBuff.name}");
 
 
                //此处是我方的buff；
@@ -240,7 +270,7 @@ public class BattlePanel : BasePanel
           //敌方buff的更新:
           foreach(var enemyBuff in enemy.buffs)
           {
-               Debug.LogWarning($"尝试更新敌方buff：{enemyBuff.name}");
+               // Debug.LogWarning($"尝试更新敌方buff：{enemyBuff.name}");
 
 
                //此处是敌方的buff：

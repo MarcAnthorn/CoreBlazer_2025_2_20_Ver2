@@ -124,12 +124,12 @@ public class BattleManager : Singleton<BattleManager>
     IEnumerator InPlayerTurn()
     {
 //----------------协程变动：（原先的逻辑有问题）------------------------------------------------
+
         Debug.Log("等待玩家行动...");
         isRoundEndTriggered = false;
         
         //外部通过触发isRoundEndTriggered的方式让协程继续：
         yield return new WaitUntil(() => isRoundEndTriggered);
-
 
 //--------------Marc添加内容---------------------------------------------------
 
@@ -266,12 +266,18 @@ public class BattleManager : Singleton<BattleManager>
         actionQueue.Enqueue(actionQueue.Dequeue());
 
         // 判断游戏状态
+        // 在DamageCalculation中，存在player的BeHurt方法；该方法会进行一次是否死亡的判断；
         if (player.isDie)
         {
             GameOver(false);
             return;
         }
-        EnterEnemyTurn(1);
+
+        //在进入地方回合之前，延迟一段时间，等buff结算的UI效果结束：
+        LeanTween.delayedCall(1f, ()=>{
+            EnterEnemyTurn(1);
+        });
+        
     }
 
     // 进入敌人回合
@@ -279,17 +285,29 @@ public class BattleManager : Singleton<BattleManager>
     {
         int index = positionId - 1;
         Debug.Log("敌人发动攻击！");
-        foreach(var s in enemies[index].enemySkills)
-        {
-            s.Use(enemies[index]);
-        }
-        // enemies[positionId].Attack(player);
 
+        //使用协程替换原先的技能无间隔释放：
+        //改成一定时间间隔释放技能：
+        StartCoroutine(EnemyAttack(enemies[index], index));
+
+
+//-------在Player类的BeHurted中看见的死亡逻辑的判断，该判断在每次敌方Skill使用后就会处理，此处是否多余了--------------------
         // 判断游戏状态
-        if (player.isDie)
+        // if (player.isDie)
+        // {
+        //     GameOver(false);
+        //     return;
+        // }
+    }
+
+    //敌方释放技能的协程：
+    private IEnumerator EnemyAttack(Enemy enemy, int index)
+    {
+        foreach(var s in enemy.enemySkills)
         {
-            GameOver(false);
-            return;
+            s.Use(enemy);
+
+            yield return new WaitForSeconds(3f);    //假设设定为3s执行一次进攻；
         }
 
         // 更新敌人回合(并做出一些Buff处理)
@@ -330,8 +348,6 @@ public class BattleManager : Singleton<BattleManager>
 
 //----------------调整当前玩家的playerSceneIndex（Marc添加）------------------------------------------------
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
-
- 
     }
 
     // 下面是要与Button进行绑定的释放不同技能的方法

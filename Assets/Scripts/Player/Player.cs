@@ -143,10 +143,15 @@ public class Player               //存储角色信息等
     public void BeHurted(Damage damage)
     {
         HP.AddValue(damage.damage);
+
         if (HP.value <= 0)
         {
-            Debug.Log("玩家死亡!");
-            GameOver();
+            //等待UI更新结束之后再处理死亡：
+            LeanTween.delayedCall(0.6f, () => {
+                Debug.Log("玩家死亡!");
+                GameOver();
+            });
+           
         }
     }
 

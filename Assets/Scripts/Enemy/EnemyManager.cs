@@ -70,6 +70,8 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         // 计算防御收益
         rowDamage -= player.DEF.value;
+        Debug.LogWarning($"current defense value:{player.DEF.value}");
+
         // 计算敌人身上的Buff
         float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
         List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue);
@@ -89,7 +91,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
 
                 //调用玩家受击方法
+                //改方法内部存在对玩家的死亡判断；
                 PlayerManager.Instance.player.BeHurted(dmg);
+
+                // 调用UI更新：
+                EventHub.Instance.EventTrigger("UpdateAllUIElements");
             }
 
         }
@@ -187,6 +193,9 @@ public class EnemyManager : Singleton<EnemyManager>
         Debug.Log("敌人发动 拳打脚踢！");
         //将STR属性值转化为 攻击值 
         float rowDamage = enemy.STR * 1f;   //?? 假设伤害倍率就是100% ??
+
+        Debug.LogWarning($"raw damage is {rowDamage}");
+        
         EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
     }
 

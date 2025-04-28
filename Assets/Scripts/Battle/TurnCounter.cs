@@ -60,7 +60,7 @@ public class TurnCounter : Singleton<TurnCounter>
 
                 if (_buff.GetType() == typeof(BattleBuff_1001) && !cleanBattleBuff_1001)
                 {
-                    cleanBattleBuff_1001 = true; // 少了这个变量控制，会无限删，补上！
+                    cleanBattleBuff_1001 = true; 
                     for (int j = 0; j < playerBuffs.Count; j++)
                     {
                         if (playerBuffs[j].GetType() == typeof(BattleBuff_1001))
@@ -107,7 +107,7 @@ public class TurnCounter : Singleton<TurnCounter>
 
                 if (_buff.GetType() == typeof(BattleBuff_1001) && !cleanBattleBuff_1001)
                 {
-                    cleanBattleBuff_1001 = true; // 少了这个变量控制，会无限删，补上！
+                    cleanBattleBuff_1001 = true; 
                     for (int j = 0; j < enemy.buffs.Count; j++)
                     {
                         if (enemy.buffs[j].GetType() == typeof(BattleBuff_1001))
@@ -206,7 +206,9 @@ public class TurnCounter : Singleton<TurnCounter>
         {
             if(buff.triggerTiming == triggerTiming)
             {
-                buff.OnEffect();
+                Debug.LogWarning($"player buff affected!, buff is:{buff.name}");
+                //结算玩家
+                buff.OnEffect(0);
             }
         }
     }
@@ -218,7 +220,9 @@ public class TurnCounter : Singleton<TurnCounter>
         {
             if (buff.triggerTiming == triggerTiming)
             {
-                buff.OnEffect();
+                Debug.LogWarning($"enemy buff affected!, buff is:{buff.name}");
+                //结算敌方；
+                buff.OnEffect(1);
             }
         }
     }

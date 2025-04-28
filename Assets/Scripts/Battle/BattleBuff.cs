@@ -73,7 +73,7 @@ public abstract class BattleBuff
     // 是否结束
     public bool isEnd = false;
 
-    public abstract void OnEffect();
+    public abstract void OnEffect(int flag);
 
     // 用于获取子类的static字段overlyingCount
     public int GetOverlyingCount()
@@ -142,10 +142,24 @@ public class BattleBuff_1001 : BattleBuff
         overlyingLimit = 99;
         // overlyingCount++;
     }
-
-    override public void OnEffect()
+    
+    override public void OnEffect(int flag)
     {
-        PlayerManager.Instance.player.HP.AddValue(-10);
+        if(flag == 0)
+        {
+            PlayerManager.Instance.player.HP.AddValue(-10 * overlyingCount);
+        }
+
+        else if(flag == 1)
+        {
+            BattleManager.Instance.enemies[0].HP -= 10 * overlyingCount;
+        }
+
+        else
+        {
+            Debug.LogError($"当前中毒buff的flag不存在，flag:{flag}");
+        }
+
     }
 }
 
@@ -169,7 +183,7 @@ public class BattleBuff_1002 : BattleBuff
 
     }
 
-    override public void OnEffect()
+    override public void OnEffect(int 占位)
     {
         // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
     }
