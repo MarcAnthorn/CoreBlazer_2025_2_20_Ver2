@@ -43,6 +43,9 @@ public class AVGPanel : BasePanel
 
     public string currentBackgroundName;
     public string bgmName;
+    //加载的路径：
+    private string rootPath = "ArtResources/AVG";
+    
     [Range(0, 1)]
     public float intervalTime = 1f;
     //当前对话场景中包含的所有NPC（以NPC名字的形式存储）
@@ -151,7 +154,7 @@ public class AVGPanel : BasePanel
                 currentBackgroundName = currentOrder.backgroundName;
                 if(currentBackgroundName != "0")
                 {
-                    string spritePath = Path.Combine("ArtResources", currentBackgroundName);
+                    string spritePath = Path.Combine(rootPath, currentBackgroundName);
 
                     imgBackground.sprite = Resources.Load<Sprite>(spritePath);
                     imgBackground.SetNativeSize();
@@ -214,7 +217,8 @@ public class AVGPanel : BasePanel
                             //并且将差分立绘加载到当前位置，并且替换currentNPCDic中的value:
 
                             //修改：不要加载prefab，直接将美术资源加载出来，附上去就行：
-                            Sprite newSprite = Resources.Load<Sprite>("ArtResources/" + loadName);
+                            string path = Path.Combine(rootPath, loadName);
+                            Sprite newSprite = Resources.Load<Sprite>(path);
 
                             Image nowImage = currentNPCDic[npcName].GetComponent<Image>();
                             nowImage.sprite = newSprite;
@@ -357,7 +361,9 @@ public class AVGPanel : BasePanel
         
         //加载对应的资源到SpriteRenderer上：
         Image img = npc.GetComponent<Image>();
-        img.sprite = Resources.Load<Sprite>("ArtResources/" + loadName);
+
+        string path = Path.Combine(rootPath, loadName);
+        img.sprite = Resources.Load<Sprite>(path);
         img.SetNativeSize();
 
         currentNPCDic.Add(keyName, npc);

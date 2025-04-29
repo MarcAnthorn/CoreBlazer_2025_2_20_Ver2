@@ -16,6 +16,7 @@ public class ChooseBeliefPanel : BasePanel
     public Button btnNextPage;
     public Transform choiceContent;
     public Transform npcPos;
+    private string rootPath = "ArtResources/AVG";
 
     //测试用：
     private E_NPCName currentNPCName;
@@ -72,7 +73,7 @@ public class ChooseBeliefPanel : BasePanel
         Debug.Log($"NPC交互面板已显示，显示NPC为：{_npcName.ToString()}");
         //将当前交互的NPC
         currentNPCName = _npcName;
-        string path = Path.Combine("ArtResources", currentNPCName.ToString());
+        string path = Path.Combine(rootPath, currentNPCName.ToString());
         imgNPC.sprite = Resources.Load<Sprite>(path);
         imgNPC.SetNativeSize();
 

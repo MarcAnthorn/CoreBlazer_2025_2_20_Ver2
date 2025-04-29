@@ -34,6 +34,7 @@ public class DiscardBeliefPanel: BasePanel
     private int optionPerPage = 2;
     private int currentPage; 
     private int allPageCount;
+    private string rootPath = "ArtResources/AVG";
 
     protected override void Awake()
     {
@@ -69,12 +70,14 @@ public class DiscardBeliefPanel: BasePanel
     public void InitCurrentPanel()
     {
 
-        string path = Path.Combine("ArtResources", "格赫罗斯");
+        string path = Path.Combine(rootPath, "格赫罗斯");
         imgNPC.sprite = Resources.Load<Sprite>(path);
         imgNPC.SetNativeSize();
 
         //初始化sanity显示：
         txtSanity.text = PlayerManager.Instance.player.SAN.value.ToString();
+
+        txtConversation.text =  "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
 
         
         btnScript1.Init(611);
@@ -104,7 +107,7 @@ public class DiscardBeliefPanel: BasePanel
     //参数用不上，只是为了匹配事件中心的回调签名
     private void UpdateConversation(int _int)
     {
-        txtConversation.text = "........................";
+        txtConversation.text = "就这些吗？远远不够啊.........";
     }
 
     // 翻页：暂时用不到；

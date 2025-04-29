@@ -28,6 +28,7 @@ public class NPCInteractionPanel : BasePanel
     //测试用：当前交互的NPC：
     public E_NPCName currentNPCName;
     private bool isContinueButtonClicked;
+    private string rootPath = "ArtResources/AVG";
 
     protected override void Awake()
     {
@@ -89,7 +90,7 @@ public class NPCInteractionPanel : BasePanel
     {
         //将当前交互的NPC
         currentNPCName = _npcName;
-        string path = Path.Combine("ArtResources", currentNPCName.ToString());
+        string path = Path.Combine(rootPath, currentNPCName.ToString());
 
         Debug.Log($"当前尝试加载的NPC路径：{path}");
         imgNPC.sprite = Resources.Load<Sprite>(path);
@@ -117,7 +118,7 @@ public class NPCInteractionPanel : BasePanel
                 txtConversation.text = "世上有诸多不公，但生命永远平等，即使是在祂的职责里面也是如此。";
             break;
             default:    //此处是格赫罗斯
-                txtConversation.text = "......";
+                txtConversation.text = "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
             break;
         }
         isContinueButtonClicked = false;
@@ -133,13 +134,28 @@ public class NPCInteractionPanel : BasePanel
             case E_NPCName.莎布:
                 txtConversation.text = "祂也给我了不少好东西，来看看吧！";
             break;
+
             default:    //此处是格赫罗斯
-                txtConversation.text = "............";
+                txtConversation.text = "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
             break;
         }
 
-        isContinueButtonClicked = false;
-        yield return new WaitUntil(() => isContinueButtonClicked);
+        switch(_npcName){
+            case E_NPCName.奈亚拉:
+            case E_NPCName.优格:
+            case E_NPCName.莎布:
+                isContinueButtonClicked = false;
+                yield return new WaitUntil(() => isContinueButtonClicked);
+            break;
+
+            default:    //此处是格赫罗斯
+                txtConversation.text = "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
+            break;
+        }
+
+
+
+        
 
         UIManager.Instance.HidePanel<NPCInteractionPanel>();
         switch(_npcName){
