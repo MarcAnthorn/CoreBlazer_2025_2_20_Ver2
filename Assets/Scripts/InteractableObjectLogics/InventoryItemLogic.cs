@@ -76,6 +76,9 @@ public class InventoryItemLogic : MonoBehaviour
             }
 
         });
+
+        string rootPath = "ArtResources/Item/" + myItem.name;
+        imgSelf.sprite = Resources.Load<Sprite>(rootPath);
     }
 
 

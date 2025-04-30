@@ -37,7 +37,6 @@ public class EquipmentCheckPanel : BasePanel
             if(EquipmentManager.Instance.NowLeftSlotsCount() < 4)
             {
                 //调用处在BattlePanel中的事件：
-                //是否能用的检查和字段调整，全部交给内部的事件去做；
                 EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);   
                 
                 EventHub.Instance.EventTrigger("MaskEquipmentOrNot", true, myEquipment);
@@ -46,6 +45,9 @@ public class EquipmentCheckPanel : BasePanel
 
                 //此处还需调用Equipment的Use方法：
                 myEquipment.Equip();
+
+                //更新玩家的属性面板：
+                EventHub.Instance.EventTrigger("UpdateAttributeText");
             }
             else
             {
@@ -66,6 +68,9 @@ public class EquipmentCheckPanel : BasePanel
             //将卸下button切换成装备button：
             btnEquip.gameObject.SetActive(true);
             btnUnequip.gameObject.SetActive(false);
+
+            //更新玩家的属性面板：
+            EventHub.Instance.EventTrigger("UpdateAttributeText");
         });
     }
 
