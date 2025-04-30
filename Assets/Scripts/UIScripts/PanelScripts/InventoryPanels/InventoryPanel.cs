@@ -33,6 +33,11 @@ public class InventoryPanel : BasePanel
     public TextMeshProUGUI txtDodgeRate;
 
     public TextMeshProUGUI txtCriticalMultiplier;
+    public TextMeshProUGUI txtHealth;
+    public TextMeshProUGUI txtSan;
+    public TextMeshProUGUI txtLight;
+    
+
     public Transform tarotContent;
     public Transform leftSlotItemAnchor;
     public Transform rightSlotItemAnchor;
@@ -441,22 +446,28 @@ public class InventoryPanel : BasePanel
     private void UpdateAttributeText()
     {
         txtStrength.text = $"力量：{(int)PlayerManager.Instance.player.STR.value}";
-        txtSpeed.text = $"速度：{(int)PlayerManager.Instance.player.STR.value}";
+        txtSpeed.text = $"速度：{(int)PlayerManager.Instance.player.SPD.value}";
 
-        txtDefense.text = $"防御：{(int)PlayerManager.Instance.player.STR.value}";
+        txtDefense.text = $"防御：{(int)PlayerManager.Instance.player.DEF.value}";
 
-        txtCriticalRate.text = $"暴击率：{(int)PlayerManager.Instance.player.STR.value}";
+        txtCriticalRate.text = $"暴击率：{(int)PlayerManager.Instance.player.CRIT_Rate.value}";
 
-        txtComboRate.text = $"连击率：{(int)PlayerManager.Instance.player.STR.value}";
+        txtComboRate.text = $"连击率：{(int)PlayerManager.Instance.player.HIT.value}";
 
-        txtDodgeRate.text = $"闪避率：{(int)PlayerManager.Instance.player.STR.value}";
+        txtDodgeRate.text = $"闪避率：{(int)PlayerManager.Instance.player.AVO.value}";
 
-        txtCriticalMultiplier.text = $"暴击伤害：{(int)PlayerManager.Instance.player.STR.value}"; 
+        txtCriticalMultiplier.text = $"暴击伤害：{(int)PlayerManager.Instance.player.CRIT_DMG.value}"; 
 
         //更新Sliders：
         sliderHealth.value = PlayerManager.Instance.player.HP.value / PlayerManager.Instance.player.HP.value_limit;
         sliderLight.value = PlayerManager.Instance.player.LVL.value / PlayerManager.Instance.player.LVL.value_limit;
         sliderSanity.value = PlayerManager.Instance.player.SAN.value / PlayerManager.Instance.player.SAN.value_limit;
+
+        txtHealth.text = $"{PlayerManager.Instance.player.HP.value} / {PlayerManager.Instance.player.HP.value_limit}";
+        txtLight.text = $"{PlayerManager.Instance.player.LVL.value} / {PlayerManager.Instance.player.LVL.value_limit}";
+        txtSan.text = $"{PlayerManager.Instance.player.SAN.value} / {PlayerManager.Instance.player.SAN.value_limit}";;
+
+
     }
 
 

@@ -42,8 +42,6 @@ public class BuffCheckerLogic : MonoBehaviour
     //初始化方法：
     public void Init(BattleBuff _buff)
     {
-        Debug.LogWarning($"Init!, last turn is {_buff.lastTurns}, layer is {_buff.GetOverlyingCount()}");
-
         myBuff = _buff;
         //初始化：buff图标、叠加层数以及剩余回合数；
         imgBuff.sprite = Resources.Load<Sprite>(_buff.buffIconPath);

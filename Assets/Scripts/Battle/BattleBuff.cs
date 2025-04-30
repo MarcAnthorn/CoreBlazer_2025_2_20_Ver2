@@ -78,7 +78,6 @@ public abstract class BattleBuff
     // 用于获取子类的static字段overlyingCount
     public int GetOverlyingCount()
     {
-        Debug.LogWarning("Try get overlying layer count");
         Type type = this.GetType();         // GetType()获取派生类的类型
 
         //Marc修改：原先的反射找不到静态字段；
