@@ -38,7 +38,7 @@ public abstract class BasePanel : MonoBehaviour
     {
         if (canvasGroup == null)
         {
-            Debug.LogError("Canvas Group为空");
+            Debug.LogWarning("Canvas Group为空");
         }
         canvasGroup.alpha = 0;
         canvasGroup.LeanAlpha(1, fadingTime);

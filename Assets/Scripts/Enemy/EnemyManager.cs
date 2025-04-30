@@ -5,20 +5,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
+
+
+//该脚本中的enemies已弃用；
 public class EnemyManager : Singleton<EnemyManager>
 {
-    public Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();   // <positionId, enemy>
+    //所有的敌方buff存在于Enemy中的buffs中；
+    // public Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();   // <positionId, enemy>
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private BuffType GetEnemyBuffType(AttributeType type)
@@ -66,8 +70,14 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         // 计算防御收益
         rowDamage -= player.DEF.value;
+        Debug.LogWarning($"current defense value:{player.DEF.value}");
+        Debug.LogWarning($"current raw attack value:{rowDamage}");
+
         // 计算敌人身上的Buff
         float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
+
+        Debug.LogWarning($"current damage value:{damageValue}");
+
         List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue);
         if (damages.Count == 0)
         {
@@ -79,8 +89,17 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 // 造成伤害之前进行一些加成计算
                 dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDamage, dmg.damage);
+
+                //结算出的对玩家的伤害
+                Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");
+
+
                 //调用玩家受击方法
+                //改方法内部存在对玩家的死亡判断；
                 PlayerManager.Instance.player.BeHurted(dmg);
+
+                // 调用UI更新：
+                EventHub.Instance.EventTrigger("UpdateAllUIElements");
             }
 
         }
@@ -178,6 +197,9 @@ public class EnemyManager : Singleton<EnemyManager>
         Debug.Log("敌人发动 拳打脚踢！");
         //将STR属性值转化为 攻击值 
         float rowDamage = enemy.STR * 1f;   //?? 假设伤害倍率就是100% ??
+
+        Debug.LogWarning($"raw damage is {rowDamage}");
+
         EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
     }
 

@@ -67,6 +67,10 @@ public class SkillManager : Singleton<SkillManager>
             {
                 // 造成伤害之前进行一些加成计算
                 dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateDamage, enemy.positionId, dmg.damage);
+
+                //结算出的对敌人的伤害
+                Debug.LogWarning($"结算出的对敌人的伤害：{dmg.damage}");
+                
                 //调用敌人受击方法
                 EnemyManager.Instance.EnemyHurted(enemy.positionId, dmg);
             }

@@ -894,6 +894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadingTime: 0.2
+  imgSelf: {fileID: 883062390743875347}
   currentItemId: 0
   txtItemName: {fileID: 4680328347555630091}
   txtItemCount: {fileID: 3112500960630665527}

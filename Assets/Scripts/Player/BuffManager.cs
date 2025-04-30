@@ -113,6 +113,7 @@ public class BuffManager : Singleton<BuffManager>
         }
 
         return 0f;
+
     }
 
     //按照BuffType处理

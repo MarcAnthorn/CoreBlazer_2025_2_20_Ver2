@@ -54,37 +54,67 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         //PlayerManager 管理的全局唯一Player实例
        player = new Player()
         {
-            HP = new Player.PlayerAttribute(1) { value = 100},  
+            HP = new Player.PlayerAttribute(1) { 
+                value = 100,
+                value_limit = 100
+            },  
             // 生命值 (Health Point)，id = 1，初始值 100
 
-            STR = new Player.PlayerAttribute(2) { value = 10 },           
+            STR = new Player.PlayerAttribute(2) { 
+                value = 10,
+                value_limit = 100
+            },           
             // 力量 (Strength)，id = 2，初始值 10
 
-            DEF = new Player.PlayerAttribute(3) { value = 5 },           
+            DEF = new Player.PlayerAttribute(3)  { 
+                value = 5,
+                value_limit = 100
+            },                 
             // 防御 (Defense)，id = 3，初始值 5
 
-            LVL = new Player.PlayerAttribute(4) { value = 100 },            
+            LVL = new Player.PlayerAttribute(4)  { 
+                value = 100,
+                value_limit = 100
+            },                 
             // 灯光值 (Light Value)，id = 4，初始值 1
 
-            SAN = new Player.PlayerAttribute(5) { value = 41 },           
+            SAN = new Player.PlayerAttribute(5)  { 
+                value = 41,
+                value_limit = 100
+            },                      
             // SAN 值 (Sanity)，id = 5，初始值 40
 
-            SPD = new Player.PlayerAttribute(6) { value = 10 },          
+            SPD = new Player.PlayerAttribute(6)  { 
+                value = 10,
+                value_limit = 100
+            },              
             // 速度 (Speed)，id = 6，初始值 10
 
-            CRIT_Rate = new Player.PlayerAttribute(7) { value = 0.1f, type = 1 }, 
+            CRIT_Rate = new Player.PlayerAttribute(7)  { 
+                value = 0.1f,
+                value_limit = 1f,
+                type = 1
+            },           
+  
             // 暴击率 (Critical Hit Rate)，id = 7，初始值 10%
 
-            CRIT_DMG = new Player.PlayerAttribute(8),                    
+            CRIT_DMG = new Player.PlayerAttribute(8){
+                value_limit = 1f,
+            },                    
             // 暴击伤害 (Critical Damage)，id = 8，未初始化
 
-            HIT = new Player.PlayerAttribute(9),                          
+            HIT = new Player.PlayerAttribute(9){
+                value_limit = 1f,
+            },                          
             // 连击 (Hit)，id = 9，未初始化
 
-            AVO = new Player.PlayerAttribute(10) { value = 0.3f, type = 1 }, 
+            AVO = new Player.PlayerAttribute(10)  { 
+                value = 0.3f,
+                value_limit = 1f,
+                type = 1
+            },
             // 闪避值 (AVO)，id = 10，初始值 30%
 
-            bag = new Dictionary<int, Item>()  // 初始化物品栏
         };
     }
 

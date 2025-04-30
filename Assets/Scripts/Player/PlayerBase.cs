@@ -145,9 +145,9 @@ public class PlayerBase : MonoBehaviour
     }
 
     //响应layer变化的事件：
-    private void AdjustLayer(int delta)
+    private void AdjustLayer(int layer)
     {
-        sr.sortingOrder += delta;
+        sr.sortingOrder = layer;
     }
 
 

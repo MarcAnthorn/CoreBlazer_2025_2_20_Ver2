@@ -3,31 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class TestBattle : Singleton<TestBattle>
+//暂时先更改成Mono，挂在TestStart上，可一些
+public class TestBattle : MonoBehaviour
 {
-    new public void Awake()
+    private void Awake()
     {
-        base.Awake();
         TestOfBattle();
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            UIManager.Instance.ShowPanel<BattlePanel>();       
+        }
+        
     }
 
     // 战斗系统测试
     public void TestOfBattle()
     {
+        //（测试迁移到了BattlePanel中）
         // 定义玩家/敌人
-        PlayerManager.Instance.InitPlayer();
-        EnemySkill[] enemySkills = new EnemySkill[] { new EnemySkill_1001(), new EnemySkill_1002() };
-        Enemy[] enemies = new Enemy[] { new Enemy_1001(enemySkills) };
-        // 初始化战斗，随后启动战斗
-        BattleManager.Instance.BattleInit(PlayerManager.Instance.player, enemies);
-        BattleManager.Instance.BattleStart();
+        // PlayerManager.Instance.InitPlayer();
+        // EnemySkill[] enemySkills = new EnemySkill[] { new EnemySkill_1001(), new EnemySkill_1002() };
+
+        // Enemy enemy = new Enemy_1001(enemySkills);
+
+        // //尝试给敌人加buff：
+        // BattleBuff buff = new BattleBuff_1001();
+        // enemy.buffs.Add(buff);
+        
+        // Enemy[] enemies = new Enemy[] { enemy };
+
+
+
+        // 初始化战斗，随后启动战斗（迁移到了BattlePanel中）
+        // BattleManager.Instance.BattleInit(PlayerManager.Instance.player, enemies);
+
+        // BattleManager.Instance.BattleStart();
         // 角色发动攻击/使用道具
-        BattleManager.Instance.SelectSkill1();
+        // BattleManager.Instance.SelectSkill1();
         //BattleManager.Instance.SelectSkill2();
         BattleManager.Instance.UseItem1();
     }
 
-    public void ViewActionQueue(Queue actionQueue)
+    public static void ViewActionQueue(Queue actionQueue)
     {
         Debug.Log("++++++ actionQueue view ++++++");
         foreach (var e in actionQueue)

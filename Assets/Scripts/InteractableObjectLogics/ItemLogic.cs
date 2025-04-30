@@ -41,6 +41,9 @@ public class ItemLogic : MonoBehaviour
         btnSelf.onClick.AddListener(()=>{
             UIManager.Instance.ShowPanel<ItemCheckPanel>().InitItemInfo(myItem, false);
         });
+
+        string rootPath = "ArtResources/Item/" + myItem.name;
+        imgSelf.sprite = Resources.Load<Sprite>(rootPath);
     }
 
     //初始化方法Item和信息Item；

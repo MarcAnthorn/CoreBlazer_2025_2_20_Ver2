@@ -37,6 +37,10 @@ public abstract class Skill
 // 普通攻击(平A技能)
 public class Skill_1002 : Skill
 {
+    public Skill_1002()
+    {
+        id = 1002;
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -47,6 +51,10 @@ public class Skill_1002 : Skill
 // 至圣斩
 public class Skill_1003 : Skill
 {
+    public Skill_1003()
+    {
+        id = 1003;
+    }
 
     override public void Use(Enemy enemy)
     {

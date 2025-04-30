@@ -57,7 +57,14 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
             case 1001:
             return new Equipment_1001();
 
+            case 1002:
+            return new Equipment_1002();
+
+            case 1003:
+            return new Equipment_1003();
+
             default:
+                Debug.LogError($"未找到对应id的道具， id为：{id}");
             return null;
         }
     }
@@ -72,7 +79,14 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
             case 1001:
             return new Equipment_1001(equipment);
 
+            case 1002:
+            return new Equipment_1002(equipment);
+
+            case 1003:
+            return new Equipment_1003(equipment);
+
             default:
+                Debug.LogError($"未找到对应id的道具， id为：{equipment.id}");
             return null;
         }
     }

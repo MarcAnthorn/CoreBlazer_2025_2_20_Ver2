@@ -11,6 +11,7 @@ public class TestItem : MonoBehaviour
     void Awake()
     {
        var call =  EventHub.Instance;
+       Debug.Log("Try add items in awake!");
     }
     void Start()
     {
@@ -35,7 +36,7 @@ public class TestItem : MonoBehaviour
 
         Debug.Log("Try add items!");
 
-
+        //为了战斗，先注释Item的添加：
         if(!ItemManager.Instance.isAdded)
         {
             ItemManager.Instance.isAdded = true;

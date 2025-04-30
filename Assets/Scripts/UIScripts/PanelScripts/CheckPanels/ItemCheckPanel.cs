@@ -9,6 +9,7 @@ public class ItemCheckPanel : BasePanel
     //当前道具检查面板持有的道具是谁：
     private Item myItem;
     //持有的Item的ItemId
+    public Image imgSelf;
     public int currentItemId;
 
     public TextMeshProUGUI txtItemName;
@@ -51,6 +52,9 @@ public class ItemCheckPanel : BasePanel
         btnCloseWhenDisplay.onClick.AddListener(()=>{
             UIManager.Instance.HidePanel<ItemCheckPanel>();
         });
+
+        string rootPath = "ArtResources/Item/" + myItem.name;
+        imgSelf.sprite = Resources.Load<Sprite>(rootPath);
     }
 
     //初始化Item显示面板信息的方法：

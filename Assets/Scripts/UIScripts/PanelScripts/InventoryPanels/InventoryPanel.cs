@@ -72,6 +72,8 @@ public class InventoryPanel : BasePanel
     protected override void Init()
     {
         EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        UpdateAttributeText();
+
         
         //初始化的时候，按照PlayerManager中的playerSceneIndex进行选择性显示UI：
         //如果是当前是战斗中，那么就显示装备背包栏

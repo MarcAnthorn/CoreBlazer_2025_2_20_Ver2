@@ -18,48 +18,57 @@ public class BuffCheckerLogic : MonoBehaviour
     public Image imgBuff;
 
     //当前显示的buff对象：
-    public Buff myBuff;
+    public BattleBuff myBuff = null;
 
     public Button btnSelf;
     void Awake()
     {
         //注册事件：
-        EventHub.Instance.AddEventListener<Buff>("UpdateBuff", UpdateBuffUI);
+        EventHub.Instance.AddEventListener<BattleBuff>("UpdateBuffUI", UpdateBuffUI);
     }
     void Start()
     {
         btnSelf.onClick.AddListener(()=>{
-            Debug.Log("Buff Checked");
+            Debug.Log("BattleBuff Checked");
             UIManager.Instance.ShowPanel<BuffCheckPanel>().InitPanel(myBuff);
         });
     }
 
     void OnDestroy()
     {
-        EventHub.Instance.RemoveEventListener<Buff>("UpdateBuff", UpdateBuffUI);
+        EventHub.Instance.RemoveEventListener<BattleBuff>("UpdateBuffUI", UpdateBuffUI);
     }
 
-
     //初始化方法：
-    public void Init(Buff _buff)
+    public void Init(BattleBuff _buff)
     {
+        Debug.LogWarning($"Init!, last turn is {_buff.lastTurns}, layer is {_buff.GetOverlyingCount()}");
+
         myBuff = _buff;
         //初始化：buff图标、叠加层数以及剩余回合数；
         imgBuff.sprite = Resources.Load<Sprite>(_buff.buffIconPath);
-        txtRamainingLayerCount.text = _buff.remainingLayerCount.ToString();
-        txtOverlyingLayerCount.text = _buff.overlyingLayerCount.ToString();       
+        txtRamainingLayerCount.text = _buff.lastTurns.ToString();
+        txtOverlyingLayerCount.text = _buff.GetOverlyingCount().ToString();
+
+        _buff.isShownOnUI = true;
     }
 
 
     //响应事件：在所有buff可能的结算时机调用；（指的是：如果不止回合结束这一个时机，那么需要再在此方法内部进行判断）
     //调用后从BuffManager中找到自己，并且更新自己的剩余层数；
     //如果归零，删除自己：
-    private void UpdateBuffUI(Buff targetBuff)
+    private void UpdateBuffUI(BattleBuff targetBuff)
     {
-        //尝试匹配：
-        if(targetBuff == myBuff)
+        //如果我的是空，那么说明我是新出现的GameObject:
+        //执行初始化并且更新：
+        if(myBuff == null){
+            Init(targetBuff);
+        }
+
+        //如果不是空，那么尝试匹配并且更新：
+        else if(targetBuff == myBuff)
         {
-            int remainCount = targetBuff.remainingLayerCount;
+            int remainCount = targetBuff.lastTurns;
             //如果是，那么执行buff数量的减少：
             txtRamainingLayerCount.text = remainCount.ToString();
 
@@ -68,7 +77,7 @@ public class BuffCheckerLogic : MonoBehaviour
             {
                 Destroy(this.gameObject);
             }
-        }
+        }    
     }
 
 }

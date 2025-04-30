@@ -10,11 +10,8 @@ public class TestEquipment : MonoBehaviour
         //测试装备：
         EquipmentManager.Instance.AddEquipment(1001);
         EquipmentManager.Instance.AddEquipment(1001);
-        EquipmentManager.Instance.AddEquipment(1001);
-        EquipmentManager.Instance.AddEquipment(1001);
-        EquipmentManager.Instance.AddEquipment(1001);
-        EquipmentManager.Instance.AddEquipment(1001);
-        EquipmentManager.Instance.AddEquipment(1001);
+        EquipmentManager.Instance.AddEquipment(1002);
+        EquipmentManager.Instance.AddEquipment(1003);
 
     }
 

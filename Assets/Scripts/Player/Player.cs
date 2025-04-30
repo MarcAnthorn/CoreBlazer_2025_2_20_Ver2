@@ -44,9 +44,11 @@ public class Player               //存储角色信息等
             this.minLimit = 1;
         }
 
+        //修正方法：所有只是调整数值的，但是不调整上限值的，使用这个方法；
+        //这个方法会将当前加成后的数值和上限值之间取较小值；
         public void AddValue(float change)
         {
-            value += change;
+            value = Mathf.Min(value + change, value_limit);           
         }
 
         public void MultipleValue(float change)
@@ -59,9 +61,11 @@ public class Player               //存储角色信息等
             this.value = value;
         }
 
+        //修正方法：所有需要调整数值&上限值的，直接使用这个方法；
         public void AddValueLimit(float change)
         {
             value += change;
+            value_limit += change;
         }
 
         public void MultipleValueLimit(float change)
@@ -101,7 +105,7 @@ public class Player               //存储角色信息等
         //}
 
     }
-
+    
     //静态基本属性
     //public int HP_limit = 100;
     //动态基本属性
@@ -127,11 +131,10 @@ public class Player               //存储角色信息等
     //动态特殊属性
 
     public bool isDie = false;
-    public Dictionary<int, Item> bag;   //??感觉用List来存会好一些??
+   
 
     public Player()
     {
-        DebugInfo();
     }
 
     // 游戏(暂时)结束
@@ -143,10 +146,15 @@ public class Player               //存储角色信息等
     public void BeHurted(Damage damage)
     {
         HP.AddValue(damage.damage);
+
         if (HP.value <= 0)
         {
-            Debug.Log("玩家死亡!");
-            GameOver();
+            //等待UI更新结束之后再处理死亡：
+            LeanTween.delayedCall(0.6f, () => {
+                Debug.Log("玩家死亡!");
+                GameOver();
+            });
+           
         }
     }
 

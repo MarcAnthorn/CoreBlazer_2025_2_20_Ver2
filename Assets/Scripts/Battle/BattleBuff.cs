@@ -45,6 +45,21 @@ public abstract class BattleBuff
             }
         }
     }
+
+//----------------------------Marc添加字段----------------------------------------
+    //buff的图标路径（用于在战斗面板显示）：
+    public string buffIconPath;
+
+    //buff文本描述：
+    public string buffDescriptionText;
+
+    //buff是否显示在UI上：(也就是是不是新添加的UI)
+    public bool isShownOnUI;
+
+
+//----------------------------Marc添加字段----------------------------------------
+
+
     // 是否在回合开始时减少该Buff
     public bool ReduceAtBeginning;
     // 触发时机
@@ -53,17 +68,25 @@ public abstract class BattleBuff
     public bool allowOverlying;
     // 叠加层数上限
     public int overlyingLimit;
+    
 
     // 是否结束
     public bool isEnd = false;
 
-    public abstract void OnEffect();
+    public abstract void OnEffect(int flag);
 
     // 用于获取子类的static字段overlyingCount
     public int GetOverlyingCount()
     {
+        Debug.LogWarning("Try get overlying layer count");
         Type type = this.GetType();         // GetType()获取派生类的类型
-        FieldInfo fieldInfo = type.GetField("overlyingCount", BindingFlags.Static);
+
+        //Marc修改：原先的反射找不到静态字段；
+        FieldInfo fieldInfo = type.GetField("overlyingCount", 
+            BindingFlags.Static | 
+            BindingFlags.Public | 
+            BindingFlags.FlattenHierarchy);
+
         if (fieldInfo != null)
         {
             int overlyingCount = (int)fieldInfo.GetValue(null);
@@ -71,7 +94,7 @@ public abstract class BattleBuff
         }
         else
         {
-            Debug.Log($"找不到字段{fieldInfo.Name}, 返回-1");
+            Debug.LogWarning($"找不到字段！, 返回-1");
             return -1;
         }
 
@@ -81,15 +104,20 @@ public abstract class BattleBuff
     public void OverlyingCountPlus(int value)
     {
         Type type = this.GetType();         // GetType()获取派生类的类型
-        FieldInfo fieldInfo = type.GetField("overlyingCount", BindingFlags.Static);
+        FieldInfo fieldInfo = type.GetField("overlyingCount", 
+            BindingFlags.Static | 
+            BindingFlags.Public | 
+            BindingFlags.FlattenHierarchy);
+
         if (fieldInfo != null)
         {
             int overlyingCount = (int)fieldInfo.GetValue(null);
-            overlyingCount += value;
+            overlyingCount += value;                            // 加上value
+            fieldInfo.SetValue(null, overlyingCount);           // 重新赋回去
         }
         else
         {
-            Debug.Log($"找不到字段{fieldInfo.Name}");
+            Debug.LogWarning($"找不到字段！, 返回-1");
         }
     }
 
@@ -112,13 +140,26 @@ public class BattleBuff_1001 : BattleBuff
         triggerTiming = TriggerTiming.AfterTurn;
         allowOverlying = true;
         overlyingLimit = 99;
-
-        overlyingCount++;
+        // overlyingCount++;
     }
-
-    override public void OnEffect()
+    
+    override public void OnEffect(int flag)
     {
-        PlayerManager.Instance.player.HP.AddValue(-10);
+        if(flag == 0)
+        {
+            PlayerManager.Instance.player.HP.AddValue(-10 * overlyingCount);
+        }
+
+        else if(flag == 1)
+        {
+            BattleManager.Instance.enemies[0].HP -= 10 * overlyingCount;
+        }
+
+        else
+        {
+            Debug.LogError($"当前中毒buff的flag不存在，flag:{flag}");
+        }
+
     }
 }
 
@@ -139,9 +180,10 @@ public class BattleBuff_1002 : BattleBuff
         triggerTiming = TriggerTiming.CalculateDamage;
         allowOverlying = true;
         overlyingLimit = 99;
+
     }
 
-    override public void OnEffect()
+    override public void OnEffect(int 占位)
     {
         // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
     }
