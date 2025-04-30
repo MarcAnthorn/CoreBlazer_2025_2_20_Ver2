@@ -16,13 +16,13 @@ public class EnemyManager : Singleton<EnemyManager>
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private BuffType GetEnemyBuffType(AttributeType type)
@@ -77,7 +77,7 @@ public class EnemyManager : Singleton<EnemyManager>
         float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
 
         Debug.LogWarning($"current damage value:{damageValue}");
-        
+
         List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue);
         if (damages.Count == 0)
         {
@@ -182,12 +182,12 @@ public class EnemyManager : Singleton<EnemyManager>
 
     }
 
-    public void EnemyHurted(int id, Damage damage)
+    public void EnemyHurted(int positionId, Damage damage)
     {
         // 在这里可以添加一些对伤害的检测(比如检测是否是暴击伤害) + 局内效果实现
 
 
-        BattleManager.Instance.enemies[id].BeHurted(damage);
+        BattleManager.Instance.enemies[positionId].BeHurted(damage);
     }
 
     // 敌人技能定义处
