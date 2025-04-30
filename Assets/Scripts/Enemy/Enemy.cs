@@ -50,7 +50,7 @@ public class Enemy_1001 : Enemy
     {
         id = 1001;
         name = "哥布林";
-        HP = 90;
+        HP = 40;
         HP_limit = 100;
         STR = 12;
         DEF = 3;
@@ -72,5 +72,305 @@ public class Enemy_1001 : Enemy
     //    float rowDamage = STR * 1f;   //?? 假设伤害倍率就是100% ??
     //    EnemyManager.Instance.DamageCalculation(player, this, rowDamage);
     //}
+
+}
+
+
+public class Enemy_1002 : Enemy
+{
+    public Enemy_1002(params EnemySkill[] enemySkills)
+    {
+        id = 1002;
+        name = "树精";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1003 : Enemy
+{
+    public Enemy_1003(params EnemySkill[] enemySkills)
+    {
+        id = 1003;
+        name = "女祭司";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1004 : Enemy
+{
+    public Enemy_1004(params EnemySkill[] enemySkills)
+    {
+        id = 1004;
+        name = "白国王";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1005 : Enemy
+{
+    public Enemy_1005(params EnemySkill[] enemySkills)
+    {
+        id = 1005;
+        name = "黑国王";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1006 : Enemy
+{
+    public Enemy_1006(params EnemySkill[] enemySkills)
+    {
+        id = 1006;
+        name = "牛头人";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1007 : Enemy
+{
+    public Enemy_1007(params EnemySkill[] enemySkills)
+    {
+        id = 1007;
+        name = "未知魔音";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1008 : Enemy
+{
+    public Enemy_1008(params EnemySkill[] enemySkills)
+    {
+        id = 1008;
+        name = "话痨死神";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1009 : Enemy
+{
+    public Enemy_1009(params EnemySkill[] enemySkills)
+    {
+        id = 1009;
+        name = "日下罪人";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1010 : Enemy
+{
+    public Enemy_1010(params EnemySkill[] enemySkills)
+    {
+        id = 1010;
+        name = "画中世界";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1011 : Enemy
+{
+    public Enemy_1011(params EnemySkill[] enemySkills)
+    {
+        id = 1011;
+        name = "科拉佐斯";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1012 : Enemy
+{
+    public Enemy_1012(params EnemySkill[] enemySkills)
+    {
+        id = 1012;
+        name = "鼠群意志";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1013 : Enemy
+{
+    public Enemy_1013(params EnemySkill[] enemySkills)
+    {
+        id = 1013;
+        name = "群山之主的思绪";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+
+}
+
+public class Enemy_1014 : Enemy
+{
+    public Enemy_1014(params EnemySkill[] enemySkills)
+    {
+        id = 1014;
+        name = "格赫罗斯";
+        HP = 40;
+        HP_limit = 100;
+        STR = 12;
+        DEF = 3;
+        CRIT_Rate = 0.2f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.2f;
+        HIT = 0.3f;
+        SPD = 9;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
 
 }
