@@ -163,12 +163,12 @@ public class EnemyManager : Singleton<EnemyManager>
 
     }
 
-    public void EnemyHurted(int id, Damage damage)
+    public void EnemyHurted(int positionId, Damage damage)
     {
         // 在这里可以添加一些对伤害的检测(比如检测是否是暴击伤害) + 局内效果实现
 
 
-        enemies[id].BeHurted(damage);
+        BattleManager.Instance.enemies[positionId].BeHurted(damage);
     }
 
     // 敌人技能定义处
