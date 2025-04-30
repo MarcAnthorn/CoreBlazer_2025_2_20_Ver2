@@ -55,12 +55,12 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     //战斗内的 敌人对玩家造成影响的方法(一般来说就是HP和SAN值上的影响)
-    public float CalculateDamageAfterBuff(AttributeType type, float value)
+    public float CalculateDamageAfterBuff(Enemy enemy, AttributeType type, float value)
     {
         //这是为了明确buff要不要执行(根据buffType来判断)
         BuffType buffType = GetEnemyBuffType(type);
         //finalValue表示 战斗过程 造成的实际数值变化
-        float finalValue = BuffManager.Instance.BuffEffectInBattle(buffType, value);
+        float finalValue = TurnCounter.Instance.EnemyBuffsBuffEffectInBattle(enemy, buffType, value);
 
         return finalValue;
     }
@@ -74,7 +74,7 @@ public class EnemyManager : Singleton<EnemyManager>
         Debug.LogWarning($"current raw attack value:{rowDamage}");
 
         // 计算敌人身上的Buff
-        float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
+        float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(enemy, AttributeType.HP, rowDamage);
 
         Debug.LogWarning($"current damage value:{damageValue}");
 

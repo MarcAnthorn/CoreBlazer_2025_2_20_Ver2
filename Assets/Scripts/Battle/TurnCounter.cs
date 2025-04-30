@@ -265,4 +265,66 @@ public class TurnCounter : Singleton<TurnCounter>
         return value;
     }
 
+    // 角色在受到Buff影响下的 战斗内的 属性(基本就是HP或者SAN值)变动
+    public float PlayerBuffsBuffEffectInBattle(BuffType type, float value)
+    {
+        float finalValue = 0f;
+
+        for (int i = 0; i < playerBuffs.Count; i++)
+        {
+            if (type == BuffType.HP_Change)    //战斗时增益/减益
+            {
+                finalValue = GetFinalValueFromBuff(playerBuffs[i], value, playerBuffs[i].influence);
+            }
+        }
+
+        return finalValue;
+
+    }
+
+    // 敌人在受到Buff影响下的 战斗内的 属性(基本就是HP或者SAN值)变动
+    public float EnemyBuffsBuffEffectInBattle(Enemy enemy, BuffType type, float value)
+    {
+        float finalValue = 0f;
+
+        for (int i = 0; i < enemy.buffs.Count; i++)
+        {
+            if (type == BuffType.HP_Change)    //战斗时增益/减益
+            {
+                finalValue = GetFinalValueFromBuff(enemy.buffs[i], value, enemy.buffs[i].influence);
+            }
+        }
+
+        return finalValue;
+
+    }
+
+    //按照BuffType处理
+    private float GetFinalValueFromBuff(BattleBuff buff, float value, float extraValue)
+    {
+        float finalValue;
+        finalValue = CalculationAfterBuff(buff.calculationType, value, extraValue);
+
+        return finalValue;
+    }
+
+    //按照CalculationType处理
+    private float CalculationAfterBuff(CalculationType type, float value, float extraValue)
+    {
+        switch (type)
+        {
+            case CalculationType.Add:
+                value += extraValue;
+                return value;
+            case CalculationType.Multiply:
+                value *= extraValue;
+                return value;
+            case CalculationType.NONE:      //如果CalculationType为NONE其实就说明了该buff不涉及到伤害计算
+                value = 0;
+                return value;
+            default:
+                return 0;
+        }
+    }
+
 }

@@ -94,30 +94,31 @@ public class BuffManager : Singleton<BuffManager>
         return 0f;
     }
 
-    //角色在受到Buff影响下的 战斗内的 属性(基本就是HP或者SAN值)变动
-    public float BuffEffectInBattle(BuffType type, float value)
-    {
-        for (int i = 0; i < buffs.Count; i++)
-        {
-            if (buffs[i].buffType == type && buffs[i].useCase == UseCase.Battle)    //战斗时增益/减益
-            {
-                float finalValue;
-                finalValue = GetFinalValueFromBuff(buffs[i], value, buffs[i].extraValue);
+    // 角色在受到Buff影响下的 战斗内的 属性(基本就是HP或者SAN值)变动 (已弃用)
+    //public float BuffEffectInBattle(BuffType type, float value)
+    //{
+    //    float finalValue = 0f;
 
-                //如果有特殊处理:
-                if (buffs[i].specialBuffType != SpecialBuffType.NONE && buffs[i].buffType == type)
-                {
-                    ExecuteSpecialBuff(buffs[i], ref finalValue);
-                }
-            }
-        }
+    //    for (int i = 0; i < buffs.Count; i++)
+    //    {
+    //        if (buffs[i].buffType == type && buffs[i].useCase == UseCase.Battle)    //战斗时增益/减益
+    //        {
+    //            finalValue = GetFinalValueFromBuff(buffs[i], value, buffs[i].extraValue);
 
-        return 0f;
+    //            //如果有特殊处理:
+    //            if (buffs[i].specialBuffType != SpecialBuffType.NONE && buffs[i].buffType == type)
+    //            {
+    //                ExecuteSpecialBuff(buffs[i], ref finalValue);
+    //            }
+    //        }
+    //    }
 
-    }
+    //    return finalValue;
+
+    //}
 
     //按照BuffType处理
-    private float GetFinalValueFromBuff(Buff buff, float value, float extraValue)
+    public float GetFinalValueFromBuff(Buff buff, float value, float extraValue)
     {
         float finalValue;
         finalValue = CalculationAfterBuff(buff.calculationType, value, extraValue);
