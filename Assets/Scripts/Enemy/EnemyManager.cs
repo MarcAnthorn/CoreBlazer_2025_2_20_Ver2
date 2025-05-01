@@ -94,8 +94,9 @@ public class EnemyManager : Singleton<EnemyManager>
                 Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");
 
 
-                //调用玩家受击方法
+                //调用玩家受击方法+特殊效果(中毒)
                 //改方法内部存在对玩家的死亡判断；
+                TurnCounter.Instance.AddPlayerBuff(new BattleBuff_1001());
                 PlayerManager.Instance.player.BeHurted(dmg);
 
                 // 调用UI更新：
@@ -191,10 +192,10 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     // 敌人技能定义处
-    // 拳打脚踢
+    // 格斗
     public void EnemySkill_1001(Enemy enemy)
     {
-        Debug.Log("敌人发动 拳打脚踢！");
+        Debug.Log("敌人发动 格斗！");
         //将STR属性值转化为 攻击值 
         float rowDamage = enemy.STR * 1f;   //?? 假设伤害倍率就是100% ??
 
