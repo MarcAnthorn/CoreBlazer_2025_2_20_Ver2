@@ -42,6 +42,9 @@ public class LightHouse : MonoBehaviour
             pc.ResumeLight();
             lightLock = true;
 
+            //灯光回复，尝试触发音效：
+            SoundEffectManager.Instance.PlaySoundEffect("接触灯塔");
+
         }
 
     }

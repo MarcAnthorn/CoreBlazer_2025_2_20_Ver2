@@ -570,6 +570,8 @@ public class LoadManager : Singleton<LoadManager>
         if(avgId == 1107)
             return;
 
+        // Debug.Log($"当前加载的avg id：{avgId}");
+
         string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/AVG/{avgId}.csv");
         int showIndex = avgId;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
@@ -663,7 +665,9 @@ public class LoadManager : Singleton<LoadManager>
 
                     dialogue.orderText = values[9];                         //I列
 
+                    // Debug.LogWarning(values[10]);
                     dialogue.nextOrderId = int.Parse(values[10]);            //J列
+                    
 
                     dialogue.audioClipStartName = values[11];               //K列
                     dialogue.audioClipEndName = values[12];                 //L列
