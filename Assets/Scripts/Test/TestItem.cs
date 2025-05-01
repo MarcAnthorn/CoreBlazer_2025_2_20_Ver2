@@ -36,19 +36,19 @@ public class TestItem : MonoBehaviour
 
         Debug.Log("Try add items!");
 
-        //为了战斗，先注释Item的添加：
-        if(!ItemManager.Instance.isAdded)
-        {
-            ItemManager.Instance.isAdded = true;
-            //添加道具：
-            foreach(int id in itemIDs)
-            {
-                //表格更改之后，部分道具被删除了；因此添加之前，先检查是否存在对应的key：
-                if(LoadManager.Instance.allItems.ContainsKey(id))
-                    ItemManager.Instance.AddItem(id);
-            }
+        //为了战斗，先注释Item的添加：（因为有一些道具会加防御，导致看不到对玩家伤害）
+        // if(!ItemManager.Instance.isAdded)
+        // {
+        //     ItemManager.Instance.isAdded = true;
+        //     //添加道具：
+        //     foreach(int id in itemIDs)
+        //     {
+        //         //表格更改之后，部分道具被删除了；因此添加之前，先检查是否存在对应的key：
+        //         if(LoadManager.Instance.allItems.ContainsKey(id))
+        //             ItemManager.Instance.AddItem(id);
+        //     }
 
-        }
+        // }
     }
 
     // Update is called once per frame

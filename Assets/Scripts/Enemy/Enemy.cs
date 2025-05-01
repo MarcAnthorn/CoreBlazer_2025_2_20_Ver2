@@ -50,7 +50,7 @@ public class Enemy_1001 : Enemy
     {
         id = 1001;
         name = "哥布林";
-        HP = 40;
+        HP = 100;
         HP_limit = 100;
         STR = 12;
         DEF = 3;

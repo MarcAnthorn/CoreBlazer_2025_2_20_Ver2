@@ -54,8 +54,12 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
         if(collision.gameObject.CompareTag("Player"))
         {
             EventManager.Instance.TriggerEvent(eventId);
+
+            SoundEffectManager.Instance.PlaySoundEffect("与地图POI交互");
             Destroy(this.gameObject);
         }
+
+
     }
 
 

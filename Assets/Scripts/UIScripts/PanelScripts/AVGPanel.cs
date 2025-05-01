@@ -54,6 +54,8 @@ public class AVGPanel : BasePanel
     public Dictionary<string, Color> orginalColorDic = new Dictionary<string, Color>();
     //用于调暗NPC立绘的亮度：
     public Dictionary<string, Color> darkenColorDic = new Dictionary<string, Color>();
+    //当前播放的循环音效：
+    public Dictionary<string, AudioSource> audioDic = new Dictionary<string, AudioSource>();
 
     public List<GameObject> optionList = new List<GameObject>();
 
@@ -86,13 +88,11 @@ public class AVGPanel : BasePanel
     {
         if(isAvgOver)
         {
-            if(Input.GetMouseButtonDown(0))
-            {
-                Debug.Log($"AVG演出已关闭，关闭的AVG演出ID：{orderBlock.rootId}");
-                //将玩家解冻：
-                EventHub.Instance.EventTrigger<bool>("Freeze", false);
-                UIManager.Instance.HidePanel<AVGPanel>();
-            }
+            Debug.Log($"AVG演出已关闭，关闭的AVG演出ID：{orderBlock.rootId}");
+            isAvgOver = false;  //确保只进入一次这个if判断；
+            //将玩家解冻：
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            UIManager.Instance.HidePanel<AVGPanel>();
         }
     }
 
@@ -158,6 +158,32 @@ public class AVGPanel : BasePanel
 
                     imgBackground.sprite = Resources.Load<Sprite>(spritePath);
                     imgBackground.SetNativeSize();
+                }
+
+                //处理音效：
+                if(currentOrder.audioClipStartName != "0" || currentOrder.audioClipEndName != "0")
+                {
+                    //如果两个都不是0，并且两个相等，那么就是瞬时的一次性音效：
+                    if(currentOrder.audioClipStartName == currentOrder.audioClipEndName)
+                    {
+                        SoundEffectManager.Instance.PlaySoundEffect(currentOrder.audioClipStartName);
+                    }
+
+                    //如果开始播放的不是0，并且当前行不终止，那么就是循环音效：
+                    else if(currentOrder.audioClipStartName != "0")
+                    {
+                        //播放循环音效，同时加入字典，便于之后停止：
+                        SoundEffectManager.Instance.PlaySoundEffect(currentOrder.audioClipStartName, true, (audio)=>{
+                            audioDic.Add(currentOrder.audioClipStartName, audio);
+                        });
+                    
+                    }
+
+                    //如果结束播放不是0，那么就是终止之前的循环音效：
+                    else if(currentOrder.audioClipEndName != "0")
+                    {
+                        SoundEffectManager.Instance.StopAllSoundEffect(audioDic[currentOrder.audioClipEndName]);
+                    }
                 }
 
                 //处理出现的NPC

@@ -102,6 +102,7 @@ public class SoundEffectManager : SingletonBaseManager<SoundEffectManager>
             soundSource.gameObject.SetActive(false);
             soundSource.gameObject.SetActive(true);
             callBack?.Invoke(soundSource);
+
         });
     }
 

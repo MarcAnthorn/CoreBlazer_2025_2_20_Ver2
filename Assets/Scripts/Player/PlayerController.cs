@@ -160,6 +160,9 @@ public class PlayerController : PlayerBase
             StopCoroutine(damageCoroutine);
         isDamaging = false;
 
+        //音效：
+        SoundEffectManager.Instance.PlaySoundEffect("死亡音效");
+
         // PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
         //加载安全屋的场景：
         //激活所有需要失活的过场景不移除的对象：
