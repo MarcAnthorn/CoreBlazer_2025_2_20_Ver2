@@ -59,31 +59,39 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         //这是为了明确buff要不要执行(根据buffType来判断)
         BuffType buffType = GetEnemyBuffType(type);
+
+        //如果是易伤就跳过；
+
         //finalValue表示 战斗过程 造成的实际数值变化
-        float finalValue = TurnCounter.Instance.EnemyBuffsBuffEffectInBattle(enemy, buffType, value);
+        // float finalValue = TurnCounter.Instance.EnemyBuffsBuffEffectInBattle(enemy, buffType, value);
 
-        return finalValue;
+
+        return value;
     }
-
+    
     // 计算敌人造成的伤害
     public void DamageCalculation(Player player, Enemy enemy, float rowDamage)
     {
         // 计算防御收益
-        rowDamage -= player.DEF.value;
+        rowDamage = Mathf.Max(0, rowDamage - player.DEF.value);
         Debug.LogWarning($"current defense value:{player.DEF.value}");
         Debug.LogWarning($"current raw attack value:{rowDamage}");
 
         // 计算敌人身上的Buff
-        float damageValue = EnemyManager.Instance.CalculateDamageAfterBuff(enemy, AttributeType.HP, rowDamage);
+        float damageValue = rowDamage;
+        // EnemyManager.Instance.CalculateDamageAfterBuff(enemy, AttributeType.HP, rowDamage);
 
         Debug.LogWarning($"current damage value:{damageValue}");
 
         List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue);
+
+        Debug.LogWarning(damages[0].damage);
+        
         if (damages.Count == 0)
         {
             Debug.Log("敌人发出的伤害被闪避了!");
         }
-        else
+        else 
         {
             foreach (var dmg in damages)
             {
@@ -143,11 +151,18 @@ public class EnemyManager : Singleton<EnemyManager>
          */
         List<Damage> damages_return = new List<Damage>();
 
+        //获取连击率
         float hit = enemy.HIT;
+
+        // baseHit 
         int baseHit = (int)Math.Ceiling(hit);       //向上取整
+
+        // hitRate
         float hitRate = hit + 1 - baseHit;
         float crit_rate = enemy.CRIT_Rate;
         float crit_dmg = enemy.CRIT_DMG;
+
+
         for (int i = 0; i < baseHit + 1; i++)
         {
             Damage tempDamage = new Damage();
@@ -159,6 +174,7 @@ public class EnemyManager : Singleton<EnemyManager>
             }
             else
             {
+                tempDamage.damage = singleDamage;
                 tempDamage.isCritical = false;
             }
 
@@ -209,7 +225,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         Debug.Log("敌人发动 毒针！");
         //将STR属性值转化为 攻击值 
-        float rowDamage = enemy.STR * 0.2f;   //?? 假设伤害倍率就是20% ??
+        float rowDamage = enemy.SPD * 0.2f + 8;   //?? 假设伤害倍率就是20% ??
         EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
     }
 

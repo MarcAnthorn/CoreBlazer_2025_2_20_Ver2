@@ -53,9 +53,12 @@ public class SkillManager : Singleton<SkillManager>
     public void DamageCalculation(Enemy enemy, float rowDamage)
     {
         // 计算防御收益
-        rowDamage -= enemy.DEF;
+        rowDamage = Mathf.Max(0, rowDamage - enemy.DEF);
         // 计算角色身上的Buff加成
         float damage = PlayerManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
+
+        Debug.Log($"Damage before buff is{damage}");
+        
         List<Damage> damages = PlayerManager.Instance.CauseDamage(enemy, damage);
         if (damages.Count == 0)
         {

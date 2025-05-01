@@ -44,7 +44,8 @@ public class Skill_1002 : Skill
 
     override public void Use(Enemy enemy)
     {
-        SkillManager.Instance.Skill_1002(enemy);
+        // SkillManager.Instance.Skill_1002(enemy);
+        BattleManager.Instance.SelectSkill1();
     }
 }
 
@@ -58,7 +59,8 @@ public class Skill_1003 : Skill
 
     override public void Use(Enemy enemy)
     {
-        SkillManager.Instance.Skill_1003(enemy);
+        // SkillManager.Instance.Skill_1003(enemy);
+        BattleManager.Instance.SelectSkill2();
     }
 }
 

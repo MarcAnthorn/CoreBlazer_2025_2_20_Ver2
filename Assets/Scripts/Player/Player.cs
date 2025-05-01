@@ -145,7 +145,7 @@ public class Player               //存储角色信息等
 
     public void BeHurted(Damage damage)
     {
-        HP.AddValue(damage.damage);
+        HP.AddValue(-damage.damage);
 
         if (HP.value <= 0)
         {

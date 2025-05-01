@@ -241,15 +241,20 @@ public class TurnCounter : Singleton<TurnCounter>
             }
         }
 
-        value = BuffManager.Instance.CalculationAfterBuff(calType, value, extraValue);
+        value = CalculationAfterBuff(calType, value, extraValue);
+
+        Debug.Log($"Turn counter cal player value is {value}");
 
         return value;
+        // return 0f;
     }
 
     // 处理指定敌人身上Buff带来的加成效果
     public float CalculateWithEnemyBuff(TriggerTiming triggerTiming, int positionId, float value)
     {
         CalculationType calType = CalculationType.NONE;
+
+        //易伤层数；
         float extraValue = 0;
         foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
@@ -261,6 +266,8 @@ public class TurnCounter : Singleton<TurnCounter>
         }
 
         value = BuffManager.Instance.CalculationAfterBuff(calType, value, extraValue);
+
+        Debug.Log($"Turn counter cal enemy value is {value}");
 
         return value;
     }
