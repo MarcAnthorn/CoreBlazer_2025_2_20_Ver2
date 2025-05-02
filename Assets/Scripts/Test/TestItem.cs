@@ -15,6 +15,9 @@ public class TestItem : MonoBehaviour
     }
     void Start()
     {
+
+        //测试用：播放安全屋BGM：
+        SoundEffectManager.Instance.PlayMusic("安全屋循环BGM");
 // //--------------------测试用；强制调用单例，使其执行初始化------------------
 
 //         var instance = LoadManager.Instance;

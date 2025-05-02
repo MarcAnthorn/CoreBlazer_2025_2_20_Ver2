@@ -32,13 +32,19 @@ public class SoundEffectManager : SingletonBaseManager<SoundEffectManager>
     //播放BGM
     public void PlayMusic(string musicPath)
     {
+        string rootPath = Path.Combine("BGM", musicPath);
+
         if (musicSource == null)
         {
             GameObject musicCarrier = new GameObject(musicPath);
             musicSource = musicCarrier.AddComponent<AudioSource>();
+
+            // musicCarrier.gameObject.SetActive(false);
+            // musicCarrier.gameObject.SetActive(true);
+
             GameObject.DontDestroyOnLoad(musicCarrier);
         }
-        ResourcesManager.Instance.LoadAsync<AudioClip>(musicPath, (clip_) =>
+        ResourcesManager.Instance.LoadAsync<AudioClip>(rootPath, (clip_) =>
         {
             musicSource.clip = clip_;
             musicSource.loop = true;

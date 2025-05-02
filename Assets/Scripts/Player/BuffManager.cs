@@ -56,7 +56,6 @@ public class BuffManager : Singleton<BuffManager>
         count--;
     }
 
-
     private void ExecuteSpecialBuff(Buff buff, ref float finalValue)    //用来进行特殊处理
     {
         switch (buff.specialBuffType)

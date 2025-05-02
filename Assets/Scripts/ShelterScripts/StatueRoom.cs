@@ -50,7 +50,12 @@ public class StatueRoom : MonoBehaviour
             //该方法定义在TestCanvas中，该脚本挂载在Canvas上；
             EventHub.Instance.EventTrigger<bool>("TestClearFunction", false);
 
+            //暂定是进入教学关：
             GameLevelManager.Instance.gameLevelType = E_GameLevelType.Tutorial;
+
+            //停止bgm：
+            SoundEffectManager.Instance.StopMusic();
+            
             //进行场景的切换：
             LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
         });

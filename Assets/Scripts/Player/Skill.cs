@@ -64,6 +64,20 @@ public class Skill_1003 : Skill
     }
 }
 
+public class Skill_1004 : Skill
+{
+    public Skill_1004()
+    {
+        id = 1004;
+    }
+
+    override public void Use()
+    {
+
+    }
+}
+
+
 // --------------- 敌人技能 ---------------
 // 
 

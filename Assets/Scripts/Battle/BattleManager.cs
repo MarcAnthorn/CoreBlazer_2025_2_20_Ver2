@@ -182,6 +182,10 @@ public class BattleManager : Singleton<BattleManager>
         else
             PlayerUseItem();
 
+
+        //玩家发起进攻之后，更新UI：
+        EventHub.Instance.EventTrigger("UpdateBattlePanelUI");
+
         // 检查敌人状态
         List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
 
