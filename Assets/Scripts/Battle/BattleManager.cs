@@ -139,17 +139,8 @@ public class BattleManager : Singleton<BattleManager>
     private void PlayerAttack()
     {
         Debug.Log($"角色释放技能{playerSkill}");
-        if(actionPoint == 1 && playerSkill == 1003)
-        {
-            Debug.Log("角色行动点不足！");
-            return;
-        }
-        actionPoint--;
-        SkillManager.Instance.ReleaseSkill(playerSkill, enemies[playerTarget - 1]);
-        if(playerSkill == 1003)        // 如果释放了某些特殊技能，需要额外扣除一点行动点
-        {
-            actionPoint--;
-        }
+        // 将技能点交给 ReleaseSkill 方法处理
+        SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, enemies[playerTarget - 1]);
         // 阻塞，播放技能释放动画以及敌人受伤动画
         // 注意：播放动画的脚本处需要使用多线程
         while (true)
@@ -337,15 +328,22 @@ public class BattleManager : Singleton<BattleManager>
     }
 
     // 下面是要与Button进行绑定的释放不同技能的方法
-    // 玩家选择技能1
-    public void SelectSkill1()
+    // 玩家选择技能 格斗
+    public void SelectSkill_1001()
+    {
+        playerSkill = 1001;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能 毒针
+    public void SelectSkill_1002()
     {
         playerSkill = 1002;
         PlayerAction(true);
     }
 
-    // 玩家选择技能2
-    public void SelectSkill2()
+    // 玩家选择技能  新月之辉
+    public void SelectSkill_1003()
     {
         playerSkill = 1003;
         PlayerAction(true);

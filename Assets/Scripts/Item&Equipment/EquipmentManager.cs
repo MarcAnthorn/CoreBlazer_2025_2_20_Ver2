@@ -111,7 +111,7 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         switch(id)
         {
             case 1001:
-            return new Skill_1002();
+            return new Skill_1001();
 
             default:
             return null;

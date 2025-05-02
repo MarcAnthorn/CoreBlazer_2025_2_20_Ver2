@@ -70,3 +70,5 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/Assets/TextMesh Pro/Resources/Noto_Sans_SC/static
+Assets/TextMesh Pro/Resources/Noto_Sans_SC/static/NotoSansSC-Black SDF.asset
