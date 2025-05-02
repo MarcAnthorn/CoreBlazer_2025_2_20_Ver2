@@ -34,7 +34,22 @@ public abstract class Skill
 
 //技能也应该是不同的实现，需要手动完成；
 // --------------- 角色技能 ---------------
-// 普通攻击(平A技能)
+// 格斗
+public class Skill_1001 : Skill
+{
+    public Skill_1001()
+    {
+        id = 1001;
+    }
+
+    override public void Use()
+    {
+        // SkillManager.Instance.Skill_1001(enemy);
+        BattleManager.Instance.SelectSkill_1001();
+    }
+}
+
+// 毒针
 public class Skill_1002 : Skill
 {
     public Skill_1002()
@@ -45,11 +60,10 @@ public class Skill_1002 : Skill
     override public void Use()
     {
         // SkillManager.Instance.Skill_1002(enemy);
-        BattleManager.Instance.SelectSkill1();
+        BattleManager.Instance.SelectSkill_1002();
     }
 }
 
-// 至圣斩
 public class Skill_1003 : Skill
 {
     public Skill_1003()
@@ -59,13 +73,12 @@ public class Skill_1003 : Skill
 
     override public void Use()
     {
-        // SkillManager.Instance.Skill_1003(enemy);
-        BattleManager.Instance.SelectSkill2();
+        // SkillManager.Instance.Skill_1002(enemy);
+        BattleManager.Instance.SelectSkill_1003();
     }
 }
 
 // --------------- 敌人技能 ---------------
-// 
 
 public abstract class EnemySkill
 {

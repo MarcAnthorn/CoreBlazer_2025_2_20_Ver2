@@ -59,8 +59,8 @@ public class LoadManager : Singleton<LoadManager>
         LoadAllAvgs();
 
         //先技能后装备，因为装备需要LoadManager中的技能实例；
-        Skill_1002 skill2 = new Skill_1002();
-        Skill_1003 skill3 = new Skill_1003();
+        Skill_1001 skill2 = new Skill_1001();
+        Skill_1002 skill3 = new Skill_1002();
 
         allSkills.Add(1002, skill2);
         allSkills.Add(1003, skill3);

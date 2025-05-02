@@ -18,13 +18,16 @@ public enum TriggerTiming
     NONE = 0,
 
     AfterTurn = 1,
-    CalculateDamage = 2
+    CalculateDamage = 2,
+    Immediate = 3
 }
 
 public abstract class BattleBuff
 {
     public int id;
     public string name;
+    // 影响的属性
+    public BuffType type;
     // 战斗Buff类型
     public BattleBuffType buffType;
     // 计算方式
@@ -131,6 +134,7 @@ public class BattleBuff_1001 : BattleBuff
     {
         id = 1001;
         name = "中毒";
+        type = BuffType.HP_Change;
         buffType = BattleBuffType.Dot;
         calculationType = CalculationType.Add;
         influence = 10;
@@ -171,9 +175,10 @@ public class BattleBuff_1002 : BattleBuff
     {
         id = 1002;
         name = "易伤";
+        type = BuffType.HP_Change;
         buffType = BattleBuffType.Debuff;
         calculationType = CalculationType.Multiply;
-        influence = 5;
+        influence = 0.05f;
         lastTurns = 2;
         ReduceAtBeginning = false;
         triggerTiming = TriggerTiming.CalculateDamage;
@@ -188,4 +193,29 @@ public class BattleBuff_1002 : BattleBuff
     }
 }
 
+public class BattleBuff_1003 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
 
+    public BattleBuff_1003()
+    {
+        id = 1003;
+        name = "燃血狂怒";
+        type = BuffType.CRIT_Rate_Change;
+        buffType = BattleBuffType.GoodBuff;
+        calculationType = CalculationType.Multiply;
+        influence = 1.0f;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.Immediate;
+        allowOverlying = false;
+        overlyingLimit = 1;
+
+    }
+
+    override public void OnEffect(int 占位)
+    {
+        // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
+    }
+}

@@ -213,7 +213,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         Debug.Log("敌人发动 格斗！");
         //将STR属性值转化为 攻击值 
-        float rowDamage = enemy.STR * 1f;   //?? 假设伤害倍率就是100% ??
+        float rowDamage = enemy.STR * 1f;
 
         Debug.LogWarning($"raw damage is {rowDamage}");
 
@@ -225,7 +225,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         Debug.Log("敌人发动 毒针！");
         //将STR属性值转化为 攻击值 
-        float rowDamage = enemy.SPD * 0.2f + 8;   //?? 假设伤害倍率就是20% ??
+        float rowDamage = enemy.SPD * 0.2f + 8;
         EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
     }
 
