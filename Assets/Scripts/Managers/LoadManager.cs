@@ -66,9 +66,29 @@ public class LoadManager : Singleton<LoadManager>
         allSkills.Add(1003, skill3);
 
         //测试：装备：
+        // 初始化所有装备
         allEquipment.Add(1001, new Equipment_1001());
         allEquipment.Add(1002, new Equipment_1002());
         allEquipment.Add(1003, new Equipment_1003());
+        allEquipment.Add(1004, new Equipment_1004());
+        allEquipment.Add(1005, new Equipment_1005());
+        allEquipment.Add(1006, new Equipment_1006());
+        allEquipment.Add(1007, new Equipment_1007());
+        allEquipment.Add(1008, new Equipment_1008());
+        allEquipment.Add(1009, new Equipment_1009());
+        allEquipment.Add(1010, new Equipment_1010());
+        allEquipment.Add(1011, new Equipment_1011());
+        allEquipment.Add(1012, new Equipment_1012());
+        allEquipment.Add(1013, new Equipment_1013());
+        allEquipment.Add(1014, new Equipment_1014());
+        allEquipment.Add(1015, new Equipment_1015());
+        allEquipment.Add(1016, new Equipment_1016());
+        allEquipment.Add(1017, new Equipment_1017());
+        allEquipment.Add(1018, new Equipment_1018());
+        allEquipment.Add(1019, new Equipment_1019());
+        allEquipment.Add(1020, new Equipment_1020());
+        allEquipment.Add(1021, new Equipment_1021());
+        allEquipment.Add(1022, new Equipment_1022());
 
 
 //--------------测试--------------------------------------------

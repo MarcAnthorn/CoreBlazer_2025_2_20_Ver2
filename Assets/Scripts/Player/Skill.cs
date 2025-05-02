@@ -19,7 +19,7 @@ public abstract class Skill
     //技能消耗费用：
     public int skillCost;
     //技能的使用：
-    abstract public void Use(Enemy enemy);    //传入攻击的enemy实例
+    abstract public void Use();    //传入攻击的enemy实例
 
 
     //调用后返回当前该技能的伤害的属性：
@@ -42,7 +42,7 @@ public class Skill_1002 : Skill
         id = 1002;
     }
 
-    override public void Use(Enemy enemy)
+    override public void Use()
     {
         // SkillManager.Instance.Skill_1002(enemy);
         BattleManager.Instance.SelectSkill1();
@@ -57,7 +57,7 @@ public class Skill_1003 : Skill
         id = 1003;
     }
 
-    override public void Use(Enemy enemy)
+    override public void Use()
     {
         // SkillManager.Instance.Skill_1003(enemy);
         BattleManager.Instance.SelectSkill2();

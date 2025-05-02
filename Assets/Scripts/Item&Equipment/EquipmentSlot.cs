@@ -23,12 +23,16 @@ public class EquipmentSlot : MonoBehaviour
     void Awake()
     {
         EventHub.Instance.AddEventListener("UpdateAllSkillDamageText", UpdateAllSkillDamageText);
+
+        //先默认失活：
+        btnSkillUse.gameObject.SetActive(false);
     }
 
     void Start()
     {
         btnSkillUse.onClick.AddListener(()=>{
-
+            //释放技能：
+            mySkill.Use();
         });
     }
 
@@ -42,6 +46,9 @@ public class EquipmentSlot : MonoBehaviour
     public void InitSlot(Equipment _equipment){
         //将当前的Slot处理为已装备；
         isSlotted = true;
+
+        //激活Button：
+        btnSkillUse.gameObject.SetActive(true);
         
         myEquipment = _equipment;
         mySkill = _equipment.mySkill;
