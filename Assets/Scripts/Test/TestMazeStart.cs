@@ -27,6 +27,9 @@ public class TestMazeStart : MonoBehaviour
         switch(GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.First:
+                Instantiate(Resources.Load<GameObject>("MapPrefabs/MapFirstFloor"), originalPoint, Quaternion.identity); 
+                playerScript.isDamageLocked = false;
+                playerScript.LMax = 100; 
 
                 //播放特定的BGM：
                 SoundEffectManager.Instance.PlayMusic("第一关BGM");

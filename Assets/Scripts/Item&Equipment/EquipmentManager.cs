@@ -34,7 +34,10 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         //相同的装备不是叠放的，而是独立放置的；因此有一个就加一个；
         equipmentList.Add(depulicatedResult);
 
-        equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);    
+        equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);  
+
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得装备「{depulicateSource.name}」");
+  
     }
 
     public void RemoveEquipment(Equipment targetEquipment)

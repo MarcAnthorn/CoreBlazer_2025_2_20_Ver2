@@ -6991,7 +6991,7 @@ GameObject:
   - component: {fileID: 4278332211029568723}
   - component: {fileID: 1055293019718741964}
   - component: {fileID: 4670887156388810274}
-  - component: {fileID: 3009740369273488016}
+  - component: {fileID: 4280607313271494444}
   m_Layer: 5
   m_Name: EquipmentPanelInventory
   m_TagString: Untagged
@@ -7069,7 +7069,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &3009740369273488016
+--- !u!114 &4280607313271494444
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7078,15 +7078,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4623410764810429727}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff33feaa453c94318bb5bf0e5f5f979b, type: 3}
+  m_Script: {fileID: 11500000, guid: d1602dab7a4ef4ce6aeb9c5e3861cab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadingTime: 0.1
-  itemContent: {fileID: 6250055352205909410}
-  itemScriptList: []
-  itemObjectList: []
-  isStillSelecting: 0
-  btnExitInteraction: {fileID: 0}
+  fadingTime: 0.4
+  equipmentContainer: {fileID: 6250055352205909410}
+  equipmentList: []
+  equipmentScriptList: []
 --- !u!1 &4635010417646808876
 GameObject:
   m_ObjectHideFlags: 0

@@ -208,7 +208,15 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             //宝箱地块：
             else if(id >= 20022 && id <= 20024)
             {
-                GameObject reward = Resources.Load<GameObject>("Reward");
+                GameObject reward = null;
+                if(id == 20022)
+                    reward = Resources.Load<GameObject>("RewardCommon");
+
+                else if(id == 20023)
+                    reward = Resources.Load<GameObject>("RewardRare");
+
+                else 
+                    reward = Resources.Load<GameObject>("RewardSpecial");
                 reward.name = $"宝箱{id}";
                 Instantiate(reward, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(rewardObj.transform, false);
             }
