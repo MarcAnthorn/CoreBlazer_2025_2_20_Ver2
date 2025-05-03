@@ -31,6 +31,10 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
     //起点和终点的父对象；
     private GameObject startEndPointObject;
     public GameObject parentPrefab;
+
+    public GameObject sideQuestObj;
+
+    public GameObject rewardObj;
     private float cellSize = 1;
     private int sizeX;
     private int sizeY;
@@ -57,9 +61,9 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         GameLevelManager.Instance.npcBlockDic[30005].avgId = 1105;
 //------------------------------------测试---------------------------------------------------
 
-        LoadMapToPrefab(0);
-
-        LoadMapToPrefab(2);
+        // LoadMapToPrefab(0);
+        LoadMapToPrefab(1);
+        // LoadMapToPrefab(2);
 
         
 
@@ -83,6 +87,16 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         startEndPointObject.name = "StartEndPointObject";
 
 
+        //支线点位的组织：
+        sideQuestObj = Instantiate(parentPrefab);
+        sideQuestObj.name = "SideQuestObject";
+
+        //宝箱点位的组织：
+        rewardObj = Instantiate(parentPrefab);
+        rewardObj.name = "RewardObject";
+
+
+
         originalPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
         originalPoint.z = 0;  
 
@@ -97,6 +111,8 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 levelPath = "Grids/LevelZeroGrids";
             break;
             case 1:
+                currentMap = LoadManager.Instance.mapFirstFloor;
+                levelPath = "Grids/LevelTwoGrids";      //第一层 暂时使用第二层的美资；
             break;
             case 2:
                 currentMap = LoadManager.Instance.mapSecondFloor;
@@ -179,6 +195,24 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 Instantiate(NPCObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(npcObject.transform, false);
 
             }
+
+            //支线：墙中鼠支线点位：
+            else if(id >= 20016 && id <= 20021)
+            {
+                GameObject sideObj = Resources.Load<GameObject>("SideQuest");
+                sideObj.name = $"墙中鼠支线：{id}";
+                Instantiate(sideObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(sideQuestObj.transform, false);
+            }
+
+
+            //宝箱地块：
+            else if(id >= 20022 && id <= 20024)
+            {
+                GameObject reward = Resources.Load<GameObject>("Reward");
+                reward.name = $"宝箱{id}";
+                Instantiate(reward, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(rewardObj.transform, false);
+            }
+
             //实例化地块，调用内部函数GetWorldPosition布置位置
             Instantiate(pathGridObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(pathGridObject.transform, false);
 
@@ -229,10 +263,6 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                     //加载水平通路：
                     gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,"PathGridHorizontal")); 
                 }
-
-
-                
-
                 
             }
             else    //竖直墙体
@@ -342,6 +372,8 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         lightHouseObject.transform.SetParent(saveObject.transform, false);
         npcObject.transform.SetParent(saveObject.transform, false);
         startEndPointObject.transform.SetParent(saveObject.transform, false);
+        sideQuestObj.transform.SetParent(saveObject.transform, false);
+        rewardObj.transform.SetParent(saveObject.transform, false);
   
 #if UNITY_EDITOR
         switch(mapIndex){
@@ -349,6 +381,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapTutorialFloor.prefab");
             break;
             case 1:
+                PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapFirstFloor.prefab");
             break;
             case 2:
                 PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapSecondFloor.prefab");
@@ -376,6 +409,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 levelPath = "Grids/LevelZeroGrids";
             break;
             case 1:
+                levelPath = "Grids/LevelTwoGrids";
             break;
             case 2:
                 levelPath = "Grids/LevelTwoGrids";

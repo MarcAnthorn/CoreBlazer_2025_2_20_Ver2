@@ -34,6 +34,11 @@ public class LoadManager : Singleton<LoadManager>
     public int[,] mapTutorialFloorIndex =  new int[21, 21];
     public MapElement[,] mapTutorialFloor;
 
+
+    //第一层：
+    public int[,] mapFirstFloorIndex =  new int[31, 31];
+    public MapElement[,] mapFirstFloor;
+
     //第二层
     public int[,] mapSecondFloorIndex = new int[41, 41];
     public MapElement[,] mapSecondFloor;
@@ -279,6 +284,9 @@ public class LoadManager : Singleton<LoadManager>
         LoadMapElements(0);
         InitMapElements(0);
 
+        LoadMapElements(1);
+        InitMapElements(1);
+
         LoadMapElements(2);
         InitMapElements(2);
     }
@@ -293,6 +301,10 @@ public class LoadManager : Singleton<LoadManager>
                 switch(mapId){
                     case 0:
                         mapTutorialFloorIndex[i, j] = -1;
+                    break;
+
+                    case 1:
+                        mapFirstFloorIndex[i, j] = -1;
                     break;
 
                     case 2:
@@ -337,6 +349,10 @@ public class LoadManager : Singleton<LoadManager>
                             mapTutorialFloorIndex[i, j] = int.Parse(values[j]);
                         break;
 
+                        case 1:
+                            mapFirstFloorIndex[i, j] = int.Parse(values[j]);
+                        break;
+
                         case 2:
                             mapSecondFloorIndex[i, j] = int.Parse(values[j]);
                         break;
@@ -371,12 +387,22 @@ public class LoadManager : Singleton<LoadManager>
                 }
             break;
 
+            case 1:
+                mapFirstFloor = new MapElement[31, 31];
+                for (int i = 0; i < mapFirstFloor.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
+                {
+                    for (int j = 0; j < mapFirstFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
+                    {
+                        mapFirstFloor[i, j] = MapManager.Instance.CreateMapElement(mapFirstFloorIndex[i, j]);
+                    }
+                }
+            break;
 
             case 2:
                 mapSecondFloor = new MapElement[41, 41];
-                for (int i = 0; i < mapSecondFloorIndex.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
+                for (int i = 0; i < mapSecondFloor.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
                 {
-                    for (int j = 0; j < mapSecondFloorIndex.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
+                    for (int j = 0; j < mapSecondFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
                     {
                         mapSecondFloor[i, j] = MapManager.Instance.CreateMapElement(mapSecondFloorIndex[i, j]);
                     }
@@ -392,7 +418,7 @@ public class LoadManager : Singleton<LoadManager>
         optionEvents = new Dictionary<int, Event>();
         EventManager.Instance.weights = new Dictionary<int, float>();
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
-        string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Test1_CSV.csv");
+        string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Event.csv");
         int libIndex = 2001;
 
         if (File.Exists(path))
@@ -437,6 +463,8 @@ public class LoadManager : Singleton<LoadManager>
                     LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
                     if (int.Parse(values[1]) / 10 == libIndex && int.Parse(values[1]) % 10 == 1)
                     {
+                        Debug.LogWarning($"Start event added! id is{eventData.eventId}");
+
                         startEvents.Add(eventData.eventId, eventData);      //起始事件
                         EventManager.Instance.weights.Add(eventData.eventId, 1.0f);               //加入起始事件的权重（等权重）
                     }
@@ -484,7 +512,7 @@ public class LoadManager : Singleton<LoadManager>
     {
         eventResults = new Dictionary<int, EventResult>();
 
-        string path = Path.Combine(Application.dataPath, "Resources/EventData/EventResult/EventResults1.csv");
+        string path = Path.Combine(Application.dataPath, "Resources/EventData/EventResult/EventResult.csv");
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
@@ -498,37 +526,42 @@ public class LoadManager : Singleton<LoadManager>
                 {
                     Event.EventResult @eventResult = new Event.EventResult();
                     @eventResult.resultId = int.Parse(values[0]);      //涉及到覆盖，所以要重新再设置一次
-                    @eventResult.spId = int.Parse(values[1]);
+                    // @eventResult.spId = int.Parse(values[1]);
 
-                    @eventResult.change_HP = float.Parse(values[2]);
-                    @eventResult.change_HP_rate = float.Parse(values[3]);
+                    @eventResult.change_HP = float.Parse(values[1]);
+                    @eventResult.change_HP_rate = float.Parse(values[2]);
 
-                    @eventResult.change_STR = float.Parse(values[4]);
-                    @eventResult.change_STR_rate = float.Parse(values[5]);
+                    @eventResult.change_STR = float.Parse(values[3]);
+                    @eventResult.change_STR_rate = float.Parse(values[4]);
 
-                    @eventResult.change_DEF = float.Parse(values[6]);
-                    @eventResult.change_DEF_rate = float.Parse(values[7]);
+                    @eventResult.change_DEF = float.Parse(values[5]);
+                    @eventResult.change_DEF_rate = float.Parse(values[6]);
 
-                    @eventResult.change_LVL = float.Parse(values[8]);
-                    @eventResult.change_LVL_rate = float.Parse(values[9]);
+                    @eventResult.change_LVL = float.Parse(values[7]);
+                    @eventResult.change_LVL_rate = float.Parse(values[8]);
 
-                    @eventResult.change_SAN = float.Parse(values[10]);
-                    @eventResult.change_SAN_rate = float.Parse(values[11]);
+                    @eventResult.change_SAN = float.Parse(values[9]);
+                    @eventResult.change_SAN_rate = float.Parse(values[10]);
 
-                    @eventResult.change_SPD = float.Parse(values[12]);
-                    @eventResult.change_SPD_rate = float.Parse(values[13]);
+                    @eventResult.change_SPD = float.Parse(values[11]);
+                    @eventResult.change_SPD_rate = float.Parse(values[12]);
 
-                    @eventResult.change_CRIT_Rate = float.Parse(values[14]);
-                    @eventResult.change_CRIT_Rate_rate = float.Parse(values[15]);
+                    @eventResult.change_CRIT_Rate = float.Parse(values[13]);
+                    @eventResult.change_CRIT_Rate_rate = float.Parse(values[14]);
 
-                    @eventResult.change_CRIT_DMG = float.Parse(values[16]);
-                    @eventResult.change_CRIT_DMG_rate = float.Parse(values[17]);
+                    @eventResult.change_CRIT_DMG = float.Parse(values[15]);
+                    @eventResult.change_CRIT_DMG_rate = float.Parse(values[16]);
 
-                    @eventResult.change_HIT = float.Parse(values[18]);
-                    @eventResult.change_HIT_rate = float.Parse(values[19]);
+                    @eventResult.change_HIT = float.Parse(values[17]);
+                    @eventResult.change_HIT_rate = float.Parse(values[18]);
 
-                    @eventResult.change_AVO = float.Parse(values[20]);
-                    @eventResult.change_AVO_rate = float.Parse(values[21]);
+                    @eventResult.change_AVO = float.Parse(values[19]);
+                    @eventResult.change_AVO_rate = float.Parse(values[20]);
+
+                    @eventResult.enemyId = int.Parse(values[21]);
+                    @eventResult.itemId = int.Parse(values[22]);
+                    @eventResult.itemCount = int.Parse(values[23]);
+
 
                     eventResults.Add(@eventResult.resultId, @eventResult);
                 }
@@ -541,7 +574,7 @@ public class LoadManager : Singleton<LoadManager>
     private void LoadKaidanTexts(int eventIndex, Event @event)     //用在Event加载的时候
     {
         @event.textLib = new Dictionary<int, KaidanText>();
-        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/KaidanTest.csv");
+        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/EventDialogue.csv");
 
         if (File.Exists(path))
         {
@@ -571,8 +604,10 @@ public class LoadManager : Singleton<LoadManager>
                     }
                     kaidanText.text = values[3];
                     kaidanText.nextId = int.Parse(values[4]);
-                    kaidanText.illustrationId = int.Parse(values[5]);
-                    kaidanText.bgId = int.Parse(values[6]);
+
+//---------------------------暂时先注释；因为策划表中没有填写----------------------------------------------
+                    // kaidanText.illustrationId = int.Parse(values[5]);
+                    // kaidanText.bgId = int.Parse(values[6]);
 
                     @event.evDescription += values[3];
                     @event.textLib.Add(kaidanText.textId, kaidanText);

@@ -9,10 +9,11 @@ public class EventGO : MonoBehaviour            //挂载在游戏中表示事件
 
     void Awake()        //开局就定下了本关卡内的所有POI对应事件
     {
-        @event = ExtractEvent();
-        eventId = @event.eventId;
-        Debug.Log(@event.eventId);
-        GameLevelManager.Instance.events.Add(++GameLevelManager.Instance.eventNum, @event);
+//------------测试用：注释！---------------------------------------
+        // @event = ExtractEvent();
+        // eventId = @event.eventId;
+        // Debug.Log(@event.eventId);
+        // GameLevelManager.Instance.events.Add(++GameLevelManager.Instance.eventNum, @event);
 
 
 

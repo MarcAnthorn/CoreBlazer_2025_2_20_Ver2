@@ -58,7 +58,12 @@ public class EventOptionBtn : MonoBehaviour
 
     private void SetRequirement(string conditionName, float minValue, float maxValue)
     {
-        txtAttributeRequirement.text = $"属性{conditionName}要求：>= {minValue}, <= {maxValue}";
+        if(conditionName == "")
+        {
+            txtAttributeRequirement.text = $"选项无属性要求";
+            return;
+        }
+        txtAttributeRequirement.text = $"属性要求：{minValue} ≤ 「{conditionName}」 ≤ {maxValue}";
     }
 
     private void SetDescription(string text)

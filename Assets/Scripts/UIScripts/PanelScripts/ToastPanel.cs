@@ -133,6 +133,13 @@ public class ToastPanel : BasePanel
             attributeMultiplierDic.Add("闪避率", eventResult.change_AVO_rate);
         }
 
+        //如果字典中的什么也没有，说明没有属性变动：
+        //直接跳过下面的内容：
+        if(attributeValueDic.Count == 0)
+        {
+            txtToast.text = "事件无结果影响";
+            return;
+        }
         //初始化文本：
         StringBuilder valueChange = new StringBuilder();
         StringBuilder mutiplierChange = new StringBuilder();

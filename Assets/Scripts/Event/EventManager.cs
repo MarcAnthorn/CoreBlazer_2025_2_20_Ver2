@@ -73,6 +73,7 @@ public class EventManager : Singleton<EventManager>
     }
     public void TriggerEvent(int eventId)                //当角色的OnTriggerEnter()方法发生时调用,获取该事件信息
     {
+        Debug.LogWarning($"Event triggered! id is{eventId}");
         currentEventId = eventId;
 
         //玩家触碰POI后，显示事件面板GameMainPanel:
@@ -84,6 +85,8 @@ public class EventManager : Singleton<EventManager>
     //用于向外部广播事件的方法，使外部获取当前的事件实例(Marc添加)
     public Event BroadcastEvent()
     {
+        Debug.LogWarning($"Try to broadcast event, id is{currentEventId}");
+
         if (LoadManager.Instance.startEvents.ContainsKey(currentEventId))
         {
             return LoadManager.Instance.startEvents[currentEventId];

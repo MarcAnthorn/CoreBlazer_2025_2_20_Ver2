@@ -20,22 +20,36 @@ public class ItemManager : Singleton<ItemManager>
 
 //----------------------------Test-----------------------------
 
-    public void AddItem(int id)
+    public void AddItem(int id, int count = 1)
     {
         // Debug.Log($"Try Add Item, id is{id}");
-        
+        Item nowItem = LoadManager.Instance.allItems[id];
         if(itemList.Contains(id))
         {
             //如果存在，那就是调整dic中的数量：
+            //注意：先判断是否要超出道具叠加上限：如果是，那么直接return：
+            if(itemCountDic[id]  == nowItem.maxLimit)
+            {
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前道具「{nowItem.name}」已达到最大可叠加上限{nowItem.maxLimit}");
+                return;
+            }
+
             //始终确保List和Dic中的元素数量是一致的；
-            itemCountDic[id]++;
+            for(int i = 0; i < count; i++)
+            {
+                itemCountDic[id]++;
+            }
 
         }
         else
         {
             //不存在，那么就是加入List，然后初始化Dic数量为1；
             itemList.Add(id);
-            itemCountDic.Add(id, 1);
+            itemCountDic.Add(id, 0);
+            for(int i = 0; i < count; i++)
+            {
+                itemCountDic[id]++;
+            }
         }
 
         //如果这个道具是持有就使用，那么直接使用：
@@ -45,6 +59,9 @@ public class ItemManager : Singleton<ItemManager>
             item.Use();
             item.isInUse = true;
         }
+
+        //弹出获取的道具：
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得道具「{nowItem.name}」* {count}");
 
 
     }

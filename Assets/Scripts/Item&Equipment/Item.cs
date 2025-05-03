@@ -676,12 +676,12 @@ public class Item_505 : Item
     public override void Use()
     {
         effectFinalValueDic.Clear();
-        Debug.Log($"道具 \"精神恍惚\" 使用！");
 
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit - 10);
 
         //获得后精神值上限-10
-        PlayerManager.Instance.player.SAN.value_limit += 10f;
+        PlayerManager.Instance.player.SAN.value_limit -= 10f;
+        PlayerManager.Instance.player.SAN.value -= 10f;
         PlayerManager.Instance.player.DebugInfo();
 
         

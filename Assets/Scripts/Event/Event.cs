@@ -69,6 +69,19 @@ public class Event          //
         public float change_HIT_rate;               //HIT影响(百分比)
         public float change_AVO;                    //AVO影响(加值)
         public float change_AVO_rate;               //AVO影响(百分比)
+
+
+
+        //新增的结果字段：
+        //后续的战斗敌人id：
+        public int enemyId;
+
+        //发放的道具id：
+        public int itemId; 
+
+        //发送的道具数量：
+        public int itemCount;
+
     }
 
     [System.Serializable]
@@ -144,6 +157,20 @@ public class Event          //
 
             player.AVO.value += this.result.change_AVO;
             player.AVO.value *= (this.result.change_AVO_rate + 1);
+
+
+            //如果有战斗，那么会将战斗id播放给BattlePanel：
+            if(this.result.enemyId != 0)
+            {
+                Debug.LogWarning($"遭遇敌人，id为：{result.enemyId }");
+            }
+            
+
+            //如果只是道具投放，那么就会将道具加入到玩家背包：
+            else if(result.itemId != 0)
+            {
+                ItemManager.Instance.AddItem(result.itemId, result.itemCount);
+            }
 
         }
         else
@@ -291,7 +318,7 @@ public class EventOption
         switch(conditionId)
         {
             case 0:
-            return "测试属性";
+            return "";
             case 1:
             return "生命";
             case 2:

@@ -40,6 +40,12 @@ public class MapManager : Singleton<MapManager>
             colume = 21
         };
 
+        Map map1 = new Map()
+        {
+            row = 31,
+            colume = 31
+        };
+
         Map map2 = new Map()
         {
             row = 41,
@@ -47,6 +53,7 @@ public class MapManager : Singleton<MapManager>
         };
 
         Maps.Add(0, map0);
+        Maps.Add(1, map1);
         Maps.Add(2, map2);
         
     }
@@ -77,8 +84,24 @@ public class MapManager : Singleton<MapManager>
             case 10013:
 
             case 20010: //
-            case 20020: //
+            // case 20020: //
             case 20030: // 
+
+//--------------以下是墙中鼠-----------------------
+            case 20016: 
+            case 20017:
+            case 20018:
+            case 20019:
+            case 20020:
+            case 20021:
+//----------------------------------------------------
+
+//--------------宝箱-----------------------
+            case 20022:
+            case 20023:
+            case 20024:
+
+//----------------------------------------------------
 
             //接下来的都是NPC事件，但是形式上也是PathGrid:
             case 30001:

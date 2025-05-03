@@ -24,8 +24,7 @@ public class GameMainPanel : BasePanel
     public TextMeshProUGUI txtRiddleTip; 
     public Button btnToGodItem;
     public Button btnToCommonItem;
-    public Button btnSetting;
-    public Button btnQuit;
+
     public Button btnQuitBlackSpace;
     public RectTransform rtOptionsContainer;
     private List<GameObject> optionList = new List<GameObject>(); 
@@ -62,15 +61,6 @@ public class GameMainPanel : BasePanel
 
         // btnToCommonItem.onClick.AddListener(()=>{
         //     commonItemPanelObject.SetActive(true);
-        //     godItemPanelObject.SetActive(false);
-        // });
-
-        btnQuit.onClick.AddListener(()=>{
-            if(isDetectingCloseInput)
-            {
-                UIManager.Instance.HidePanel<GameMainPanel>();
-            }
-        });
 
         btnQuitBlackSpace?.onClick.AddListener(()=>{
             if(isDetectingCloseInput && btnQuitBlackSpace.gameObject.activeSelf)
