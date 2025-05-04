@@ -70,7 +70,7 @@ public class EnemyManager : Singleton<EnemyManager>
     }
     
     // 计算敌人造成的伤害
-    public void DamageCalculation(Player player, Enemy enemy, float rowDamage)
+    public void DamageCalculation(Player player, Enemy enemy, float rowDamage, DamageType damageType)
     {
         // 计算防御收益
         rowDamage = Mathf.Max(0, rowDamage - player.DEF.value);
@@ -83,7 +83,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         Debug.LogWarning($"current damage value:{damageValue}");
 
-        List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue);
+        List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue, damageType);
 
         Debug.LogWarning(damages[0].damage);
         
@@ -96,7 +96,10 @@ public class EnemyManager : Singleton<EnemyManager>
             foreach (var dmg in damages)
             {
                 // 造成伤害之前进行一些加成计算
-                dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDamage, dmg.damage);
+                // 先计算易伤(DeBuff)加成
+                dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDebuffDamage, dmg.damageType, dmg.damage);
+                // 再判断伤害类型(方法内部自行判断)，并计算增伤(GoodBuff)加成
+                dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, dmg.damage);
 
                 //结算出的对玩家的伤害
                 Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");
@@ -115,7 +118,7 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     // 造成伤害
-    public List<Damage> CauseDamage(Enemy enemy, float singleDamage)
+    public List<Damage> CauseDamage(Enemy enemy, float singleDamage, DamageType damageType)
     {
         List<Damage> damages = new List<Damage>();
         if (JugdeAvoid(enemy))
@@ -124,7 +127,7 @@ public class EnemyManager : Singleton<EnemyManager>
         }
         else
         {
-            JudgeHit(enemy, singleDamage, out damages);
+            JudgeHit(enemy, singleDamage, damageType, out damages);
         }
 
         return damages;
@@ -144,7 +147,7 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     //连击判定
-    private void JudgeHit(Enemy enemy, float singleDamage, out List<Damage> damages)
+    private void JudgeHit(Enemy enemy, float singleDamage, DamageType damageType, out List<Damage> damages)
     {
         /*连击判定(由Player类来处理每一次连击的效果)
          *  对每一次连击进行暴击判定
@@ -165,7 +168,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         for (int i = 0; i < baseHit + 1; i++)
         {
-            Damage tempDamage = new Damage();
+            Damage tempDamage = new Damage(damageType);
             float random1 = UnityEngine.Random.Range(0f, 1f);
             if (random1 < crit_rate)
             {
@@ -217,7 +220,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         Debug.LogWarning($"raw damage is {rowDamage}");
 
-        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.STR);
     }
 
     // 毒针
@@ -226,7 +229,7 @@ public class EnemyManager : Singleton<EnemyManager>
         Debug.Log("敌人发动 毒针！");
         //将STR属性值转化为 攻击值 
         float rowDamage = enemy.SPD * 0.2f + 8;
-        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage);
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill);
     }
 
 }

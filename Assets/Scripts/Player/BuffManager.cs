@@ -134,7 +134,7 @@ public class BuffManager : Singleton<BuffManager>
                 value += extraValue;
                 return value;
             case CalculationType.Multiply:
-                value *= extraValue;
+                value *= (1.0f + extraValue);
                 return value;
             case CalculationType.NONE:      //如果CalculationType为NONE其实就说明了该buff不涉及到伤害计算
                 value = 0;

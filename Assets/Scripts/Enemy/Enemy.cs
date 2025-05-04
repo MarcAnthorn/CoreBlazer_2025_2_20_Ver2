@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,6 +40,21 @@ public abstract class Enemy
             Debug.Log($"敌人 {positionId} 死亡!");
             isDead = true;
         }
+    }
+
+    // 查找敌人身上是否存在某一类型的BattleBuff
+    public bool ContainsBuff<T>(out BattleBuff buff)
+    {
+        foreach(var b in buffs)
+        {
+            if (b.GetType() == typeof(T) && b.GetOverlyingCount() != 0)
+            {
+                buff = b;
+                return true;
+            }
+        }
+        buff = null;
+        return false;
     }
 
 }

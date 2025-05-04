@@ -184,8 +184,18 @@ public class BattleManager : Singleton<BattleManager>
         {
             if (e.isDead)
             {
-                deadEnemies.Add(e);   // 先记下来
-                e.DieAnimation();     // 触发死亡动画
+                BattleBuff buff;
+                if (e.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
+                {
+                    buff.OverlyingCountPlus(-1);
+                    e.buffs.Remove(buff);
+                    buff.OnEffect(1);
+                }
+                else
+                {
+                    deadEnemies.Add(e);   // 先记下来
+                    e.DieAnimation();     // 触发死亡动画
+                }
             }
         }
 
@@ -246,8 +256,18 @@ public class BattleManager : Singleton<BattleManager>
         // 在DamageCalculation中，存在player的BeHurt方法；该方法会进行一次是否死亡的判断；
         if (player.isDie)
         {
-            GameOver(false);
-            return;
+            BattleBuff buff;
+            if (TurnCounter.Instance.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
+            {
+                buff.OverlyingCountPlus(-1);
+                TurnCounter.Instance.playerBuffs.Remove(buff);
+                buff.OnEffect(0);
+            }
+            else
+            {
+                GameOver(false);
+                return;
+            }
         }
 
         //在进入地方回合之前，延迟一段时间，等buff结算的UI效果结束：
@@ -268,13 +288,12 @@ public class BattleManager : Singleton<BattleManager>
         StartCoroutine(EnemyAttack(enemies[index], index));
 
 
-//-------在Player类的BeHurted中看见的死亡逻辑的判断，该判断在每次敌方Skill使用后就会处理，此处是否多余了--------------------
         // 判断游戏状态
-        // if (player.isDie)
-        // {
-        //     GameOver(false);
-        //     return;
-        // }
+        if (player.isDie)
+        {
+            GameOver(false);
+            return;
+        }
     }
 
     //敌方释放技能的协程：

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -53,7 +54,7 @@ public class Player               //存储角色信息等
 
         public void MultipleValue(float change)
         {
-            value *= change;
+            value = Mathf.Min(value * change, value_limit);
         }
 
         public void SetValue(float value)
@@ -165,11 +166,29 @@ public class Player               //存储角色信息等
 
 }
 
+[Flags]
+public enum DamageType : uint
+{
+    NONE = 0,
+
+    STR = 0x01,
+    Item = 0x02,
+    Skill = 0x04,
+    Dot = 0x08
+}
 
 public class Damage
 {
-    //是否是暴击伤害
+    // 是否是暴击伤害
     public bool isCritical;
-    //伤害量
+    // 伤害量
     public float damage;
+    // 伤害类型
+    public DamageType damageType;
+
+    public Damage(DamageType damageType)
+    {
+        this.damageType = damageType;
+    }
+
 }

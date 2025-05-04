@@ -210,7 +210,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     }
 
     // 造成伤害
-    public List<Damage> CauseDamage(Enemy enemy, float singleDamage)
+    public List<Damage> CauseDamage(Enemy enemy, float singleDamage, DamageType damageType)
     {
         List<Damage> damages= new List<Damage>();
         if (JugdeAvoid(enemy))
@@ -219,7 +219,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         }
         else
         {
-            JudgeHit(singleDamage, out damages);
+            JudgeHit(singleDamage, damageType, out damages);
         }
 
         return damages;
@@ -239,7 +239,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     }
 
     //连击判定
-    public void JudgeHit(float singleDamage, out List<Damage> damages)
+    public void JudgeHit(float singleDamage, DamageType damageType, out List<Damage> damages)
     {
         /*连击判定(由Player类来处理每一次连击的效果)
          *  对每一次连击进行暴击判定
@@ -253,7 +253,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         float crit_dmg = PlayerManager.Instance.player.CRIT_DMG.value;
         for (int i = 0; i < baseHit + 1; i++)
         {
-            Damage tempDamage = new Damage();
+            Damage tempDamage = new Damage(damageType);
             float random1 = UnityEngine.Random.Range(0f, 1f);
             if (random1 < crit_rate)
             {

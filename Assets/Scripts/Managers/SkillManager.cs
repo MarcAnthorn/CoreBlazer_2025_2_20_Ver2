@@ -45,7 +45,7 @@ public class SkillManager : Singleton<SkillManager>
     }
 
     // 结算角色造成的伤害
-    public void DamageCalculation(Enemy enemy, float rowDamage, Action action = null)
+    public void DamageCalculation(Enemy enemy, float rowDamage, DamageType damageType, Action action = null)
     {
         // 计算防御收益
         rowDamage = Mathf.Max(0, rowDamage - enemy.DEF);
@@ -54,7 +54,7 @@ public class SkillManager : Singleton<SkillManager>
 
         Debug.Log($"Damage before buff is{damage}");
         
-        List<Damage> damages = PlayerManager.Instance.CauseDamage(enemy, damage);
+        List<Damage> damages = PlayerManager.Instance.CauseDamage(enemy, damage, damageType);
         if (damages.Count == 0)
         {
             Debug.Log("角色发出的伤害被闪避了!");
@@ -64,7 +64,10 @@ public class SkillManager : Singleton<SkillManager>
             foreach (var dmg in damages)
             {
                 // 造成伤害之前进行一些加成计算
-                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateDamage, enemy.positionId, dmg.damage);
+                // 先计算易伤(DeBuff)加成
+                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateDebuffDamage, dmg.damageType, enemy.positionId, dmg.damage);
+                // 再判断伤害类型(方法内部自行判断)，并计算增伤(GoodBuff)加成
+                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, enemy.positionId, dmg.damage);
 
                 //结算出的对敌人的伤害
                 Debug.LogWarning($"结算出的对敌人的伤害：{dmg.damage}");
@@ -86,7 +89,7 @@ public class SkillManager : Singleton<SkillManager>
         Debug.Log("角色发动 格斗！");
         //将STR属性值转化为 攻击值 
         float rowDamage = PlayerManager.Instance.player.STR.value * 1f;
-        SkillManager.Instance.DamageCalculation(enemy, rowDamage);
+        SkillManager.Instance.DamageCalculation(enemy, rowDamage, DamageType.STR);
     }
 
     // 毒针
@@ -95,7 +98,7 @@ public class SkillManager : Singleton<SkillManager>
         Debug.Log("角色发动 毒针！");
         float rowDamage = PlayerManager.Instance.player.SPD.value * 0.2f + 8;
         Action action = () => AddBuffToSkill_1002(enemy);
-        SkillManager.Instance.DamageCalculation(enemy, rowDamage, action);
+        SkillManager.Instance.DamageCalculation(enemy, rowDamage, DamageType.Skill, action);
     }
     private void AddBuffToSkill_1002(Enemy enemy)
     {
@@ -108,7 +111,7 @@ public class SkillManager : Singleton<SkillManager>
     {
         Debug.Log("角色发动 新月之辉！");
         float rowDamage = 50;
-        SkillManager.Instance.DamageCalculation(enemy, rowDamage);
+        SkillManager.Instance.DamageCalculation(enemy, rowDamage, DamageType.Skill);
     }
 
     // 心火

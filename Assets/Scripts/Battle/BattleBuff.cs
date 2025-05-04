@@ -13,13 +13,24 @@ public enum BattleBuffType
     Debuff = 3
 }
 
+public enum ReduceTiming
+{
+    NONE = 0,
+
+    Begin = 1,
+    After = 2
+}
+
 public enum TriggerTiming
 {
     NONE = 0,
 
     AfterTurn = 1,
-    CalculateDamage = 2,
-    Immediate = 3
+    CalculateDebuffDamage = 2,
+    CalculateGoodBuffDamage = 3,
+    Immediate = 4,
+    BeHit = 5,
+    IsGoingToDie = 6
 }
 
 public abstract class BattleBuff
@@ -29,12 +40,16 @@ public abstract class BattleBuff
     // 影响的属性
     public BuffType type;
     // 战斗Buff类型
-    public BattleBuffType buffType;
+    public BattleBuffType buffType = BattleBuffType.NONE;
+    // Buff影响的伤害类型
+    public DamageType damageType = DamageType.NONE;
     // 计算方式
     public CalculationType calculationType;
     // Buff影响数值
     public float influence;
-    // 持续回合数
+    // 持续回合数上限
+    public int lastTurnLimit;
+    // 实例当前持续回合数
     protected int _lastTurns;
     public int lastTurns
     {
@@ -75,8 +90,12 @@ public abstract class BattleBuff
 
     // 是否结束
     public bool isEnd = false;
-
+    // Buff达到触发条件时造成的影响
     public abstract void OnEffect(int flag);
+    // Buff加成增添
+    public abstract void OnStart(int flag);
+    // Buff加成去除
+    public abstract void OnEnd(int flag);
 
     // 用于获取子类的static字段overlyingCount
     public int GetOverlyingCount()
@@ -138,6 +157,7 @@ public class BattleBuff_1001 : BattleBuff
         buffType = BattleBuffType.Dot;
         calculationType = CalculationType.Add;
         influence = 10;
+        lastTurnLimit = 3;
         lastTurns = 3;
         ReduceAtBeginning = false;
         triggerTiming = TriggerTiming.AfterTurn;
@@ -146,11 +166,12 @@ public class BattleBuff_1001 : BattleBuff
         // overlyingCount++;
     }
     
-    override public void OnEffect(int flag)
+    // flag表示Buff持有者：flag == 0 时，持有者为角色
+    public override void OnEffect(int flag)
     {
         if(flag == 0)
         {
-            PlayerManager.Instance.player.HP.AddValue(-10 * overlyingCount);
+            BattleManager.Instance.player.HP.AddValue(-10 * overlyingCount);
         }
 
         else if(flag == 1)
@@ -164,6 +185,11 @@ public class BattleBuff_1001 : BattleBuff
         }
 
     }
+
+    public override void OnStart(int flag) { }
+
+    public override void OnEnd(int flag) { }
+
 }
 
 public class BattleBuff_1002 : BattleBuff
@@ -179,9 +205,10 @@ public class BattleBuff_1002 : BattleBuff
         buffType = BattleBuffType.Debuff;
         calculationType = CalculationType.Multiply;
         influence = 0.05f;
+        lastTurnLimit = 2;
         lastTurns = 2;
         ReduceAtBeginning = false;
-        triggerTiming = TriggerTiming.CalculateDamage;
+        triggerTiming = TriggerTiming.CalculateDebuffDamage;
         allowOverlying = true;
         overlyingLimit = 99;
 
@@ -191,6 +218,11 @@ public class BattleBuff_1002 : BattleBuff
     {
         // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
     }
+
+    public override void OnStart(int flag) { }
+
+    public override void OnEnd(int flag) { }
+
 }
 
 public class BattleBuff_1003 : BattleBuff
@@ -206,6 +238,7 @@ public class BattleBuff_1003 : BattleBuff
         buffType = BattleBuffType.GoodBuff;
         calculationType = CalculationType.Multiply;
         influence = 1.0f;
+        lastTurnLimit = 2;
         lastTurns = 2;
         ReduceAtBeginning = true;
         triggerTiming = TriggerTiming.Immediate;
@@ -218,4 +251,533 @@ public class BattleBuff_1003 : BattleBuff
     {
         // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
     }
+
+    public override void OnStart(int flag = 0)
+    {
+        if (flag == 0)
+        {
+            Player player = BattleManager.Instance.player;
+            if (player.HP.value >= 1/2 * player.HP.value_limit)
+            {
+                player.HP.MultipleValue(0.2f);
+                player.CRIT_Rate.AddValue(1.0f);
+            }
+            else
+            {
+                Debug.Log("不满足使用条件");
+            }
+        }
+    }
+
+    public override void OnEnd(int flag = 0)
+    {
+        Player player = BattleManager.Instance.player;
+        player.CRIT_Rate.AddValue(-1.0f);
+    }
+
+}
+
+public class BattleBuff_1004 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1004()
+    {
+        id = 1004;
+        name = "破韧";
+        damageType = DamageType.STR;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = false;
+        overlyingLimit = 1;
+
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            BattleBuff buff2 = new BattleBuff_1023();
+            for(int i = 0; i < 12; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff2, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            BattleBuff buff2 = new BattleBuff_1023();
+            for (int i = 0; i < 2; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff2);
+            }
+            for (int i = 0; i < 12; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1005 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1005()
+    {
+        id = 1005;
+        name = "缚心";
+        damageType = DamageType.STR;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = false;
+        overlyingLimit = 1;
+
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1025();
+            BattleBuff buff2 = new BattleBuff_1024();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff2, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1025();
+            BattleBuff buff2 = new BattleBuff_1024();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff2);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1006 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1006()
+    {
+        id = 1006;
+        name = "余晖";
+        damageType = DamageType.Dot | DamageType.Item;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff2 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff2, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff2 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff2);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1007 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1007()
+    {
+        id = 1007;
+        name = "战斗意志";
+        damageType = DamageType.Skill;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff2 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff2, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff2 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff2);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1008 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1008()
+    {
+        id = 1008;
+        name = "魔音污染";
+        damageType = DamageType.Dot;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = false;
+        overlyingLimit = 1;
+
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            BattleBuff buff2 = new BattleBuff_1024();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff2, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            BattleBuff buff2 = new BattleBuff_1024();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff2);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1009 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1009()
+    {
+        id = 1009;
+        name = "伤口感染";
+        damageType = DamageType.Dot;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1019 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1019()
+    {
+        id = 1019;
+        name = "鼠群围攻";
+        damageType = DamageType.Dot;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 5;
+
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleManager.Instance.player.HIT.AddValue(0.3f * overlyingCount);
+        }
+        else if (flag == 1)
+        {
+            BattleManager.Instance.enemies[0].HP += 0.3f * overlyingCount;
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1022 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1022()
+    {
+        id = 1022;
+        name = "守护";
+        type = BuffType.HP_Change;
+        buffType = BattleBuffType.GoodBuff;
+        calculationType = CalculationType.Multiply;
+        influence = 0.1f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.IsGoingToDie;
+        allowOverlying = false;
+        overlyingLimit = 1;
+
+    }
+
+    override public void OnEffect(int flag = 0)
+    {
+        if (flag == 0)
+        {
+            BattleManager.Instance.player.HP.SetValue(1.0f);
+        }
+        else if (flag == 1)
+        {
+            BattleManager.Instance.enemies[0].HP = 0;
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+
+
+
+
+// 以下为附加类Buff
+
+public class BattleBuff_1023 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1023()
+    {
+        id = 1023;
+        name = "力量增伤";
+        type = BuffType.HP_Change;
+        damageType = DamageType.STR;
+        buffType = BattleBuffType.GoodBuff;
+        calculationType = CalculationType.Multiply;
+        influence = 0.1f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.CalculateGoodBuffDamage;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+    }
+
+    override public void OnEffect(int 占位)
+    {
+        // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1024 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1024()
+    {
+        id = 1024;
+        name = "怪谈技能增伤";
+        type = BuffType.HP_Change;
+        damageType = DamageType.STR;
+        buffType = BattleBuffType.GoodBuff;
+        calculationType = CalculationType.Multiply;
+        influence = 0.1f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.CalculateGoodBuffDamage;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+    }
+
+    override public void OnEffect(int 占位)
+    {
+        // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1025 : BattleBuff
+{
+    // 叠加的层数
+    public static int overlyingCount = 0;
+
+    public BattleBuff_1025()
+    {
+        id = 1025;
+        name = "dot增伤";
+        type = BuffType.HP_Change;
+        damageType = DamageType.STR;
+        buffType = BattleBuffType.GoodBuff;
+        calculationType = CalculationType.Multiply;
+        influence = 0.5f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.CalculateGoodBuffDamage;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+    }
+
+    override public void OnEffect(int 占位)
+    {
+        // 此处不实现方法，具体处理要等到伤害计算时根据influence和calculationType进行计算
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
 }

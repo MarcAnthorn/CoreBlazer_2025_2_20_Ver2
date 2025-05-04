@@ -148,10 +148,16 @@ public class TurnCounter : Singleton<TurnCounter>
         if (buff.GetOverlyingCount() < buff.overlyingLimit)
         {
             buff.OverlyingCountPlus(1);
+            buff.OnStart(0);
         }
         else
         {
             Debug.Log($"Buff{buff.GetType()}叠加层数已达上限");
+            // 对于不可叠加的Buff来说，刷新持续回合
+            if(buff.overlyingLimit == 1)
+            {
+                buff.lastTurns = buff.lastTurnLimit;
+            }
         }
     }
 
@@ -176,6 +182,7 @@ public class TurnCounter : Singleton<TurnCounter>
         if (buff.GetOverlyingCount() < buff.overlyingLimit)
         {
             buff.OverlyingCountPlus(1);
+            buff.OnStart(1);
         }
         else
         {
@@ -188,6 +195,7 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         playerBuffs.Remove(buff);
 
+        buff.OnEnd(0);
         buff.OverlyingCountPlus(-1);
     }
 
@@ -196,10 +204,26 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         BattleManager.Instance.enemies[positionId].buffs.Remove(buff);
 
+        buff.OnEnd(1);
         buff.OverlyingCountPlus(-1);
     }
 
-    // 结算玩家Buff
+    // 查找角色身上是否存在某一类型的BattleBuff
+    public bool ContainsBuff<T>(out BattleBuff buff)
+    {
+        foreach (var b in playerBuffs)
+        {
+            if (b.GetType() == typeof(T) && b.GetOverlyingCount() != 0)
+            {
+                buff = b;
+                return true;
+            }
+        }
+        buff = null;
+        return false;
+    }
+
+    // 结算玩家自身Buff的直接效果
     private void DealWithPlayerBuff(TriggerTiming triggerTiming)
     {
         foreach(var buff in playerBuffs)
@@ -207,13 +231,13 @@ public class TurnCounter : Singleton<TurnCounter>
             if(buff.triggerTiming == triggerTiming)
             {
                 Debug.LogWarning($"player buff affected!, buff is:{buff.name}");
-                //结算玩家
+                // 结算玩家
                 buff.OnEffect(0);
             }
         }
     }
 
-    // 结算指定敌人Buff
+    // 结算指定敌人自身Buff的直接效果
     private void DealWithEnemyBuff(TriggerTiming triggerTiming, int positionId)
     {
         foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
@@ -228,14 +252,14 @@ public class TurnCounter : Singleton<TurnCounter>
     }
 
     // 处理玩家身上Buff带来的加成效果
-    public float CalculateWithPlayerBuff(TriggerTiming triggerTiming, float value)
+    public float CalculateWithPlayerBuff(TriggerTiming triggerTiming, DamageType damageType, float value)
     {
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
         foreach (var buff in playerBuffs)
         {
             calType = buff.calculationType;
-            if (buff.triggerTiming == triggerTiming)
+            if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
                 extraValue += buff.influence;
             }
@@ -250,29 +274,27 @@ public class TurnCounter : Singleton<TurnCounter>
     }
 
     // 处理指定敌人身上Buff带来的加成效果
-    public float CalculateWithEnemyBuff(TriggerTiming triggerTiming, int positionId, float value)
+    public float CalculateWithEnemyBuff(TriggerTiming triggerTiming, DamageType damageType, int positionId, float value)
     {
         CalculationType calType = CalculationType.NONE;
-
-        //易伤层数；
         float extraValue = 0;
         foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
             calType = buff.calculationType;
-            if (buff.triggerTiming == triggerTiming)
+            if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
                 extraValue += buff.influence;
             }
         }
 
-        value = BuffManager.Instance.CalculationAfterBuff(calType, value, extraValue);
+        value = CalculationAfterBuff(calType, value, extraValue);
 
         Debug.Log($"Turn counter cal enemy value is {value}");
 
         return value;
     }
 
-    // 角色在受到Buff影响下的 战斗内的 属性(基本就是HP或者SAN值)变动
+    // 角色在受到自身Buff影响下的 战斗内的 攻击伤害值计算
     public float PlayerBuffsBuffEffectInBattle(BuffType type, float value)
     {
         float finalValue = 0f;
@@ -289,7 +311,7 @@ public class TurnCounter : Singleton<TurnCounter>
 
     }
 
-    // 敌人在受到Buff影响下的 战斗内的 属性(基本就是HP或者SAN值)变动
+    // 敌人在受到自身Buff影响下的 战斗内的 攻击伤害值计算
     public float EnemyBuffsBuffEffectInBattle(Enemy enemy, BuffType type, float value)
     {
         float finalValue = 0f;
@@ -324,7 +346,7 @@ public class TurnCounter : Singleton<TurnCounter>
                 value += extraValue;
                 return value;
             case CalculationType.Multiply:
-                value *= extraValue;
+                value *= (1.0f + extraValue);
                 return value;
             case CalculationType.NONE:      //如果CalculationType为NONE其实就说明了该buff不涉及到伤害计算
                 value = 0;
