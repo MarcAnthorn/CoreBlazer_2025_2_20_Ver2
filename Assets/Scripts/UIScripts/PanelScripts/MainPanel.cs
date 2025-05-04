@@ -22,11 +22,18 @@ public class MainPanel : BasePanel
 
 
             //显示是否退出游戏的Tip:
-            UIManager.Instance.ShowPanel<TipPanel>().setOnConfirmAction += () => {
+            var tipPanel = UIManager.Instance.ShowPanel<TipPanel>();
+        
+            tipPanel.setOnConfirmAction += () => {
                 //退出游戏：
                 Debug.LogWarning("已存档并且退出游戏");
 
 
+            };
+
+            tipPanel.setOnCancelAction +=  () => {
+                UIManager.Instance.HidePanel<TipPanel>();
+                EventHub.Instance.EventTrigger<bool>("Freeze", false);
             };
         });
     }

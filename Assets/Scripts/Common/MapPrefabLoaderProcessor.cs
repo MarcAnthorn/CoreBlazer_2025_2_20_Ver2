@@ -62,7 +62,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 //------------------------------------测试---------------------------------------------------
 
         // LoadMapToPrefab(0);
-        LoadMapToPrefab(1);
+        // LoadMapToPrefab(1);
         // LoadMapToPrefab(2);
 
         
@@ -179,7 +179,19 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             else if(id == 20010 || id == 20020 || id == 20030)  //（测试）POI的布置：
             {
                 
-                GameObject POIObj = Resources.Load<GameObject>("POI");
+                GameObject POIObj = null;
+                switch(id)
+                {
+                    case 20010:
+                        POIObj = Resources.Load<GameObject>("POI20010");
+                    break;
+                    case 20020:
+                        POIObj = Resources.Load<GameObject>("POI20020");
+                    break;
+                    case 20030:
+                        POIObj = Resources.Load<GameObject>("POI20030");
+                    break;
+                }
                 POIObj.name = $"POI{id}";
                 Instantiate(POIObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(poiObject.transform, false);
 

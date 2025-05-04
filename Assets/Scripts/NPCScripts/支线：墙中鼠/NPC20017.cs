@@ -23,6 +23,15 @@ public class NPC20017 : NPCBase
     private void Awake()
     {
         avgId = 2101;  
+
+        //自己激活时，如果上一次死亡我触发过，那么直接调用OnComplete，然后将自己失活返回；
+        if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId]) 
+        {
+            OnComplete(avgId);
+            this.gameObject.SetActive(false);
+            return;
+        }
+
         GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }
 

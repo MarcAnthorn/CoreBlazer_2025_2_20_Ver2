@@ -39,6 +39,9 @@ public class GameMainPanel : BasePanel
     private bool isDetectingCloseInput = false;
     private bool isOptionsUpdated = false;
 
+    //记录：切换之前玩家的场景，方便切换回去：
+    private E_PlayerSceneIndex playerSceneIndexFormer;
+
 
     protected override void Init()
     {
@@ -49,6 +52,8 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.EventTrigger<E_DetectInputType>("CloseSpecificDetectInput", E_DetectInputType.Escape);
 
         //事件面板出现，更新玩家的所处场景的index：
+        playerSceneIndexFormer = PlayerManager.Instance.playerSceneIndex;
+        
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Event;
 
         UpdateAttributeText();
@@ -112,8 +117,8 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.EventTrigger<E_DetectInputType>("UnlockSpecificDetectInput", E_DetectInputType.Escape);
 
 
-        //事件面板销毁，更新会迷宫场景：
-        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
+        //事件面板销毁，更新回切换之前的场景：
+        PlayerManager.Instance.playerSceneIndex = playerSceneIndexFormer;
     }
 
     //更新面板属性的方法，所有存在属性更新（如道具使用等等，最后都需要调用这个方法以确保显示的属性文本的更新）

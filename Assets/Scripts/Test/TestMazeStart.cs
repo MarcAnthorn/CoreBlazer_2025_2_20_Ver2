@@ -8,7 +8,13 @@ public class TestMazeStart : MonoBehaviour
 {
     GameObject player;
     public Vector3 originalPoint;
-     
+
+    void Awake()
+    {
+        //更新事件库：
+        EventManager.Instance.ResetAllLibIds();
+    }
+
     void Start()
     {
         player = Instantiate(Resources.Load<GameObject>("Player"));

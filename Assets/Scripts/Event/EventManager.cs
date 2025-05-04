@@ -26,29 +26,9 @@ public class EventManager : Singleton<EventManager>
     {
         base.Awake();   //单例初始化
         //LoadEvents();  //！！！！！测试用！！！！！ 加载一些关卡未开始时候的信息
-        DebugTest1();
     }
 
-    //暂定不需要
-    //public void SelectOption(int optionIndex)           //1,2,3
-    //{
-    //    foreach (var option in optionEvents[currentEventId].options)
-    //    {
-    //        if (optionIndex == option.optionId)
-    //        {
-    //            option.result.TriggerBtlEvent();           //调用触发的(战斗)事件(事件的注册与删除逻辑由Marc来`完成)
-    //        }
-    //    }
-
-    //    //if (allEvents[currentEventId].options.Contains(optionIndex))
-    //    //{
-    //    //    EventOption.EventResult result = currentEvent.results[currentEventId];
-    //    //    //处理结果
-
-    //    //    Debug.Log(result.outcome);                  //打印该事件的结果
-    //    //    currentEventId = result.nextEventId;        //更新到下一个事件
-    //    //}
-    //}
+   
     void SaveEvents()
     {
         // 保存事件数据到 CSV  
@@ -71,6 +51,7 @@ public class EventManager : Singleton<EventManager>
         // 将新的行添加到 CSV 文件  
         File.WriteAllLines(path, lines);
     }
+
     public void TriggerEvent(int eventId)                //当角色的OnTriggerEnter()方法发生时调用,获取该事件信息
     {
         Debug.LogWarning($"Event triggered! id is{eventId}");
@@ -164,22 +145,37 @@ public class EventManager : Singleton<EventManager>
         }
     }
 
-    // [Conditional("DEBUGTEST")]          //便于调试
-    public void DebugTest1()             //用于测试事件数据读取
+    // 按 grade 分组的可用 libId 列表
+    private static Dictionary<int, List<int>> availableLibIds = new Dictionary<int, List<int>>()
     {
-        // foreach (var _event in startEvents)
-        // {
-        //     Event @event = _event.Value;
-        //     Debug.Log($"事件库id：{@event.libId}, 事件id：{@event.eventId}, 事件类别：{@event.eventType}");
-        //     Debug.Log($"事件选项数量：{@event.options.Count}");
-        //     for (int i = 0; i < 3; i++)
-        //     {
-        //         Debug.Log($"选项{@event.options[i].optionId}信息==>条件属性id：{@event.options[i].conditionId}, 属性min：{@event.options[i].minCondition}, 属性max：{@event.options[i].maxCondition}, 道具id：{@event.options[i].itemId}");
-        //     }
-        //     @event.ReadKaidanTextFrom(@event.textLib[@event.firstTextId]);
-        //     Debug.Log("==========================================");
+        { 1, new List<int> { 2001, 2002, 2003, 2008, 2012, 2014, 2016, 2019, 2024, 2025, 2026, 2029, 2032, 2033, 2036 } },
+        { 2, new List<int> { 2005, 2006, 2007, 2010, 2015, 2017, 2023, 2031, 2037, 2038, 2039, 2041, 2043, 2044 } },
+        { 3, new List<int> { 2004, 2009, 2011, 2013, 2018, 2020, 2021, 2022, 2027, 2028, 2030, 2034, 2035, 2040, 2042 } }
+    };
 
-        // }
+    // 随机获取一个 libId，并从列表中移除（防止重复分配）
+    public int GetRandomLibId(int grade)
+    {
+        if (!availableLibIds.ContainsKey(grade) || availableLibIds[grade].Count == 0)
+        {
+            Debug.LogError($"No available libId for grade {grade}!");
+            return -1; // 返回 -1 表示失败
+        }
+
+        var list = availableLibIds[grade];
+        int randomIndex = UnityEngine.Random.Range(0, list.Count);
+        int selectedLibId = list[randomIndex];
+        list.RemoveAt(randomIndex); // 移除已使用的 libId
+
+        return selectedLibId;
+    }
+
+    // 重置所有 libId（如果需要重新分配）
+    public void ResetAllLibIds()
+    {
+        availableLibIds[1] = new List<int> { 2001, 2002, 2003, 2008, 2012, 2014, 2016, 2019, 2024, 2025, 2026, 2029, 2032, 2033, 2036 };
+        availableLibIds[2] = new List<int> { 2005, 2006, 2007, 2010, 2015, 2017, 2023, 2031, 2037, 2038, 2039, 2041, 2043, 2044 };
+        availableLibIds[3] = new List<int> { 2004, 2009, 2011, 2013, 2018, 2020, 2021, 2022, 2027, 2028, 2030, 2034, 2035, 2040, 2042 };
     }
 
 }

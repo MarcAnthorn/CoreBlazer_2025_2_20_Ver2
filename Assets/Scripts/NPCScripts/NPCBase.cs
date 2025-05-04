@@ -28,8 +28,6 @@ public abstract class NPCBase : MonoBehaviour
     }
 
 
-
-
     //抽象方法：在交互完成之后的回调函数：
     protected virtual void OnComplete(int avgId)
     {

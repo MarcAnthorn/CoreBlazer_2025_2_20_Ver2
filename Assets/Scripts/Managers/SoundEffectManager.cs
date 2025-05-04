@@ -119,7 +119,7 @@ public class SoundEffectManager : SingletonBaseManager<SoundEffectManager>
             return;
         for (int i = soundList.Count - 1; i >= 0; i--)
         {
-            if (!soundList[i].isPlaying)
+            if (soundList[i] != null && !soundList[i].isPlaying)
             {
                 //以防万一，置空；
                 soundList[i].clip = null;

@@ -50,6 +50,13 @@ public class NPC20016 : NPCBase
         avgId = availableIDs[index];
         availableIDs.RemoveAt(index);               // 从列表中移除，确保唯一
 
+        if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
+        {
+            OnComplete(avgId);
+            this.gameObject.SetActive(false);
+            return;
+        }
+
         Debug.Log($"{gameObject.name} 获得的ID是：{avgId}");
         GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }

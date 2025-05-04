@@ -463,7 +463,7 @@ public class LoadManager : Singleton<LoadManager>
                     LoadKaidanTexts(eventData.eventId, eventData);        //加载事件对应的怪诞文本
                     if (int.Parse(values[1]) / 10 == libIndex && int.Parse(values[1]) % 10 == 1)
                     {
-                        Debug.LogWarning($"Start event added! id is{eventData.eventId}");
+                        // Debug.LogWarning($"Start event added! id is{eventData.eventId}");
 
                         startEvents.Add(eventData.eventId, eventData);      //起始事件
                         EventManager.Instance.weights.Add(eventData.eventId, 1.0f);               //加入起始事件的权重（等权重）

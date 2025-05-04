@@ -31,6 +31,15 @@ public class NPC20018 : NPCBase
     private void Awake()
     {
         avgId = 2108;  
+
+       
+        if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
+        {
+            OnComplete(avgId);
+            this.gameObject.SetActive(false);
+            return;
+        }
+        
         lightHouseOne.SetActive(true);
         GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }

@@ -22,6 +22,7 @@ public class GameLevelManager : Singleton<GameLevelManager>
     //因为一个NPC事件本身对应一个avg，因此直接使用avgId作为key
     //（只是限于NPC事件不会因为死亡重生的）
     //同时，如果该事件已经触发了，那么对应的结果也不会重置；
+
     public Dictionary<int, bool> avgIndexIsTriggeredDic = new Dictionary<int, bool>();
 
 
