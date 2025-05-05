@@ -44,31 +44,52 @@ public class NPC20016 : NPCBase
 
     void AssignUniqueID()
     {
-        if (availableIDs.Count == 0)
+        if (!IDAllocator.Instance.TryGetUniqueID(out avgId))
         {
             Debug.LogError("没有可用的ID分配给对象: " + gameObject.name);
             return;
         }
 
-        int index = rng.Next(availableIDs.Count);   // 随机选一个
-        avgId = availableIDs[index];
-        availableIDs.RemoveAt(index);               // 从列表中移除，确保唯一
-
-        //自己激活时，如果上一次死亡我触发过，那么直接调用OnComplete，然后将自己失活返回；
-        if(GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(avgId) && GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId]) 
+        // 检查是否已经触发过
+        if (GameLevelManager.Instance.avgIndexIsTriggeredDic.TryGetValue(avgId, out bool triggered) && triggered)
         {
             Debug.LogWarning($"AVG 已跳过，id为：{avgId}");
-            
+
             OnComplete(avgId);
             this.gameObject.SetActive(false);
             return;
         }
 
-
         Debug.Log($"{gameObject.name} 获得的ID是：{avgId}");
         GameLevelManager.Instance.avgIndexIsTriggeredDic.TryAdd(avgId, false);
     }
 
+}
+
+
+public class IDAllocator
+{
+    private List<int> availableIDs = new List<int> { 2102, 2103, 2104, 2105, 2106, 2107 };
+    private System.Random rng = new System.Random();
+
+    private static IDAllocator _instance;
+    public static IDAllocator Instance => _instance ??= new IDAllocator();
+
+    private IDAllocator() { }
+
+    public bool TryGetUniqueID(out int id)
+    {
+        if (availableIDs.Count == 0)
+        {
+            id = -1;
+            return false;
+        }
+
+        int index = rng.Next(availableIDs.Count);
+        id = availableIDs[index];
+        availableIDs.RemoveAt(index);
+        return true;
+    }
 }
 
 

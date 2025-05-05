@@ -84,6 +84,8 @@ public class PlayerController : PlayerBase
     {
         base.FixedUpdate();
         LightShrinking();
+
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
         
     }
 
@@ -106,8 +108,7 @@ public class PlayerController : PlayerBase
     private void LightShrinking()
     {
         if(isLightShrinking)
-        {
-            EventHub.Instance.EventTrigger("UpdateAllUIElements");
+        {      
             lightShrinkingTime += Time.deltaTime;
 
             t = lightShrinkingTime >= 10 ? 10 : lightShrinkingTime;
@@ -192,6 +193,9 @@ public class PlayerController : PlayerBase
         //重置血量相关
         PlayerManager.Instance.player.HP.SetValue(100);
         PlayerManager.Instance.player.LVL.value = 300;
+
+        //更新UI面板：
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         var itemList = ItemManager.Instance.itemList;
 

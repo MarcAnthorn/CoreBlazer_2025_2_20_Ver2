@@ -1193,17 +1193,6 @@ Transform:
   - {fileID: 894786666}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &325663214 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7051468596257735690, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
-  m_PrefabInstance: {fileID: 5937584882560559040}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &375862053
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,17 +1334,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aac2690fc09d24b8f9b9f434f928a1e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &383178681 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1157101981619949979, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
-  m_PrefabInstance: {fileID: 5937584882560559040}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &493984357
@@ -3544,17 +3522,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1868074397}
   m_CullTransparentMesh: 1
---- !u!114 &1904291383 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3209318183207815725, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
-  m_PrefabInstance: {fileID: 5937584882560559040}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1994404407
 GameObject:
   m_ObjectHideFlags: 0
@@ -4286,18 +4253,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 224324137}
     m_Modifications:
-    - target: {fileID: 3916256408192641435, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
-      propertyPath: imgHp
-      value: 
-      objectReference: {fileID: 1904291383}
-    - target: {fileID: 3916256408192641435, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
-      propertyPath: txtSan
-      value: 
-      objectReference: {fileID: 325663214}
-    - target: {fileID: 3916256408192641435, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
-      propertyPath: imgLight
-      value: 
-      objectReference: {fileID: 383178681}
+    - target: {fileID: 5683245851248324601, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 541
+      objectReference: {fileID: 0}
     - target: {fileID: 6295021705672702253, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
       propertyPath: m_Name
       value: MainPanel
