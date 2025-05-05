@@ -32,12 +32,12 @@ public class NPC20017 : NPCBase
         GameLevelManager.Instance.DebugAVGInfo();
 
         //复原20016的List：
-        NPC20016.availableIDs.Add(2102);
-        NPC20016.availableIDs.Add(2103);
-        NPC20016.availableIDs.Add(2104);
-        NPC20016.availableIDs.Add(2105);
-        NPC20016.availableIDs.Add(2106);
-        NPC20016.availableIDs.Add(2107);
+        IDAllocator._instance.availableIDs.Add(2102);
+        IDAllocator._instance.availableIDs.Add(2103);
+        IDAllocator._instance.availableIDs.Add(2104);
+        IDAllocator._instance.availableIDs.Add(2105);
+        IDAllocator._instance.availableIDs.Add(2106);
+        IDAllocator._instance.availableIDs.Add(2107);
         NPC20016.triggeredCount = 0;
 
         //自己激活时，如果上一次死亡我触发过，那么直接调用OnComplete，然后将自己失活返回；

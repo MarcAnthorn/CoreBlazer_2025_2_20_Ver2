@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class NPC20016 : NPCBase
 {
-    public static List<int> availableIDs = new List<int> { 2102, 2103, 2104, 2105, 2106, 2107 };
-    private static System.Random rng = new System.Random(); // 线程安全更高，可替换为 UnityEngine.Random
+   private static System.Random rng = new System.Random(); // 线程安全更高，可替换为 UnityEngine.Random
 
     //类间共享的，已触发的演出数量；4个之后，会激活20018:
     public static int triggeredCount = 0;
@@ -69,10 +68,10 @@ public class NPC20016 : NPCBase
 
 public class IDAllocator
 {
-    private List<int> availableIDs = new List<int> { 2102, 2103, 2104, 2105, 2106, 2107 };
+    public List<int> availableIDs = new List<int> { 2102, 2103, 2104, 2105, 2106, 2107 };
     private System.Random rng = new System.Random();
 
-    private static IDAllocator _instance;
+    public static IDAllocator _instance;
     public static IDAllocator Instance => _instance ??= new IDAllocator();
 
     private IDAllocator() { }
