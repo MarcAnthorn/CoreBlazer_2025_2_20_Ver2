@@ -632,6 +632,7 @@ public class LoadManager : Singleton<LoadManager>
         string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/AVG/{avgId}.csv");
         int showIndex = avgId;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
+        tempBlock.rootId = showIndex;
 
         if (File.Exists(path))
         {

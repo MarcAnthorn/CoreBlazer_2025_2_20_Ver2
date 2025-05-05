@@ -26,6 +26,9 @@ public class NPC20016 : NPCBase
             node20018.SetActive(true);
         }
 
+        //激活之后，将标识记为true:
+        GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId] = true;
+        Debug.Log($"avgId:{avgId}, 当前触发情况：{GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId]}");
 
         //同时：将原地的宝箱激活：
         reward.SetActive(true);
@@ -33,8 +36,9 @@ public class NPC20016 : NPCBase
         Destroy(this.gameObject);
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         AssignUniqueID();
     }
 
@@ -50,15 +54,19 @@ public class NPC20016 : NPCBase
         avgId = availableIDs[index];
         availableIDs.RemoveAt(index);               // 从列表中移除，确保唯一
 
-        // if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
-        // {
-        //     OnComplete(avgId);
-        //     this.gameObject.SetActive(false);
-        //     return;
-        // }
+        //自己激活时，如果上一次死亡我触发过，那么直接调用OnComplete，然后将自己失活返回；
+        if(GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(avgId) && GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId]) 
+        {
+            Debug.LogWarning($"AVG 已跳过，id为：{avgId}");
+            
+            OnComplete(avgId);
+            this.gameObject.SetActive(false);
+            return;
+        }
+
 
         Debug.Log($"{gameObject.name} 获得的ID是：{avgId}");
-        // GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
+        GameLevelManager.Instance.avgIndexIsTriggeredDic.TryAdd(avgId, false);
     }
 
 }

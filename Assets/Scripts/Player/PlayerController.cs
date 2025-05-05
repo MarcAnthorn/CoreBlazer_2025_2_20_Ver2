@@ -73,14 +73,17 @@ public class PlayerController : PlayerBase
     {
         base.Update();
 
-
+        //测试用，速死选项：
+        if(Input.GetKeyDown(KeyCode.M)){
+            EventHub.Instance.EventTrigger("OnPlayerDead");
+        }
     
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        // LightShrinking();
+        LightShrinking();
         
     }
 
@@ -104,6 +107,7 @@ public class PlayerController : PlayerBase
     {
         if(isLightShrinking)
         {
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
             lightShrinkingTime += Time.deltaTime;
 
             t = lightShrinkingTime >= 10 ? 10 : lightShrinkingTime;

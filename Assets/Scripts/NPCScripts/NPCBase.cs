@@ -20,8 +20,9 @@ public abstract class NPCBase : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-            UIManager.Instance.ShowPanel<AVGPanel>().orderBlock = ob;
-            UIManager.Instance.ShowPanel<AVGPanel>().callback = OnComplete;
+            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
+            panel.orderBlock = ob;
+            panel.callback = OnComplete;
             EventHub.Instance.EventTrigger<bool>("Freeze", true);
 
         }
@@ -32,7 +33,11 @@ public abstract class NPCBase : MonoBehaviour
     protected virtual void OnComplete(int avgId)
     {
         isTriggerLock = true;
-        GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId] = true;
+    }
+
+    protected virtual void Awake()
+    {
+        
     }
 
 }

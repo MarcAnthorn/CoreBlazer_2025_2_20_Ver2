@@ -25,23 +25,20 @@ public class GameLevelManager : Singleton<GameLevelManager>
 
     public Dictionary<int, bool> avgIndexIsTriggeredDic = new Dictionary<int, bool>();
 
-
-
-
-
-
-
-
-
-
-
-
-
     //存储着本关卡内的所有关卡(前面的int代表本关卡内的唯一Id，相同事件可能有重复)(补充：不同于EventManager里定义的allEvents)
     public Dictionary<int, Event> events = new Dictionary<int, Event>();
     public int eventNum;
     public static Event currentEvent;
 
+
+    //Debug用：
+    public void DebugAVGInfo()
+    {
+        foreach(var key in avgIndexIsTriggeredDic.Keys)
+        {
+            Debug.Log($"id is :{key}, state is :{avgIndexIsTriggeredDic[key]}");
+        }
+    }
     
 
 }
