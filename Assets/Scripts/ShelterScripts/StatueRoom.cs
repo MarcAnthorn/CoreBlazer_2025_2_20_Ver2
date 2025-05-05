@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class StatueRoom : MonoBehaviour
 {
     
     private bool isTriggerLock = true;
     private TipPanel tipPanel;
+    public Image blackMask;
 
     private void Update() {
         if(!isTriggerLock)
@@ -57,7 +60,10 @@ public class StatueRoom : MonoBehaviour
             SoundEffectManager.Instance.StopMusic();
             
             //进行场景的切换：
-            LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
+            EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+                LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
+            });
+            
         });
 
     }

@@ -139,7 +139,7 @@ public class AVGPanel : BasePanel
             //当前指令是：普通指令 / 选项后对话指令
             if(type == E_OrderType.Common)
             {
-                LeanTween.delayedCall(0.3f, () => {
+                LeanTween.delayedCall(0.5f, () => {
                     isTimerDone = true;
                 });
                 //处理NPC消失的逻辑：
@@ -383,7 +383,10 @@ public class AVGPanel : BasePanel
     {
         Debug.Log($"当前出现的NPC是:{keyName}");
         GameObject npc = npcObjectQueue.Dequeue();
+
+
         npc.transform.SetParent(targetPos, false);
+        npc.transform.localPosition = new Vector3(0, 0, 140);
         
         //加载对应的资源到SpriteRenderer上：
         Image img = npc.GetComponent<Image>();
@@ -426,7 +429,7 @@ public class AVGPanel : BasePanel
         currentNPCDic.Remove(name);
 
         Image img = nowRemoveNPC.gameObject.GetComponent<Image>();
-        float moveDuration = 0.1f;
+        float moveDuration = 0.2f;
         LeanTween.alpha(img.rectTransform, 0, moveDuration)
             .setOnComplete(()=>{
                 npcObjectQueue.Enqueue(nowRemoveNPC);

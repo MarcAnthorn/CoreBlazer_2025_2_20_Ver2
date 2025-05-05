@@ -83,8 +83,8 @@ public class MapManager : Singleton<MapManager>
             case 10012:
             case 10013:
 
-            case 20010: //
-            // case 20020: //
+            case 20010: //poi事件
+            case 20020: //
             case 20030: // 
 
 //--------------以下是墙中鼠-----------------------
@@ -92,7 +92,7 @@ public class MapManager : Singleton<MapManager>
             case 20017:
             case 20018:
             case 20019:
-            case 20020:
+            case 20025:
             case 20021:
 //----------------------------------------------------
 

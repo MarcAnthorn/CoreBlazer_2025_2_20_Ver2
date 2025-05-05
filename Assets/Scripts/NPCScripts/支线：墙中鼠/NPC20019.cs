@@ -22,14 +22,14 @@ public class NPC20019 : NPCBase
         avgId = 2109;  
 
         
-        if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
-        {
-            OnComplete(avgId);
-            this.gameObject.SetActive(false);
-            return;
-        }
+        // if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
+        // {
+        //     OnComplete(avgId);
+        //     this.gameObject.SetActive(false);
+        //     return;
+        // }
         
-        GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
+        // GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }
 
 } 

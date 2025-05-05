@@ -181,6 +181,18 @@ public class PlayerController : PlayerBase
         //重置血量相关
         PlayerManager.Instance.player.HP.SetValue(100);
         PlayerManager.Instance.player.LVL.value = 300;
+
+        //重置背包内部的道具（如果是需要重置的话）
+        var itemList = ItemManager.Instance.itemList;
+        foreach(var itemIndex in itemList)
+        {
+            Item realItem = LoadManager.Instance.allItems[itemIndex];
+            if(realItem.resetAfterDeath)
+            {
+                //是死亡后重置，那么就丢弃：
+                ItemManager.Instance.RemoveItem(itemIndex);
+            }
+        }
     }
 
     private void SetPlayerPosition(Vector3 position)

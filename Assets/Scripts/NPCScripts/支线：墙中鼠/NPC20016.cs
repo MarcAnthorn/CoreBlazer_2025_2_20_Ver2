@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class NPC20016 : NPCBase
 {
-    private static List<int> availableIDs = new List<int> { 2102, 2103, 2104, 2105, 2106, 2107 };
+    public static List<int> availableIDs = new List<int> { 2102, 2103, 2104, 2105, 2106, 2107 };
     private static System.Random rng = new System.Random(); // 线程安全更高，可替换为 UnityEngine.Random
 
     //类间共享的，已触发的演出数量；4个之后，会激活20018:
-    private static int triggeredCount = 0;
+    public static int triggeredCount = 0;
 
     //20018对象：
     public GameObject node20018;
@@ -50,15 +50,15 @@ public class NPC20016 : NPCBase
         avgId = availableIDs[index];
         availableIDs.RemoveAt(index);               // 从列表中移除，确保唯一
 
-        if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
-        {
-            OnComplete(avgId);
-            this.gameObject.SetActive(false);
-            return;
-        }
+        // if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
+        // {
+        //     OnComplete(avgId);
+        //     this.gameObject.SetActive(false);
+        //     return;
+        // }
 
         Debug.Log($"{gameObject.name} 获得的ID是：{avgId}");
-        GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
+        // GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }
 
 }

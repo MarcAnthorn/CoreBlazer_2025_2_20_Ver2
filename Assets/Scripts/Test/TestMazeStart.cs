@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 
 //迷宫的初始脚本，处理迷宫的初始化逻辑
@@ -8,6 +10,7 @@ public class TestMazeStart : MonoBehaviour
 {
     GameObject player;
     public Vector3 originalPoint;
+    public Image blackMask;
 
     void Awake()
     {
@@ -18,10 +21,14 @@ public class TestMazeStart : MonoBehaviour
     void Start()
     {
         player = Instantiate(Resources.Load<GameObject>("Player"));
+
+
         originalPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
         originalPoint.z = 0; 
 
         PlayerController playerScript = player.GetComponent<PlayerController>();
+
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
         
         //尝试调用：Item_616的buff
         EventHub.Instance.EventTrigger("RandomBenifit");
@@ -33,21 +40,37 @@ public class TestMazeStart : MonoBehaviour
         switch(GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.First:
-                Instantiate(Resources.Load<GameObject>("MapPrefabs/MapFirstFloor"), originalPoint, Quaternion.identity); 
-                playerScript.isDamageLocked = false;
-                playerScript.LMax = 100; 
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabs/MapFirstFloor", (_gameObject)=>{
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
+                    playerScript.isDamageLocked = false;
+                    playerScript.LMax = 100; 
 
-                //播放特定的BGM：
-                SoundEffectManager.Instance.PlayMusic("第一关BGM");
+                    //播放特定的BGM：
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
+                        SoundEffectManager.Instance.PlayMusic("第一关BGM");
+                        EventHub.Instance.EventTrigger<bool>("Freeze", false);
+                    }); 
+                   
+
+                });
+                
             
             break;
-            case E_GameLevelType.Second:             
-                Instantiate(Resources.Load<GameObject>("MapPrefabs/MapSecondFloor"), originalPoint, Quaternion.identity); 
-                playerScript.isDamageLocked = false;
-                playerScript.LMax = 100; 
+            case E_GameLevelType.Second:  
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabs/MapSecondFloor", (_gameObject)=>{
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
+                    playerScript.isDamageLocked = false;
+                    playerScript.LMax = 100; 
 
-                //播放特定的BGM：
-                SoundEffectManager.Instance.PlayMusic("第二关BGM");
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
+                        //播放特定的BGM：
+                        SoundEffectManager.Instance.PlayMusic("第二关BGM");
+                        EventHub.Instance.EventTrigger<bool>("Freeze", false);
+                    });   
+
+                    
+
+                });           
          
             break;
             case E_GameLevelType.Third:
@@ -60,12 +83,20 @@ public class TestMazeStart : MonoBehaviour
 
             //新手关卡：灯光初始值60；锁定血量不会死亡：
             case E_GameLevelType.Tutorial:
-                Instantiate(Resources.Load<GameObject>("MapPrefabs/MapTutorialFloor"),originalPoint, Quaternion.identity); ;
-                playerScript.isDamageLocked = true;
-                playerScript.LMax = 60;
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabs/MapTutorialFloor", (_gameObject)=>{
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
+                    playerScript.isDamageLocked = true;
+                    playerScript.LMax = 60;
+                    
+                    
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
+                        //播放特定的BGM：
+                        SoundEffectManager.Instance.PlayMusic("第二关BGM"); 
+                        EventHub.Instance.EventTrigger<bool>("Freeze", false);
+                    });  
+                    
 
-                //播放特定的BGM：
-                SoundEffectManager.Instance.PlayMusic("第二关BGM");
+                });   
                 
             break;
         }

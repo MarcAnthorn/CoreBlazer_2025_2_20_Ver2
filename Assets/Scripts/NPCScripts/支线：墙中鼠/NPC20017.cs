@@ -24,15 +24,24 @@ public class NPC20017 : NPCBase
     {
         avgId = 2101;  
 
-        //自己激活时，如果上一次死亡我触发过，那么直接调用OnComplete，然后将自己失活返回；
-        if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId]) 
-        {
-            OnComplete(avgId);
-            this.gameObject.SetActive(false);
-            return;
-        }
+        //复原20016的List：
+        NPC20016.availableIDs.Add(2102);
+        NPC20016.availableIDs.Add(2103);
+        NPC20016.availableIDs.Add(2104);
+        NPC20016.availableIDs.Add(2105);
+        NPC20016.availableIDs.Add(2106);
+        NPC20016.availableIDs.Add(2107);
+        NPC20016.triggeredCount = 0;
 
-        GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
+        // //自己激活时，如果上一次死亡我触发过，那么直接调用OnComplete，然后将自己失活返回；
+        // if(GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(avgId) && GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId]) 
+        // {
+        //     OnComplete(avgId);
+        //     this.gameObject.SetActive(false);
+        //     return;
+        // }
+
+        // GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }
 
 } 

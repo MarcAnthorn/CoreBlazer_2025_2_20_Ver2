@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StatueRoom2 : MonoBehaviour
 {
@@ -51,8 +52,10 @@ public class StatueRoom2 : MonoBehaviour
             EventHub.Instance.EventTrigger<bool>("TestClearFunction", false);
 
             GameLevelManager.Instance.gameLevelType = E_GameLevelType.Second;
-            //进行场景的切换：
-            LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
+            
+            EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+                LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
+            });
         });
 
     }

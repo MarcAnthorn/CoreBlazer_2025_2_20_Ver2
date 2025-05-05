@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StatueRoom1 : MonoBehaviour
 {
@@ -56,8 +57,9 @@ public class StatueRoom1 : MonoBehaviour
             //停止bgm：
             SoundEffectManager.Instance.StopMusic();
             
-            //进行场景的切换：
-            LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
+            EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+                LoadSceneManager.Instance.LoadSceneAsync("MazeScene");
+            });
         });
 
     }

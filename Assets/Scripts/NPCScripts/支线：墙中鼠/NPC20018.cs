@@ -33,15 +33,15 @@ public class NPC20018 : NPCBase
         avgId = 2108;  
 
        
-        if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
-        {
-            OnComplete(avgId);
-            this.gameObject.SetActive(false);
-            return;
-        }
+        // if(GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId])
+        // {
+        //     OnComplete(avgId);
+        //     this.gameObject.SetActive(false);
+        //     return;
+        // }
         
         lightHouseOne.SetActive(true);
-        GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
+        // GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }
 
 } 
