@@ -16,17 +16,14 @@ public class TestItem : MonoBehaviour
     void Start()
     {
 
-        //测试用：播放安全屋BGM：
-        SoundEffectManager.Instance.PlayMusic("安全屋循环BGM");
+        
 // //--------------------测试用；强制调用单例，使其执行初始化------------------
 
 //         var instance = LoadManager.Instance;
 //         var instance2 = EventHub.Instance;
 // //--------------------测试用；强制调用单例，使其执行初始化------------------
 
-        //测试用：初始化玩家的SceneIndex:
-        PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Shelter;
-
+    
         //测试用类，通过这个测试入口向背包中加入测试用道具：
         List<int> itemIDs = new List<int>()
         {

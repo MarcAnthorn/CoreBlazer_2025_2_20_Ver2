@@ -72,13 +72,15 @@ public class PlayerController : PlayerBase
     protected override void Update()
     {
         base.Update();
+
+
     
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        LightShrinking();
+        // LightShrinking();
         
     }
 
@@ -166,8 +168,13 @@ public class PlayerController : PlayerBase
         // PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
         //加载安全屋的场景：
         //激活所有需要失活的过场景不移除的对象：
-        //该方法定义在TestCanvas中，该脚本挂载在Canvas上；        
-        LoadSceneManager.Instance.LoadSceneAsync("ShelterScene", SwitchSceneCallback);
+        //该方法定义在TestCanvas中，该脚本挂载在Canvas上；     
+
+        EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+            EventHub.Instance.EventTrigger<bool>("Freeze", true);
+            LoadSceneManager.Instance.LoadSceneAsync("ShelterScene", SwitchSceneCallback);
+        });   
+       
 
 
     }
@@ -182,17 +189,26 @@ public class PlayerController : PlayerBase
         PlayerManager.Instance.player.HP.SetValue(100);
         PlayerManager.Instance.player.LVL.value = 300;
 
-        //重置背包内部的道具（如果是需要重置的话）
         var itemList = ItemManager.Instance.itemList;
-        foreach(var itemIndex in itemList)
+
+        // 临时保存要删除的项
+        List<int> toRemove = new List<int>();
+
+        foreach (var itemIndex in itemList)
         {
             Item realItem = LoadManager.Instance.allItems[itemIndex];
-            if(realItem.resetAfterDeath)
+            if (realItem.resetAfterDeath)
             {
-                //是死亡后重置，那么就丢弃：
-                ItemManager.Instance.RemoveItem(itemIndex);
+                toRemove.Add(itemIndex);
             }
         }
+
+        // 遍历临时列表，安全移除
+        foreach (var index in toRemove)
+        {
+            ItemManager.Instance.RemoveItem(index);
+        }
+        
     }
 
     private void SetPlayerPosition(Vector3 position)

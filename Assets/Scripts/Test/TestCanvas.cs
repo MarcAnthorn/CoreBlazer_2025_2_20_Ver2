@@ -8,10 +8,19 @@ public class TestCanvas : MonoBehaviour
     //测试用：失活所有不需要出现在游戏场景中的东西：
     public GameObject objToDo;
 
+    private static TestCanvas instance;
+
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject); // 如果已有实例存在，销毁新创建的副本
+            return;
+        }
+
+        instance = this;
         EventHub.Instance.AddEventListener<bool>("TestClearFunction", TestClearFunction);
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.gameObject); // 只有首次实例会保留
     }
 
     void OnDestroy()
