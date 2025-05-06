@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Inventory              //背包
 {
     //List存储当前背包中持有的Item种类(以Item id的形式存储)；

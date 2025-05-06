@@ -98,8 +98,8 @@ public class EnemyManager : Singleton<EnemyManager>
                 // 造成伤害之前进行一些加成计算
                 // 先计算易伤(DeBuff)加成
                 dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDebuffDamage, dmg.damageType, dmg.damage);
-                // 再判断伤害类型(方法内部自行判断)，并计算增伤(GoodBuff)加成
-                dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, dmg.damage);
+                // 再判断伤害类型(方法内部自行判断)，并计算敌人增伤(GoodBuff)加成
+                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, enemy.positionId, dmg.damage);
 
                 //结算出的对玩家的伤害
                 Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");

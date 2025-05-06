@@ -263,6 +263,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             }
             else
             {
+                tempDamage.damage = singleDamage;
                 tempDamage.isCritical = false;
             }
 
