@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using TMPro;
 using Unity.VisualScripting;
@@ -35,6 +36,7 @@ public class GameMainPanel : BasePanel
 
     //持有的两个道具面板：
     public GameObject commonItemPanelObject;
+    public Image imgCg;
 
     private bool isDetectingCloseInput = false;
     private bool isOptionsUpdated = false;
@@ -150,22 +152,11 @@ public class GameMainPanel : BasePanel
         //当前事件的获取一定要先于所有更新操作；
         currentEvent = EventManager.Instance.BroadcastEvent();
 
-    
-        //事件cg加载：
-
-
         //事件描述文本加载：
         //应该先加载事件红字介绍，0.3s之后再加载事件的描述部分；
 
         DislayText();
 
-    
-        //更新提示谜语：
-
-
-        //更新当前道具列表；
-        //当前类不负责道具列表的刷新；交给ItemPanel（2个）自己实现
-        //此处相当于只是发布事件：RefreshItem，同时会触发两个ItemPanel的内部订阅事件RefreshItem
 
         //如果当前事件是含有结果的事件，那么需要执行事件结果：
         if(currentEvent.hasResult)
@@ -236,9 +227,20 @@ public class GameMainPanel : BasePanel
     {
         var dic = currentEvent.textLib;
         var text = currentEvent.textLib[1];
+        int cgId = -1;
 
         while(dic.ContainsKey(text.textId))
         {
+            //发现cgid变化；更新cg：
+            if(cgId != text.illustrationId){
+                cgId = text.illustrationId;
+                string path = Path.Combine("ArtResources/怪谈事件图", cgId.ToString());
+
+                Debug.Log($"now cg path is :{path}");
+                imgCg.sprite = Resources.Load<Sprite>(path);
+                // imgCg.SetNativeSize();
+
+            }
             //如果是首行文本（key == 1），清除StringBuilder，不执行换行；
             if(text.isKwaidan && text.textId == 1)
             {

@@ -663,9 +663,7 @@ public class LoadManager : Singleton<LoadManager>
                     }
                     kaidanText.text = values[3];
                     kaidanText.nextId = int.Parse(values[4]);
-
-//---------------------------暂时先注释；因为策划表中没有填写----------------------------------------------
-                    // kaidanText.illustrationId = int.Parse(values[5]);
+                    kaidanText.illustrationId = int.Parse(values[5]);
                     // kaidanText.bgId = int.Parse(values[6]);
 
                     @event.evDescription += values[3];
