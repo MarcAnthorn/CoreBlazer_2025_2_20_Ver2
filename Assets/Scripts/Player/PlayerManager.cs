@@ -266,7 +266,9 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
                 tempDamage.damage = singleDamage;
                 tempDamage.isCritical = false;
             }
+            damages_return.Add(tempDamage);
 
+            // 对下一次是否继续循环进行判断（连击判断）
             if (baseHit == 0)
             {
                 float random2 = UnityEngine.Random.Range(0f, 1f);
@@ -280,7 +282,6 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
                 }
             }
 
-            damages_return.Add(tempDamage);
             baseHit--;
         }
 
