@@ -1,126 +1,151 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    // 可序列化的字典包装类
+    [System.Serializable]
+    public class SerializableEquipmentDict
     {
-        
+        public List<Equipment> keys = new List<Equipment>();
+        public List<int> values = new List<int>();
+
+        public void FromDictionary(Dictionary<Equipment, int> dict)
+        {
+            keys.Clear();
+            values.Clear();
+            foreach (var kvp in dict)
+            {
+                keys.Add(kvp.Key);
+                values.Add(kvp.Value);
+            }
+        }
+
+        public Dictionary<Equipment, int> ToDictionary()
+        {
+            var dict = new Dictionary<Equipment, int>();
+            for (int i = 0; i < Mathf.Min(keys.Count, values.Count); i++)
+            {
+                dict[keys[i]] = values[i];
+            }
+            return dict;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    [System.Serializable]
+    public class SerializableItemDict
     {
-        
+        public List<int> keys = new List<int>();
+        public List<int> values = new List<int>();
+
+        public void FromDictionary(Dictionary<int, int> dict)
+        {
+            keys.Clear();
+            values.Clear();
+            foreach (var kvp in dict)
+            {
+                keys.Add(kvp.Key);
+                values.Add(kvp.Value);
+            }
+        }
+
+        public Dictionary<int, int> ToDictionary()
+        {
+            var dict = new Dictionary<int, int>();
+            for (int i = 0; i < Mathf.Min(keys.Count, values.Count); i++)
+            {
+                dict[keys[i]] = values[i];
+            }
+            return dict;
+        }
+    }
+
+    [System.Serializable]
+    public class GameSaveData
+    {
+        public Player player;
+        public List<Equipment> equipmentList;
+        public SerializableEquipmentDict equipmentDurationDict;
+        public List<int> itemList;
+        public SerializableItemDict itemCountDict;
     }
 
     public void SaveGameData()
     {
-        // 以角色信息为例
-        Player player = PlayerManager.Instance.player;
-        string json1 = JsonUtility.ToJson(player);
-        string path1 = Application.dataPath + "Resources/GameDatas/playerInfo.json";
-        File.WriteAllText(path1, json1);
-        Debug.Log("playerInfo saved to: " + path1);
+        GameSaveData saveData = new GameSaveData();
 
-        // 处理装备保存逻辑
-        List<Equipment> equipmentList = EquipmentManager.Instance.equipmentList;
-        Dictionary<Equipment, int> equipmentDurationDic = EquipmentManager.Instance.equipmentDurationDic;
-        string json2 = JsonUtility.ToJson(equipmentList);
-        string json3 = JsonUtility.ToJson(equipmentDurationDic);
-        string path2 = Application.dataPath + "Resources/GameDatas/EquipmentListInfo.json";
-        string path3 = Application.dataPath + "Resources/GameDatas/EquipmentDicInfo.json";
-        File.WriteAllText(path2, json2);
-        File.WriteAllText(path3, json3);
-        Debug.Log("EquipmentListInfo saved to: " + path2);
-        Debug.Log("EquipmentDicInfo saved to: " + path2);
+        // 玩家数据
+        saveData.player = PlayerManager.Instance.player;
 
-        // 处理道具保存逻辑
-        List<int> itemList = ItemManager.Instance.itemList;
-        Dictionary<int, int> itemCountDic = ItemManager.Instance.itemCountDic;
-        string json4 = JsonUtility.ToJson(itemList);
-        string json5 = JsonUtility.ToJson(itemCountDic);
-        string path4 = Application.dataPath + "Resources/GameDatas/ItemListInfo.json";
-        string path5 = Application.dataPath + "Resources/GameDatas/ItemDicInfo.json";
-        File.WriteAllText(path4, json4);
-        File.WriteAllText(path5, json5);
-        Debug.Log("ItemListInfo saved to: " + path4);
-        Debug.Log("ItemDicInfo saved to: " + path5);
+        // 装备数据
+        saveData.equipmentList = EquipmentManager.Instance.equipmentList;
+        saveData.equipmentDurationDict = new SerializableEquipmentDict();
+        saveData.equipmentDurationDict.FromDictionary(EquipmentManager.Instance.equipmentDurationDic);
+
+        // 道具数据
+        saveData.itemList = ItemManager.Instance.itemList;
+        saveData.itemCountDict = new SerializableItemDict();
+        saveData.itemCountDict.FromDictionary(ItemManager.Instance.itemCountDic);
+
+        string json = JsonUtility.ToJson(saveData, true);
+        string path = Path.Combine(Application.dataPath, "Resources/SaveData/save.json");
+
+        try
+        {
+            // 确保目录存在
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllText(path, json);
+            Debug.Log("Game saved to: " + path);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Save failed: " + e.Message);
+        }
     }
 
     public void LoadGameData()
     {
-        string path1 = Application.persistentDataPath + "/playerInfo.json";
-        if (File.Exists(path1))
+        string path = Path.Combine(Application.dataPath, "Resources/SaveData/save.json");
+
+        if (!File.Exists(path))
         {
-            string json1 = File.ReadAllText(path1);
-            // 这里我选择直接将JSON信息传入PlayerManager.Instance.player，外部调用此方法即可直接加载
-            PlayerManager.Instance.player = JsonUtility.FromJson<Player>(json1);
-            Debug.Log("playerInfo loaded from: " + path1);
-        }
-        else
-        {
-            Debug.LogWarning("playerInfo file not found at: " + path1);
-            // 若没有找到玩家的JSON存储信息，则创建一个新的角色
-            PlayerManager.Instance.player = new Player();
+            Debug.LogWarning("No save file found at: " + path);
+            CreateNewGame();
+            return;
         }
 
-        // 这里继续处理装备等加载逻辑
-        string path2 = Application.persistentDataPath + "/EquipmentListInfo.json";
-        if (File.Exists(path2))
+        try
         {
-            string json2 = File.ReadAllText(path2);
-            EquipmentManager.Instance.equipmentList = JsonUtility.FromJson<List<Equipment>>(json2);
-            Debug.Log("EquipmentListInfo loaded from: " + path2);
-        }
-        else
-        {
-            Debug.LogWarning("EquipmentListInfo file not found at: " + path2);
-            EquipmentManager.Instance.equipmentList = new List<Equipment>();
-        }
-        string path3 = Application.persistentDataPath + "/EquipmentDicInfo.json";
-        if (File.Exists(path3))
-        {
-            string json3 = File.ReadAllText(path3);
-            EquipmentManager.Instance.equipmentDurationDic = JsonUtility.FromJson<Dictionary<Equipment, int>>(json3);
-            Debug.Log("EquipmentDicInfo loaded from: " + path3);
-        }
-        else
-        {
-            Debug.LogWarning("EquipmentDicInfo file not found at: " + path3);
-            EquipmentManager.Instance.equipmentDurationDic = new Dictionary<Equipment, int>();
-        }
+            string json = File.ReadAllText(path);
+            GameSaveData saveData = JsonUtility.FromJson<GameSaveData>(json);
 
-        // 处理道具保存逻辑
-        string path4 = Application.persistentDataPath + "/ItemListInfo.json";
-        if (File.Exists(path4))
-        {
-            string json4 = File.ReadAllText(path4);
-            ItemManager.Instance.itemList = JsonUtility.FromJson<List<int>>(json4);
-            Debug.Log("ItemListInfo loaded from: " + path4);
-        }
-        else
-        {
-            Debug.LogWarning("ItemListInfo file not found at: " + path4);
-            ItemManager.Instance.itemList = new List<int>();
-        }
-        string path5 = Application.persistentDataPath + "/ItemDicInfo.json";
-        if (File.Exists(path5))
-        {
-            string json5 = File.ReadAllText(path5);
-            ItemManager.Instance.itemCountDic = JsonUtility.FromJson<Dictionary<int, int>>(json5);
-            Debug.Log("ItemDicInfo loaded from: " + path5);
-        }
-        else
-        {
-            Debug.LogWarning("ItemDicInfo file not found at: " + path5);
-            ItemManager.Instance.itemCountDic = new Dictionary<int, int>();
-        }
+            // 加载玩家数据
+            PlayerManager.Instance.player = saveData.player ?? new Player();
 
-        return;
+            // 加载装备数据
+            EquipmentManager.Instance.equipmentList = saveData.equipmentList ?? new List<Equipment>();
+            EquipmentManager.Instance.equipmentDurationDic = saveData.equipmentDurationDict?.ToDictionary() ?? new Dictionary<Equipment, int>();
+
+            // 加载道具数据
+            ItemManager.Instance.itemList = saveData.itemList ?? new List<int>();
+            ItemManager.Instance.itemCountDic = saveData.itemCountDict?.ToDictionary() ?? new Dictionary<int, int>();
+
+            Debug.Log("Game loaded from: " + path);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Load failed: " + e.Message);
+            CreateNewGame();
+        }
     }
 
+    private void CreateNewGame()
+    {
+        PlayerManager.Instance.player = new Player();
+        EquipmentManager.Instance.equipmentList = new List<Equipment>();
+        EquipmentManager.Instance.equipmentDurationDic = new Dictionary<Equipment, int>();
+        ItemManager.Instance.itemList = new List<int>();
+        ItemManager.Instance.itemCountDic = new Dictionary<int, int>();
+    }
 }
