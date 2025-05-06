@@ -23,7 +23,7 @@ public class WarningPanel : BasePanel
         {
             btnConfirm.gameObject.SetActive(false);
             //2s后自动消除：
-            LeanTween.delayedCall(2f, ()=>{
+            LeanTween.delayedCall(1f, ()=>{
                 UIManager.Instance.HidePanel<WarningPanel>();
             });
             

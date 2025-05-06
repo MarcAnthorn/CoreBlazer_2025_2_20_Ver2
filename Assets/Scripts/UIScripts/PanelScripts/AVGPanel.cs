@@ -159,6 +159,7 @@ public class AVGPanel : BasePanel
                     imgBackground.sprite = Resources.Load<Sprite>(spritePath);
                     imgBackground.SetNativeSize();
                 }
+                
 
                 //处理音效：
                 if(currentOrder.audioClipStartName != "0" || currentOrder.audioClipEndName != "0")
