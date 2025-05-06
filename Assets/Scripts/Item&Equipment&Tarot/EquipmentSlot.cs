@@ -45,6 +45,25 @@ public class EquipmentSlot : MonoBehaviour
 
     //初始化该Slot的方法：传入对应的Equipment实例就行：
     public void InitSlot(Equipment _equipment){
+
+        //如果是null，那么表示是默认技能槽；
+        if(_equipment == null)
+        {
+            //装备默认技能：
+            isSlotted = true;
+
+            //激活Button：
+            btnSkillUse.gameObject.SetActive(true);
+        
+            mySkill = LoadManager.Instance.allSkills[1001];
+            imgSkill.sprite = Resources.Load<Sprite>("ArtResources/" + mySkill.skillIconPath);
+            txtCost.text = $"消耗行动点：{mySkill.skillCost}";
+            txtSkillDamage.text = mySkill.SkillDamage.ToString();
+            txtSkillName.text = mySkill.skillName;
+            return;
+
+
+        }
         //将当前的Slot处理为已装备；
         isSlotted = true;
 

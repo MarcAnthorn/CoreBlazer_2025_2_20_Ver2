@@ -69,13 +69,41 @@ public class LoadManager : Singleton<LoadManager>
         LoadAllAvgs();
 
         //先技能后装备，因为装备需要LoadManager中的技能实例；
-        Skill_1002 skill2 = new Skill_1002();
-        Skill_1003 skill3 = new Skill_1003();
-        Skill_1004 skill4 = new Skill_1004();
+        // 初始化 allSkills（假设是 Dictionary<int, Skill>）
+        // Dictionary<int, Skill> allSkills = new Dictionary<int, Skill>();
 
-        allSkills.Add(1002, skill2);
-        allSkills.Add(1003, skill3);
-        allSkills.Add(1004, skill4);
+        // 手动实例化并添加所有技能
+        Skill_1001 skill1001 = new Skill_1001();
+        Skill_1002 skill1002 = new Skill_1002();
+        Skill_1003 skill1003 = new Skill_1003();
+        Skill_1004 skill1004 = new Skill_1004();
+        Skill_1005 skill1005 = new Skill_1005();
+        Skill_1006 skill1006 = new Skill_1006();
+        Skill_1007 skill1007 = new Skill_1007();
+        Skill_1008 skill1008 = new Skill_1008();
+        Skill_1009 skill1009 = new Skill_1009();
+        Skill_1010 skill1010 = new Skill_1010();
+        Skill_1020 skill1020 = new Skill_1020();
+        Skill_1023 skill1023 = new Skill_1023();
+
+        // 添加到字典
+        allSkills.Add(1001, skill1001);
+        allSkills.Add(1002, skill1002);
+        allSkills.Add(1003, skill1003);
+        allSkills.Add(1004, skill1004);
+        allSkills.Add(1005, skill1005);
+        allSkills.Add(1006, skill1006);
+        allSkills.Add(1007, skill1007);
+        allSkills.Add(1008, skill1008);
+        allSkills.Add(1009, skill1009);
+        allSkills.Add(1010, skill1010);
+        allSkills.Add(1020, skill1020);
+        allSkills.Add(1023, skill1023);
+
+        foreach(var key in LoadManager.Instance.allSkills.Keys)
+        {
+            Debug.Log($"key:{key},value : {LoadManager.Instance.allSkills[key].skillName }");
+        }
 
         //测试：装备：
         // 初始化所有装备
@@ -88,18 +116,18 @@ public class LoadManager : Singleton<LoadManager>
         allEquipment.Add(1007, new Equipment_1007());
         allEquipment.Add(1008, new Equipment_1008());
         allEquipment.Add(1009, new Equipment_1009());
-        allEquipment.Add(1010, new Equipment_1010());
-        allEquipment.Add(1011, new Equipment_1011());
-        allEquipment.Add(1012, new Equipment_1012());
-        allEquipment.Add(1013, new Equipment_1013());
-        allEquipment.Add(1014, new Equipment_1014());
-        allEquipment.Add(1015, new Equipment_1015());
-        allEquipment.Add(1016, new Equipment_1016());
-        allEquipment.Add(1017, new Equipment_1017());
-        allEquipment.Add(1018, new Equipment_1018());
+        // allEquipment.Add(1010, new Equipment_1010());
+        // allEquipment.Add(1011, new Equipment_1011());
+        // allEquipment.Add(1012, new Equipment_1012());
+        // allEquipment.Add(1013, new Equipment_1013());
+        // allEquipment.Add(1014, new Equipment_1014());
+        // allEquipment.Add(1015, new Equipment_1015());
+        // allEquipment.Add(1016, new Equipment_1016());
+        // allEquipment.Add(1017, new Equipment_1017());
+        // allEquipment.Add(1018, new Equipment_1018());
         allEquipment.Add(1019, new Equipment_1019());
-        allEquipment.Add(1020, new Equipment_1020());
-        allEquipment.Add(1021, new Equipment_1021());
+        // allEquipment.Add(1020, new Equipment_1020());
+        // allEquipment.Add(1021, new Equipment_1021());
         allEquipment.Add(1022, new Equipment_1022());
 
 

@@ -8,6 +8,7 @@ public class TestBattle : MonoBehaviour
 {
     private void Awake()
     {
+        
         TestOfBattle();
     }
 
@@ -45,7 +46,7 @@ public class TestBattle : MonoBehaviour
         // 角色发动攻击/使用道具
         // BattleManager.Instance.SelectSkill1();
         //BattleManager.Instance.SelectSkill2();
-        BattleManager.Instance.UseItem1();
+        // BattleManager.Instance.UseItem1();
     }
 
     public static void ViewActionQueue(Queue actionQueue)

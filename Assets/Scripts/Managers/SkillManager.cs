@@ -119,6 +119,7 @@ public class SkillManager : Singleton<SkillManager>
     {
         // 计算防御收益
         rowDamage = Mathf.Max(0, rowDamage - enemy.DEF);
+        Debug.Log($"raw damage is{rowDamage}");
         // 计算角色身上的Buff加成
         float damage = PlayerManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
 

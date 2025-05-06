@@ -31,8 +31,6 @@ public abstract class Skill
 
 }
 
-
-//技能也应该是不同的实现，需要手动完成；
 // --------------- 角色技能 ---------------
 // 格斗
 public class Skill_1001 : Skill
@@ -40,11 +38,14 @@ public class Skill_1001 : Skill
     public Skill_1001()
     {
         id = 1001;
+        skillName = "格斗";
+        skillDamageText = "等额于力量值";
+        skillBuffText = "平a攻击，玩家自带的技能，使用平a攻击的逻辑结算伤害";
+        skillCost = 1;
     }
 
     override public void Use()
     {
-        // SkillManager.Instance.Skill_1001(enemy);
         BattleManager.Instance.SelectSkill_1001();
     }
 }
@@ -55,11 +56,14 @@ public class Skill_1002 : Skill
     public Skill_1002()
     {
         id = 1002;
+        skillName = "毒针";
+        skillDamageText = "8+20%*速度值";
+        skillBuffText = "攻击施加中毒";
+        skillCost = 0;
     }
 
     override public void Use()
     {
-        // SkillManager.Instance.Skill_1002(enemy);
         BattleManager.Instance.SelectSkill_1002();
     }
 }
@@ -70,11 +74,14 @@ public class Skill_1003 : Skill
     public Skill_1003()
     {
         id = 1003;
+        skillName = "新月之辉";
+        skillDamageText = "50";
+        skillCost = 2;
+        skillBuffText = "攻击命中后，有较高概率附带10层易伤";
     }
 
     override public void Use()
     {
-        // SkillManager.Instance.Skill_1002(enemy);
         BattleManager.Instance.SelectSkill_1003();
     }
 }
@@ -85,6 +92,10 @@ public class Skill_1004 : Skill
     public Skill_1004()
     {
         id = 1004;
+        skillName = "心火";
+        skillDamageText = "10";
+        skillBuffText = "对自己造成伤害，并获得'燃血狂怒'buff";
+        skillCost = 1;
     }
 
     override public void Use()
@@ -99,6 +110,9 @@ public class Skill_1005 : Skill
     public Skill_1005()
     {
         id = 1005;
+        skillName = "破势击";
+        skillDamageText = "50";
+        skillBuffText = "①debuff的持有者受到力量伤害后，施加12层易伤。予debuff持有者的对手2层力量增伤";
     }
 
     override public void Use()
@@ -113,6 +127,10 @@ public class Skill_1006 : Skill
     public Skill_1006()
     {
         id = 1006;
+        skillName = "缚心铎声";
+        skillDamageText = "50";
+        skillBuffText = "①debuff的持有者受到力量伤害后，给对手施加3层dot增伤和3层怪谈增伤";
+        skillCost = 2;
     }
 
     override public void Use()
@@ -127,6 +145,10 @@ public class Skill_1007 : Skill
     public Skill_1007()
     {
         id = 1007;
+        skillName = "落日";
+        skillDamageText = "50";
+        skillBuffText = "①debuff的持有者受到dot伤害或道具伤害后，给对手施加3层力量增伤";
+        skillCost = 2;
     }
 
     override public void Use()
@@ -141,6 +163,10 @@ public class Skill_1008 : Skill
     public Skill_1008()
     {
         id = 1008;
+        skillName = "湖中女的复仇";
+        skillDamageText = "50";
+        skillBuffText = "①debuff的持有者受到怪谈伤害后，予debuff持有者的对手施加3层力量增伤";
+        skillCost = 2;
     }
 
     override public void Use()
@@ -155,6 +181,10 @@ public class Skill_1009 : Skill
     public Skill_1009()
     {
         id = 1009;
+        skillName = "魔音灌耳";
+        skillDamageText = "50";
+        skillBuffText = "①debuff的持有者受到dot伤害后，予debuff持有者的对手施加3层怪谈增伤和3层易伤";
+        skillCost = 2;
     }
 
     override public void Use()
@@ -169,6 +199,10 @@ public class Skill_1010 : Skill
     public Skill_1010()
     {
         id = 1010;
+        skillName = "伤口污染";
+        skillDamageText = "50";
+        skillBuffText = "①debuff的持有者受到dot伤害后，给对手施加3层易伤";
+        skillCost = 2;
     }
 
     override public void Use()
@@ -183,6 +217,10 @@ public class Skill_1020 : Skill
     public Skill_1020()
     {
         id = 1020;
+        skillName = "鼠群意志";
+        skillDamageText = "20";
+        skillBuffText = "①对手受到dot伤害后，自己+30%连击";
+        skillCost = 1;
     }
 
     override public void Use()
@@ -197,13 +235,17 @@ public class Skill_1023 : Skill
     public Skill_1023()
     {
         id = 1023;
+        skillName = "最后一次守护";
+        skillDamageText = "0";
+        skillBuffText = "抵挡一次致命伤害。（剩余1点生命值）";
+        skillCost = 1;
     }
 
     override public void Use()
     {
         BattleManager.Instance.SelectSkill_1023();
     }
-}
+} 
 
 
 // --------------- 敌人技能 ---------------

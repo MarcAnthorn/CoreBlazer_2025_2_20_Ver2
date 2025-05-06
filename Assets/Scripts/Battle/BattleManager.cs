@@ -52,8 +52,7 @@ public class BattleManager : Singleton<BattleManager>
     // 角色攻击动画(假设有)
     public bool PlayerAttackAnimation()
     {
-        
-
+    
         return true;
     }
 
@@ -141,8 +140,11 @@ public class BattleManager : Singleton<BattleManager>
         Debug.Log($"角色释放技能{playerSkill}");
         // 将技能点交给 ReleaseSkill 方法处理
         SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, enemies[playerTarget - 1]);
+
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
         // 阻塞，播放技能释放动画以及敌人受伤动画
         // 注意：播放动画的脚本处需要使用多线程
+//---------------暂时注释：-------------
         while (true)
         {
             if (PlayerAttackAnimation())
@@ -175,7 +177,7 @@ public class BattleManager : Singleton<BattleManager>
 
 
         //玩家发起进攻之后，更新UI：
-        EventHub.Instance.EventTrigger("UpdateBattlePanelUI");
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         // 检查敌人状态
         List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
@@ -231,6 +233,8 @@ public class BattleManager : Singleton<BattleManager>
         if (actionPoint > 0)
         {
             Debug.Log($"当前剩余{actionPoint}个行动点!");
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
+            
         }
         else
         {

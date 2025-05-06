@@ -206,6 +206,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         //finalValue表示 战斗过程 造成的实际数值变化
         float finalValue = TurnCounter.Instance.PlayerBuffsBuffEffectInBattle(buffType, value);
 
+        Debug.Log($"final value after buff is:{finalValue}"); 
         return finalValue;
     }
 

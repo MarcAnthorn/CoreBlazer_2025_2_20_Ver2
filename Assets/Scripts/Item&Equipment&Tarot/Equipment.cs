@@ -76,6 +76,11 @@ public class Equipment_1001 : Equipment
         isEquipped = false;
         maxDuration = 10;
         currentDuration = maxDuration;
+        foreach(var key in LoadManager.Instance.allSkills.Keys)
+        {
+            Debug.Log($"key:{key},value : {LoadManager.Instance.allSkills[key].skillName }");
+        }
+    
         mySkill = LoadManager.Instance.allSkills[1002];
     }
 

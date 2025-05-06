@@ -83,7 +83,7 @@ public class PlayerController : PlayerBase
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        // LightShrinking();
+        LightShrinking();
 
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
         

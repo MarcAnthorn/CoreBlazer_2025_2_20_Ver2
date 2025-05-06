@@ -297,7 +297,8 @@ public class TurnCounter : Singleton<TurnCounter>
     // 角色在受到自身Buff影响下的 战斗内的 攻击伤害值计算
     public float PlayerBuffsBuffEffectInBattle(BuffType type, float value)
     {
-        float finalValue = 0f;
+        float finalValue = value;
+        // float finalValue = 0;
 
         for (int i = 0; i < playerBuffs.Count; i++)
         {
@@ -324,6 +325,7 @@ public class TurnCounter : Singleton<TurnCounter>
             }
         }
 
+        Debug.Log($"final value in EnemyBuffsBuffEffectInBattle:{finalValue}");
         return finalValue;
 
     }

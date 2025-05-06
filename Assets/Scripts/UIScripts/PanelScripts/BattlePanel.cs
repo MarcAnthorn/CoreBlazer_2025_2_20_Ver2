@@ -42,8 +42,9 @@ public class BattlePanel : BasePanel
      }
      protected override void Init()
      {
+          equipmentSlot1.InitSlot(null);
           //将对应的Slot脚本加入容器：
-          equipmentSlotList.Add(equipmentSlot1);
+          // equipmentSlotList.Add(equipmentSlot1);
           equipmentSlotList.Add(equipmentSlot2);
           equipmentSlotList.Add(equipmentSlot3);
           equipmentSlotList.Add(equipmentSlot4);
@@ -123,8 +124,8 @@ public class BattlePanel : BasePanel
           BattleBuff buff4 = new BattleBuff_1001();
           BattleBuff buff5 = new BattleBuff_1001();
 
-          TurnCounter.Instance.AddPlayerBuff(buff4);
-          TurnCounter.Instance.AddPlayerBuff(buff5);
+          // TurnCounter.Instance.AddPlayerBuff(buff4);
+          // TurnCounter.Instance.AddPlayerBuff(buff5);
 
           BattleManager.Instance.BattleStart();
 

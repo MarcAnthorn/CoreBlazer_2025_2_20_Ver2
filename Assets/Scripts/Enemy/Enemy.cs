@@ -34,6 +34,8 @@ public abstract class Enemy
 
     public void BeHurted(Damage damage)
     {
+        Debug.LogWarning($"Now Enemy Damage is{damage.damage}");
+        
         HP -= damage.damage;
         if (HP <= 0)
         {
