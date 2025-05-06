@@ -55,7 +55,7 @@ public class MapManager : Singleton<MapManager>
         Map map3 = new Map()
         {
             row = 43,
-            colume = 43
+            colume = 55
         };
 
         Maps.Add(0, map0);

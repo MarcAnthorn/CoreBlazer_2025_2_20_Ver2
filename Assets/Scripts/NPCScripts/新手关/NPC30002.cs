@@ -14,9 +14,11 @@ public class NPC30002  : NPCBase
         
     } 
 
-    void Awake()
-    {
-        avgId = 1102;
 
+    protected override void Awake()
+    {
+        base.Awake();
+       avgId = 1102;
     }
+    
 }

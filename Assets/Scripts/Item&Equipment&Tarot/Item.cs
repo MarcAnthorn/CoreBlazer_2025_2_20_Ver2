@@ -118,36 +118,55 @@ public class Item_102 : Item
 
 public class Item_103 : Item
 {
+    
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"大力出奇迹\" 使用！");
-        //使用后靠近特殊墙壁可砸碎
-        int timerIndex;
-        timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
-        PlayerManager.Instance.player.DebugInfo();
+
+        EventHub.Instance.EventTrigger<bool>("LockBreakerOrNot", false);    //解锁：
+
+        //注册取消道具的方法：
+        EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
+        
+        // //使用后靠近特殊墙壁可砸碎
+        // int timerIndex;
+        // timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
+        // PlayerManager.Instance.player.DebugInfo();
     }
 
-    int index;
-    private void OnStart()
+    private void UsedCallback()
     {
-        index = BuffManager.Instance.AddBuff(UseCase.Maze, BuffType.LVL_Change, SpecialBuffType.DamageWall, DamageWall);
-    }
+        //移除对应的响应事件：
+        EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
 
-    private void OnComplete()
-    {
+        EventHub.Instance.EventTrigger<bool>("LockBreakerOrNot", true);    //加锁：
+
+        //执行生效结束后的回调：
         onCompleteCallback?.Invoke();
-        BuffManager.Instance.RemoveBuff(index);
+
     }
 
-    private Func<float> DamageWall = null;                   //由Marc将实现方法写入其中
-    public void SubscribeHandler(Func<float> handler)
-    {
-        if (DamageWall == null)
-        {
-            DamageWall += handler;
-        }
-    }
+    // int index;
+    // private void OnStart()
+    // {
+    //     index = BuffManager.Instance.AddBuff(UseCase.Maze, BuffType.LVL_Change, SpecialBuffType.DamageWall, DamageWall);
+    // }
+
+    // private void OnComplete()
+    // {
+    //     onCompleteCallback?.Invoke();
+    //     BuffManager.Instance.RemoveBuff(index);
+    // }
+
+    // private Func<float> DamageWall = null;                   //由Marc将实现方法写入其中
+    // public void SubscribeHandler(Func<float> handler)
+    // {
+    //     if (DamageWall == null)
+    //     {
+    //         DamageWall += handler;
+    //     }
+    // }
 }
 
 public class Item_104 : Item

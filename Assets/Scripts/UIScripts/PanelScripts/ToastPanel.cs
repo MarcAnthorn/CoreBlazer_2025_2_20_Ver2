@@ -177,6 +177,7 @@ public class ToastPanel : BasePanel
         {
             //如果是空，说明不是数值类型的调整；
             //直接return，不要显示任何的Toast:
+            UIManager.Instance.InstantHidePanel<ToastPanel>();
             return;
             
         }

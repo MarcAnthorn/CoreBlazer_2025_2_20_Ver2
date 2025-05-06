@@ -128,22 +128,45 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
         sizeX = MapManager.Instance[mapIndex].row;
         sizeY = MapManager.Instance[mapIndex].colume;
+
+        Debug.LogWarning($"sizeX:{sizeX}, sizeY:{sizeY}");
     
     
         //初始化通路地块的GridMap：
         //传入参数分别是：GridMap尺寸x, y、cell尺寸、基础GridMap的偏移量（此处就是视框左上角），以及内部初始化cell时候的回调；
-        pathMap = new GridMap<PathGrid>(sizeX / 2, sizeY / 2, cellSize, originalPoint, (pathMap, i, j)=>{
+        pathMap = new GridMap<PathGrid>(sizeY / 2, sizeX / 2, cellSize, originalPoint, (pathMap, i, j)=>{
             //回调：实例化地块游戏对象
             //2种差分，随机生成1～2就行：
             int randomNum = Random.Range(1, 2);
 
-            string path = Path.Combine(levelPath, "PathGrid" + randomNum.ToString());
-            GameObject pathGridObj = Resources.Load<GameObject>(path);
-            PathGrid gridScript = pathGridObj.GetComponent<PathGrid>();
- 
             //获取数据结构中的信息：
             int realX = i * 2 + 1;
             int realY = j * 2 + 1;
+
+    
+            //注意：第三张地图需要按坐标进行不同颜色资源的选择；因此需要进行路径的修正：
+            if(mapIndex == 3)
+            {
+                if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+
+                else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                
+                else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+
+                else 
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
+            }
+
+            string path = Path.Combine(levelPath, "PathGrid" + randomNum.ToString());
+ 
+            GameObject pathGridObj = Resources.Load<GameObject>(path);
+            PathGrid gridScript = pathGridObj.GetComponent<PathGrid>();
+ 
+            Debug.Log($"x : {realX}, y : {realY}");
+
             MapElement me = currentMap[realX, realY];
 
             //如果是空的话，直接return：
@@ -279,7 +302,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
 
         //注意：墙壁地块的竖直高度（第二参数）需要是宽度（第一参数）的两倍；
-        wallMap = new GridMap<WallGrid>(sizeX / 2, sizeY - 1, cellSize, originalPoint, (wallMap, i, j)=>{
+        wallMap = new GridMap<WallGrid>(sizeY / 2, sizeX - 1, cellSize, originalPoint, (wallMap, i, j)=>{
             //回调：实例化地块游戏对象
             GameObject gridObj;
             WallGrid gridScript;    //注意：水平通路和竖直通路都算作是WallGrid的挂载对象了；
@@ -295,6 +318,22 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 //获取数据结构中的信息：
                 int realX = i + 1;
                 int realY = j * 2 + 1;
+
+                if(mapIndex == 3)
+                {
+                    if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+
+                    else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                    
+                    else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+
+                    else 
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
+                }
+
                 me = currentMap[realX, realY];
 
                 //如果是空的话，直接return：
@@ -308,11 +347,12 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 if(me.GetId() == 10001 || me.GetId() == 10014)
                 {
                     //加载水平墙体：
-                    gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,wallHorizontalPath)); 
+                    gridObj = Resources.Load<GameObject>(Path.Combine(levelPath, wallHorizontalPath)); 
                     //设置水平墙体的OrderInLayer，以策划表中的Y值为唯一标准：
                     gridObj.GetComponent<SpriteRenderer>().sortingOrder = realX;
 
                 }
+
                 else
                 {
                     //加载水平通路：
@@ -325,7 +365,24 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 //获取数据结构中的信息：
                 int realX = i + 1;
                 int realY = j * 2 + 2;
+
+                if(mapIndex == 3)
+                {
+                    if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+
+                    else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                    
+                    else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+
+                    else 
+                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
+                }
+
                 me = currentMap[realX, realY];
+
 
                 string wallVerticalPath = "WallGridVertical" + randomNum.ToString();
 
@@ -376,7 +433,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             return gridScript;
         });
 
-        wallCornerMap = new GridMap<WallCornerGrid>(sizeX / 2, sizeY / 2, cellSize, originalPoint, (wallCornerMap, i, j)=>{
+        wallCornerMap = new GridMap<WallCornerGrid>(sizeY / 2, sizeX / 2, cellSize, originalPoint, (wallCornerMap, i, j)=>{
             GameObject cornerGridObj;
 
             //2种差分，随机生成1～2就行：
@@ -385,6 +442,22 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             //获取数据结构中的信息：
             int realX = i * 2 + 2;
             int realY = j * 2 + 2;
+
+            if(mapIndex == 3)
+            {
+                if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+
+                else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                
+                else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+
+                else 
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
+            }
+
             MapElement me = currentMap[realX, realY];
 
             //如果是空的话，直接return：
@@ -471,12 +544,25 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 levelPath = "Grids/LevelTwoGrids";
             break;
             case 3:
+                levelPath = "Grids/LevelThreeGrids";
             break;
 
         }
         
-        for(int j = 0; j < sizeX; j++)
+        for(int j = 0; j < sizeY; j++)
         {
+
+            if(mapIndex == 3)
+            {
+                if(j >= 0 && j <= 27)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+
+                else if(j >= 28 && j < 55)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+
+            }
+
+
             //三种差分，随机生成1～3就行：
             int randomNum = Random.Range(1, 4);
             string wallHorizontalPath = "WallGridHorizontal" + randomNum.ToString();
@@ -500,8 +586,18 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             Instantiate(wallObj, currentOffset, wallObj.transform.rotation).gameObject.transform.SetParent(pathGridObject.transform, false);
         }
 
-        for(int i = 1; i < sizeY; i++)
+        for(int i = 1; i < sizeX; i++)
         {   
+            if(mapIndex == 3)
+            {
+                if(i >= 0 && i <= 20)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+
+                else if(i >= 21 && i < 43)
+                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+
+            }
+
             //三种差分，随机生成1～3就行：
             int randomNum = Random.Range(1, 4);
             string wallVerticalPath = "WallGridVertical" + randomNum.ToString();

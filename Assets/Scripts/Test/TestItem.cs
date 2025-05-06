@@ -56,6 +56,9 @@ public class TestItem : MonoBehaviour
         ItemManager.Instance.AddItem(601);
         ItemManager.Instance.AddItem(602);
         ItemManager.Instance.AddItem(603);
+
+        //测试破墙：
+        ItemManager.Instance.AddItem(103);
     }
 
     // Update is called once per frame

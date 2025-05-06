@@ -44,7 +44,7 @@ public class GridMap<T> where T : MonoBehaviour
             {
                 //问题来了，传入的类型都不知到会是什么，我们怎么知道应该初始化什么？
                 //值类型还好说，可以用default；但是引用类型需要实例化，不能是null；
-                //很简答。让外界实例化Grid的时候，传入一个自定义Func委托，利用返回值来初始化数据；
+                //很简单。让外界实例化Grid的时候，传入一个自定义Func委托，利用返回值来初始化数据；
                 //如果为默认值null，说明外界没有传入lambda表达式，说明是值类型；使用默认值；
                 //利回调initialCellObject将当前的grid实例和cell的坐标传出去给外界；
                 grid[i, j] = initialCellObject == null ? default(T) : initialCellObject(this, i, j);

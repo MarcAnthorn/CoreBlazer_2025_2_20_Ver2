@@ -15,9 +15,19 @@ public class WarningPanel : BasePanel
         });
     }
 
-    public void SetWarningText(string text)
+    //第二参数：isFadeWithTime表示该提醒Panel是否是自动消除的；
+    public void SetWarningText(string text, bool _isFadeWithTime = false)
     {
         txtWarning.text = text;
+        if(_isFadeWithTime)
+        {
+            btnConfirm.gameObject.SetActive(false);
+            //2s后自动消除：
+            LeanTween.delayedCall(2f, ()=>{
+                UIManager.Instance.HidePanel<WarningPanel>();
+            });
+            
+        }
     }
 
 }

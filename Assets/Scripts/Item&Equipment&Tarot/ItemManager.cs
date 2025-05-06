@@ -23,7 +23,7 @@ public class ItemManager : Singleton<ItemManager>
             {
                 //如果是，那么就是重复添加塔罗牌，直接不添加，而是加精神值；
                 PlayerManager.Instance.player.SAN.value += 5;
-                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5");
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5", true);
                 return;
                 
             }
@@ -66,11 +66,11 @@ public class ItemManager : Singleton<ItemManager>
 
         //弹出获取的道具：
         if(id / 100 == 6){
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得塔罗牌「{nowItem.name}」");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得塔罗牌「{nowItem.name}」", true);
         }
         else
         {
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得道具「{nowItem.name}」* {count}");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得道具「{nowItem.name}」* {count}", true);
         }
 
     }

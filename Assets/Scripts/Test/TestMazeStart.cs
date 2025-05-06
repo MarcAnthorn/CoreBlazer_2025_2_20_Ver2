@@ -40,7 +40,7 @@ public class TestMazeStart : MonoBehaviour
         switch(GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.First:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabs/MapFirstFloor", (_gameObject)=>{
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapFirstFloor", (_gameObject)=>{
                     Instantiate(_gameObject, originalPoint, Quaternion.identity); 
                     playerScript.isDamageLocked = false;
                     playerScript.LMax = 100; 
@@ -57,7 +57,7 @@ public class TestMazeStart : MonoBehaviour
             
             break;
             case E_GameLevelType.Second:  
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabs/MapSecondFloor", (_gameObject)=>{
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapSecondFloor", (_gameObject)=>{
                     Instantiate(_gameObject, originalPoint, Quaternion.identity); 
                     playerScript.isDamageLocked = false;
                     playerScript.LMax = 100; 
@@ -75,15 +75,26 @@ public class TestMazeStart : MonoBehaviour
             break;
             case E_GameLevelType.Third:
 
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapThirdFloor", (_gameObject)=>{
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
+                    playerScript.isDamageLocked = false;
+                    playerScript.LMax = 100; 
 
-                //播放特定的BGM：
-                SoundEffectManager.Instance.PlayMusic("第三关BGM");
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
+                        //播放特定的BGM：
+                        SoundEffectManager.Instance.PlayMusic("第三关BGM");
+                        EventHub.Instance.EventTrigger<bool>("Freeze", false);
+                    });   
+
+                    
+
+                });      
 
             break;
 
             //新手关卡：灯光初始值60；锁定血量不会死亡：
             case E_GameLevelType.Tutorial:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabs/MapTutorialFloor", (_gameObject)=>{
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapTutorialFloor", (_gameObject)=>{
                     Instantiate(_gameObject, originalPoint, Quaternion.identity); 
                     playerScript.isDamageLocked = true;
                     playerScript.LMax = 60;

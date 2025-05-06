@@ -11,8 +11,9 @@ public class NPC30005 : NPCBase
         LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         avgId = 1105;
         GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }

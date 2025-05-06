@@ -83,7 +83,7 @@ public class PlayerController : PlayerBase
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        LightShrinking();
+        // LightShrinking();
 
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
         
@@ -135,6 +135,8 @@ public class PlayerController : PlayerBase
             //灯光照射下限值：
             if(spriteLight.pointLightOuterRadius <= 2.12f)
             {
+
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"灯光消散！ 正在受到黑暗侵蚀！", true);
                 spriteLight.pointLightOuterRadius = 2.12f;
                 L = 21.2f;
                 TriggerLightShrinking(false);

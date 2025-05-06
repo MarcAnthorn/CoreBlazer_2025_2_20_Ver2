@@ -12,8 +12,9 @@ public class NPC30004 : NPCBase
         Destroy(this.gameObject);
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         avgId = 1104;
         GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
     }
