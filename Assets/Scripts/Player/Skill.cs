@@ -64,6 +64,7 @@ public class Skill_1002 : Skill
     }
 }
 
+// 新月之辉
 public class Skill_1003 : Skill
 {
     public Skill_1003()
@@ -78,6 +79,7 @@ public class Skill_1003 : Skill
     }
 }
 
+// 心火
 public class Skill_1004 : Skill
 {
     public Skill_1004()
@@ -87,7 +89,119 @@ public class Skill_1004 : Skill
 
     override public void Use()
     {
+        BattleManager.Instance.SelectSkill_1004();
+    }
+}
 
+// 破势击
+public class Skill_1005 : Skill
+{
+    public Skill_1005()
+    {
+        id = 1005;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1005();
+    }
+}
+
+// 缚心铎声
+public class Skill_1006 : Skill
+{
+    public Skill_1006()
+    {
+        id = 1006;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1006();
+    }
+}
+
+// 落日
+public class Skill_1007 : Skill
+{
+    public Skill_1007()
+    {
+        id = 1007;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1007();
+    }
+}
+
+// 湖中女的复仇
+public class Skill_1008 : Skill
+{
+    public Skill_1008()
+    {
+        id = 1008;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1008();
+    }
+}
+
+// 魔音灌耳
+public class Skill_1009 : Skill
+{
+    public Skill_1009()
+    {
+        id = 1009;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1009();
+    }
+}
+
+// 伤口污染
+public class Skill_1010 : Skill
+{
+    public Skill_1010()
+    {
+        id = 1010;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1010();
+    }
+}
+
+// 鼠群意志
+public class Skill_1020 : Skill
+{
+    public Skill_1020()
+    {
+        id = 1020;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1020();
+    }
+}
+
+// 最后一次守护
+public class Skill_1023 : Skill
+{
+    public Skill_1023()
+    {
+        id = 1023;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1023();
     }
 }
 

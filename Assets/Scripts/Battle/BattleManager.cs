@@ -368,6 +368,69 @@ public class BattleManager : Singleton<BattleManager>
         PlayerAction(true);
     }
 
+    // 玩家选择技能  心火
+    public void SelectSkill_1004()
+    {
+        playerSkill = 1004;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  破势击
+    public void SelectSkill_1005()
+    {
+        playerSkill = 1005;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  缚心铎声
+    public void SelectSkill_1006()
+    {
+        playerSkill = 1006;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  落日
+    public void SelectSkill_1007()
+    {
+        playerSkill = 1007;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  湖中女的复仇
+    public void SelectSkill_1008()
+    {
+        playerSkill = 1008;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  魔音灌耳
+    public void SelectSkill_1009()
+    {
+        playerSkill = 1009;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  伤口污染
+    public void SelectSkill_1010()
+    {
+        playerSkill = 1010;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  鼠群意志
+    public void SelectSkill_1020()
+    {
+        playerSkill = 1020;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  最后一次守护
+    public void SelectSkill_1023()
+    {
+        playerSkill = 1023;
+        PlayerAction(true);
+    }
+
     // 下面是要与Button进行绑定的使用不同道具的方法(Marc应该已经实现了一些道具使用的方法了吧？)
     // 玩家使用道具1
     public void UseItem1()
