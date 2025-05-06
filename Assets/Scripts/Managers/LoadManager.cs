@@ -44,6 +44,11 @@ public class LoadManager : Singleton<LoadManager>
     public MapElement[,] mapSecondFloor;
 
 
+    //第三层：
+    public int[,] mapThirdFloorIndex = new int[43, 43];
+    public MapElement[,] mapThirdFloor;
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -289,6 +294,9 @@ public class LoadManager : Singleton<LoadManager>
 
         LoadMapElements(2);
         InitMapElements(2);
+
+        LoadMapElements(3);
+        InitMapElements(3);
     }
     //MapId对应：0 -> 新手关； 2 -> 第二层
     private void LoadMapElements(int mapId)
@@ -310,6 +318,12 @@ public class LoadManager : Singleton<LoadManager>
                     case 2:
                         mapSecondFloorIndex[i, j] = -1;
                     break;
+
+                    case 3:
+                        mapThirdFloorIndex[i, j] = -1;
+                    break;
+
+
                 }
             }
         }
@@ -356,6 +370,11 @@ public class LoadManager : Singleton<LoadManager>
                         case 2:
                             mapSecondFloorIndex[i, j] = int.Parse(values[j]);
                         break;
+
+                        case 3:
+                            mapThirdFloorIndex[i, j] = int.Parse(values[j]);
+                        break;
+    
                     }
    
                     }
@@ -408,6 +427,18 @@ public class LoadManager : Singleton<LoadManager>
                     }
                 }
             break;
+
+            case 3:
+                mapThirdFloor = new MapElement[43, 43];
+                for (int i = 0; i < mapThirdFloor.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
+                {
+                    for (int j = 0; j < mapThirdFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
+                    {
+                        mapThirdFloor[i, j] = MapManager.Instance.CreateMapElement(mapThirdFloorIndex[i, j]);
+                    }
+                }
+            break;
+
         }
 
     }

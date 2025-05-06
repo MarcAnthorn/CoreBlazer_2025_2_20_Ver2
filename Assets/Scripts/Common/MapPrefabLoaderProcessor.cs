@@ -64,6 +64,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         // LoadMapToPrefab(0);
         // LoadMapToPrefab(1);
         // LoadMapToPrefab(2);
+        LoadMapToPrefab(3);
 
         
 
@@ -119,6 +120,8 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 levelPath = "Grids/LevelTwoGrids";
             break;
             case 3:
+                currentMap = LoadManager.Instance.mapThirdFloor;
+                levelPath = "Grids/LevelThreeGrids";
             break;
 
         }
@@ -208,7 +211,14 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
             }
 
-            //支线：墙中鼠支线点位：
+            else if(id == 10015)
+            {
+                GameObject NPCObj = Resources.Load<GameObject>("NPC");
+                NPCObj.name = $"回收商品NPC";
+                Instantiate(NPCObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(npcObject.transform, false);
+            }
+
+            //支线：第一层 墙中鼠支线点位：
             else if(id >= 20016 && id <= 20021)
             {
                 GameObject sideObj = Resources.Load<GameObject>("SideQuest");
@@ -216,9 +226,25 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 Instantiate(sideObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(sideQuestObj.transform, false);
             }
 
+            //支线：第二层 调查员难题 支线：
+            else if(id >= 30016 && id <= 30018)
+            {
+                GameObject sideObj = Resources.Load<GameObject>("SideQuest");
+                sideObj.name = $"调查员难题支线：{id}";
+                Instantiate(sideObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(sideQuestObj.transform, false);
+            }
+
+            //支线：第三层 支线：
+            else if(id >= 40016 && id <= 40017)
+            {
+                GameObject sideObj = Resources.Load<GameObject>("SideQuest");
+                sideObj.name = $"第三关支线：{id}";
+                Instantiate(sideObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(sideQuestObj.transform, false);
+            }
+
 
             //宝箱地块：
-            else if(id >= 20022 && id <= 20024)
+            else if(id >= 20022 && id <= 20024 || id == 20026)
             {
                 GameObject reward = null;
                 if(id == 20022)
@@ -231,6 +257,15 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                     reward = Resources.Load<GameObject>("RewardSpecial");
                 reward.name = $"宝箱{id}";
                 Instantiate(reward, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(rewardObj.transform, false);
+            }
+
+            //塔罗牌投放地块：
+            else if(id == 50001)
+            {
+                GameObject reward = Resources.Load<GameObject>("RewardTarot");
+                reward.name = $"塔罗牌点位";
+                Instantiate(reward, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(rewardObj.transform, false);
+
             }
 
             //实例化地块，调用内部函数GetWorldPosition布置位置
@@ -407,6 +442,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapSecondFloor.prefab");
             break;
             case 3:
+                PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapThirdFloor.prefab");
             break;
 
         }

@@ -16,5 +16,11 @@ public class TarotCheckPanel : BasePanel
         });
     }
 
+    public void InitItemInfo(Item _item)
+    {
+        string rootPath = "ArtResources/Tarot/" + _item.id;
+        imgCurrentTarot.sprite = Resources.Load<Sprite>(rootPath);
+        txtCurrentDescription.text = _item.description;
+    }
 
 }

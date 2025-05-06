@@ -4257,6 +4257,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 541
       objectReference: {fileID: 0}
+    - target: {fileID: 5683245851248324601, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 276.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6295021705672702253, guid: fd52df78fe5a74af6a45a03c9945224b, type: 3}
       propertyPath: m_Name
       value: MainPanel

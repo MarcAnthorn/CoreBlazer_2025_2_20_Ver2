@@ -52,10 +52,16 @@ public class MapManager : Singleton<MapManager>
             colume = 41
         };
 
+        Map map3 = new Map()
+        {
+            row = 43,
+            colume = 43
+        };
+
         Maps.Add(0, map0);
         Maps.Add(1, map1);
         Maps.Add(2, map2);
-        
+        Maps.Add(3, map3);    
     }
 
     public MapElement CreateMapElement(int elementId)
@@ -83,6 +89,7 @@ public class MapManager : Singleton<MapManager>
             case 10012:
             case 10013:
 
+            case 10015: //回收商品的NPC：
             case 20010: //poi事件
             case 20020: //
             case 20030: // 
@@ -100,15 +107,40 @@ public class MapManager : Singleton<MapManager>
             case 20022:
             case 20023:
             case 20024:
+            case 20026:
+
+            //boss战宝箱：
+            case 50007:
 
 //----------------------------------------------------
 
-            //接下来的都是NPC事件，但是形式上也是PathGrid:
+            //新手关卡：
             case 30001:
             case 30002:
             case 30003:
             case 30004:
             case 30005:
+
+//-------------第二层支线-------------------------------
+            case 30016:
+            case 30017:
+            case 30018:
+
+//-------------第三层支线-------------------------------
+            case 40016:
+            case 40017:
+
+
+
+            case 50001: //塔罗牌点位
+
+//----------战斗事件-------------------------------
+            case 50002:
+            case 50003:
+
+            case 50004: //第一层boss点
+            case 50005: //第二层boss点
+            case 50006: //第三层boss点
                 element = new Ground(elementId);  //起始点
                 return element;
             default:
