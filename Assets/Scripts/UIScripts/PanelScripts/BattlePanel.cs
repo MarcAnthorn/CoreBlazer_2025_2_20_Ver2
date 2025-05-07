@@ -69,8 +69,13 @@ public class BattlePanel : BasePanel
           });
 
 
-          //先遍历所有的装备，如果有是装备中的，那么就直接装备就行：
-          foreach(var equipment in EquipmentManager.Instance.equipmentList)
+        //----------------测试战斗：----------------------------
+        TestBattle();
+        //----------------测试战斗：----------------------------
+
+
+        //先遍历所有的装备，如果有是装备中的，那么就直接装备就行：
+        foreach (var equipment in EquipmentManager.Instance.equipmentList)
           {
                if(equipment.isEquipped)
                {
@@ -78,10 +83,6 @@ public class BattlePanel : BasePanel
                }
           }
 
-
-//----------------测试战斗：----------------------------
-          TestBattle();
-//----------------测试战斗：----------------------------
           
           //初步更新UI：
           UpdateBattlePanelUI();

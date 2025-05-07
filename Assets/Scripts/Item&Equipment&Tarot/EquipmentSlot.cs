@@ -90,6 +90,7 @@ public class EquipmentSlot : MonoBehaviour
         txtSkillDamage.text = mySkill.SkillDamage.ToString();
         txtSkillName.text = mySkill.skillName;
 
+        return;
     }
 
     //取消装备的方法：
