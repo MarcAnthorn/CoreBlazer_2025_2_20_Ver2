@@ -103,10 +103,6 @@ public class ChooseBeliefPanel : BasePanel
             break;
         }
 
-
-        // optionCount = optionList.Count;
-        // currentPage = 1;
-        // allPageCount = (optionCount + optionPerPage - 1) / optionPerPage;
     }
 
     //购买之后的更新对话的回调函数：
@@ -129,37 +125,5 @@ public class ChooseBeliefPanel : BasePanel
         }
     }
 
-    //翻页：暂时用不到；
-    // public void SwitchPage(int pageDelta)
-    // {
-    //     foreach(var optionObj in shownList)
-    //     {
-    //         Destroy(optionObj);
-    //     }
-    //     shownList.Clear();
-
-    //     currentPage += pageDelta;
-
-    //     //越界处理：
-    //     if(currentPage == 0)
-    //         currentPage = allPageCount;
-
-    //     else if(currentPage > allPageCount)
-    //         currentPage = 1;
-        
-    //     //计算当前应该展示的是什么范围的内容：
-    //     int leftIndex = (currentPage - 1) * optionPerPage;
-    //     int rightIndex = currentPage * optionPerPage - 1 > optionCount ? optionCount - 1 : currentPage * optionPerPage - 1;
-
-    //     for(int i = leftIndex; i <= rightIndex; i++)
-    //     {
-    //         GameObject currentObj = Instantiate(optionList[i]);
-    //         shownList.Add(currentObj);
-    //         currentObj.gameObject.transform.SetParent(choiceContent, false);
-    //     }
-
-
-    //     Debug.Log($"已更新，当前页：{currentPage}, 当前显示的范围是：{leftIndex} 到{rightIndex}");
-    // }
 
 }

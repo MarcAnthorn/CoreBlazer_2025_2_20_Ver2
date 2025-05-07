@@ -10,6 +10,9 @@ public class StatueRoom : MonoBehaviour
     private bool isTriggerLock = true;
     private TipPanel tipPanel;
     public Image blackMask;
+    private GameObject txtObject;
+
+    private Vector3 offset = new Vector3(0, 0.5f);
 
     private void Update() {
         if(!isTriggerLock)
@@ -33,6 +36,9 @@ public class StatueRoom : MonoBehaviour
         {
             isTriggerLock = false;
 
+            txtObject = PoolManager.Instance.SpawnFromPool("TipText");
+            EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", "按下「J」进入关卡", this.transform.position + offset);
+
         }
     }
 
@@ -40,6 +46,7 @@ public class StatueRoom : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             isTriggerLock = true;
+            PoolManager.Instance.ReturnToPool("TipTexts", txtObject);
         }
     }
 

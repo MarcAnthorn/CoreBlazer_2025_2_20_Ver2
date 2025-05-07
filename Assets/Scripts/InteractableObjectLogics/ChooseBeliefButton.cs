@@ -64,33 +64,33 @@ public class ChooseBeliefButton : MonoBehaviour
         switch(myItemId)
         {
             //初始化相关的信息：
-            case 611:
+            case 2011:
                 // imgItem.sprite = Resources.Load<Sprite>();   //图标相关之后再填入；
                 txtItemName.text = "丰饶降临";
                 txtItemDes.text = "丰饶降临人间，万家喜得肉食。";
                 txtSanityCost.text = $"消耗精神值：{20}";
             break;
-            case 612:
+            case 2012:
                 txtItemName.text = "繁育心神";
                 txtItemDes.text = "来源于生物最原始的欲望之一。";
                 txtSanityCost.text = $"消耗精神值：{20}";
             break;
-            case 613:
+            case 2013:
                 txtItemName.text = "虚空的祝福";
                 txtItemDes.text = "未知的祝福，真的就是好事吗？";
                 txtSanityCost.text = $"消耗精神值：{20}";
             break;
-            case 614:
+            case 2014:
                 txtItemName.text = "透视黑暗之眼";
                 txtItemDes.text = "看不透黑暗也是一种幸运。";
                 txtSanityCost.text = $"消耗精神值：{20}";
             break;
-            case 615:
+            case 2015:
                 txtItemName.text = "惊喜盒子";
                 txtItemDes.text = "每次打开都有不同的惊喜。";
                 txtSanityCost.text = $"消耗精神值：{20}";
             break;
-            case 616:
+            case 2016:
                 txtItemName.text = "祂的一撇";
                 txtItemDes.text = "祂投来了一撇，不知道在打什么主意。";
                 txtSanityCost.text = $"消耗精神值：{20}";
