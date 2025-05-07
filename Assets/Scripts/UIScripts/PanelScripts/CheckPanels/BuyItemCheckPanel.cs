@@ -29,7 +29,9 @@ public class BuyItemCheckPanel : BasePanel
 
             //先扣除精神值：
             PlayerManager.Instance.player.SAN.value -= 20;
-            PlayerManager.Instance.player.DebugInfo();
+        
+            //更新UI：
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
           
             //再广播：
             EventHub.Instance.EventTrigger<int>("BuyItemCallback", myItemId);
@@ -48,33 +50,33 @@ public class BuyItemCheckPanel : BasePanel
         switch(myItemId)
         {
             //初始化相关的信息：
-            case 611:
+            case 2011:
                 // imgItem.sprite = Resources.Load<Sprite>();   //图标相关之后再填入；
                 txtItemName.text = "丰饶降临";
                 txtItemDes.text = "丰饶降临人间，万家喜得肉食。";
                 txtItemEffectDes.text = "获得本道具后，处于装备状态的所有怪谈装备当前耐久度及其上限+1";
             break;
-            case 612:
+            case 2012:
                 txtItemName.text = "繁育心神";
                 txtItemDes.text = "来源于生物最原始的欲望之一。";
                 txtItemEffectDes.text = "获得本道具后，处于未装备状态的随机3件装备当前耐久度及其上限+3";
             break;
-            case 613:
+            case 2013:
                 txtItemName.text = "虚空的祝福";
                 txtItemDes.text = "未知的祝福，真的就是好事吗？";
                 txtItemEffectDes.text = "使用后：当前生命值+100，防御+10";
             break;
-            case 614:
+            case 2014:
                 txtItemName.text = "透视黑暗之眼";
                 txtItemDes.text = "看不透黑暗也是一种幸运。";
                 txtItemEffectDes.text = "使用后：当前灯光值与生命值以及他们的上限+50。";
             break;
-            case 615:
+            case 2015:
                 txtItemName.text = "惊喜盒子";
                 txtItemDes.text = "每次打开都有不同的惊喜。";
                 txtItemEffectDes.text = "持有该道具时：每次战斗胜利后随机获得2件怪谈道具。";
             break;
-            case 616:
+            case 2016:
                 txtItemName.text = "祂的一撇";
                 txtItemDes.text = "祂投来了一撇，不知道在打什么主意。";
                 txtItemEffectDes.text = "持有该道具时：进入下一层关卡以及安全屋后，当前力量/防御/速度以及其上限随机一项属性+10/-10";

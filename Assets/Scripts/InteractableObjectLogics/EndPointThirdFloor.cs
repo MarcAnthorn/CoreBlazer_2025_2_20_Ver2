@@ -10,14 +10,42 @@ public class EndPointThirdFloor : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             SoundEffectManager.Instance.StopMusic();
-            // //更新index，传送回安全屋：
-            // GameLevelManager.Instance.gameLevelType = E_GameLevelType.Second;
+            int avgId = 0;
+            //根据玩家当前的san值播放结局剧情：
+            var san = PlayerManager.Instance.player.SAN.value;
+            if(san > 60)
+            {
+                Debug.Log("愚人结局达成");
+                avgId = 1303;
 
-            // Destroy(this.gameObject);
-            // LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
+            }
 
+            else if(san <= 60 && san >= 20)
+            {
+                Debug.Log("月亮结局达成");
+                avgId = 1302;
+            }
 
-            Debug.LogWarning("游戏结束，播放结局");
+            else{
+                Debug.Log("高塔结局达成");
+                avgId = 1301;
+
+            }
+
+            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
+            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
+            panel.orderBlock = ob;
+            panel.callback = OnComplete;
+            EventHub.Instance.EventTrigger<bool>("Freeze", true);
         }
+
+       
+    }
+
+
+    //回调函数：执行结局之后，退出当前游戏到主界面；
+    public void OnComplete(int id)
+    {
+        Debug.LogWarning("退出游戏到主界面");
     }
 }

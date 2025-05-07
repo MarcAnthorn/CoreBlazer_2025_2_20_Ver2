@@ -69,7 +69,7 @@ public class NPC30016 : NPCBase
 
 public class IDAllocatorFor30016
 {
-    public List<int> availableIDs = new List<int> { 3102, 3103, 3104, 3105, 3106, 3107 };
+    public List<int> availableIDs = new List<int> { 2202, 2203, 2204, 2205, 2206, 2207 };
     private System.Random rng = new System.Random();
 
     public static IDAllocatorFor30016 _instance;

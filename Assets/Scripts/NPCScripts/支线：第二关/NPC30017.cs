@@ -14,7 +14,7 @@ public class NPC30017 : NPCBase
     protected override void Awake()
     {
         base.Awake();
-        avgId = 3101;  
+        avgId = 2201;  
 
         
         //自己激活时，如果上一次死亡我触发过，那么直接调用OnComplete，然后将自己失活返回；

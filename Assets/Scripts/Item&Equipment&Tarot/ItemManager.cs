@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -73,6 +74,77 @@ public class ItemManager : Singleton<ItemManager>
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得道具「{nowItem.name}」* {count}", true);
         }
 
+    }
+
+    //重载：一次加多个道具：
+    public void AddItem(params int[] ids)
+    {
+         StringBuilder sb = new StringBuilder();
+        foreach(var id in ids)
+        {
+            int count = 1;  //默认只加一个；
+            Item nowItem = LoadManager.Instance.allItems[id];
+            if(itemList.Contains(id))
+            {
+                //首先：判断是不是塔罗牌：
+                if(id / 100 == 6)
+                {
+                    //如果是，那么就是重复添加塔罗牌，直接不添加，而是加精神值；
+                    PlayerManager.Instance.player.SAN.value += 5;
+                    UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5", true);
+                    return;
+                    
+                }
+                else
+                {
+                    //如果不是塔罗牌,并且道具存在，那就是调整dic中的数量：
+                    //注意：先判断是否要超出道具叠加上限：如果是，那么直接return：
+                    if(itemCountDic[id]  == nowItem.maxLimit)
+                    {
+                        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前道具「{nowItem.name}」已达到最大可叠加上限{nowItem.maxLimit}");
+                        return;
+                    }
+
+                    //始终确保List和Dic中的元素数量是一致的；
+                    for(int i = 0; i < count; i++)
+                    {
+                        itemCountDic[id]++;
+                    }
+                }
+
+            }
+            else
+            {
+                //不存在，那么就是加入List，然后初始化Dic数量为1；
+                itemList.Add(id);
+                itemCountDic.Add(id, 0);
+                for(int i = 0; i < count; i++)
+                {
+                    itemCountDic[id]++;
+                }
+            }
+
+            //如果这个道具是持有就使用，那么直接使用：
+            if(LoadManager.Instance.allItems[id].isImmediate)
+            {
+                Item item = LoadManager.Instance.allItems[id];
+                item.Use();
+                item.isInUse = true;
+            }
+
+            //弹出获取的道具：
+            if(id / 100 == 6){
+                sb.Append($"获得塔罗牌「{nowItem.name}」\n");
+                
+            }
+            else
+            {
+                sb.Append($"获得道具「{nowItem.name}」* {count}\n");
+            }
+        }
+
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText(sb.ToString(), true);
+        
     }
 
 

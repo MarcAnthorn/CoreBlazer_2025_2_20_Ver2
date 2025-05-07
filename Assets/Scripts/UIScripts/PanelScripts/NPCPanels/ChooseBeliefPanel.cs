@@ -85,18 +85,18 @@ public class ChooseBeliefPanel : BasePanel
         switch(_npcName){
             case E_NPCName.奈亚拉:
                 txtConversation.text = "那可以看看祂的好东西，不保证物有所值哦。";
-                btnScript1.Init(611);
-                btnScript2.Init(612);
+                btnScript1.Init(2011);
+                btnScript2.Init(2012);
             break;
             case E_NPCName.优格:
                 txtConversation.text = "想了解点什么？宇宙的真理可不是能轻易参透的。";
-                btnScript1.Init(613);
-                btnScript2.Init(614);
+                btnScript1.Init(2013);
+                btnScript2.Init(2014);
             break;
             case E_NPCName.莎布:
                 txtConversation.text = "祂也给我了不少好东西，来看看吧！";
-                btnScript1.Init(615);
-                btnScript2.Init(616);
+                btnScript1.Init(2015);
+                btnScript2.Init(2016);
             break;
             default:  
                 Debug.LogWarning("当前的NPC面板显示的NPC不存在");

@@ -92,7 +92,7 @@ public class PlayerController : PlayerBase
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        // LightShrinking();
+        LightShrinking();
 
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
         
@@ -170,12 +170,6 @@ public class PlayerController : PlayerBase
     }
     private void OnPlayerDead()
     {
-        // //重置位置
-        // ResetPosition();
-
-        //角色死亡之后，重置一些内容之后，直接传送回对应的安全屋：
-        
-
         //重置伤害相关
         damageTime = 0;
         if(damageCoroutine != null)
@@ -184,6 +178,18 @@ public class PlayerController : PlayerBase
 
         //音效：
         SoundEffectManager.Instance.PlaySoundEffect("死亡音效");
+
+        //如果死亡的时候，发现是玩家的SAN归零死亡的，那么直接播放剧情，然后回到游戏主界面：
+        if(PlayerManager.Instance.player.SAN.value <= 0)
+        {
+            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1301];
+            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
+            panel.orderBlock = ob;
+            panel.callback = OnComplete;
+            EventHub.Instance.EventTrigger<bool>("Freeze", true);
+
+            return; //直接终止死亡的后续逻辑；
+        }
 
         // PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Maze;
         //加载安全屋的场景：
@@ -194,9 +200,17 @@ public class PlayerController : PlayerBase
             EventHub.Instance.EventTrigger<bool>("Freeze", true);
             LoadSceneManager.Instance.LoadSceneAsync("ShelterScene", SwitchSceneCallback);
         });   
-       
-
+    
     }
+
+    //回调函数：执行结局之后，退出当前游戏到主界面；
+    public void OnComplete(int id)
+    {
+        EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+            Debug.LogWarning("退出游戏到主界面");
+        }); 
+    }
+
 
     //这个是切换场景的时候的回调函数：
     private void SwitchSceneCallback()
@@ -207,6 +221,10 @@ public class PlayerController : PlayerBase
         //重置血量相关
         PlayerManager.Instance.player.HP.SetValue(100);
         PlayerManager.Instance.player.LVL.value = 300;
+
+        //重置当前的关卡进度：
+        //不论是在哪一层死亡的，都会回到第一层的安全屋；
+        GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
 
         //更新UI面板：
         EventHub.Instance.EventTrigger("UpdateAllUIElements");

@@ -65,7 +65,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
         // LoadMapToPrefab(0);
         // LoadMapToPrefab(1);
-        // LoadMapToPrefab(2);
+        LoadMapToPrefab(2);
         // LoadMapToPrefab(3);
 
         
@@ -125,7 +125,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             break;
             case 2:
                 currentMap = LoadManager.Instance.mapSecondFloor;
-                levelPath = "Grids/LevelTwoGrids";
+                levelPath = "Grids/LevelZeroGrids";
             break;
             case 3:
                 currentMap = LoadManager.Instance.mapThirdFloor;
@@ -586,7 +586,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 levelPath = "Grids/LevelTwoGrids";
             break;
             case 2:
-                levelPath = "Grids/LevelTwoGrids";
+                levelPath = "Grids/LevelZeroGrids";
             break;
             case 3:
                 levelPath = "Grids/LevelThreeGrids";
