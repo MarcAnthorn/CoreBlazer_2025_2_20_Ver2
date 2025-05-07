@@ -84,8 +84,6 @@ public class EnemyManager : Singleton<EnemyManager>
         Debug.LogWarning($"current damage value:{damageValue}");
 
         List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue, damageType);
-
-        Debug.LogWarning(damages[0].damage);
         
         if (damages.Count == 0)
         {

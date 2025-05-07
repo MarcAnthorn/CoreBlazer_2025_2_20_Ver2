@@ -202,7 +202,7 @@ public class SkillManager : Singleton<SkillManager>
             for (int i = 0; i < 10; i++)
             {
                 BattleBuff buff = new BattleBuff_1002();
-                enemy.buffs.Add(buff);
+                TurnCounter.Instance.AddEnemyBuff(buff);
             }
             return;
         }
@@ -219,7 +219,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1004()
     {
         BattleBuff buff = new BattleBuff_1003();
-        TurnCounter.Instance.playerBuffs.Add(buff);
+        TurnCounter.Instance.AddPlayerBuff(buff);
     }
 
     // 破势击
@@ -233,7 +233,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1005(Enemy enemy)
     {
         BattleBuff buff = new BattleBuff_1004();
-        enemy.buffs.Add(buff);
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 缚心铎声
@@ -247,7 +247,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1006(Enemy enemy)
     {
         BattleBuff buff = new BattleBuff_1005();
-        enemy.buffs.Add(buff);
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 落日
@@ -261,7 +261,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1007(Enemy enemy)
     {
         BattleBuff buff = new BattleBuff_1006();
-        enemy.buffs.Add(buff);
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 湖中女的复仇
@@ -275,7 +275,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1008(Enemy enemy)
     {
         BattleBuff buff = new BattleBuff_1007();
-        enemy.buffs.Add(buff);
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 魔音灌耳
@@ -289,7 +289,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1009(Enemy enemy)
     {
         BattleBuff buff = new BattleBuff_1008();
-        enemy.buffs.Add(buff);
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 伤口污染
@@ -303,7 +303,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1010(Enemy enemy)
     {
         BattleBuff buff = new BattleBuff_1009();
-        enemy.buffs.Add(buff);
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 鼠群意志
@@ -316,7 +316,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1020()
     {
         BattleBuff buff = new BattleBuff_1019();
-        TurnCounter.Instance.playerBuffs.Add(buff);
+        TurnCounter.Instance.AddPlayerBuff(buff);
     }
 
     // 最后一次守护
@@ -328,7 +328,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1023()
     {
         BattleBuff buff = new BattleBuff_1022();
-        TurnCounter.Instance.playerBuffs.Add(buff);
+        TurnCounter.Instance.AddPlayerBuff(buff);
     }
 
 }

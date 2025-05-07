@@ -299,7 +299,7 @@ public class TurnCounter : Singleton<TurnCounter>
             calType = buff.calculationType;
             if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
-                extraValue += buff.influence;
+                extraValue += buff.influence * buff.GetOverlyingCount();
             }
         }
 
@@ -318,7 +318,7 @@ public class TurnCounter : Singleton<TurnCounter>
 
         for (int i = 0; i < playerBuffs.Count; i++)
         {
-            if (type == BuffType.HP_Change)    //战斗时增益/减益
+            if (type == BuffType.HP_Change && playerBuffs[i].triggerTiming == TriggerTiming.CalculateGoodBuffDamage)    //战斗时增益/减益
             {
                 finalValue = GetFinalValueFromBuff(playerBuffs[i], value, playerBuffs[i].influence);
             }
@@ -335,7 +335,7 @@ public class TurnCounter : Singleton<TurnCounter>
 
         for (int i = 0; i < enemy.buffs.Count; i++)
         {
-            if (type == BuffType.HP_Change)    //战斗时增益/减益
+            if (type == BuffType.HP_Change && enemy.buffs[i].triggerTiming == TriggerTiming.CalculateGoodBuffDamage)    //战斗时增益/减益
             {
                 finalValue = GetFinalValueFromBuff(enemy.buffs[i], value, enemy.buffs[i].influence);
             }

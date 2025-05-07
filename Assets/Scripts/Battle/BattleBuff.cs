@@ -204,6 +204,7 @@ public class BattleBuff_1002 : BattleBuff
         type = BuffType.HP_Change;
         buffType = BattleBuffType.Debuff;
         calculationType = CalculationType.Multiply;
+        damageType = DamageType.STR | DamageType.Skill | DamageType.Dot;
         influence = 0.05f;
         lastTurnLimit = 2;
         lastTurns = 2;
@@ -724,7 +725,7 @@ public class BattleBuff_1024 : BattleBuff
         id = 1024;
         name = "怪谈技能增伤";
         type = BuffType.HP_Change;
-        damageType = DamageType.STR;
+        damageType = DamageType.Skill;
         buffType = BattleBuffType.GoodBuff;
         calculationType = CalculationType.Multiply;
         influence = 0.1f;
@@ -758,7 +759,7 @@ public class BattleBuff_1025 : BattleBuff
         id = 1025;
         name = "dot增伤";
         type = BuffType.HP_Change;
-        damageType = DamageType.STR;
+        damageType = DamageType.Dot;
         buffType = BattleBuffType.GoodBuff;
         calculationType = CalculationType.Multiply;
         influence = 0.5f;

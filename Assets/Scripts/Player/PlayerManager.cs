@@ -261,6 +261,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             float random1 = UnityEngine.Random.Range(0f, 1f);
             if (random1 < crit_rate)
             {
+                Debug.Log("is critical");
                 tempDamage.damage = singleDamage * (1 + crit_dmg);
                 tempDamage.isCritical = true;
             }

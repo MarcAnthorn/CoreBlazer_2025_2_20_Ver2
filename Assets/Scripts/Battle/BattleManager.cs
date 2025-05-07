@@ -117,6 +117,7 @@ public class BattleManager : Singleton<BattleManager>
 //----------------更改（Marc）：------------------------------------------------
         // actionPoint = 3;
         actionPoint = actionPointMax;
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         roundCoroutine = StartCoroutine(InPlayerTurn());
     }
@@ -170,8 +171,8 @@ public class BattleManager : Singleton<BattleManager>
     private void PlayerAction(bool isAttack)
     {
 //----------------使用句柄停止协程：（Marc）--------------------------------
-        if(roundCoroutine != null)
-            StopCoroutine(roundCoroutine);
+        //if(roundCoroutine != null)
+        //    StopCoroutine(roundCoroutine);
 
         if (isAttack)
             PlayerAttack();
@@ -279,7 +280,7 @@ public class BattleManager : Singleton<BattleManager>
 
         //在进入地方回合之前，延迟一段时间，等buff结算的UI效果结束：
         LeanTween.delayedCall(1f, ()=>{
-            EnterEnemyTurn(0);
+            EnterEnemyTurn(1);
         });
         
     }
@@ -319,15 +320,17 @@ public class BattleManager : Singleton<BattleManager>
         // 排到队尾
         actionQueue.Enqueue(actionQueue.Dequeue());
 
+        EnterPlayerTurn();
+
         // 判断下一个行动的对象
-        if(actionQueue.Peek().GetType() == typeof(Player))
-        {
-            EnterPlayerTurn();
-        }
-        else
-        {
-            EnterEnemyTurn(index + 1);
-        }
+        //if (actionQueue.Peek().GetType() == typeof(Player))
+        //{
+        //    EnterPlayerTurn();
+        //}
+        //else
+        //{
+        //    EnterEnemyTurn(index + 1);
+        //}
     }
 
 
