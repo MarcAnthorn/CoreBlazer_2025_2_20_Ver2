@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 9333943}
   - component: {fileID: 9333942}
   - component: {fileID: 9333944}
+  - component: {fileID: 9333945}
   m_Layer: 0
   m_Name: "\u753B\u4F5C\u4EA4\u4E923X02"
   m_TagString: Untagged
@@ -243,6 +244,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.21133333}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &9333945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9333941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e60ecd7ab4174c698eab7ad8c0c8e89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &10828289
 GameObject:
   m_ObjectHideFlags: 0
@@ -2988,6 +3001,7 @@ GameObject:
   - component: {fileID: 961820399}
   - component: {fileID: 961820398}
   - component: {fileID: 961820400}
+  - component: {fileID: 961820401}
   m_Layer: 0
   m_Name: "\u9C7C\u7F38\u4EA4\u4E923X01"
   m_TagString: Untagged
@@ -3097,6 +3111,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.21133333}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &961820401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961820397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd5332308b79842eba92d5b9f5ef7e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &969110434
 GameObject:
   m_ObjectHideFlags: 0
@@ -3108,6 +3134,7 @@ GameObject:
   - component: {fileID: 969110436}
   - component: {fileID: 969110435}
   - component: {fileID: 969110437}
+  - component: {fileID: 969110438}
   m_Layer: 0
   m_Name: "\u7535\u89C6\u4EA4\u4E923X03"
   m_TagString: Untagged
@@ -3217,6 +3244,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.21133333}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &969110438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969110434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50daea4ddf7c343c38d5097dd5592313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1001584693
 Mesh:
   m_ObjectHideFlags: 0

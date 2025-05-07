@@ -494,6 +494,9 @@ public class AVGPanel : BasePanel
 
     private void NPCEffect(string npcName, int effectId)
     {
+        if(!currentNPCDic.ContainsKey(npcName))
+            return;
+            
         GameObject npc = currentNPCDic[npcName];
         switch(effectId)
         {
