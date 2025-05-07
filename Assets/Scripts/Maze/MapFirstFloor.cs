@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class MapFirstFloor : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public Transform startPoint;
+    public Transform endPoint;
+    void Awake()
     {
         
+        GameLevelManager.Instance.mapIndexStartPointDic.Add(1, startPoint.position);
+        GameLevelManager.Instance.mapIndexEndPointDic.Add(1, endPoint.position);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

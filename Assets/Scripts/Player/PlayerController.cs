@@ -15,6 +15,8 @@ public class PlayerController : PlayerBase
     public float LExtra;
     private float _l;
 
+    private bool isWarningLocked = false;
+
 
     //将L和PlayerManager.Instance.player.LVL.value绑定，互相同步；
     public float L
@@ -77,6 +79,13 @@ public class PlayerController : PlayerBase
         if(Input.GetKeyDown(KeyCode.M)){
             EventHub.Instance.EventTrigger("OnPlayerDead");
         }
+
+
+
+        //测试用，速通道具分配：
+        if(Input.GetKeyDown(KeyCode.Y)){
+            ItemManager.Instance.AddItem(104);
+        }
     
     }
 
@@ -135,8 +144,12 @@ public class PlayerController : PlayerBase
             //灯光照射下限值：
             if(spriteLight.pointLightOuterRadius <= 2.12f)
             {
+                if(!isWarningLocked)    //只有恢复灯光之后才会解锁的锁
+                {
+                    UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"灯光消散！ 正在受到黑暗侵蚀！", true);
+                    isWarningLocked = true;
+                }
 
-                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"灯光消散！ 正在受到黑暗侵蚀！", true);
                 spriteLight.pointLightOuterRadius = 2.12f;
                 L = 21.2f;
                 TriggerLightShrinking(false);
@@ -183,7 +196,6 @@ public class PlayerController : PlayerBase
         });   
        
 
-
     }
 
     //这个是切换场景的时候的回调函数：
@@ -228,6 +240,7 @@ public class PlayerController : PlayerBase
 
     public void ResumeLight()
     {
+        isWarningLocked = false;
         isLightShrinking = false;
         L = Math.Min(L + LExtra, LMax);
         lightShrinkingTime = Mathf.Sqrt(LMax - L);

@@ -30,6 +30,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         //测试用：
         //该方法在Awake中调用，确保全局只触发一次
         InitPlayer();
+
     }
 
     //使用只读属性暴露玩家数值

@@ -11,6 +11,8 @@ public class TestShelterStart : MonoBehaviour
         EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
             SoundEffectManager.Instance.PlayMusic("安全屋循环BGM");
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            //关闭当前的背包面板（防止使用传送道具之后面板残留）
+            UIManager.Instance.HidePanel<InventoryPanel>();
             
             //初始化玩家的SceneIndex:
             PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Shelter;

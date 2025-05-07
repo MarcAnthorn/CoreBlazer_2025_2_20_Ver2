@@ -10,6 +10,7 @@ public class SettingPanel : BasePanel
     public Slider sliderVolumn;
     protected override void Init()
     {
+        sliderVolumn.value = SoundEffectManager.Instance.SoundEffectVolume;
         btnSave.onClick.AddListener(()=>{
             //此处进行存档；
         });

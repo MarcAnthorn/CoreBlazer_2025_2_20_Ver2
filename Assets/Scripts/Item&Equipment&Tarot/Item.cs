@@ -179,15 +179,18 @@ public class Item_104 : Item
         int randomNum = UnityEngine.Random.Range(0, 2);
         if (randomNum == 0)
         {
-            //到达该层迷宫终点
-           StartHander();
+
+            Debug.LogWarning("To Start Point");
+            StartHander();
         }
         else if (randomNum == 1)
         {
-            //回到起点
+
+            Debug.LogWarning("To End Point");
             EndHander();
         }
-        PlayerManager.Instance.player.DebugInfo();
+        
+        // EventHub.Instance.EventTrigger("RefreshItemsInPanel");
     }
 
     // private Action BackToStartPoint = null;             //由Marc将实现方法写入其中（已完成）

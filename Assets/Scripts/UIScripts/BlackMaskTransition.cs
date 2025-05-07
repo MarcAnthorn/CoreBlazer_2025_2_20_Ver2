@@ -25,6 +25,7 @@ public class BlackMaskTransition : MonoBehaviour
     private void ShowMask(UnityAction callback)
     {
         Debug.Log("Mask Revealed!");
+
         Color color = blackMask.color;
         color.a = 0;
         blackMask.color = color;

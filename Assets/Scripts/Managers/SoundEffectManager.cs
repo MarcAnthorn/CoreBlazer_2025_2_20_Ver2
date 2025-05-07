@@ -28,6 +28,7 @@ public class SoundEffectManager : SingletonBaseManager<SoundEffectManager>
 
     private float musicVolume = 0.5f;
     private float soundEffectVolume = 0.5f;
+    public float  SoundEffectVolume => soundEffectVolume;
 
     //播放BGM
     public void PlayMusic(string musicPath)

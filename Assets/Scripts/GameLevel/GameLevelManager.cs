@@ -5,8 +5,17 @@ using UnityEngine;
 public class GameLevelManager : Singleton<GameLevelManager>
 {
     //当前的关卡是哪个等级：默认是新手关卡：
-    public E_GameLevelType gameLevelType = E_GameLevelType.Tutorial;
-    
+    public E_GameLevelType gameLevelType;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        //默认是新手关卡：
+        gameLevelType = E_GameLevelType.Tutorial;
+    }
+
+
 
     //存储所有NPC事件index对应的事件数据结构的Dictionary:
     public Dictionary<int, NPCBlock> npcBlockDic = new Dictionary<int, NPCBlock>();

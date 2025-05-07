@@ -8,6 +8,7 @@ public class NPC30005 : NPCBase
     {
         base.OnComplete(avgId);
         Destroy(this.gameObject);
+         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
         LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
     }
 

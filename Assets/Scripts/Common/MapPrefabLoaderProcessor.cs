@@ -35,6 +35,8 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
     public GameObject sideQuestObj;
 
     public GameObject rewardObj;
+
+    public GameObject battleObj;
     private float cellSize = 1;
     private int sizeX;
     private int sizeY;
@@ -64,7 +66,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         // LoadMapToPrefab(0);
         // LoadMapToPrefab(1);
         // LoadMapToPrefab(2);
-        LoadMapToPrefab(3);
+        // LoadMapToPrefab(3);
 
         
 
@@ -95,6 +97,12 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         //宝箱点位的组织：
         rewardObj = Instantiate(parentPrefab);
         rewardObj.name = "RewardObject";
+
+        //战斗节点：
+        battleObj = Instantiate(parentPrefab);
+        battleObj.name = "BattleObject";
+        Debug.LogWarning("BattleObject is inited!");
+
 
 
 
@@ -289,6 +297,42 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 reward.name = $"塔罗牌点位";
                 Instantiate(reward, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(rewardObj.transform, false);
 
+            }
+
+            //战斗节点地块：
+            else if(id >= 50002 && id <= 50006)
+            {
+                GameObject battle = null;
+                if(id == 50002)
+                {
+                    battle = Resources.Load<GameObject>("BattleLevelOne");
+                    battle.name = $"战斗点位50002";
+                }
+
+                else if(id == 50003)
+                {
+                    battle = Resources.Load<GameObject>("BattleLevelTwo");
+                    battle.name = $"战斗点位50003";
+                }
+
+                else if(id == 50004)
+                {
+                    battle = Resources.Load<GameObject>("EndBossFirstFloor");
+                    battle.name = $"战斗点位50004";
+                }
+
+                else if(id == 50005)
+                {
+                    battle = Resources.Load<GameObject>("EndBossSecondFloor");
+                    battle.name = $"战斗点位50005";
+                }
+
+                else if(id == 50006)
+                {
+                    battle = Resources.Load<GameObject>("EndBossThirdFloor");
+                    battle.name = $"战斗点位50006";
+                }
+                Instantiate(battle, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(battleObj.transform, false);
             }
 
             //实例化地块，调用内部函数GetWorldPosition布置位置
@@ -502,6 +546,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         startEndPointObject.transform.SetParent(saveObject.transform, false);
         sideQuestObj.transform.SetParent(saveObject.transform, false);
         rewardObj.transform.SetParent(saveObject.transform, false);
+        battleObj.transform.SetParent(saveObject.transform, false);
   
 #if UNITY_EDITOR
         switch(mapIndex){

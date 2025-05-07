@@ -13,7 +13,7 @@ public class TarotReward : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            ItemManager.Instance.AddItem(601);
+            ItemManager.Instance.AddItem(tarotId);
             Destroy(this.gameObject);
         }
 
@@ -24,7 +24,7 @@ public class TarotReward : MonoBehaviour
 
     void AssignUniqueID()
     {
-        IDAllocator.Instance.TryGetUniqueID(out tarotId);
+        IDAllocatorForTarot.Instance.TryGetUniqueID(out tarotId);
         Debug.Log($"{gameObject.name} 获得的ID是：{tarotId}");
     }
 }
