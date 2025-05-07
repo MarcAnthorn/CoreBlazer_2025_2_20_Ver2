@@ -18,6 +18,11 @@ public class PlayerController : PlayerBase
     private bool isWarningLocked = false;
 
 
+
+//----------测试用：按键锁灯光：-------------------
+    private bool isLightLocked = false;
+
+
     //将L和PlayerManager.Instance.player.LVL.value绑定，互相同步；
     public float L
     {
@@ -86,13 +91,20 @@ public class PlayerController : PlayerBase
         if(Input.GetKeyDown(KeyCode.Y)){
             ItemManager.Instance.AddItem(104);
         }
+
+        //测试用：按键锁灯光 
+        if(Input.GetKeyDown(KeyCode.B)){
+            isLightLocked = !isLightLocked;
+        }
     
     }
 
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
-        LightShrinking();
+
+        if(!isLightLocked)
+            LightShrinking();
 
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
         
