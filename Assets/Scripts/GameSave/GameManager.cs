@@ -69,6 +69,7 @@ public class GameManager : Singleton<GameManager>
         public SerializableEquipmentDict equipmentDurationDict;
         public List<int> itemList;
         public SerializableItemDict itemCountDict;
+        public E_GameLevelType gameLevelType;
     }
 
     public void SaveGameData()
@@ -87,6 +88,9 @@ public class GameManager : Singleton<GameManager>
         saveData.itemList = ItemManager.Instance.itemList;
         saveData.itemCountDict = new SerializableItemDict();
         saveData.itemCountDict.FromDictionary(ItemManager.Instance.itemCountDic);
+
+        // 关卡数据
+        saveData.gameLevelType = GameLevelManager.Instance.gameLevelType;
 
         string json = JsonUtility.ToJson(saveData, true);
         string path = Path.Combine(Application.dataPath, "Resources/SaveData/save.json");
@@ -131,6 +135,9 @@ public class GameManager : Singleton<GameManager>
             ItemManager.Instance.itemList = saveData.itemList ?? new List<int>();
             ItemManager.Instance.itemCountDic = saveData.itemCountDict?.ToDictionary() ?? new Dictionary<int, int>();
 
+            // 加载关卡数据
+            GameLevelManager.Instance.gameLevelType = saveData.gameLevelType;
+
             Debug.Log("Game loaded from: " + path);
         }
         catch (System.Exception e)
@@ -147,5 +154,6 @@ public class GameManager : Singleton<GameManager>
         EquipmentManager.Instance.equipmentDurationDic = new Dictionary<Equipment, int>();
         ItemManager.Instance.itemList = new List<int>();
         ItemManager.Instance.itemCountDic = new Dictionary<int, int>();
+        GameLevelManager.Instance.gameLevelType = E_GameLevelType.Tutorial;
     }
 }

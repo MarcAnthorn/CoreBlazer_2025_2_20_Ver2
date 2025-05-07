@@ -250,6 +250,8 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
 
         float hit = PlayerManager.Instance.player.HIT.value;
         int baseHit = (int)Math.Ceiling(hit);       //向上取整
+        if ((float)baseHit == hit)
+            baseHit++;
         float hitRate = hit + 1 - baseHit;
         float crit_rate = PlayerManager.Instance.player.CRIT_Rate.value;
         float crit_dmg = PlayerManager.Instance.player.CRIT_DMG.value;
@@ -267,7 +269,6 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
                 tempDamage.damage = singleDamage;
                 tempDamage.isCritical = false;
             }
-            damages_return.Add(tempDamage);
 
             // 对下一次是否继续循环进行判断（连击判断）
             if (baseHit == 0)
@@ -283,6 +284,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
                 }
             }
 
+            damages_return.Add(tempDamage);
             baseHit--;
         }
 

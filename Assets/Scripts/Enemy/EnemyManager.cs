@@ -159,6 +159,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
         // baseHit 
         int baseHit = (int)Math.Ceiling(hit);       //向上取整
+        if ((float)baseHit == hit)
+            baseHit++;
 
         // hitRate
         float hitRate = hit + 1 - baseHit;
@@ -180,7 +182,6 @@ public class EnemyManager : Singleton<EnemyManager>
                 tempDamage.damage = singleDamage;
                 tempDamage.isCritical = false;
             }
-            damages_return.Add(tempDamage);
 
             // 对下一次是否继续循环进行判断（连击判断）
             if (baseHit == 0)
@@ -196,6 +197,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 }
             }
 
+            damages_return.Add(tempDamage);
             baseHit--;
         }
 
