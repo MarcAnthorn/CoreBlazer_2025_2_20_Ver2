@@ -144,7 +144,6 @@ public class BattleManager : Singleton<BattleManager>
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
         // 阻塞，播放技能释放动画以及敌人受伤动画
         // 注意：播放动画的脚本处需要使用多线程
-//---------------暂时注释：-------------
         while (true)
         {
             if (PlayerAttackAnimation())

@@ -256,6 +256,10 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
+        if (playerBuffs.Count == 0)
+        {
+            return value;
+        }
         foreach (var buff in playerBuffs)
         {
             calType = buff.calculationType;
@@ -278,6 +282,10 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
+        if(BattleManager.Instance.enemies[positionId].buffs.Count == 0)
+        {
+            return value;
+        }
         foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
             calType = buff.calculationType;
