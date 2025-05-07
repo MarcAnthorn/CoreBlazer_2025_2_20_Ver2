@@ -30,6 +30,8 @@ public class DiscardItemCheckPanel : BasePanel
             PlayerManager.Instance.player.SAN.value += 10;
             PlayerManager.Instance.player.DebugInfo();
 
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
+
             EventHub.Instance.EventTrigger<int>("DiscardItemCallback", myItemId);
 
             UIManager.Instance.HidePanel<DiscardItemCheckPanel>();

@@ -80,12 +80,12 @@ public class DiscardBeliefPanel: BasePanel
         txtConversation.text =  "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
 
         
-        btnScript1.Init(611);
-        btnScript2.Init(612);
-        btnScript3.Init(613);
-        btnScript4.Init(614);
-        btnScript5.Init(615);
-        btnScript6.Init(616);
+        btnScript1.Init(2011);
+        btnScript2.Init(2012);
+        btnScript3.Init(2013);
+        btnScript4.Init(2014);
+        btnScript5.Init(2015);
+        btnScript6.Init(2016);
 
         optionList.Add(btnScript1.gameObject);
         optionList.Add(btnScript2.gameObject);
