@@ -45,6 +45,11 @@ public class DiscardItemCheckPanel : BasePanel
     public void InitPanel(int _itemId)
     {
         myItemId = _itemId;
+
+        Item item = LoadManager.Instance.allItems[_itemId];
+        string rootPath = "ArtResources/Item/" + item.name;
+        imgItem.sprite = Resources.Load<Sprite>(rootPath);
+        
         switch(myItemId)
         {
             //初始化相关的信息：
