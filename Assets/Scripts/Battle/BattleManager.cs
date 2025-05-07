@@ -132,6 +132,7 @@ public class BattleManager : Singleton<BattleManager>
         //外部通过触发isRoundEndTriggered的方式让协程继续：
         yield return new WaitUntil(() => isRoundEndTriggered);
 
+
 //--------------Marc添加内容---------------------------------------------------
 
         ExitPlayerTurn();
@@ -277,7 +278,7 @@ public class BattleManager : Singleton<BattleManager>
 
         //在进入地方回合之前，延迟一段时间，等buff结算的UI效果结束：
         LeanTween.delayedCall(1f, ()=>{
-            EnterEnemyTurn(1);
+            EnterEnemyTurn(0);
         });
         
     }
