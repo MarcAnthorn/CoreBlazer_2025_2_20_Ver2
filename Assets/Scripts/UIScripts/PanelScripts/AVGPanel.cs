@@ -44,7 +44,7 @@ public class AVGPanel : BasePanel
     public string currentBackgroundName;
     public string bgmName;
     //加载的路径：
-    private string rootPath = "ArtResources/AVG";
+    private string rootPath = Path.Combine("ArtResources", "AVG");
     
     [Range(0, 1)]
     public float intervalTime = 1f;

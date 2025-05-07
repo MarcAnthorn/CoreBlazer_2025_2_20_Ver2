@@ -234,7 +234,7 @@ public class GameMainPanel : BasePanel
             //发现cgid变化；更新cg：
             if(cgId != text.illustrationId){
                 cgId = text.illustrationId;
-                string path = Path.Combine("ArtResources/怪谈事件图", cgId.ToString());
+                string path = Path.Combine("ArtResources", "怪谈事件图", cgId.ToString());
 
                 Debug.Log($"now cg path is :{path}");
                 imgCg.sprite = Resources.Load<Sprite>(path);
