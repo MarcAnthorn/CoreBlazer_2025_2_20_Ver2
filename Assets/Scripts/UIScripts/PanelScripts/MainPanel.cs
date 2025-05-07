@@ -10,7 +10,7 @@ public class MainPanel : BasePanel
     public Button btnQuit;
     public TextMeshProUGUI txtSan;
     public Image imgHp;
-    public Image imgLight;
+    public Image imgLight; 
     private float maxHpWidth;
     private float maxLightWidth;
     protected override void Init()

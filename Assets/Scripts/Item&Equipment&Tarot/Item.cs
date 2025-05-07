@@ -189,6 +189,8 @@ public class Item_104 : Item
             Debug.LogWarning("To End Point");
             EndHander();
         }
+
+        UIManager.Instance.HidePanel<InventoryPanel>();
         
         // EventHub.Instance.EventTrigger("RefreshItemsInPanel");
     }
