@@ -132,6 +132,8 @@ public class BattleManager : Singleton<BattleManager>
         //外部通过触发isRoundEndTriggered的方式让协程继续：
         yield return new WaitUntil(() => isRoundEndTriggered);
 
+        Debug.LogWarning("now exit player's turn");
+
 //--------------Marc添加内容---------------------------------------------------
 
         ExitPlayerTurn();
