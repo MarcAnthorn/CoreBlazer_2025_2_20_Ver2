@@ -18,6 +18,9 @@ public abstract class Skill
     public string skillBuffText;
     //技能消耗费用：
     public int skillCost;
+
+    public float skillDamage;
+
     //技能的使用：
     abstract public void Use();    //传入攻击的enemy实例
 
@@ -25,7 +28,7 @@ public abstract class Skill
     //调用后返回当前该技能的伤害的属性：
     //需要按照Skill的伤害结算公式 结合当前的玩家属性进行结算后返回
     //此处假设是1；
-    public int SkillDamage => 1;
+    public float SkillDamage => skillDamage;
     //如：8 + 玩家力量值的Skill：
     // public int SkillDamage => 8 + PlayerManager.Instance.player.STR.value;
 
@@ -42,6 +45,9 @@ public class Skill_1001 : Skill
         skillDamageText = "等额于力量值";
         skillBuffText = "平a攻击，玩家自带的技能，使用平a攻击的逻辑结算伤害";
         skillCost = 1;
+
+        skillDamage = PlayerManager.Instance.player.STR.value * 1f;
+        
     }
 
     override public void Use()
@@ -60,6 +66,8 @@ public class Skill_1002 : Skill
         skillDamageText = "8+20%*速度值";
         skillBuffText = "攻击施加中毒";
         skillCost = 0;
+
+        skillDamage = PlayerManager.Instance.player.SPD.value * 0.2f + 8;
     }
 
     override public void Use()

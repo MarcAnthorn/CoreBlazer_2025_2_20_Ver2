@@ -70,6 +70,8 @@ public class BuffCheckerLogic : MonoBehaviour
             //如果是，那么执行buff数量的减少：
             txtRamainingLayerCount.text = remainCount.ToString();
 
+            txtOverlyingLayerCount.text = targetBuff.GetOverlyingCount().ToString();
+
             //如果归零，那么移除：
             if(remainCount == 0)
             {

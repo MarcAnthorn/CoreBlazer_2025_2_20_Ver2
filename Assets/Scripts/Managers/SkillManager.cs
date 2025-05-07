@@ -159,7 +159,7 @@ public class SkillManager : Singleton<SkillManager>
             }
         }
     }
-
+        
     // 格斗
     public void Skill_1001(Enemy enemy)
     {
@@ -180,7 +180,9 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1002(Enemy enemy)
     {
         BattleBuff buff = new BattleBuff_1001();
-        enemy.buffs.Add(buff);
+        // enemy.buffs.Add(buff);
+
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 新月之辉

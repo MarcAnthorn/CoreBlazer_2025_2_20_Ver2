@@ -181,6 +181,7 @@ public class TurnCounter : Singleton<TurnCounter>
 
         if (buff.GetOverlyingCount() < buff.overlyingLimit)
         {
+
             buff.OverlyingCountPlus(1);
             buff.OnStart(1);
         }
@@ -188,6 +189,8 @@ public class TurnCounter : Singleton<TurnCounter>
         {
             Debug.Log($"Buff{buff.GetType()}叠加层数已达上限");
         }
+
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
     }
 
     // 移除角色Buff

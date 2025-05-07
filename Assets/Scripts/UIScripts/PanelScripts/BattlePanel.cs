@@ -63,6 +63,7 @@ public class BattlePanel : BasePanel
 
           btnEndThisRound.onClick.AddListener(()=>{
                
+               Debug.LogWarning("Triggered!");
                //触发BattleManager中的bool标识，让回合协程继续：
                BattleManager.Instance.isRoundEndTriggered = true;
 
@@ -119,10 +120,10 @@ public class BattlePanel : BasePanel
 
           //先加敌人再加buff，不然会BattleManager.Instance.enemies越界：
           //添加buff：
-          TurnCounter.Instance.AddEnemyBuff(buff);
-          TurnCounter.Instance.AddEnemyBuff(buff1);
-          TurnCounter.Instance.AddEnemyBuff(buff2);
-          TurnCounter.Instance.AddEnemyBuff(buff3);
+          // TurnCounter.Instance.AddEnemyBuff(buff);
+          // TurnCounter.Instance.AddEnemyBuff(buff1);
+          // TurnCounter.Instance.AddEnemyBuff(buff2);
+          // TurnCounter.Instance.AddEnemyBuff(buff3);
 
           //玩家buff：
           BattleBuff buff4 = new BattleBuff_1001();
@@ -141,7 +142,7 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener<Equipment>("UnequipTarget", UnequipTarget);
 
           EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
-     }
+     } 
 
     //广播方法：将某一个装备装备后调用；
     //注意，后续将这个方法的空闲Slot数量检查、UI面板关闭、遮罩调用全部迁移出去，到EquipmentCheckPanel中；
@@ -225,7 +226,7 @@ public class BattlePanel : BasePanel
      public void UpdateBattlePanelUI()
      {
           Debug.Log(BattleManager.Instance.enemies.Count);
-          
+
           //获取当前的敌人：
           if(BattleManager.Instance.enemies.Count == 1)
                enemy = BattleManager.Instance.enemies[0];
@@ -286,6 +287,7 @@ public class BattlePanel : BasePanel
                //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
                //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
                EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", playerBuff);
+     
 
           }
 
