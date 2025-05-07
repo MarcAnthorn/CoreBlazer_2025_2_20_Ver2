@@ -13,6 +13,12 @@ public class GameLevelManager : Singleton<GameLevelManager>
 
         //默认是新手关卡：
         gameLevelType = E_GameLevelType.Tutorial;
+        
+
+        avgShelterIsTriggered.Add(E_GameLevelType.First, false);
+        avgShelterIsTriggered.Add(E_GameLevelType.Second, false);
+        avgShelterIsTriggered.Add(E_GameLevelType.Third, false);
+
     }
 
 
@@ -34,6 +40,9 @@ public class GameLevelManager : Singleton<GameLevelManager>
 
     public Dictionary<int, bool> avgIndexIsTriggeredDic = new Dictionary<int, bool>();
 
+    //当前的安全屋强制avg是否更新过：
+    public Dictionary<E_GameLevelType, bool> avgShelterIsTriggered = new Dictionary<E_GameLevelType, bool>();
+
     //存储着本关卡内的所有关卡(前面的int代表本关卡内的唯一Id，相同事件可能有重复)(补充：不同于EventManager里定义的allEvents)
     public Dictionary<int, Event> events = new Dictionary<int, Event>();
     public int eventNum;
@@ -48,9 +57,23 @@ public class GameLevelManager : Singleton<GameLevelManager>
             Debug.Log($"id is :{key}, state is :{avgIndexIsTriggeredDic[key]}");
         }
     }
+
+    //用于重置进度的方法：
+    public void ResetAllProgress()
+    {       
+        avgShelterIsTriggered[E_GameLevelType.Tutorial] = false;
+        avgShelterIsTriggered[E_GameLevelType.First] = false;
+        avgShelterIsTriggered[E_GameLevelType.Second] = false;
+
+        avgShelterIsTriggered.Clear();
+        gameLevelType = E_GameLevelType.Tutorial;
+    }
     
 
 }
+
+
+
 
 public enum E_GameLevelType
 {

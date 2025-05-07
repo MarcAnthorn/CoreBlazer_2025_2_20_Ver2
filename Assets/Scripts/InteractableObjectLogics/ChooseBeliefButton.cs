@@ -39,6 +39,9 @@ public class ChooseBeliefButton : MonoBehaviour
     public void Init(int _itemId)
     {
         myItemId = _itemId;
+        Item item = LoadManager.Instance.allItems[_itemId];
+        string rootPath = "ArtResources/Item/" + item.name;
+        imgItem.sprite = Resources.Load<Sprite>(rootPath);
 
         if(PlayerManager.Instance.player.SAN.value < 20)
         {

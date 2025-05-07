@@ -41,6 +41,11 @@ public class DiscardBeliefButton : MonoBehaviour
     {
         myItemId = _itemId;
 
+        Item item = LoadManager.Instance.allItems[_itemId];
+        string rootPath = "ArtResources/Item/" + item.name;
+        imgItem.sprite = Resources.Load<Sprite>(rootPath);
+        
+
         txtSanityCompensation.color = new Color(0.3f, 0.8f, 0.3f);  // 绿色字体
 
         btnSelf.onClick.AddListener(()=>{
