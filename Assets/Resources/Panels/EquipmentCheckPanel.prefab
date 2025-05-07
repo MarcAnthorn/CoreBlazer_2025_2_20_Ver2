@@ -653,8 +653,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Here is the skill
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
+  m_sharedMaterial: {fileID: 5724969808464279161, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1560,6 +1560,7 @@ MonoBehaviour:
   btnQuit: {fileID: 4912879470718682290}
   btnEquip: {fileID: 7870901484649669965}
   btnUnequip: {fileID: 989405708232294735}
+  txtSkillName: {fileID: 7677079627063951347}
   txtBuffDescription: {fileID: 8216496951741954379}
   txtDescription: {fileID: 8728546609129952273}
   txtRemainDuration: {fileID: 6667008387786871255}

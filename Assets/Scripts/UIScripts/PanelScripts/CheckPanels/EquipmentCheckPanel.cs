@@ -12,6 +12,7 @@ public class EquipmentCheckPanel : BasePanel
     public Button btnQuit;
     public Button btnEquip;
     public Button btnUnequip;
+    public TextMeshProUGUI txtSkillName;
     public TextMeshProUGUI txtBuffDescription;
     public TextMeshProUGUI txtDescription;
     public TextMeshProUGUI txtRemainDuration;
@@ -34,11 +35,14 @@ public class EquipmentCheckPanel : BasePanel
         });
 
         btnEquip.onClick.AddListener(()=>{
-            if(EquipmentManager.Instance.NowLeftSlotsCount() < 4)
+            if(EquipmentManager.Instance.NowLeftSlotsCount() < 3)
             {
+                Debug.LogWarning("???????");
+                
                 //调用处在BattlePanel中的事件：
                 EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);   
                 
+                //MaskEquipmentOrNot位于EquipmentPanelInventory，是「已装备」的遮罩；
                 EventHub.Instance.EventTrigger("MaskEquipmentOrNot", true, myEquipment);
                 myEquipment.isEquipped = true;
                 UIManager.Instance.HidePanel<EquipmentCheckPanel>();
@@ -88,6 +92,7 @@ public class EquipmentCheckPanel : BasePanel
         myEquipment = _equipment;
 
         //初始化信息：
+        txtSkillName.text = _equipment.mySkill.skillName;
         txtBuffDescription.text = _equipment.effectDescriptionText;
         txtDescription.text = _equipment.descriptionText;
         txtRemainDuration.text = $"剩余耐久度:{_equipment.currentDuration}";

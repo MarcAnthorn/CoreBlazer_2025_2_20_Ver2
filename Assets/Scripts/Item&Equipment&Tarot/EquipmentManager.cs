@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
@@ -37,6 +38,29 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);  
 
         UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得装备「{depulicateSource.name}」");
+  
+    }
+
+    public void AddEquipment(params int[] ids)
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach(int id in ids){
+            Equipment depulicateSource = LoadManager.Instance.allEquipment[id];
+
+            //对这个新的实例进行成员的填充： 
+            //通过已有的同类装备，通过深拷贝进行内容的填充：
+            Equipment depulicatedResult = ClassifyEquipment(depulicateSource);
+            
+            //相同的装备不是叠放的，而是独立放置的；因此有一个就加一个；
+            equipmentList.Add(depulicatedResult);
+
+            equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);
+
+            sb.Append($"获得装备「{depulicateSource.name}」\n");
+        }
+         
+
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText(sb.ToString());
   
     }
 

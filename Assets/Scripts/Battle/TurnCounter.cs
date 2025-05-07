@@ -254,6 +254,10 @@ public class TurnCounter : Singleton<TurnCounter>
     // 处理玩家身上Buff带来的加成效果
     public float CalculateWithPlayerBuff(TriggerTiming triggerTiming, DamageType damageType, float value)
     {
+        if(playerBuffs.Count == 0)
+            return value;
+
+
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
         if (playerBuffs.Count == 0)
@@ -280,12 +284,13 @@ public class TurnCounter : Singleton<TurnCounter>
     // 处理指定敌人身上Buff带来的加成效果
     public float CalculateWithEnemyBuff(TriggerTiming triggerTiming, DamageType damageType, int positionId, float value)
     {
+     
+        if(BattleManager.Instance.enemies[positionId].buffs.Count == 0)
+            return value;
+
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
-        if(BattleManager.Instance.enemies[positionId].buffs.Count == 0)
-        {
-            return value;
-        }
+
         foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
             calType = buff.calculationType;

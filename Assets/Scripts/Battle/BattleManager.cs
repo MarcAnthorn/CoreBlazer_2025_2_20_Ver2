@@ -37,9 +37,11 @@ public class BattleManager : Singleton<BattleManager>
         this.player = player;
         for (int i = 0; i < enemies.Length; i++)
         {
-            enemies[i].positionId = i + 1;
+            enemies[i].positionId = i;
             this.enemies.Add(enemies[i]);
         }
+
+        Debug.Log($"current enemy count:{this.enemies.Count}");
 
         // 初始化回合计数器
         TurnCounter.Instance.InitTurnCounter(enemies);
@@ -223,10 +225,10 @@ public class BattleManager : Singleton<BattleManager>
         UpdateActionQueue();
 
         // 更新敌人位置
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            enemies[i].positionId = i + 1;
-        }
+        // for (int i = 0; i < enemies.Count; i++)
+        // {
+        //     enemies[i].positionId = i + 1;
+        // }
 
         // 行动点检查
         if (actionPoint > 0)

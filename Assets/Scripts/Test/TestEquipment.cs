@@ -8,11 +8,7 @@ public class TestEquipment : MonoBehaviour
     void Start()
     {
         //测试装备：
-        EquipmentManager.Instance.AddEquipment(1001);
-        EquipmentManager.Instance.AddEquipment(1001);
-        EquipmentManager.Instance.AddEquipment(1002);
-        EquipmentManager.Instance.AddEquipment(1003);
-        EquipmentManager.Instance.AddEquipment(1004);
+        EquipmentManager.Instance.AddEquipment(1001, 1001, 1002, 1003, 1004);
 
     }
 

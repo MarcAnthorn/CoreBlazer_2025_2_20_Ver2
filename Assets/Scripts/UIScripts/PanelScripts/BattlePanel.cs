@@ -32,6 +32,9 @@ public class BattlePanel : BasePanel
     //管理插槽的List：
     public List<EquipmentSlot> equipmentSlotList = new List<EquipmentSlot>();
 
+     //当前处理的敌人：
+     private Enemy enemy;
+
      protected override void Awake()
      {
           EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
@@ -144,11 +147,13 @@ public class BattlePanel : BasePanel
     //这是因为出现了 允许装上装备但是BattlePanel不在的情况（安全屋）；
      private void EquipTarget(Equipment equipment)
      {
+          Debug.Log($"Try to equip: {equipment.name}");
           //找到第一个空闲的Slot：
           foreach(var slotScript in equipmentSlotList)
           {
                if(!slotScript.isSlotted)
                {
+                    Debug.Log($"This is not slotted");
                     //将该装备装入Slot：
                     slotScript.InitSlot(equipment);
 
@@ -218,12 +223,16 @@ public class BattlePanel : BasePanel
      //在对应战斗内容（使用技能、回合结算等）结束之后就会调用：
      public void UpdateBattlePanelUI()
      {
+          Debug.Log(BattleManager.Instance.enemies.Count);
+          
           //获取当前的敌人：
-          var list = BattleManager.Instance.enemies;
-          Enemy enemy = null;
-          foreach(var val in list)
+          if(BattleManager.Instance.enemies.Count == 1)
+               enemy = BattleManager.Instance.enemies[0];
+
+
+          if(enemy == null)
           {
-               enemy = val;
+               Debug.LogWarning("当前BattlePanel未获取到敌人");
           }
 
           //更新Sliders；

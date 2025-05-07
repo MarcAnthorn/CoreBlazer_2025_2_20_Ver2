@@ -98,6 +98,7 @@ MonoBehaviour:
   txtCost: {fileID: 8932887462314669315}
   txtSkillDamage: {fileID: 3821954076670575647}
   txtSkillName: {fileID: 6861667110588717134}
+  unusedMask: {fileID: 8138410748725628147}
 --- !u!1 &272309020190068148
 GameObject:
   m_ObjectHideFlags: 0
@@ -4082,6 +4083,7 @@ MonoBehaviour:
   txtCost: {fileID: 4964616766224266812}
   txtSkillDamage: {fileID: 395750545596269739}
   txtSkillName: {fileID: 8931465137452104764}
+  unusedMask: {fileID: 4869410734258756022}
 --- !u!1 &6223495072376015069
 GameObject:
   m_ObjectHideFlags: 0
@@ -5168,8 +5170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff0444846684847a6a84154c8c958872, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btnSelf: {fileID: 0}
-  skillId: 0
 --- !u!1 &8036181220465357083
 GameObject:
   m_ObjectHideFlags: 0
@@ -5477,6 +5477,7 @@ MonoBehaviour:
   txtCost: {fileID: 8882800876128290522}
   txtSkillDamage: {fileID: 4840907328226991993}
   txtSkillName: {fileID: 7119962580138469715}
+  unusedMask: {fileID: 2154468137013940582}
 --- !u!1 &8443367307285978450
 GameObject:
   m_ObjectHideFlags: 0
@@ -5741,6 +5742,7 @@ MonoBehaviour:
   txtCost: {fileID: 9167857768762381730}
   txtSkillDamage: {fileID: 4621260664291163224}
   txtSkillName: {fileID: 5340585816623447686}
+  unusedMask: {fileID: 272309020190068148}
 --- !u!1 &8587604608001218959
 GameObject:
   m_ObjectHideFlags: 0

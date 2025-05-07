@@ -20,6 +20,8 @@ public class EquipmentSlot : MonoBehaviour
     public Equipment myEquipment;
     public Skill mySkill;
 
+    public GameObject unusedMask;
+
 
     void Awake()
     {
@@ -67,6 +69,9 @@ public class EquipmentSlot : MonoBehaviour
         //将当前的Slot处理为已装备；
         isSlotted = true;
 
+        //取消遮罩：
+        unusedMask.gameObject.SetActive(false);
+
         //激活Button：
         btnSkillUse.gameObject.SetActive(true);
         
@@ -93,6 +98,7 @@ public class EquipmentSlot : MonoBehaviour
         isSlotted = false;
 
         //加载封锁的美术资源；
+        unusedMask.gameObject.SetActive(true);
 
         //处理相关的sprite:
         // imgEquipment.sprite
