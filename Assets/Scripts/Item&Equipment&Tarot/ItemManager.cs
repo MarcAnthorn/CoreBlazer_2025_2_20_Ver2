@@ -11,6 +11,8 @@ public class ItemManager : Singleton<ItemManager>
     //初始化背包UI的时候，需要遍历List；然后通过id访问dic，获取该道具的数量；
     public List<int> itemList = new List<int>();
 
+    public bool isAdded;
+
     //更新：itemCountDic通过Item的id访问对应的Item还存在几个：
     public Dictionary<int, int> itemCountDic = new Dictionary<int, int>();  //供外部访问的数据结构
 

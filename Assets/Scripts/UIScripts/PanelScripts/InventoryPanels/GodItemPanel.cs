@@ -14,6 +14,21 @@ public class GodItemPanel : ItemPanel
         RefreshItem(); 
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        //这个广播定义在Awake中，避免失活之后无法接受广播：
+        EventHub.Instance.AddEventListener<int>("RefreshItemsInPanel", RefreshItemsInPanel);
+    }
+
+    void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener<int>("RefreshItemsInPanel", RefreshItemsInPanel);
+    }
+
+
+
 
 
     //整理面板的方法，在初始化和使用立刻生效的道具后调用；

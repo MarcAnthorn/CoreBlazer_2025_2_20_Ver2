@@ -36,6 +36,8 @@ public class GameMainPanel : BasePanel
 
     //持有的两个道具面板：
     public GameObject commonItemPanelObject;
+
+    public GameObject godItemPanelObject;
     public Image imgCg;
 
     private bool isDetectingCloseInput = false;
@@ -47,6 +49,10 @@ public class GameMainPanel : BasePanel
 
     protected override void Init()
     {
+        //关闭主面板：
+        UIManager.Instance.HidePanel<MainPanel>();
+
+
         btnQuitBlackSpace.gameObject.SetActive(false);
         isOptionsUpdated = false;
 
@@ -60,14 +66,17 @@ public class GameMainPanel : BasePanel
 
         UpdateAttributeText();
         //默认显示的是神明道具面板；
-        // UIManager.Instance.ShowPanel<GodItemPanel>().transform.SetParent(rightSection, false);
-        // btnToGodItem.onClick.AddListener(()=>{
-        //     godItemPanelObject.SetActive(true);
-        //     commonItemPanelObject.SetActive(false);
-        // });
+        godItemPanelObject.SetActive(true);
+        
+        btnToGodItem.onClick.AddListener(()=>{
+            godItemPanelObject.SetActive(true);
+            commonItemPanelObject.SetActive(false);
+        });
 
-        // btnToCommonItem.onClick.AddListener(()=>{
-        //     commonItemPanelObject.SetActive(true);
+        btnToCommonItem.onClick.AddListener(()=>{
+            commonItemPanelObject.SetActive(true);
+            godItemPanelObject.SetActive(false);
+        });
 
         btnQuitBlackSpace?.onClick.AddListener(()=>{
             if(isDetectingCloseInput && btnQuitBlackSpace.gameObject.activeSelf)
@@ -117,6 +126,8 @@ public class GameMainPanel : BasePanel
 
         //复原PlayerBase中的Escape检测；
         EventHub.Instance.EventTrigger<E_DetectInputType>("UnlockSpecificDetectInput", E_DetectInputType.Escape);
+
+        UIManager.Instance.ShowPanel<MainPanel>();
 
 
         //事件面板销毁，更新回切换之前的场景：

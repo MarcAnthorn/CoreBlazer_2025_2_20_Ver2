@@ -9,6 +9,9 @@ public class NPC30003  : NPCBase
     {
         base.OnComplete(avgId);
         npc30004.SetActive(true);
+
+
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("【回头看看吧】");
         Destroy(this.gameObject);
     }
 

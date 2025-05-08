@@ -79,6 +79,9 @@ public class Event          //
         //发放的道具id：
         public int itemId; 
 
+        //发放的装备id：
+        public int equipmentId;
+
         //发送的道具数量：
         public int itemCount;
 
@@ -170,6 +173,11 @@ public class Event          //
             else if(result.itemId != 0)
             {
                 ItemManager.Instance.AddItem(result.itemId, result.itemCount);
+            }
+
+            //如果装备不是0，那么需要投放装备：
+            if(result.equipmentId != 0){
+                EquipmentManager.Instance.AddEquipment(result.equipmentId);
             }
 
         }

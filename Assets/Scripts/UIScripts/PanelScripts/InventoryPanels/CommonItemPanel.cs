@@ -17,8 +17,6 @@ public class CommonItemPanel : ItemPanel
     {
         base.Awake();
 
-        RefreshItem();
-
         //这个广播定义在Awake中，避免失活之后无法接受广播：
         EventHub.Instance.AddEventListener<int>("RefreshItemsInPanel", RefreshItemsInPanel);
     }

@@ -132,7 +132,7 @@ public class PlayerController : PlayerBase
         {      
             lightShrinkingTime += Time.deltaTime;
 
-            t = lightShrinkingTime >= 10 ? 10 : lightShrinkingTime;
+            t = lightShrinkingTime >= 3 ? 3 : lightShrinkingTime;
 
             //灯光值调整：
             L = LMax - t * t;
@@ -140,11 +140,11 @@ public class PlayerController : PlayerBase
             {
                 case E_GameLevelType.Tutorial:
                 case E_GameLevelType.Second:
-                    spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
+                    spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;  
                 break;
 
                 case E_GameLevelType.First:
-                    spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;  
+                    spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
                 break;
 
                 case E_GameLevelType.Third:
@@ -316,7 +316,7 @@ public class PlayerController : PlayerBase
     {
         while(true)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1f);
 
             if(isFrozen)
             {
@@ -324,8 +324,10 @@ public class PlayerController : PlayerBase
                 yield return new WaitUntil( () => !isFrozen );
             }
 
-            damageTime += 1;
-            currentDamage = initDamageValue * (1 + damageTime) >= 20 ? 20 : initDamageValue * (1 + damageTime);
+            // damageTime = 1;
+            // currentDamage = initDamageValue * (1 + damageTime) >= 20 ? 20 : initDamageValue * (1 + damageTime);
+
+            currentDamage = 1;
             
             Debug.Log(currentDamage);
             

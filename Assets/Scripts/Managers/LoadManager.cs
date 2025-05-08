@@ -622,6 +622,8 @@ public class LoadManager : Singleton<LoadManager>
                     @eventResult.itemCount = int.Parse(values[23]);
 
 
+                    @eventResult.equipmentId = int.Parse(values[24]);
+
                     eventResults.Add(@eventResult.resultId, @eventResult);
                 }
 
