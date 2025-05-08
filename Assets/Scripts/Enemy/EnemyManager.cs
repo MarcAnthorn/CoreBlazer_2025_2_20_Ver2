@@ -88,6 +88,7 @@ public class EnemyManager : Singleton<EnemyManager>
         if (damages.Count == 0)
         {
             Debug.Log("敌人发出的伤害被闪避了!");
+            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-1, false);
         }
         else 
         {
@@ -101,6 +102,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
                 //结算出的对玩家的伤害
                 Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");
+                EventHub.Instance.EventTrigger("UpdateDamangeText", dmg.damage, false);
 
 
                 //调用玩家受击方法+特殊效果(中毒)
@@ -222,6 +224,8 @@ public class EnemyManager : Singleton<EnemyManager>
         Debug.LogWarning($"raw damage is {rowDamage}");
 
         EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.STR);
+
+        
     }
 
     // 毒针

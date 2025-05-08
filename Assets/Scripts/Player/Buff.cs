@@ -19,7 +19,6 @@ public enum BuffType            //角色属性变动前 先检查BuffType 然后
     HIT_Change = 9,
     AVO_Change = 10,
 }
-
 // buff计算方式
 public enum CalculationType
 {

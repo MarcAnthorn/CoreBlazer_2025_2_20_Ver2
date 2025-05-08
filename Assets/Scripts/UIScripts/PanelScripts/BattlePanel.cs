@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -25,6 +26,12 @@ public class BattlePanel : BasePanel
     float lastEnemyHealthValue;
 
 
+     //伤害Text：
+     public TextMeshProUGUI txtEnemyDamage;
+     public TextMeshProUGUI txtPlayerDamage;
+
+     
+
     public EquipmentSlot equipmentSlot1;
     public EquipmentSlot equipmentSlot2;
     public EquipmentSlot equipmentSlot3;
@@ -42,6 +49,12 @@ public class BattlePanel : BasePanel
 
           //更新BattlePanel UI的事件注册：     
           EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
+
+       
+          //更新伤害Ui的事件注册：
+          EventHub.Instance.AddEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
+
+          
      }
      protected override void Init()
      {
@@ -142,6 +155,8 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener<Equipment>("UnequipTarget", UnequipTarget);
 
           EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
+
+          EventHub.Instance.RemoveEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
      } 
 
     //广播方法：将某一个装备装备后调用；
@@ -258,6 +273,7 @@ public class BattlePanel : BasePanel
           //敌人的Slider：
           if(lastEnemyHealthValue != 0) 
           {
+               Debug.Log($"last enemy hp is {lastEnemyHealthValue}, now is:{enemy.HP}");
                LeanTween.value(sliderEnemyHealth.gameObject, lastEnemyHealthValue / enemy.HP_limit, enemy.HP / enemy.HP_limit, 0.5f)
                .setEase(LeanTweenType.easeInOutQuad)
                .setOnUpdate((float val) => 
@@ -312,6 +328,43 @@ public class BattlePanel : BasePanel
           //以及剩余行动点数、最大行动点数的更新：
           txtLeftCost.text = BattleManager.Instance.actionPoint.ToString();
           txtMaxCost.text = BattleManager.Instance.actionPointMax.ToString();
+
+
+     }
+
+
+     //更新伤害面板的事件
+     //主要是为了避免短时间多次调用UpdateBattlePanelUI导致UI显示（主要是Slider）出错
+     //如果value是-1，说明是被闪避了；第二参数表示是否是我发出的伤害，用于区分敌方和我方；
+     private void UpdateDamangeText(float damageValue, bool isPlayersDamage)
+     {
+          if(isPlayersDamage)
+          {
+               
+               if(Math.Abs(damageValue + 1) <= 0.01f){   //闪避,注意浮点型是取绝对值误差判断！
+                    txtPlayerDamage.color = Color.red;
+                    txtPlayerDamage.text = "你的伤害被闪避了！";
+               }
+               else
+               {
+                    txtPlayerDamage.color = Color.white;
+                    txtPlayerDamage.text = $"你造成伤害：{damageValue}";
+               }
+          }
+
+          else 
+          {
+               if(Math.Abs(damageValue + 1) <= 0.01f){   //闪避,注意浮点型是取绝对值误差判断！
+                    txtEnemyDamage.color = Color.red;
+                    txtEnemyDamage.text = $"敌方的伤害被闪避了！";
+               }
+               else
+               {
+                    txtEnemyDamage.color = Color.white;
+                    txtEnemyDamage.text = $"敌方造成伤害：{damageValue}";
+               }
+
+          }
      }
 
 }

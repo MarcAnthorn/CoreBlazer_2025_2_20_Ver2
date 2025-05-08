@@ -39,7 +39,13 @@ public abstract class Enemy
         HP -= damage.damage;
         if (HP <= 0)
         {
-            Debug.Log($"敌人 {positionId} 死亡!");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"击败敌人「{this.name}」，战斗胜利", false, ()=>{
+                UIManager.Instance.HidePanel<BattlePanel>();
+
+
+                //如果需要触发战斗的后续奖励，在这里触发；
+            });
+            
             isDead = true;
         }
     }
