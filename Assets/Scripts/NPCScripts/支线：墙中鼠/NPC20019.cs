@@ -15,6 +15,8 @@ public class NPC20019 : NPCBase
 
         reward.SetActive(true);
         GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId] = true;
+
+        
         Destroy(this.gameObject);
     }
 

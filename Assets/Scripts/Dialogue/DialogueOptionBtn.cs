@@ -18,6 +18,11 @@ public class DialogueOptionBtn : MonoBehaviour
 
     void Start()
     {
+        //进行特殊判断：2111的选项：1003 & 1012，如果节点9没有触发，那么这两个选项不可选择：
+        if(!GameLevelManager.Instance.avgIndexIsTriggeredDic[1009] && myOrder.rootId == 2111 && (myOrder.orderId == 1003 || myOrder.orderId == 1012))
+        {
+            
+        }
         btnOption.onClick.AddListener(()=>{
             //触发方法，让AVGPanel中的逻辑继续：
             EventHub.Instance.EventTrigger<int>("ChoiceIsMade", myOrder.nextOrderId);
