@@ -82,17 +82,19 @@ public class InventoryPanel : BasePanel
         
         //初始化的时候，按照PlayerManager中的playerSceneIndex进行选择性显示UI：
         //如果是当前是战斗中，那么就显示装备背包栏
-        if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle || PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Shelter)
-        {
-            equiptmentPanelObject.SetActive(true);
-        }
+        // if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle || PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Shelter)
+        // {
+        //     equiptmentPanelObject.SetActive(true);
+        // }
+
+        equiptmentPanelObject.SetActive(true);
 
         //不然就是commonItemPanelObject；同时禁用让equiptmentPanelObject显示的Button：
-        else
-        {
-            commonItemPanelObject.SetActive(true);
-            btnEquipmentPanelReveal.gameObject.SetActive(false);
-        }
+        // else
+        // {
+        //     commonItemPanelObject.SetActive(true);
+        //     btnEquipmentPanelReveal.gameObject.SetActive(false);
+        // }
 
 
         btnExit.onClick.AddListener(()=>{

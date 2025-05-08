@@ -54,6 +54,16 @@ public class PlayerController : PlayerBase
     private int damageTime = 0;
     private int currentDamage;
 
+
+
+    private Coroutine lightShrinkingCoroutine;
+    private bool isShrinkingCoroutineRunning = false;
+
+
+    private float shrinkingTimer = 0f; // 用于累计整秒
+    private float shrinkingTarget = 0f; // 本秒应该减少的总量
+    private float shrinkingLeftThisSecond = 0f; // 当前帧剩余的减少量
+
     protected override void Awake()
     {
         base.Awake();
@@ -73,6 +83,11 @@ public class PlayerController : PlayerBase
         isLightShrinking = true;
         lightShrinkingTime = 0;
         spriteLight.pointLightOuterRadius = initialLightScope;
+
+        L = LMax;
+
+        TriggerLightShrinking(true);
+
     }
 
     // Update is called once per frame
@@ -126,60 +141,201 @@ public class PlayerController : PlayerBase
     {
         isLightShrinking = _isShrinking;
     }
+
     private void LightShrinking()
     {
-        if(isLightShrinking)
-        {      
-            lightShrinkingTime += Time.deltaTime;
+        if (!isLightShrinking)
+            return;
 
-            t = lightShrinkingTime >= 3 ? 3 : lightShrinkingTime;
+        // 更新时间计数器
+        lightShrinkingTime += Time.deltaTime;
 
-            //灯光值调整：
-            L = LMax - t * t;
-            switch(GameLevelManager.Instance.gameLevelType)
-            {
-                case E_GameLevelType.Tutorial:
-                case E_GameLevelType.Second:
-                    spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;  
-                break;
+        // 每满 1 秒，计算本秒应减少的值
+        shrinkingTimer += Time.deltaTime;
+        if (shrinkingTimer >= 1f)
+        {
+            shrinkingTimer -= 1f;
 
-                case E_GameLevelType.First:
-                    spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
-                break;
-
-                case E_GameLevelType.Third:
-                    spriteLight.pointLightOuterRadius = (0.03f / 20f) * L * L;  
-                break;
-            }
-
-
-            //灯光照射下限值：
-            if(spriteLight.pointLightOuterRadius <= 2.12f)
-            {
-                if(!isWarningLocked)    //只有恢复灯光之后才会解锁的锁
-                {
-                    UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"灯光消散！ 正在受到黑暗侵蚀！", true);
-                    isWarningLocked = true;
-                }
-
-                spriteLight.pointLightOuterRadius = 2.12f;
-                L = 21.2f;
-                TriggerLightShrinking(false);
-
-                //考虑是否锁血：如果锁血，那么就不会开启伤害协程：
-
-                isDamaging = isDamageLocked ? false : true;
-
-                if(isDamaging)
-                {
-                    damageCoroutine = StartCoroutine(DamageCoroutine());
-                    damageTime = 0;
-                }
-            }
-
+            float t = Mathf.Min(lightShrinkingTime, 3f); // 最大 3 秒
+            shrinkingTarget = t * t; // 每秒减少 t²
+            shrinkingLeftThisSecond = shrinkingTarget;
         }
 
+        // 平滑减少灯光值
+        if (shrinkingLeftThisSecond > 0f)
+        {
+            // 按帧等量减少
+            float reduceThisFrame = shrinkingTarget * (Time.deltaTime / 1f); // 在一秒内匀速减完
+            reduceThisFrame = Mathf.Min(reduceThisFrame, shrinkingLeftThisSecond);
+
+            L -= reduceThisFrame;
+            shrinkingLeftThisSecond -= reduceThisFrame;
+        }
+
+        Debug.Log($"L is {L}");
+
+        // 更新光照半径
+        switch (GameLevelManager.Instance.gameLevelType)
+        {
+            case E_GameLevelType.Tutorial:
+            case E_GameLevelType.Second:
+                spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;
+                break;
+
+            case E_GameLevelType.First:
+                spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
+                break;
+
+            case E_GameLevelType.Third:
+                spriteLight.pointLightOuterRadius = (0.03f / 20f) * L * L;
+                break;
+        }
+
+        // 灯光最小保护
+        if (spriteLight.pointLightOuterRadius <= 2.12f)
+        {
+            if (!isWarningLocked)
+            {
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("灯光消散！ 正在受到黑暗侵蚀！", true);
+                isWarningLocked = true;
+            }
+
+            spriteLight.pointLightOuterRadius = 2.12f;
+            L = 21.2f;
+            TriggerLightShrinking(false);
+
+            isDamaging = isDamageLocked ? false : true;
+            if (isDamaging)
+            {
+                damageCoroutine = StartCoroutine(DamageCoroutine());
+                damageTime = 0;
+            }
+        }
     }
+
+
+
+    // private void LightShrinking()
+    // {
+    //     if(isLightShrinking)
+    //     {      
+    //         lightShrinkingTime += Time.deltaTime;
+
+    //         t = lightShrinkingTime >= 3 ? 3 : lightShrinkingTime;
+
+    //         //灯光值调整：
+    //         L -= t * t;
+
+    //         Debug.Log($"L is {L}");
+    //         switch(GameLevelManager.Instance.gameLevelType)
+    //         {
+    //             case E_GameLevelType.Tutorial:
+    //             case E_GameLevelType.Second:
+    //                 spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;  
+    //             break;
+
+    //             case E_GameLevelType.First:
+    //                 spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
+    //             break;
+
+    //             case E_GameLevelType.Third:
+    //                 spriteLight.pointLightOuterRadius = (0.03f / 20f) * L * L;  
+    //             break;
+    //         }
+
+
+    //         //灯光照射下限值：
+    //         if(spriteLight.pointLightOuterRadius <= 2.12f)
+    //         {
+    //             if(!isWarningLocked)    //只有恢复灯光之后才会解锁的锁
+    //             {
+    //                 UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"灯光消散！ 正在受到黑暗侵蚀！", true);
+    //                 isWarningLocked = true;
+    //             }
+
+    //             spriteLight.pointLightOuterRadius = 2.12f;
+    //             L = 21.2f;
+    //             TriggerLightShrinking(false);
+
+    //             //考虑是否锁血：如果锁血，那么就不会开启伤害协程：
+
+    //             isDamaging = isDamageLocked ? false : true;
+
+    //             if(isDamaging)
+    //             {
+    //                 damageCoroutine = StartCoroutine(DamageCoroutine());
+    //                 damageTime = 0;
+    //             }
+    //         }
+
+    //     }
+
+    // }
+
+
+
+    // private IEnumerator LightShrinkingCoroutine()
+    // {
+    //     isShrinkingCoroutineRunning = true;
+    //     lightShrinkingTime = 0f;
+
+    //     while (isLightShrinking)
+    //     {
+    //         lightShrinkingTime += 1f;  // 每秒一次
+
+    //         float t = Mathf.Min(lightShrinkingTime, 3f);
+    //         float reduction = t * t;
+    //         L -= reduction;
+
+    //         Debug.Log($"[LightShrink] L -= {reduction}, new L: {L}");
+
+    //         // 更新灯光半径
+    //         switch (GameLevelManager.Instance.gameLevelType)
+    //         {
+    //             case E_GameLevelType.Tutorial:
+    //             case E_GameLevelType.Second:
+    //                 spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;
+    //                 break;
+
+    //             case E_GameLevelType.First:
+    //                 spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
+    //                 break;
+
+    //             case E_GameLevelType.Third:
+    //                 spriteLight.pointLightOuterRadius = (0.03f / 20f) * L * L;
+    //                 break;
+    //         }
+
+    //         // 灯光下限判断
+    //         if (spriteLight.pointLightOuterRadius <= 2.12f)
+    //         {
+    //             if (!isWarningLocked)
+    //             {
+    //                 UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"灯光消散！ 正在受到黑暗侵蚀！", true);
+    //                 isWarningLocked = true;
+    //             }
+
+    //             spriteLight.pointLightOuterRadius = 2.12f;
+    //             L = 21.2f;
+    //             TriggerLightShrinking(false); // 会自动停协程
+    //             isDamaging = isDamageLocked ? false : true;
+
+    //             if (isDamaging)
+    //             {
+    //                 damageCoroutine = StartCoroutine(DamageCoroutine());
+    //                 damageTime = 0;
+    //             }
+
+    //             yield break;
+    //         }
+
+    //         yield return new WaitForSeconds(1f); // 每秒一次衰减
+    //     }
+
+    //     isShrinkingCoroutineRunning = false;
+    // }
+
+
     private void OnPlayerDead()
     {
         //重置伤害相关

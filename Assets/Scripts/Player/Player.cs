@@ -131,25 +131,25 @@ public class Player               //存储角色信息等
     {
     }
 
-    // 游戏(暂时)结束
-    public void GameOver()
-    {
+    // // 游戏(暂时)结束
+    // public void GameOver()
+    // {
 
-    }
+    // }
 
     public void BeHurted(Damage damage)
     {
         HP.AddValue(-damage.damage);
 
-        if (HP.value <= 0)
-        {
-            //等待UI更新结束之后再处理死亡：
-            LeanTween.delayedCall(0.6f, () => {
-                Debug.Log("玩家死亡!");
-                GameOver();
-            });
+        // if (HP.value <= 0)
+        // {
+        //     //等待UI更新结束之后再处理死亡：
+        //     // LeanTween.delayedCall(0.6f, () => {
+        //     //     Debug.Log("玩家死亡!");
+        //     //     GameOver();
+        //     // });
            
-        }
+        // }
     }
 
     public void DebugInfo()

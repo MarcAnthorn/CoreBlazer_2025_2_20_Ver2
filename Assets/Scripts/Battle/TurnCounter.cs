@@ -262,7 +262,10 @@ public class TurnCounter : Singleton<TurnCounter>
     public float CalculateWithPlayerBuff(TriggerTiming triggerTiming, DamageType damageType, float value)
     {
         if(playerBuffs.Count == 0)
+        {
+            Debug.Log("当前无增伤buff");
             return value;
+        }
 
 
         CalculationType calType = CalculationType.NONE;

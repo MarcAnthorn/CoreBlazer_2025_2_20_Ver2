@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,6 +31,8 @@ public class BattleManager : Singleton<BattleManager>
 
     //协程句柄：
     private Coroutine roundCoroutine = null;
+
+    private Coroutine enemyAttackCoroutine = null;
 
 
     protected override void Awake()
@@ -101,25 +104,29 @@ public class BattleManager : Singleton<BattleManager>
 
         // 向行动队列中先后加入player和enemy
         actionQueue.Enqueue(player);
-        for (int i = 0; i < enemies.Count; i++)
+    
+
+        actionQueue.Enqueue(enemies[0]);
+
+        if(enemies[0] == null)
         {
-            actionQueue.Enqueue(enemies[i]);
+            Debug.Log($"当前敌人为null！");
         }
 
 //----------报错注释：（Marc）---------------------------------------------------------------
         //TestBattle更改为Mono,该方法ViewActionQueue被设置为static;
-        TestBattle.ViewActionQueue(actionQueue);
+        // TestBattle.ViewActionQueue(actionQueue);
 
         if(player.SPD.value >= enemies[0].SPD)
         {
             Debug.Log("角色速度：" + player.SPD.value + "  >=  " + "敌人速度：" + enemies[0].SPD);
-            Debug.Log("角色优先攻击！");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("我方速度值更高，我方先手!", true);
             EnterPlayerTurn();
         }
         else
         {
             Debug.Log("角色速度：" + player.SPD.value + "  <  " + "敌人速度：" + enemies[0].SPD);
-            Debug.Log("敌人优先攻击！");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("敌方速度值更高，敌方先手!", true);
             EnterEnemyTurn(1);
         }
     }
@@ -164,13 +171,13 @@ public class BattleManager : Singleton<BattleManager>
 
         // 阻塞，播放技能释放动画以及敌人受伤动画
         // 注意：播放动画的脚本处需要使用多线程
-        while (true)
-        {
-            if (PlayerAttackAnimation())
-            {
-                break;
-            }
-        }
+        // while (true)
+        // {
+        //     if (PlayerAttackAnimation())
+        //     {
+        //         break;
+        //     }
+        // }
     }
 
     private void PlayerUseItem()
@@ -307,7 +314,7 @@ public class BattleManager : Singleton<BattleManager>
 
         //使用协程替换原先的技能无间隔释放：
         //改成一定时间间隔释放技能：
-        StartCoroutine(EnemyAttack(enemies[index], index));
+        enemyAttackCoroutine = StartCoroutine(EnemyAttack(enemies[index], index));
 
 
         // // 判断游戏状态
@@ -327,6 +334,8 @@ public class BattleManager : Singleton<BattleManager>
 
             //敌方释放技能的Tip：
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"「{enemy.name}」释放了技能「{s.skillName}」", true);
+
+            Debug.Log("2秒了吗？？？？？？");
 
             yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
         }
@@ -356,8 +365,17 @@ public class BattleManager : Singleton<BattleManager>
     //第二参数是游戏结束之后的回调函数；只有获胜之后才会触发：
     private void GameOver(bool isWin, UnityAction<int> callback)
     {
+        Debug.LogWarning("尝试调用GameOver");
+        //停止所有进行中的协程：
+        if(enemyAttackCoroutine != null)
+            StopCoroutine(enemyAttackCoroutine);
+
+        if(roundCoroutine != null)
+            StopCoroutine(roundCoroutine);
+
         if (isWin)
         {
+            Debug.Log("is win");
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"击败敌人「{enemies[0].name}」，战斗胜利", false, ()=>{
                 UIManager.Instance.HidePanel<BattlePanel>();
 
@@ -367,6 +385,7 @@ public class BattleManager : Singleton<BattleManager>
         }
         else
         {
+            Debug.Log("is lost");
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"战斗失败", false, ()=>{
                 UIManager.Instance.HidePanel<BattlePanel>();
             });

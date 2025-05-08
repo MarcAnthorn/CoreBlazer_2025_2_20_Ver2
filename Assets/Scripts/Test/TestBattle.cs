@@ -14,10 +14,10 @@ public class TestBattle : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            UIManager.Instance.ShowPanel<BattlePanel>();       
-        }
+        // if(Input.GetKeyDown(KeyCode.R))
+        // {
+        //     UIManager.Instance.ShowPanel<BattlePanel>();       
+        // }
         
     }
 
@@ -49,13 +49,13 @@ public class TestBattle : MonoBehaviour
         // BattleManager.Instance.UseItem1();
     }
 
-    public static void ViewActionQueue(Queue actionQueue)
-    {
-        Debug.Log("++++++ actionQueue view ++++++");
-        foreach (var e in actionQueue)
-        {
-            Debug.Log(e.ToString());
-        }
-        Debug.Log("++++++ actionQueue view ++++++");
-    }
+    // public static void ViewActionQueue(Queue actionQueue)
+    // {
+    //     Debug.Log("++++++ actionQueue view ++++++");
+    //     foreach (var e in actionQueue)
+    //     {
+    //         Debug.Log(e.ToString());
+    //     }
+    //     Debug.Log("++++++ actionQueue view ++++++");
+    // }
 }

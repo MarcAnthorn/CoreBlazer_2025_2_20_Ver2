@@ -188,6 +188,13 @@ public class BattlePanel : BasePanel
      {   
           Enemy _enemy = LoadManager.Instance.allEnemies[enemyId];
 
+          if(_enemy == null)
+          {
+               Debug.LogWarning("当前获取的敌人是null");
+          }
+
+          _enemy.HP = _enemy.HP_limit;  //将血量回满；
+
           imgEnemy.sprite = Resources.Load<Sprite>("Enemy/" + enemyId);
           enemy = _enemy;
      }
@@ -290,6 +297,7 @@ public class BattlePanel : BasePanel
           //玩家的Slider：
           if(lastPlayerHealthValue != 0)     //当前不是第一次更新：那么使用上次记录的血量实现平滑减少；
           {
+               Debug.Log($"last player hp is {lastPlayerHealthValue}, now is:{PlayerManager.Instance.player.HP.value}");
                LeanTween.value(sliderPlayerHealth.gameObject, lastPlayerHealthValue / PlayerManager.Instance.player.HP.value_limit,  PlayerManager.Instance.player.HP.value /  PlayerManager.Instance.player.HP.value_limit, 0.5f)
                .setEase(LeanTweenType.easeInOutQuad)
                .setOnUpdate((float val) => 
@@ -370,11 +378,14 @@ public class BattlePanel : BasePanel
 
           if(PlayerManager.Instance.player.HP.value <= 0) //玩家死亡
           {
+               //GameOver在BattleManager中；
+               Debug.LogWarning("玩家死亡！");
                EventHub.Instance.EventTrigger("GameOver", false, callback);     //callback只有获胜才会调用，内部会进判断的；
           }
 
           else if(enemy.HP <= 0) //敌人死亡
           {
+               Debug.LogWarning("敌人死亡！");
                EventHub.Instance.EventTrigger("GameOver", true, callback);
 
           }
