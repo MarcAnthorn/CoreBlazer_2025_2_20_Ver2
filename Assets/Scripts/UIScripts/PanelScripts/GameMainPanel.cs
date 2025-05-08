@@ -301,6 +301,7 @@ public class GameMainPanel : BasePanel
         }
 
         //播放结束：尝试进行调用战斗：
+        //该脚本在：Event中的ExecuteResult中 被注册；
         EventHub.Instance.EventTrigger("TriggerEventBattle");     
 
     }   

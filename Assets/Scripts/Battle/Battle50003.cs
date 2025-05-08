@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Battle50003 : MonoBehaviour
+public class Battle50003 : BattleBase
 {
-    // Start is called before the first frame update
-    void Start()
+
+    protected override void OnComplete(int enemyId)
     {
-        
+        base.OnComplete(enemyId);
+
+        Destroy(this.gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    protected override void Awake()
     {
-        
+        base.Awake();
+
+        enemyId = Random.Range(1006, 1011);
     }
-}
+
+} 

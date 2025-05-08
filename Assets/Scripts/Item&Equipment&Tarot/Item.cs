@@ -1044,8 +1044,7 @@ public class Item_2015 : Item
         int key1 = keys[0];
         int key2 = keys[1];
 
-        ItemManager.Instance.AddItem(key1);
-        ItemManager.Instance.AddItem(key2);
+        ItemManager.Instance.AddItem(key1, key2);
     }
 }
 

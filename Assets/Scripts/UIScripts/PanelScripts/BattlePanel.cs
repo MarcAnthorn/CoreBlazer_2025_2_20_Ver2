@@ -42,6 +42,8 @@ public class BattlePanel : BasePanel
      //当前处理的敌人：
      private Enemy enemy;
 
+     //当前战斗结束之后的回调函数：
+     public UnityAction<int> callback;
      protected override void Awake()
      {
           EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
@@ -368,12 +370,12 @@ public class BattlePanel : BasePanel
 
           if(PlayerManager.Instance.player.HP.value <= 0) //玩家死亡
           {
-               EventHub.Instance.EventTrigger("GameOver", false);
+               EventHub.Instance.EventTrigger("GameOver", false, callback);     //callback只有获胜才会调用，内部会进判断的；
           }
 
           else if(enemy.HP <= 0) //敌人死亡
           {
-               EventHub.Instance.EventTrigger("GameOver", true);
+               EventHub.Instance.EventTrigger("GameOver", true, callback);
 
           }
      }

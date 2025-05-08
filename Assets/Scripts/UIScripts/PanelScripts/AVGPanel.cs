@@ -393,6 +393,10 @@ public class AVGPanel : BasePanel
         Image img = npc.GetComponent<Image>();
 
         string path = Path.Combine(rootPath, loadName);
+
+        //当前尝试加载的路径：
+        Debug.Log($"当前尝试加载的路径{path}");
+        
         img.sprite = Resources.Load<Sprite>(path);
         img.SetNativeSize();
 

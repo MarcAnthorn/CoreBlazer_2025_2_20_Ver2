@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4192130508849044510}
   - component: {fileID: 8995534805759138822}
+  - component: {fileID: -6098631821071165486}
   m_Layer: 0
   m_Name: EndBossFirstFloor
   m_TagString: Untagged
@@ -84,3 +85,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-6098631821071165486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7932899851752565950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b3b1750ae2c4116bdd026552aa27cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyId: 0
+  isTriggerLock: 1

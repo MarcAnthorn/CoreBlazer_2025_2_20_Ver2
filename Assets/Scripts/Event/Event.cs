@@ -162,7 +162,7 @@ public class Event          //
             player.AVO.value *= (this.result.change_AVO_rate + 1);
 
 
-            //如果有战斗，那么会将战斗id播放给BattlePanel：
+            //如果有战斗，那么尝试将战斗id播放给BattlePanel：
             if(this.result.enemyId != 0)
             {
                 //等待文本播放结束：

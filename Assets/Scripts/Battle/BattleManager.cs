@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 // 战斗类，进入战斗时将玩家与敌人拉入其中
 public class BattleManager : Singleton<BattleManager>
@@ -35,14 +36,14 @@ public class BattleManager : Singleton<BattleManager>
     {
         base.Awake();
 
-        EventHub.Instance.AddEventListener<bool>("GameOver", GameOver);
+        EventHub.Instance.AddEventListener<bool, UnityAction<int>>("GameOver", GameOver);
     }
 
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        EventHub.Instance.RemoveEventListener<bool>("GameOver", GameOver);
+        EventHub.Instance.RemoveEventListener<bool, UnityAction<int>>("GameOver", GameOver);
     }
 
     // 初始化战斗
@@ -52,11 +53,11 @@ public class BattleManager : Singleton<BattleManager>
         this.player = player;
         for (int i = 0; i < enemies.Length; i++)
         {
-            enemies[i].positionId = i;
+            // enemies[i].positionId = i;
             this.enemies.Add(enemies[i]);
         }
 
-        Debug.Log($"current enemy count:{this.enemies.Count}");
+        // Debug.Log($"current enemy count:{this.enemies.Count}");
 
         // 初始化回合计数器
         TurnCounter.Instance.InitTurnCounter(enemies);
@@ -229,12 +230,12 @@ public class BattleManager : Singleton<BattleManager>
 //--------------------------------------------------------------------------------
 
 
-        // 判断游戏状态
-        if(enemies.Count == 0)
-        {
-            GameOver(true);
-            return;
-        }
+        // // 判断游戏状态
+        // if(enemies.Count == 0)
+        // {
+        //     GameOver(true);
+        //     return;
+        // }
 
 
         // 更新行动队列
@@ -275,21 +276,21 @@ public class BattleManager : Singleton<BattleManager>
 
         // 判断游戏状态
         // 在DamageCalculation中，存在player的BeHurt方法；该方法会进行一次是否死亡的判断；
-        if (player.isDie)
-        {
-            BattleBuff buff;
-            if (TurnCounter.Instance.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
-            {
-                buff.overlyingCount += 1;
-                TurnCounter.Instance.playerBuffs.Remove(buff);
-                buff.OnEffect(0);
-            }
-            else
-            {
-                GameOver(false);
-                return;
-            }
-        }
+        // if (player.isDie)
+        // {
+        //     BattleBuff buff;
+        //     if (TurnCounter.Instance.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
+        //     {
+        //         buff.overlyingCount += 1;
+        //         TurnCounter.Instance.playerBuffs.Remove(buff);
+        //         buff.OnEffect(0);
+        //     }
+        //     else
+        //     {
+        //         GameOver(false);
+        //         return;
+        //     }
+        // }
 
         //在进入地方回合之前，延迟一段时间，等buff结算的UI效果结束：
         LeanTween.delayedCall(1f, ()=>{
@@ -309,12 +310,12 @@ public class BattleManager : Singleton<BattleManager>
         StartCoroutine(EnemyAttack(enemies[index], index));
 
 
-        // 判断游戏状态
-        if (player.isDie)
-        {
-            GameOver(false);
-            return;
-        }
+        // // 判断游戏状态
+        // if (player.isDie)
+        // {
+        //     GameOver(false);
+        //     return;
+        // }
     }
 
     //敌方释放技能的协程：
@@ -352,24 +353,22 @@ public class BattleManager : Singleton<BattleManager>
 
 
     // 游戏结束
-    private void GameOver(bool isWin)
+    //第二参数是游戏结束之后的回调函数；只有获胜之后才会触发：
+    private void GameOver(bool isWin, UnityAction<int> callback)
     {
         if (isWin)
         {
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"击败敌人「{enemies[0].name}」，战斗胜利", false, ()=>{
                 UIManager.Instance.HidePanel<BattlePanel>();
 
-
                 //如果需要触发战斗的后续奖励，在这里触发；
+                callback?.Invoke(enemies[0].id);
             });
         }
         else
         {
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"战斗失败", false, ()=>{
                 UIManager.Instance.HidePanel<BattlePanel>();
-
-
-                //如果需要触发战斗的后续奖励，在这里触发；
             });
         }
 

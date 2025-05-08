@@ -45,7 +45,7 @@ public class InventoryEquipmentLogic : MonoBehaviour
     public void Init(Equipment _equipment)
     {
         myEquipment = _equipment;
-        imgEquipment.sprite = Resources.Load<Sprite>("ArtResources/" + _equipment.iconPath);
+        imgEquipment.sprite = Resources.Load<Sprite>($"ArtResources/Equipment/{myEquipment.id}");
         txtDurationCount.text = $"{myEquipment.currentDuration}/{myEquipment.maxDuration}";
         txtEquipmentName.text = myEquipment.name;
     }

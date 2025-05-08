@@ -7,11 +7,15 @@ using UnityEngine.UI;
 
 public class EquipmentCheckPanel : BasePanel
 {
-    public GameObject equipmentImageObject;
+    public Image imgSelf;
+
+    public Image imgLevelBg;
     public Button btnSkillCheck;
     public Button btnQuit;
     public Button btnEquip;
     public Button btnUnequip;
+
+    
     public TextMeshProUGUI txtSkillName;
     public TextMeshProUGUI txtBuffDescription;
     public TextMeshProUGUI txtDescription;
@@ -24,6 +28,23 @@ public class EquipmentCheckPanel : BasePanel
     public UnityAction<Equipment> equipmentCallback; 
     protected override void Init()
     {
+        imgSelf.sprite = Resources.Load<Sprite>($"ArtResources/Equipment/{myEquipment.id}");
+
+        switch((int)myEquipment.level)
+        {
+            case 0: //最高等级
+                imgLevelBg.sprite = Resources.Load<Sprite>($"ArtResources/Equipment/Level3");
+            break;  
+
+            case 1:
+                imgLevelBg.sprite = Resources.Load<Sprite>($"ArtResources/Equipment/Level2");
+            break;
+
+            case 2:
+                imgLevelBg.sprite = Resources.Load<Sprite>($"ArtResources/Equipment/Level1");
+            break;
+        }
+
         equipmentCallback += equipmentCallback;
 
         btnSkillCheck.onClick.AddListener(()=>{
