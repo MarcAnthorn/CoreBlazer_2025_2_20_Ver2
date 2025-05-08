@@ -23,6 +23,9 @@ public class LoadManager : Singleton<LoadManager>
     //技能管理容器，存储了所有可能的技能种类（和Item一致）
     //类似的，Classify方法也在EquipmentManager中；
     public Dictionary<int, Skill> allSkills = new Dictionary<int, Skill>();
+
+    //所有的敌人：
+    public Dictionary<int, Enemy> allEnemies = new Dictionary<int, Enemy>();
     
     //指令字典，管理的是 按照演出id区分的DialogueOrderBlock；
     //DialogueOrderBlock在 Dialogue文件夹下；
@@ -130,6 +133,23 @@ public class LoadManager : Singleton<LoadManager>
         // allEquipment.Add(1021, new Equipment_1021());
         allEquipment.Add(1022, new Equipment_1022());
 
+
+
+        // 手动实例化并添加所有的敌人
+        allEnemies.Add(1001, new Enemy_1001());
+        allEnemies.Add(1002, new Enemy_1002());
+        allEnemies.Add(1003, new Enemy_1003());
+        allEnemies.Add(1004, new Enemy_1004());
+        allEnemies.Add(1005, new Enemy_1005());
+        allEnemies.Add(1006, new Enemy_1006());
+        allEnemies.Add(1007, new Enemy_1007());
+        allEnemies.Add(1008, new Enemy_1008());
+        allEnemies.Add(1009, new Enemy_1009());
+        allEnemies.Add(1010, new Enemy_1010());
+        allEnemies.Add(1011, new Enemy_1011());
+        allEnemies.Add(1012, new Enemy_1012());
+        allEnemies.Add(1013, new Enemy_1013());
+        allEnemies.Add(1014, new Enemy_1014());
 
 //--------------测试--------------------------------------------
         
