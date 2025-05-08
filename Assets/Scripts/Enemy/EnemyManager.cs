@@ -367,6 +367,48 @@ public class EnemyManager : Singleton<EnemyManager>
         TurnCounter.Instance.AddPlayerBuff(buff);
     }
 
+    // 恨意凝视
+    public void EnemySkill_1012(Enemy enemy)
+    {
+        Debug.Log("敌人发动 恨意凝视！");
+        float rowDamage = 20 + enemy.DEF * 1.0f;
+        Action action = () => AddBuffToEnemySkill_1012();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1012()
+    {
+        BattleBuff buff = new BattleBuff_1011();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 瘟疫吐息
+    public void EnemySkill_1013(Enemy enemy)
+    {
+        Debug.Log("敌人发动 瘟疫吐息！");
+        float rowDamage = 20;
+        Action action = () => AddBuffToEnemySkill_1013();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1013()
+    {
+        BattleBuff buff = new BattleBuff_1012();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 怨念
+    public void EnemySkill_1016(Enemy enemy)
+    {
+        Debug.Log("敌人发动 怨念！");
+        float rowDamage = 30 + BattleManager.Instance.player.STR.value * 0.5f;
+        Action action = () => AddBuffToEnemySkill_1016();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1016()
+    {
+        BattleBuff buff = new BattleBuff_1015();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
     // 鼠群意志
     public void EnemySkill_1020(Enemy enemy)
     {
@@ -378,6 +420,20 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         BattleBuff buff = new BattleBuff_1019();
         TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 禁咒
+    public void EnemySkill_1022(Enemy enemy)
+    {
+        Debug.Log("敌人发动 禁咒！");
+        float rowDamage = 20 + (BattleManager.Instance.player.HP.value_limit - BattleManager.Instance.player.HP.value) * 0.8f;
+        Action action = () => AddBuffToEnemySkill_1022();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1022()
+    {
+        BattleBuff buff = new BattleBuff_1021();
+        TurnCounter.Instance.AddPlayerBuff(buff);
     }
 
     // 最后一次守护
