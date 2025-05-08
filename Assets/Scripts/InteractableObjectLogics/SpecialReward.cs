@@ -13,7 +13,7 @@ public class SpecialReward : MonoBehaviour
             // SoundEffectManager.Instance.PlaySoundEffect("与地图POI交互");
 
             //按权重分发道具：
-            if(specialRewardIndex % 1000 != 1)  //不是装备，是道具；
+            if(specialRewardIndex / 1000 != 1)  //不是装备，是道具；
                 ItemManager.Instance.AddItem(specialRewardIndex);
             else    //装备：
                 EquipmentManager.Instance.AddEquipment(specialRewardIndex);
