@@ -90,6 +90,7 @@ public class Equipment_1001 : Equipment
         player.SPD.AddValue(10);
         strDelta = player.STR.value * 0.1f;
         player.STR.AddValue(strDelta);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 
@@ -97,6 +98,7 @@ public class Equipment_1001 : Equipment
     {
         player.SPD.AddValue(-10);
         player.STR.AddValue(-strDelta);
+        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 }
@@ -196,12 +198,16 @@ public class Equipment_1004 : Equipment
     {
         strDelta = player.STR.value * 1f;
         player.STR.AddValue(strDelta);
+        player.HIT.AddValue(player.HIT.value * 0.4f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.STR.AddValue(-strDelta);
+        player.HIT.AddValue(-player.HIT.value * 0.4f);
+        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 }
@@ -228,6 +234,7 @@ public class Equipment_1005 : Equipment
     {
         player.STR.AddValue(20);
         player.CRIT_Rate.AddValue(0.1f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.3f);
         player.DebugInfo();
     }
 
@@ -235,6 +242,7 @@ public class Equipment_1005 : Equipment
     {
         player.STR.AddValue(-20);
         player.CRIT_Rate.AddValue(-0.1f);
+        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -261,6 +269,7 @@ public class Equipment_1006 : Equipment
     {
         player.STR.AddValue(10);
         player.DEF.AddValue(10);
+        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 
@@ -268,6 +277,7 @@ public class Equipment_1006 : Equipment
     {
         player.STR.AddValue(-10);
         player.DEF.AddValue(-10);
+        player.CRIT_Rate.AddValue(-player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -328,12 +338,16 @@ public class Equipment_1008 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.5f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.3f);
+        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.5f);
+        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.3f);
+        player.CRIT_Rate.AddValue(-player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -359,12 +373,14 @@ public class Equipment_1009 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.2f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.4f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.2f);
+        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.4f);
         player.DebugInfo();
     }
 }
@@ -423,12 +439,16 @@ public class Equipment_1011 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.5f);
+        player.STR.AddValue(20f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.5f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.5f);
+        player.STR.AddValue(-20f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.5f);
         player.DebugInfo();
     }
 }
@@ -454,12 +474,14 @@ public class Equipment_1012 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.3f);
+        player.SPD.AddValue(player.SPD.value * 0.2f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.3f);
+        player.SPD.AddValue(-player.SPD.value * 0.2f);
         player.DebugInfo();
     }
 }
@@ -485,12 +507,14 @@ public class Equipment_1013 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.5f);
+        player.AVO.AddValue(player.AVO.value * 0.2f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.5f);
+        player.AVO.AddValue(-player.AVO.value * 0.2f);
         player.DebugInfo();
     }
 }
@@ -516,12 +540,14 @@ public class Equipment_1014 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.5f);
+        player.HIT.AddValue(player.HIT.value * 0.4f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.5f);
+        player.HIT.AddValue(-player.HIT.value * 0.4f);
         player.DebugInfo();
     }
 }
@@ -547,12 +573,14 @@ public class Equipment_1015 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(2f);
+        player.SPD.AddValue(player.SPD.value * 1.0f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-2f);
+        player.SPD.AddValue(-player.SPD.value * 1.0f);
         player.DebugInfo();
     }
 }
@@ -689,12 +717,16 @@ public class Equipment_1019 : Equipment
     public override void Equip()
     {
         player.AVO.AddValue(100);
+        player.SPD.AddValue(15);
+        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.AVO.AddValue(-100);
+        player.SPD.AddValue(-15);
+        player.CRIT_Rate.AddValue(-player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -755,12 +787,14 @@ public class Equipment_1021 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(2f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 1.0f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-2f);
+        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 1.0f);
         player.DebugInfo();
     }
 }
@@ -787,6 +821,7 @@ public class Equipment_1022 : Equipment
     {
         player.DEF.AddValue(100);
         player.SPD.AddValue(100);
+        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.8f);
         player.DebugInfo();
     }
 
@@ -794,6 +829,7 @@ public class Equipment_1022 : Equipment
     {
         player.DEF.AddValue(-100);
         player.SPD.AddValue(-100);
+        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.8f);
         player.DebugInfo();
     }
 }
