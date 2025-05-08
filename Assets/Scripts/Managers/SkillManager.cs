@@ -40,8 +40,8 @@ public class SkillManager : Singleton<SkillManager>
                 break;
             case 1003:
                 Skill_1003(enemy);
-                if (actionPoint >= 2)
-                    actionPoint -= 2;
+                if (actionPoint >= 3)
+                    actionPoint -= 3;
                 else
                     Debug.Log("角色行动点不足以释放技能 新月之辉");
                 break;
@@ -53,14 +53,14 @@ public class SkillManager : Singleton<SkillManager>
                     Debug.Log("角色行动点不足以释放技能 心火");
                 break;
             case 1005:
-                Skill_1005(enemy);
+                Skill_1005(player, enemy);
                 if (actionPoint >= 2)
                     actionPoint -= 2;
                 else
                     Debug.Log("角色行动点不足以释放技能 破势击");
                 break;
             case 1006:
-                Skill_1006(enemy);
+                Skill_1006(player, enemy);
                 if (actionPoint >= 2)
                     actionPoint -= 2;
                 else
@@ -74,7 +74,7 @@ public class SkillManager : Singleton<SkillManager>
                     Debug.Log("角色行动点不足以释放技能 落日");
                 break;
             case 1008:
-                Skill_1008(enemy);
+                Skill_1008(player, enemy);
                 if (actionPoint >= 2)
                     actionPoint -= 2;
                 else
@@ -223,10 +223,10 @@ public class SkillManager : Singleton<SkillManager>
     }
 
     // 破势击
-    public void Skill_1005(Enemy enemy)
+    public void Skill_1005(Player player, Enemy enemy)
     {
         Debug.Log("角色发动 破势击！");
-        float rowDamage = 50;
+        float rowDamage = 30 + player.STR.value * 1.0f;
         Action action = () => AddBuffToSkill_1005(enemy);
         SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Skill, action);
     }
@@ -237,10 +237,10 @@ public class SkillManager : Singleton<SkillManager>
     }
 
     // 缚心铎声
-    public void Skill_1006(Enemy enemy)
+    public void Skill_1006(Player player, Enemy enemy)
     {
         Debug.Log("角色发动 缚心铎声！");
-        float rowDamage = 50;
+        float rowDamage = 50 + player.SAN.value * 1.0f;
         Action action = () => AddBuffToSkill_1006(enemy);
         SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Skill, action);
     }
@@ -265,10 +265,10 @@ public class SkillManager : Singleton<SkillManager>
     }
 
     // 湖中女的复仇
-    public void Skill_1008(Enemy enemy)
+    public void Skill_1008(Player player, Enemy enemy)
     {
         Debug.Log("角色发动 湖中女的复仇！");
-        float rowDamage = 50;
+        float rowDamage = 50 + (player.HP.value_limit - player.HP.value) * 1.0f;
         Action action = () => AddBuffToSkill_1008(enemy);
         SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Skill, action);
     }
@@ -296,7 +296,7 @@ public class SkillManager : Singleton<SkillManager>
     public void Skill_1010(Enemy enemy)
     {
         Debug.Log("角色发动 伤口污染！");
-        float rowDamage = 50;
+        float rowDamage = 50 + (enemy.HP_limit - enemy.HP) * 1.0f;
         Action action = () => AddBuffToSkill_1010(enemy);
         SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Skill, action);
     }
@@ -310,7 +310,7 @@ public class SkillManager : Singleton<SkillManager>
     public void Skill_1020(Player player)
     {
         Debug.Log("角色发动 鼠群意志！");
-        player.HP.value -= 20;
+        player.HP.value -= 20 + player.SAN.value * 2.0f + player.SPD.value * 1.0f;
         AddBuffToSkill_1020();
     }
     private void AddBuffToSkill_1020()

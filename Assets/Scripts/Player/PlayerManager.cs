@@ -92,7 +92,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             // 速度 (Speed)，id = 6，初始值 10
 
             CRIT_Rate = new Player.PlayerAttribute(7)  { 
-                value = 0.1f,
+                value = 0.5f,
                 value_limit = 1f,
                 type = 1
             },           
