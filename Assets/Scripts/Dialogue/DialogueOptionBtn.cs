@@ -38,8 +38,6 @@ public class DialogueOptionBtn : MonoBehaviour
                     EquipmentManager.Instance.AddEquipment(1010, 1011, 1012, 1013, 1014, 1015, 1019);
                 });
                 
-
-
             }
 
 

@@ -16,7 +16,7 @@ public class WarningPanel : BasePanel
     
     protected override void Init()
     {
-        btnConfirm.onClick.AddListener(()=>{
+        btnConfirm?.onClick.AddListener(()=>{
             PoolManager.Instance.ReturnToPool("WarningPanel", this.gameObject);     
             LeanTween.delayedCall(0.2f, ()=>{
                 callback?.Invoke();

@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC50008 : NPCBase
+public class NPC50008 : MonoBehaviour
 {
-  protected override void OnComplete(int avgId)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        base.OnComplete(avgId);
-        Destroy(this.gameObject);
-    }
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            EventManager.Instance.TriggerEvent(2045);
 
-    protected override void Awake()
-    {
-        base.Awake();
-        avgId = 2045;
-        GameLevelManager.Instance.avgIndexIsTriggeredDic.Add(avgId, false);
+            SoundEffectManager.Instance.PlaySoundEffect("与地图POI交互");
+            Destroy(this.gameObject);
+        }
+
+
     }
 }
