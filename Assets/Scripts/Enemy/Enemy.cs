@@ -150,7 +150,7 @@ public class Enemy_1004 : Enemy
         name = "白国王";
         HP = 100;
         HP_limit = 100;
-        STR = 25;
+        STR = 18;
         DEF = 3;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 2.0f;
@@ -173,7 +173,7 @@ public class Enemy_1005 : Enemy
         name = "黑国王";
         HP = 50;
         HP_limit = 50;
-        STR = 40;
+        STR = 30;
         DEF = 20;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
@@ -334,7 +334,7 @@ public class Enemy_1012 : Enemy
         name = "鼠群意志";
         HP = 100;
         HP_limit = 100;
-        STR = 30;
+        STR = 20;
         DEF = 3;
         CRIT_Rate = 0.5f;
         CRIT_DMG = 1.2f;
