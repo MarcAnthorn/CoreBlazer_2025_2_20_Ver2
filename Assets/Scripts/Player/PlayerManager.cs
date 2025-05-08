@@ -53,63 +53,65 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     public void InitPlayer()
     {
         //PlayerManager 管理的全局唯一Player实例
-       player = new Player()
+        player = new Player()
         {
-            HP = new Player.PlayerAttribute(1) { 
+            HP = new Player.PlayerAttribute(1) {
                 value = 100,
                 value_limit = 100
-            },  
+            },
             // 生命值 (Health Point)，id = 1，初始值 100
 
-            STR = new Player.PlayerAttribute(2) { 
+            STR = new Player.PlayerAttribute(2) {
                 value = 10,
                 value_limit = 100
-            },           
+            },
             // 力量 (Strength)，id = 2，初始值 10
 
-            DEF = new Player.PlayerAttribute(3)  { 
+            DEF = new Player.PlayerAttribute(3) {
                 value = 5,
                 value_limit = 100
-            },                 
+            },
             // 防御 (Defense)，id = 3，初始值 5
 
-            LVL = new Player.PlayerAttribute(4)  { 
+            LVL = new Player.PlayerAttribute(4) {
                 value = 100,
                 value_limit = 100
-            },                 
+            },
             // 灯光值 (Light Value)，id = 4，初始值 1
 
-            SAN = new Player.PlayerAttribute(5)  { 
+            SAN = new Player.PlayerAttribute(5) {
                 value = 41,
                 value_limit = 100
-            },                      
+            },
             // SAN 值 (Sanity)，id = 5，初始值 40
 
-            SPD = new Player.PlayerAttribute(6)  { 
+            SPD = new Player.PlayerAttribute(6) {
                 value = 10,
                 value_limit = 100
-            },              
+            },
             // 速度 (Speed)，id = 6，初始值 10
 
-            CRIT_Rate = new Player.PlayerAttribute(7)  { 
-                value = 0.5f,
+            CRIT_Rate = new Player.PlayerAttribute(7) {
+                value = 0.1f,
                 value_limit = 1f,
                 type = 1
-            },           
-  
+            },
+
             // 暴击率 (Critical Hit Rate)，id = 7，初始值 10%
 
-            CRIT_DMG = new Player.PlayerAttribute(8){
-                value_limit = 1f,
-            },                    
+            CRIT_DMG = new Player.PlayerAttribute(8) {
+                value = 0.5f,
+                value_limit = 1f
+            },
             // 暴击伤害 (Critical Damage)，id = 8，未初始化
 
-            HIT = new Player.PlayerAttribute(9){
-                value_limit = 1f,
-            },                          
+            HIT = new Player.PlayerAttribute(9) {
+                value = 0.5f,
+                value_limit = 1f
+            },
             // 连击 (Hit)，id = 9，未初始化
 
-            AVO = new Player.PlayerAttribute(10)  { 
+            AVO = new Player.PlayerAttribute(10) {
                 value = 0.3f,
                 value_limit = 1f,
                 type = 1
@@ -255,7 +257,8 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         float hitRate = hit + 1 - baseHit;
         float crit_rate = PlayerManager.Instance.player.CRIT_Rate.value;
         float crit_dmg = PlayerManager.Instance.player.CRIT_DMG.value;
-        for (int i = 0; i < baseHit + 1; i++)
+        float constHit = baseHit;
+        for (int i = 0; i < constHit + 1; i++)
         {
             Damage tempDamage = new Damage(damageType);
             float random1 = UnityEngine.Random.Range(0f, 1f);
@@ -275,11 +278,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             if (baseHit == 0)
             {
                 float random2 = UnityEngine.Random.Range(0f, 1f);
-                if (random2 < hitRate)
-                {
-                    continue;
-                }
-                else
+                if (random2 >= hitRate)
                 {
                     break;
                 }

@@ -92,8 +92,10 @@ public class EnemyManager : Singleton<EnemyManager>
         }
         else 
         {
+            int count = 1;
             foreach (var dmg in damages)
             {
+                Debug.Log($"进行第 {count} 次连击!");
                 // 造成伤害之前进行一些加成计算
                 // 先计算易伤(DeBuff)加成
                 dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDebuffDamage, dmg.damageType, dmg.damage);
@@ -112,6 +114,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
                 // 调用UI更新：
                 EventHub.Instance.EventTrigger("UpdateAllUIElements");
+                count++;
             }
 
         }
@@ -167,8 +170,8 @@ public class EnemyManager : Singleton<EnemyManager>
         float crit_rate = enemy.CRIT_Rate;
         float crit_dmg = enemy.CRIT_DMG;
 
-
-        for (int i = 0; i < baseHit + 1; i++)
+        float constHit = baseHit;
+        for (int i = 0; i < constHit + 1; i++)
         {
             Damage tempDamage = new Damage(damageType);
             float random1 = UnityEngine.Random.Range(0f, 1f);
@@ -187,11 +190,7 @@ public class EnemyManager : Singleton<EnemyManager>
             if (baseHit == 0)
             {
                 float random2 = UnityEngine.Random.Range(0f, 1f);
-                if (random2 < hitRate)
-                {
-                    continue;
-                }
-                else
+                if (random2 >= hitRate)
                 {
                     break;
                 }

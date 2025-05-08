@@ -184,8 +184,10 @@ public class SkillManager : Singleton<SkillManager>
         }
         else
         {
+            int count = 1;
             foreach (var dmg in damages)
             {
+                Debug.Log($"进行第 {count} 次连击!");
                 // 造成伤害之前进行一些加成计算
                 // 先计算易伤(DeBuff)加成
                 dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateDebuffDamage, dmg.damageType, enemy.positionId, dmg.damage);
@@ -209,6 +211,7 @@ public class SkillManager : Singleton<SkillManager>
                 {
                     action.Invoke();
                 }
+                count++;
             }
         }
     }
