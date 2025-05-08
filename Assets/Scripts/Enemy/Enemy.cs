@@ -69,10 +69,10 @@ public class Enemy_1001 : Enemy
     public Enemy_1001(params EnemySkill[] enemySkills)
     {
         id = 1001;
-        name = "哥布林";
-        HP = 100;
-        HP_limit = 100;
-        STR = 12;
+        name = "大章鱼";
+        HP = 40;
+        HP_limit = 40;
+        STR = 18;
         DEF = 3;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
@@ -103,8 +103,8 @@ public class Enemy_1002 : Enemy
         id = 1002;
         name = "树精";
         HP = 40;
-        HP_limit = 100;
-        STR = 12;
+        HP_limit = 40;
+        STR = 20;
         DEF = 3;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
@@ -126,8 +126,8 @@ public class Enemy_1003 : Enemy
         id = 1003;
         name = "女祭司";
         HP = 40;
-        HP_limit = 100;
-        STR = 12;
+        HP_limit = 40;
+        STR = 18;
         DEF = 3;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
@@ -148,12 +148,12 @@ public class Enemy_1004 : Enemy
     {
         id = 1004;
         name = "白国王";
-        HP = 40;
+        HP = 100;
         HP_limit = 100;
-        STR = 12;
+        STR = 25;
         DEF = 3;
         CRIT_Rate = 0.2f;
-        CRIT_DMG = 1.2f;
+        CRIT_DMG = 2.0f;
         AVO = 0.2f;
         HIT = 0.3f;
         SPD = 9;
@@ -171,10 +171,10 @@ public class Enemy_1005 : Enemy
     {
         id = 1005;
         name = "黑国王";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
+        HP = 50;
+        HP_limit = 50;
+        STR = 40;
+        DEF = 20;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
@@ -194,15 +194,15 @@ public class Enemy_1006 : Enemy
     {
         id = 1006;
         name = "牛头人";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
-        CRIT_Rate = 0.2f;
-        CRIT_DMG = 1.2f;
+        HP = 90;
+        HP_limit = 90;
+        STR = 30;
+        DEF = 10;
+        CRIT_Rate = 0.6f;
+        CRIT_DMG = 2.0f;
         AVO = 0.2f;
         HIT = 0.3f;
-        SPD = 9;
+        SPD = 20;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
@@ -217,15 +217,15 @@ public class Enemy_1007 : Enemy
     {
         id = 1007;
         name = "未知魔音";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
+        HP = 70;
+        HP_limit = 70;
+        STR = 50;
+        DEF = 20;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
-        HIT = 0.3f;
-        SPD = 9;
+        HIT = 0.5f;
+        SPD = 15;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
@@ -240,15 +240,15 @@ public class Enemy_1008 : Enemy
     {
         id = 1008;
         name = "话痨死神";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
-        CRIT_Rate = 0.2f;
+        HP = 70;
+        HP_limit = 70;
+        STR = 100;
+        DEF = 5;
+        CRIT_Rate = 0.8f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
-        HIT = 0.3f;
-        SPD = 9;
+        HIT = 0.5f;
+        SPD = 10;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
@@ -263,15 +263,15 @@ public class Enemy_1009 : Enemy
     {
         id = 1009;
         name = "日下罪人";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
+        HP = 200;
+        HP_limit = 200;
+        STR = 70;
+        DEF = 30;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
-        AVO = 0.2f;
+        AVO = 0.5f;
         HIT = 0.3f;
-        SPD = 9;
+        SPD = 20;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
@@ -286,15 +286,15 @@ public class Enemy_1010 : Enemy
     {
         id = 1010;
         name = "画中世界";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
-        CRIT_Rate = 0.2f;
+        HP = 70;
+        HP_limit = 70;
+        STR = 80;
+        DEF = 10;
+        CRIT_Rate = 0.3f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
         HIT = 0.3f;
-        SPD = 9;
+        SPD = 10;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
@@ -309,7 +309,7 @@ public class Enemy_1011 : Enemy
     {
         id = 1011;
         name = "科拉佐斯";
-        HP = 40;
+        HP = 100;
         HP_limit = 100;
         STR = 12;
         DEF = 3;
@@ -332,15 +332,15 @@ public class Enemy_1012 : Enemy
     {
         id = 1012;
         name = "鼠群意志";
-        HP = 40;
+        HP = 100;
         HP_limit = 100;
-        STR = 12;
+        STR = 30;
         DEF = 3;
-        CRIT_Rate = 0.2f;
+        CRIT_Rate = 0.5f;
         CRIT_DMG = 1.2f;
-        AVO = 0.2f;
-        HIT = 0.3f;
-        SPD = 9;
+        AVO = 0.4f;
+        HIT = 2.5f;
+        SPD = 20;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
@@ -355,15 +355,15 @@ public class Enemy_1013 : Enemy
     {
         id = 1013;
         name = "群山之主的思绪";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
-        CRIT_Rate = 0.2f;
-        CRIT_DMG = 1.2f;
+        HP = 180;
+        HP_limit = 180;
+        STR = 60;
+        DEF = 40;
+        CRIT_Rate = 0.7f;
+        CRIT_DMG = 1.7f;
         AVO = 0.2f;
-        HIT = 0.3f;
-        SPD = 9;
+        HIT = 0.5f;
+        SPD = 1;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
@@ -378,15 +378,15 @@ public class Enemy_1014 : Enemy
     {
         id = 1014;
         name = "格赫罗斯";
-        HP = 40;
-        HP_limit = 100;
-        STR = 12;
-        DEF = 3;
+        HP = 300;
+        HP_limit = 300;
+        STR = 80;
+        DEF = 30;
         CRIT_Rate = 0.2f;
-        CRIT_DMG = 1.2f;
+        CRIT_DMG = 2.0f;
         AVO = 0.2f;
-        HIT = 0.3f;
-        SPD = 9;
+        HIT = 1.5f;
+        SPD = 20;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);
