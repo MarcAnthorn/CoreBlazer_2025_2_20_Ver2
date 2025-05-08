@@ -337,12 +337,13 @@ public class BattleManager : Singleton<BattleManager>
     {
         foreach(var s in enemy.enemySkills)
         {
+            yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
             s.Use(enemy);
 
             //敌方释放技能的Tip：
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"「{enemy.name}」释放了技能「{s.skillName}」", true);
 
-            yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
+            
         }
 
         // 更新敌人回合(并做出一些Buff处理)

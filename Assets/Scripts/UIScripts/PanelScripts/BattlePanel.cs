@@ -109,9 +109,19 @@ public class BattlePanel : BasePanel
           UpdateBattlePanelUI();
      }
 
+    //测试用：
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+          EventHub.Instance.EventTrigger("GameOver", true, callback);
+        }
+    }
 
-     //测试方法：
-     private void TestBattle()
+
+
+    //测试方法：
+    private void TestBattle()
      {
           //更新保存的上次血量字段：
           lastPlayerHealthValue = 0;
