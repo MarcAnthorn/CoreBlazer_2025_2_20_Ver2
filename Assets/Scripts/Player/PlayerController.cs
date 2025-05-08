@@ -535,10 +535,11 @@ public class PlayerController : PlayerBase
     
     IEnumerator DamageCoroutine()
     {
+        int time = 0;
         while(true)
         {
             yield return new WaitForSeconds(1f);
-
+            time++;
             if(isFrozen)
             {
                 //使用lambda表达式，表示当!isFrozen返回true才会继续执行；
@@ -548,7 +549,7 @@ public class PlayerController : PlayerBase
             // damageTime = 1;
             // currentDamage = initDamageValue * (1 + damageTime) >= 20 ? 20 : initDamageValue * (1 + damageTime);
 
-            currentDamage = 1;
+            currentDamage = 1 + time;
             
             Debug.Log(currentDamage);
             

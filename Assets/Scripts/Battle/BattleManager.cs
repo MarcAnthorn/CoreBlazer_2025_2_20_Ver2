@@ -400,10 +400,10 @@ public class BattleManager : Singleton<BattleManager>
                 Debug.Log("is lost");
 
                 UIManager.Instance.HidePanel<BattlePanel>();
-                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"战斗失败");
-                // UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"战斗失败", false, ()=>{
-                //     UIManager.Instance.HidePanel<BattlePanel>();
-                // });
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"战斗失败",  false, ()=>{
+                    EventHub.Instance.EventTrigger("OnPlayerDead");
+                });
+                
             }
 
             TurnCounter.Instance.ClearTurnCounter();
