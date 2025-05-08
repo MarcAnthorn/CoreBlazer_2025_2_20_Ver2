@@ -51,7 +51,7 @@ public class EquipmentCheckPanel : BasePanel
                 myEquipment.Equip();
 
                 //更新玩家的属性面板：
-                EventHub.Instance.EventTrigger("UpdateAttributeText");
+                EventHub.Instance.EventTrigger("UpdateAllUIElements");
             }
             else
             {
@@ -74,7 +74,7 @@ public class EquipmentCheckPanel : BasePanel
             btnUnequip.gameObject.SetActive(false);
 
             //更新玩家的属性面板：
-            EventHub.Instance.EventTrigger("UpdateAttributeText");
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
         });
     }
 
