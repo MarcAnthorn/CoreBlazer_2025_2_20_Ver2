@@ -53,6 +53,7 @@ public class BattlePanel : BasePanel
        
           //更新伤害Ui的事件注册：
           EventHub.Instance.AddEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
+          EventHub.Instance.AddEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
 
           
      }
@@ -157,6 +158,7 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
 
           EventHub.Instance.RemoveEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
+          EventHub.Instance.RemoveEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
      } 
 
     //广播方法：将某一个装备装备后调用；
@@ -270,6 +272,9 @@ public class BattlePanel : BasePanel
           lastPlayerHealthValue = PlayerManager.Instance.player.HP.value;
 
 
+          
+
+
           //敌人的Slider：
           if(lastEnemyHealthValue != 0) 
           {
@@ -285,6 +290,9 @@ public class BattlePanel : BasePanel
                sliderEnemyHealth.value = enemy.HP / enemy.HP_limit;
 
           lastEnemyHealthValue = enemy.HP;
+
+
+          
 
 
           //buff的显示更新；
@@ -329,7 +337,16 @@ public class BattlePanel : BasePanel
           txtLeftCost.text = BattleManager.Instance.actionPoint.ToString();
           txtMaxCost.text = BattleManager.Instance.actionPointMax.ToString();
 
+          if(PlayerManager.Instance.player.HP.value <= 0) //玩家死亡
+          {
+               EventHub.Instance.EventTrigger("GameOver", false);
+          }
 
+          else if(enemy.HP <= 0) //敌人死亡
+          {
+               EventHub.Instance.EventTrigger("GameOver", true);
+
+          }
      }
 
 
@@ -338,6 +355,7 @@ public class BattlePanel : BasePanel
      //如果value是-1，说明是被闪避了；第二参数表示是否是我发出的伤害，用于区分敌方和我方；
      private void UpdateDamangeText(float damageValue, bool isPlayersDamage)
      {
+          Debug.Log("Damage Text is Updated!");
           if(isPlayersDamage)
           {
                
@@ -355,6 +373,39 @@ public class BattlePanel : BasePanel
           else 
           {
                if(Math.Abs(damageValue + 1) <= 0.01f){   //闪避,注意浮点型是取绝对值误差判断！
+                    txtEnemyDamage.color = Color.red;
+                    txtEnemyDamage.text = $"敌方的伤害被闪避了！";
+               }
+               else
+               {
+                    txtEnemyDamage.color = Color.white;
+                    txtEnemyDamage.text = $"敌方造成伤害：{damageValue}";
+               }
+
+          }
+     }
+
+     //整型重载：
+     private void UpdateDamangeTextInt(int damageValue, bool isPlayersDamage)
+     {
+          Debug.Log("Damage(int)Text is Updated!");
+          if(isPlayersDamage)
+          {
+               
+               if(damageValue == -1){   //闪避
+                    txtPlayerDamage.color = Color.red;
+                    txtPlayerDamage.text = "你的伤害被闪避了！";
+               }
+               else
+               {
+                    txtPlayerDamage.color = Color.white;
+                    txtPlayerDamage.text = $"你造成伤害：{damageValue}";
+               }
+          }
+
+          else 
+          {
+               if(damageValue == -1){   //闪避
                     txtEnemyDamage.color = Color.red;
                     txtEnemyDamage.text = $"敌方的伤害被闪避了！";
                }

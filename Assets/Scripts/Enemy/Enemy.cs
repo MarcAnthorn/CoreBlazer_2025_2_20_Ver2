@@ -37,15 +37,11 @@ public abstract class Enemy
         Debug.LogWarning($"Now Enemy Damage is{damage.damage}");
         
         HP -= damage.damage;
+
+        Debug.LogWarning($"Now Enemy HP is{HP}");
         if (HP <= 0)
         {
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"击败敌人「{this.name}」，战斗胜利", false, ()=>{
-                UIManager.Instance.HidePanel<BattlePanel>();
-
-
-                //如果需要触发战斗的后续奖励，在这里触发；
-            });
-            
+            Debug.Log("敌人死亡");        
             isDead = true;
         }
     }
@@ -55,7 +51,7 @@ public abstract class Enemy
     {
         foreach(var b in buffs)
         {
-            if (b.GetType() == typeof(T) && b.GetOverlyingCount() != 0)
+            if (b.GetType() == typeof(T) && b.overlyingCount != 0)
             {
                 buff = b;
                 return true;
