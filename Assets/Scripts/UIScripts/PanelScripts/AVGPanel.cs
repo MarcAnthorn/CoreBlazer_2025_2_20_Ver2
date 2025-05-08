@@ -396,7 +396,7 @@ public class AVGPanel : BasePanel
 
         //当前尝试加载的路径：
         Debug.Log($"当前尝试加载的路径{path}");
-        
+
         img.sprite = Resources.Load<Sprite>(path);
         img.SetNativeSize();
 
@@ -407,6 +407,9 @@ public class AVGPanel : BasePanel
         if(!orginalColorDic.ContainsKey(keyName))
         {
             color.a = 255;
+            color.r = 255;
+            color.g = 255;
+            color.b = 255;
             orginalColorDic.Add(keyName, color);
         }
 
@@ -473,6 +476,8 @@ public class AVGPanel : BasePanel
     //用于在对话的时候，将所有不是当前对话的Image调暗；
     private void DarkenImage(string name)
     {
+        Debug.LogWarning($"{name} is darken!");
+
         Image targetImage = currentNPCDic[name].GetComponent<Image>();
         if(!darkenColorDic.ContainsKey(name))
         {
