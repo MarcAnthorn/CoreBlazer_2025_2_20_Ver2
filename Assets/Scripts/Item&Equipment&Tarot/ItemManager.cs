@@ -26,7 +26,7 @@ public class ItemManager : Singleton<ItemManager>
             {
                 //如果是，那么就是重复添加塔罗牌，直接不添加，而是加精神值；
                 PlayerManager.Instance.player.SAN.value += 5;
-                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5", true);
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5");
                 return;
                 
             }
@@ -36,7 +36,7 @@ public class ItemManager : Singleton<ItemManager>
                 //注意：先判断是否要超出道具叠加上限：如果是，那么直接return：
                 if(itemCountDic[id]  == nowItem.maxLimit)
                 {
-                    UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前道具「{nowItem.name}」已达到最大可叠加上限{nowItem.maxLimit}");
+                    PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"当前道具「{nowItem.name}」已达到最大可叠加上限{nowItem.maxLimit}");
                     return;
                 }
 
@@ -69,11 +69,11 @@ public class ItemManager : Singleton<ItemManager>
 
         //弹出获取的道具：
         if(id / 100 == 6){
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得塔罗牌「{nowItem.name}」", true);
+            PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"获得塔罗牌「{nowItem.name}」");
         }
         else
         {
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得道具「{nowItem.name}」* {count}", true);
+            PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"获得道具「{nowItem.name}」* {count}");
         }
 
     }
@@ -81,7 +81,7 @@ public class ItemManager : Singleton<ItemManager>
     //重载：一次加多个道具：
     public void AddItem(params int[] ids)
     {
-         StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         foreach(var id in ids)
         {
             int count = 1;  //默认只加一个；
@@ -93,7 +93,7 @@ public class ItemManager : Singleton<ItemManager>
                 {
                     //如果是，那么就是重复添加塔罗牌，直接不添加，而是加精神值；
                     PlayerManager.Instance.player.SAN.value += 5;
-                    UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5", true);
+                    PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5");
                     return;
                     
                 }
@@ -103,14 +103,16 @@ public class ItemManager : Singleton<ItemManager>
                     //注意：先判断是否要超出道具叠加上限：如果是，那么直接return：
                     if(itemCountDic[id]  == nowItem.maxLimit)
                     {
-                        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"当前道具「{nowItem.name}」已达到最大可叠加上限{nowItem.maxLimit}");
-                        return;
+                        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"当前道具「{nowItem.name}」已达到最大可叠加上限{nowItem.maxLimit}");
                     }
 
-                    //始终确保List和Dic中的元素数量是一致的；
-                    for(int i = 0; i < count; i++)
+                    else
                     {
-                        itemCountDic[id]++;
+                        //始终确保List和Dic中的元素数量是一致的；
+                        for(int i = 0; i < count; i++)
+                        {
+                            itemCountDic[id]++;
+                        }
                     }
                 }
 
@@ -145,7 +147,7 @@ public class ItemManager : Singleton<ItemManager>
             }
         }
 
-        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText(sb.ToString(), true);
+        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText(sb.ToString());
         
     }
 
@@ -235,12 +237,12 @@ public class ItemManager : Singleton<ItemManager>
         }
         else if(item.isInUse)
         {
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("该道具使用中，不可重复使用");
+            PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText("该道具使用中，不可重复使用");
         }
         else if(!item.CanUseOrNot((int)PlayerManager.Instance.playerSceneIndex))
         {
             
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("当前场景下不可使用该道具");
+            PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText("当前场景下不可使用该道具");
             // Debug.LogWarning($"当前尝试使用的道具不可使用，道具id：{item.id},该道具的可使用场景是:{item.usableScene[0]}, {item.usableScene[1]}, {item.usableScene[2]}");
         }
         return false;

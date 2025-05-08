@@ -112,6 +112,31 @@ public class PoolManager : SingletonBaseManager<PoolManager>
         return objFromPool;
     }
 
+     public GameObject SpawnFromPool(string key, Transform father)
+    {
+        GameObject objFromPool;
+
+        //注意：经过优化，if中的Count不再是Stack的直接API调用；而是PoolData数据类的只读属性；两者只有数值是相等的；
+        if (poolDictionary.ContainsKey(key) && poolDictionary[key].Count > 0)
+        {
+            //经过优化，下方的Pop不再是Stack API的直接调用，而是类中的一个公共方法；
+            objFromPool = poolDictionary[key].Pop();
+            objFromPool.SetActive(true);
+            //取用对象时，断开父子关系；也就是说被独立；
+            if (isOptimized)
+                objFromPool.transform.SetParent(null);
+
+            objFromPool.transform.SetParent(father, false);
+            
+        }
+        else
+        {
+            objFromPool = GameObject.Instantiate(Resources.Load<GameObject>(key), father, false);
+
+        }
+        return objFromPool;
+    }
+
 
 
     public void ReturnToPool(string key, GameObject objToPool)

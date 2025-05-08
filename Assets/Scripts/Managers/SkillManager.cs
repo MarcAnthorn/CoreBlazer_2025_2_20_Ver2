@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class SkillManager : Singleton<SkillManager>
 {
+    Equipment equipment;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +19,21 @@ public class SkillManager : Singleton<SkillManager>
     void Update()
     {
         
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        EventHub.Instance.AddEventListener<Equipment>("BroadcastNowEquipment", BroadcastNowEquipment);
+    }
+
+    protected override void OnDestroy() {
+        base.OnDestroy();
+        EventHub.Instance.RemoveEventListener<Equipment>("BroadcastNowEquipment", BroadcastNowEquipment);
+    }
+    private void BroadcastNowEquipment(Equipment _equipment)
+    {
+        equipment = _equipment;
     }
 
     // 释放技能
@@ -160,6 +177,24 @@ public class SkillManager : Singleton<SkillManager>
         else    //行动点足够释放
         {
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"你释放了技能「{skillName}」", true);
+            //更新装备耐久：
+            equipment.currentDuration -= 1;
+            EquipmentManager.Instance.equipmentDurationDic[equipment] -= 1; 
+
+            Debug.Log($"当前耐久：{equipment.currentDuration}");
+
+
+            //如果耐久归零：
+            if(equipment.currentDuration == 0)
+            {
+                //报废该装备：
+                EquipmentManager.Instance.RemoveEquipment(equipment);
+
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"装备「{equipment.name}」因耐久不足而报废！");
+
+                //从槽中卸除装备：
+                EventHub.Instance.EventTrigger("UnequipTarget", equipment);
+            }
         }
     
 

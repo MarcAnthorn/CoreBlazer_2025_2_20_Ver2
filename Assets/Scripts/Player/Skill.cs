@@ -53,6 +53,7 @@ public class Skill_1001 : Skill
     override public void Use()
     {
         BattleManager.Instance.SelectSkill_1001();
+        
     }
 }
 
@@ -84,7 +85,7 @@ public class Skill_1003 : Skill
         id = 1003;
         skillIconPath = skillName = "新月之辉";
         skillDamageText = "50";
-        skillCost = 2;
+        skillCost = 3;
         skillBuffText = "攻击命中后，有较高概率附带10层易伤";
 
         skillDamage = 50;
@@ -125,7 +126,7 @@ public class Skill_1005 : Skill
         skillIconPath = skillName = "破势击";
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到力量伤害后，施加12层易伤。予debuff持有者的对手2层力量增伤";
-
+        skillCost = 2;
         skillDamage = 50;
     }
 

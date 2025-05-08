@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class EquipmentSlot : MonoBehaviour
@@ -34,15 +35,21 @@ public class EquipmentSlot : MonoBehaviour
     void Start()
     {
         btnSkillUse.onClick.AddListener(()=>{
+            EventHub.Instance.EventTrigger("BroadcastNowEquipment", myEquipment);
             //释放技能：
             mySkill.Use();
+
         });
     }
 
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener("UpdateAllSkillDamageText", UpdateAllSkillDamageText);
+        
     }
+    
+    
+
 
 
     //初始化该Slot的方法：传入对应的Equipment实例就行：

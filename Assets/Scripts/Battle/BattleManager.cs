@@ -9,6 +9,9 @@ public class BattleManager : Singleton<BattleManager>
 {
     public Player player;
     public List<Enemy> enemies = new List<Enemy>();
+    private int enemyId;
+
+    private bool isJudgedWhoWins;
 
     // 行动队列
     private Queue actionQueue = new Queue();
@@ -54,11 +57,14 @@ public class BattleManager : Singleton<BattleManager>
     public void BattleInit(Player player, params Enemy[] enemies)
     {
         this.player = player;
+        isJudgedWhoWins = false;
         for (int i = 0; i < enemies.Length; i++)
         {
             // enemies[i].positionId = i;
             this.enemies.Add(enemies[i]);
         }
+
+        enemyId = enemies[0].id;
 
         // Debug.Log($"current enemy count:{this.enemies.Count}");
 
@@ -267,7 +273,8 @@ public class BattleManager : Singleton<BattleManager>
         }
 
         // 排到队尾
-        actionQueue.Enqueue(actionQueue.Dequeue());
+        if(actionQueue.Count != 0)
+            actionQueue.Enqueue(actionQueue.Dequeue());
     }
 
     // 退出角色回合
@@ -335,8 +342,6 @@ public class BattleManager : Singleton<BattleManager>
             //敌方释放技能的Tip：
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"「{enemy.name}」释放了技能「{s.skillName}」", true);
 
-            Debug.Log("2秒了吗？？？？？？");
-
             yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
         }
 
@@ -365,33 +370,45 @@ public class BattleManager : Singleton<BattleManager>
     //第二参数是游戏结束之后的回调函数；只有获胜之后才会触发：
     private void GameOver(bool isWin, UnityAction<int> callback)
     {
-        Debug.LogWarning("尝试调用GameOver");
-        //停止所有进行中的协程：
-        if(enemyAttackCoroutine != null)
-            StopCoroutine(enemyAttackCoroutine);
 
-        if(roundCoroutine != null)
-            StopCoroutine(roundCoroutine);
-
-        if (isWin)
+        if(!isJudgedWhoWins)
         {
-            Debug.Log("is win");
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"击败敌人「{enemies[0].name}」，战斗胜利", false, ()=>{
+            isJudgedWhoWins = true;
+            Debug.LogWarning("尝试调用GameOver");
+            //停止所有进行中的协程：
+            if(enemyAttackCoroutine != null)
+                StopCoroutine(enemyAttackCoroutine);
+
+            if(roundCoroutine != null)
+                StopCoroutine(roundCoroutine);
+
+            if (isWin)
+            {
+                Debug.Log("is win");
+
                 UIManager.Instance.HidePanel<BattlePanel>();
 
-                //如果需要触发战斗的后续奖励，在这里触发；
-                callback?.Invoke(enemies[0].id);
-            });
-        }
-        else
-        {
-            Debug.Log("is lost");
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"战斗失败", false, ()=>{
-                UIManager.Instance.HidePanel<BattlePanel>();
-            });
-        }
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"击败敌人，战斗胜利", false, ()=>{
+                    //如果需要触发战斗的后续奖励，在这里触发；
+                    Debug.Log("callback is called");
+                    callback?.Invoke(enemyId);
+                });
+            }
+            else
+            {
+                Debug.Log("is lost");
 
-        TurnCounter.Instance.ClearTurnCounter();
+                UIManager.Instance.HidePanel<BattlePanel>();
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"战斗失败");
+                // UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"战斗失败", false, ()=>{
+                //     UIManager.Instance.HidePanel<BattlePanel>();
+                // });
+            }
+
+            TurnCounter.Instance.ClearTurnCounter();
+        }  
+
+       
 
         // 下面接奖励结算界面
 

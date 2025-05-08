@@ -35,19 +35,20 @@ public abstract class Equipment
    //Item本质就是数量的堆叠；
     public Equipment(Equipment other)
     {
-            name = other.name;
-            iconPath = other.iconPath;
-            effectDescriptionText = other.effectDescriptionText;
-            descriptionText = other.descriptionText;
-            level = other.level;
-            isEquipped = other.isEquipped;
-            maxDuration = other.maxDuration;
-            currentDuration = maxDuration;
-            player = PlayerManager.Instance.player;
+        id = other.id;
+        name = other.name;
+        iconPath = other.iconPath;
+        effectDescriptionText = other.effectDescriptionText;
+        descriptionText = other.descriptionText;
+        level = other.level;
+        isEquipped = other.isEquipped;
+        maxDuration = other.maxDuration;
+        currentDuration = maxDuration;
+        player = PlayerManager.Instance.player;
 
-            //通过LoadManager分配实例：和Item一样；
-            //因为Skill不需要深拷贝；
-            mySkill = LoadManager.Instance.allSkills[other.mySkill.id];
+        //通过LoadManager分配实例：和Item一样；
+        //因为Skill不需要深拷贝；
+        mySkill = LoadManager.Instance.allSkills[other.mySkill.id];
     }
 
     //无参构造函数：

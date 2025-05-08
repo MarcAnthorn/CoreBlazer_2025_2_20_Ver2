@@ -39,276 +39,85 @@ public class BattleBase : MonoBehaviour
         EventHub.Instance.EventTrigger("GetRandomTwoItemsAfterBattle");
 
         //接下来是根据传入的敌人id进行的结果分配：
-        int itemId = 0;
-        int itemCount = 1;
-        int randomNumber = 0;       
-
         switch(enemyId)
         {
             case 1001:
-                randomNumber = Random.Range(1, 4);
-                if(randomNumber == 1)
-                {
-                    itemId = 101;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 301;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 1002;
-                    itemCount = 1;
-                }
+                // 1001掉落：101(1), 301(2), 1002(1)
+                ItemManager.Instance.AddItem(101, 301, 301);
+                EquipmentManager.Instance.AddEquipment(1002);
                 break;
 
             case 1002:
-                randomNumber = Random.Range(1, 4);
-                if(randomNumber == 1)
-                {
-                    itemId = 501;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 301;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 1005;
-                    itemCount = 1;
-                }
+                // 1002掉落：501(2), 301(2), 1005(1)
+                ItemManager.Instance.AddItem(501, 501, 301, 301);
+                EquipmentManager.Instance.AddEquipment(1005);
                 break;
 
             case 1003:
-                randomNumber = Random.Range(1, 4);
-                if(randomNumber == 1)
-                {
-                    itemId = 1006;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 101;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 301;
-                    itemCount = 1;
-                }
+                // 1003掉落：1006(1), 101(1), 301(1)
+                ItemManager.Instance.AddItem(101, 301);
+                EquipmentManager.Instance.AddEquipment(1006);
                 break;
 
             case 1004:
-                randomNumber = Random.Range(1, 4);
-                if(randomNumber == 1)
-                {
-                    itemId = 401;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 402;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 403;
-                    itemCount = 2;
-                }
+                // 1004掉落：401(2), 402(2), 403(2)
+                ItemManager.Instance.AddItem(401, 401, 402, 402, 403, 403);
                 break;
 
             case 1005:
-                randomNumber = Random.Range(1, 4);
-                if(randomNumber == 1)
-                {
-                    itemId = 401;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 402;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 403;
-                    itemCount = 2;
-                }
+                // 1005掉落：401(2), 402(2), 403(2)
+                ItemManager.Instance.AddItem(401, 401, 402, 402, 403, 403);
                 break;
 
             case 1006:
-                randomNumber = Random.Range(1, 3);
-                if(randomNumber == 1)
-                {
-                    itemId = 1009;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 1016;
-                    itemCount = 1;
-                }
+                // 1006掉落：1009(1), 1016(1)
+                EquipmentManager.Instance.AddEquipment(1009, 1016);
                 break;
 
             case 1007:
-                randomNumber = Random.Range(1, 3);
-                if(randomNumber == 1)
-                {
-                    itemId = 1008;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 303;
-                    itemCount = 3;
-                }
+                // 1007掉落：1008(1), 303(3)
+                ItemManager.Instance.AddItem(303, 303, 303);
+                EquipmentManager.Instance.AddEquipment(1008);
                 break;
 
             case 1008:
-                randomNumber = Random.Range(1, 5);
-                if(randomNumber == 1)
-                {
-                    itemId = 1007;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 501;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 508;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 4)
-                {
-                    itemId = 1004;
-                    itemCount = 1;
-                }
+                // 1008掉落：1007(1), 501(1), 508(1), 1004(1)
+                ItemManager.Instance.AddItem(501, 508);
+                EquipmentManager.Instance.AddEquipment(1007, 1004);
                 break;
 
             case 1009:
-                randomNumber = Random.Range(1, 3);
-                if(randomNumber == 1)
-                {
-                    itemId = 1003;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 1006;
-                    itemCount = 1;
-                }
+                // 1009掉落：1003(1), 1006(1)
+                EquipmentManager.Instance.AddEquipment(1003, 1006);
                 break;
 
             case 1010:
-                randomNumber = Random.Range(1, 3);
-                if(randomNumber == 1)
-                {
-                    itemId = 1020;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 1002;
-                    itemCount = 1;
-                }
+                // 1010掉落：1020(1), 1002(1)
+                EquipmentManager.Instance.AddEquipment(1020, 1002);
                 break;
 
             case 1011:
-                randomNumber = Random.Range(1, 7);
-                if(randomNumber == 1)
-                {
-                    itemId = 1010;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 1011;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 1012;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 4)
-                {
-                    itemId = 1013;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 5)
-                {
-                    itemId = 1014;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 6)
-                {
-                    itemId = 1015;
-                    itemCount = 1;
-                }
+                // 1011掉落：1010(1), 1011(1), 1012(1), 1013(1), 1014(1), 1015(1)
+                EquipmentManager.Instance.AddEquipment(1010, 1011, 1012, 1013, 1014, 1015);
+                break;
+                
+            case 1012:
+                // 1012掉落：1019(1), 508(3), 504(1), 505(1), 506(1), 507(1)
+                ItemManager.Instance.AddItem(508, 508, 508, 504, 505, 506, 507);
+                EquipmentManager.Instance.AddEquipment(1019);
                 break;
 
             case 1013:
-                randomNumber = Random.Range(1, 8);
-                if(randomNumber == 1)
-                {
-                    itemId = 502;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 2)
-                {
-                    itemId = 503;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 3)
-                {
-                    itemId = 504;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 4)
-                {
-                    itemId = 505;
-                    itemCount = 2;
-                }
-                else if(randomNumber == 5)
-                {
-                    itemId = 1021;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 6)
-                {
-                    itemId = 1016;
-                    itemCount = 1;
-                }
-                else if(randomNumber == 7)
-                {
-                    itemId = 1017;
-                    itemCount = 1;
-                }
+                // 1013掉落：502(2), 503(2), 504(2), 505(2), 1021(1), 1016(1), 1017(1)
+                ItemManager.Instance.AddItem(502, 502, 503, 503, 504, 504, 505, 505);
+                EquipmentManager.Instance.AddEquipment(1021, 1016, 1017);
                 break;
 
             default:
-                // 默认情况，可以设置默认掉落或空
-                itemId = 0;
-                itemCount = 0;
+                // 默认无掉落
                 break;
         }
 
-        //进行道具 / 装备的分配：
-        if(itemId / 1000 == 1)  //装备
-        {
-            EquipmentManager.Instance.AddEquipment(itemId, itemCount);
-        }
-
-        else{   //道具
-            ItemManager.Instance.AddItem(itemId, itemCount);
-        }
 
     }
 

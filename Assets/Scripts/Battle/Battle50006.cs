@@ -9,6 +9,7 @@ public class Battle50006 : BattleBase
     {
         base.OnComplete(enemyId);
 
+        PoolManager.Instance.SpawnFromPool("RewardBoss", this.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 

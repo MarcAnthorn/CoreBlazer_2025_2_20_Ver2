@@ -180,6 +180,8 @@ public class BattlePanel : BasePanel
 
           EventHub.Instance.RemoveEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
           EventHub.Instance.RemoveEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
+
+          EventHub.Instance.EventTrigger("Freeze", false);
      } 
 
 
@@ -239,7 +241,7 @@ public class BattlePanel : BasePanel
           
 
           //如果没找到空位，进行弹窗的弹出：
-          UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("精神值接近阈值! 装备数量达上限");
+          PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText("精神值接近阈值! 装备数量达上限");
      }
 
      //广播方法：将某一个装备卸下

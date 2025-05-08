@@ -37,7 +37,9 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
 
         equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);  
 
-        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"获得装备「{depulicateSource.name}」");
+        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"获得装备「{depulicateSource.name}」");
+
+        
   
     }
 
@@ -60,7 +62,7 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         }
          
 
-        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText(sb.ToString());
+        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText(sb.ToString());
   
     }
 
@@ -112,19 +114,28 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
             case 1007: return new Equipment_1007(equipment);
             case 1008: return new Equipment_1008(equipment);
             case 1009: return new Equipment_1009(equipment);
-            // case 1010: return new Equipment_1010(equipment);
-            // case 1011: return new Equipment_1011(equipment);
-            // case 1012: return new Equipment_1012(equipment);
-            // case 1013: return new Equipment_1013(equipment);
-            // case 1014: return new Equipment_1014(equipment);
-            // case 1015: return new Equipment_1015(equipment);
-            // case 1016: return new Equipment_1016(equipment);
-            // case 1017: return new Equipment_1017(equipment);
-            // case 1018: return new Equipment_1018(equipment);
+
+
+            case 1010: return new Equipment_1010(equipment);
+            case 1011: return new Equipment_1011(equipment);
+            case 1012: return new Equipment_1012(equipment);
+            case 1013: return new Equipment_1013(equipment);
+            case 1014: return new Equipment_1014(equipment);
+            case 1015: return new Equipment_1015(equipment);
+            case 1016: return new Equipment_1016(equipment);
+            case 1017: return new Equipment_1017(equipment);
+            case 1018: return new Equipment_1018(equipment);
+
+
             case 1019: return new Equipment_1019(equipment);
-            // case 1020: return new Equipment_1020(equipment);
-            // case 1021: return new Equipment_1021(equipment);
+
+
+            case 1020: return new Equipment_1020(equipment);
+            case 1021: return new Equipment_1021(equipment);
+
             case 1022: return new Equipment_1022(equipment);
+
+
             default:
                 Debug.LogError($"未找到对应id的装备，id为：{equipment.id}");
                 return null;
