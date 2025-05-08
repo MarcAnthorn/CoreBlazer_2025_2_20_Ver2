@@ -11,6 +11,8 @@ public class DialogueOptionBtn : MonoBehaviour
     public DialogueOrder myOrder;
     public TextMeshProUGUI txtOptionText;
 
+    public GameObject mask;
+
     void Awake()
     {
         btnOption = this.GetComponent<Button>();
@@ -21,9 +23,20 @@ public class DialogueOptionBtn : MonoBehaviour
         //进行特殊判断：2111的选项：1003 & 1012，如果节点9没有触发，那么这两个选项不可选择：
         if(!GameLevelManager.Instance.avgIndexIsTriggeredDic[1009] && myOrder.rootId == 2111 && (myOrder.orderId == 1003 || myOrder.orderId == 1012))
         {
-            
+            mask.SetActive(true);
         }
+
         btnOption.onClick.AddListener(()=>{
+
+            //进行特殊判断：2111的选项：如果节点9触发过，那么就可以被选中，此时判断是是否是选项1003 or 1012
+            if(myOrder.rootId == 2111 && (myOrder.orderId == 1003 || myOrder.orderId == 1012))
+            {
+                //如果是，那么清理当前的avgpanel的回调，替换成直接给物品：
+                
+
+            }
+
+
             //触发方法，让AVGPanel中的逻辑继续：
             EventHub.Instance.EventTrigger<int>("ChoiceIsMade", myOrder.nextOrderId);
         });

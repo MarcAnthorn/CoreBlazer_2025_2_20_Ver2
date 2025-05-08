@@ -77,6 +77,10 @@ public class AVGPanel : BasePanel
         EventHub.Instance.AddEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
         EventHub.Instance.AddEventListener<int>("ChoiceIsMade", ChoiceIsMade);
 
+        EventHub.Instance.AddEventListener<UnityAction<int>>("ReplaceCallback", ReplaceCallback);
+
+        
+
         npcObjectQueue = new Queue<GameObject>();
         npcObjectQueue.Enqueue(npcObjectTarget1);
         npcObjectQueue.Enqueue(npcObjectTarget2);
@@ -100,6 +104,8 @@ public class AVGPanel : BasePanel
     {
         EventHub.Instance.RemoveEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
         EventHub.Instance.RemoveEventListener<int>("ChoiceIsMade", ChoiceIsMade);
+
+        EventHub.Instance.RemoveEventListener<UnityAction<int>>("ReplaceCallback", ReplaceCallback);
     }
 
     protected override void Init()
@@ -547,6 +553,17 @@ public class AVGPanel : BasePanel
                 isErased = true;
             }
         });
+    }
+
+    //方法：外部调用，清理avg的回调，并且替代成新的回调：
+    //UnityAction<int> newCallback的int参数无意义，只是为了匹配avg的原先的callback
+    private void ReplaceCallback(UnityAction<int> newCallback)
+    {
+        if(callback != null)
+        {
+            callback = null;
+            callback = newCallback;
+        }
     }
 
     //方法：外部调用，通过广播当前需要显示的对话的orderBlock，执行对话：
