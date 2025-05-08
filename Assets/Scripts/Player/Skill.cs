@@ -295,6 +295,8 @@ public abstract class EnemySkill
     //技能的使用：
     abstract public void Use(Enemy enemy);    // 传入使用该技能的enemy实例
 
+    public float skillDamage;
+
 
     //调用后返回当前该技能的伤害的属性：
     //需要按照Skill的伤害结算公式 结合当前的玩家属性进行结算后返回
@@ -305,6 +307,7 @@ public abstract class EnemySkill
 
 }
 
+// 格斗
 public class EnemySkill_1001 : EnemySkill
 {
 
@@ -314,11 +317,152 @@ public class EnemySkill_1001 : EnemySkill
     }
 }
 
+// 毒针
 public class EnemySkill_1002 : EnemySkill
 {
 
     override public void Use(Enemy enemy)
     {
         EnemyManager.Instance.EnemySkill_1002(enemy);
+    }
+}
+
+// 新月之辉
+public class EnemySkill_1003 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1003(enemy);
+    }
+}
+
+// 心火
+public class EnemySkill_1004 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1004(enemy);
+    }
+}
+
+// 破势击
+public class EnemySkill_1005 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1005(enemy);
+    }
+}
+
+// 缚心铎声
+public class EnemySkill_1006 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1006(enemy);
+    }
+}
+
+// 落日
+public class EnemySkill_1007 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1007(enemy);
+    }
+}
+
+// 湖中女的复仇
+public class EnemySkill_1008 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1008(enemy);
+    }
+}
+
+// 魔音灌耳
+public class EnemySkill_1009 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1009(enemy);
+    }
+}
+
+// 伤口污染
+public class EnemySkill_1010 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1010(enemy);
+    }
+}
+
+// 恨意凝视
+public class EnemySkill_1012 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1012(enemy);
+    }
+}
+
+// 瘟疫吐息
+public class EnemySkill_1013 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1013(enemy);
+    }
+}
+
+// 怨念
+public class EnemySkill_1016 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1016(enemy);
+    }
+}
+
+// 鼠群意志
+public class EnemySkill_1020 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        BattleManager.Instance.SelectSkill_1020();
+    }
+}
+
+// 禁咒
+public class EnemySkill_1022 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1022(enemy);
+    }
+}
+
+// 最后一次守护
+public class EnemySkill_1023 : EnemySkill
+{
+
+    override public void Use(Enemy enemy)
+    {
+        BattleManager.Instance.SelectSkill_1023();
     }
 }

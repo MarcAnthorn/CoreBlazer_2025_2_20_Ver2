@@ -70,7 +70,7 @@ public class EnemyManager : Singleton<EnemyManager>
     }
     
     // 计算敌人造成的伤害
-    public void DamageCalculation(Player player, Enemy enemy, float rowDamage, DamageType damageType)
+    public void DamageCalculation(Player player, Enemy enemy, float rowDamage, DamageType damageType, Action action = null)
     {
         // 计算防御收益
         rowDamage = Mathf.Max(0, rowDamage - player.DEF.value);
@@ -109,9 +109,13 @@ public class EnemyManager : Singleton<EnemyManager>
 
                 //调用玩家受击方法+特殊效果(中毒)
                 //改方法内部存在对玩家的死亡判断；
-                TurnCounter.Instance.AddPlayerBuff(new BattleBuff_1001());
+                // TurnCounter.Instance.AddPlayerBuff(new BattleBuff_1001());
                 PlayerManager.Instance.player.BeHurted(dmg);
 
+                if (action != null)
+                {
+                    action.Invoke();
+                }
                 // 调用UI更新：
                 EventHub.Instance.EventTrigger("UpdateAllUIElements");
                 count++;
@@ -233,7 +237,215 @@ public class EnemyManager : Singleton<EnemyManager>
         Debug.Log("敌人发动 毒针！");
         //将STR属性值转化为 攻击值 
         float rowDamage = enemy.SPD * 0.2f + 8;
-        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill);
+        Action action = () => AddBuffToEnemySkill_1002();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1002()
+    {
+        BattleBuff buff = new BattleBuff_1001();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 新月之辉
+    public void EnemySkill_1003(Enemy enemy)
+    {
+        Debug.Log("敌人发动 新月之辉！");
+        float rowDamage = 50;
+        Action action = () => AddBuffToEnemySkill_1003();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1003()
+    {
+        float randomValue = UnityEngine.Random.Range(0f, 1f);
+        if (randomValue <= 0.6f)
+        {
+            Debug.Log("至圣斩 施加了易伤效果");
+            for (int i = 0; i < 10; i++)
+            {
+                BattleBuff buff = new BattleBuff_1002();
+                TurnCounter.Instance.AddPlayerBuff(buff);
+            }
+            return;
+        }
+        Debug.Log("至圣斩 未能施加易伤效果");
+    }
+
+    // 心火
+    public void EnemySkill_1004(Enemy enemy)
+    {
+        Debug.Log("敌人发动 心火！");
+        enemy.HP -= 10;
+        AddBuffToEnemySkill_1004();
+    }
+    private void AddBuffToEnemySkill_1004()
+    {
+        BattleBuff buff = new BattleBuff_1003();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 破势击
+    public void EnemySkill_1005(Enemy enemy)
+    {
+        Debug.Log("敌人发动 破势击！");
+        float rowDamage = 30 + enemy.STR * 1.0f;
+        Action action = () => AddBuffToEnemySkill_1005();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1005()
+    {
+        BattleBuff buff = new BattleBuff_1004();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 缚心铎声
+    public void EnemySkill_1006(Enemy enemy)
+    {
+        Debug.Log("敌人发动 缚心铎声！");
+        float rowDamage = 50 + enemy.STR * 1.0f;   // SAN值用STR代替
+        Action action = () => AddBuffToEnemySkill_1006();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1006()
+    {
+        BattleBuff buff = new BattleBuff_1005();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 落日
+    public void EnemySkill_1007(Enemy enemy)
+    {
+        Debug.Log("敌人发动 落日！");
+        float rowDamage = 50;
+        Action action = () => AddBuffToEnemySkill_1007();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1007()
+    {
+        BattleBuff buff = new BattleBuff_1006();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 湖中女的复仇
+    public void EnemySkill_1008(Enemy enemy)
+    {
+        Debug.Log("敌人发动 湖中女的复仇！");
+        float rowDamage = 50 + (enemy.HP_limit - enemy.HP) * 1.0f;
+        Action action = () => AddBuffToEnemySkill_1008();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1008()
+    {
+        BattleBuff buff = new BattleBuff_1007();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 魔音灌耳
+    public void EnemySkill_1009(Enemy enemy)
+    {
+        Debug.Log("敌人发动 魔音灌耳！");
+        float rowDamage = 50;
+        Action action = () => AddBuffToEnemySkill_1009();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1009()
+    {
+        BattleBuff buff = new BattleBuff_1008();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 伤口污染
+    public void EnemySkill_1010(Enemy enemy)
+    {
+        Debug.Log("敌人发动 伤口污染！");
+        float rowDamage = 50 + (enemy.HP_limit - enemy.HP) * 1.0f;
+        Action action = () => AddBuffToEnemySkill_1010();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1010()
+    {
+        BattleBuff buff = new BattleBuff_1009();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 恨意凝视
+    public void EnemySkill_1012(Enemy enemy)
+    {
+        Debug.Log("敌人发动 恨意凝视！");
+        float rowDamage = 20 + enemy.DEF * 1.0f;
+        Action action = () => AddBuffToEnemySkill_1012();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1012()
+    {
+        BattleBuff buff = new BattleBuff_1011();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 瘟疫吐息
+    public void EnemySkill_1013(Enemy enemy)
+    {
+        Debug.Log("敌人发动 瘟疫吐息！");
+        float rowDamage = 20;
+        Action action = () => AddBuffToEnemySkill_1013();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1013()
+    {
+        BattleBuff buff = new BattleBuff_1012();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 怨念
+    public void EnemySkill_1016(Enemy enemy)
+    {
+        Debug.Log("敌人发动 怨念！");
+        float rowDamage = 30 + BattleManager.Instance.player.STR.value * 0.5f;
+        Action action = () => AddBuffToEnemySkill_1016();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1016()
+    {
+        BattleBuff buff = new BattleBuff_1015();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 鼠群意志
+    public void EnemySkill_1020(Enemy enemy)
+    {
+        Debug.Log("敌人发动 鼠群意志！");
+        enemy.HP -= 20 + enemy.STR * 2.0f + enemy.SPD * 1.0f;   // SAN值用STR代替
+        AddBuffToEnemySkill_1020();
+    }
+    private void AddBuffToEnemySkill_1020()
+    {
+        BattleBuff buff = new BattleBuff_1019();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 禁咒
+    public void EnemySkill_1022(Enemy enemy)
+    {
+        Debug.Log("敌人发动 禁咒！");
+        float rowDamage = 20 + (BattleManager.Instance.player.HP.value_limit - BattleManager.Instance.player.HP.value) * 0.8f;
+        Action action = () => AddBuffToEnemySkill_1022();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1022()
+    {
+        BattleBuff buff = new BattleBuff_1021();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 最后一次守护
+    public void EnemySkill_1023(Enemy enemy)
+    {
+        Debug.Log("敌人发动 最后一次守护！");
+        AddBuffToEnemySkill_1023();
+    }
+    private void AddBuffToEnemySkill_1023()
+    {
+        BattleBuff buff = new BattleBuff_1022();
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
 }

@@ -136,20 +136,48 @@ public class LoadManager : Singleton<LoadManager>
 
 
         // 手动实例化并添加所有的敌人
-        allEnemies.Add(1001, new Enemy_1001());
-        allEnemies.Add(1002, new Enemy_1002());
-        allEnemies.Add(1003, new Enemy_1003());
-        allEnemies.Add(1004, new Enemy_1004());
-        allEnemies.Add(1005, new Enemy_1005());
-        allEnemies.Add(1006, new Enemy_1006());
-        allEnemies.Add(1007, new Enemy_1007());
-        allEnemies.Add(1008, new Enemy_1008());
-        allEnemies.Add(1009, new Enemy_1009());
-        allEnemies.Add(1010, new Enemy_1010());
-        allEnemies.Add(1011, new Enemy_1011());
-        allEnemies.Add(1012, new Enemy_1012());
-        allEnemies.Add(1013, new Enemy_1013());
-        allEnemies.Add(1014, new Enemy_1014());
+        allEnemies.Add(1001, new Enemy_1001(
+            new EnemySkill_1001(), new EnemySkill_1002()
+            ));
+        allEnemies.Add(1002, new Enemy_1002(
+            new EnemySkill_1001(), new EnemySkill_1010()
+            ));
+        allEnemies.Add(1003, new Enemy_1003(
+            new EnemySkill_1001()
+            ));
+        allEnemies.Add(1004, new Enemy_1004(
+            new EnemySkill_1001(), new EnemySkill_1004()
+            ));
+        allEnemies.Add(1005, new Enemy_1005(
+            new EnemySkill_1001(), new EnemySkill_1004(), new EnemySkill_1012()
+            ));
+        allEnemies.Add(1006, new Enemy_1006(
+            new EnemySkill_1001(), new EnemySkill_1005(), new EnemySkill_1004()
+            ));
+        allEnemies.Add(1007, new Enemy_1007(
+            new EnemySkill_1001(), new EnemySkill_1009()
+            ));
+        allEnemies.Add(1008, new Enemy_1008(
+            new EnemySkill_1001()
+            ));
+        allEnemies.Add(1009, new Enemy_1009(
+            new EnemySkill_1001(), new EnemySkill_1004(), new EnemySkill_1001()
+            ));
+        allEnemies.Add(1010, new Enemy_1010(
+            new EnemySkill_1001()
+            ));
+        allEnemies.Add(1011, new Enemy_1011(
+            new EnemySkill_1016(), new EnemySkill_1012(), new EnemySkill_1004()
+            ));
+        allEnemies.Add(1012, new Enemy_1012(
+            new EnemySkill_1001(), new EnemySkill_1002(), new EnemySkill_1013()
+            ));
+        allEnemies.Add(1013, new Enemy_1013(
+            new EnemySkill_1001()
+            ));
+        allEnemies.Add(1014, new Enemy_1014(
+            new EnemySkill_1001(), new EnemySkill_1023(), new EnemySkill_1022()
+            ));
 
 //--------------测试--------------------------------------------
         
