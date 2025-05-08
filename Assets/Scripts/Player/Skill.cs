@@ -86,6 +86,8 @@ public class Skill_1003 : Skill
         skillDamageText = "50";
         skillCost = 2;
         skillBuffText = "攻击命中后，有较高概率附带10层易伤";
+
+        skillDamage = 50;
     }
 
     override public void Use()
@@ -104,6 +106,8 @@ public class Skill_1004 : Skill
         skillDamageText = "10";
         skillBuffText = "对自己造成伤害，并获得'燃血狂怒'buff";
         skillCost = 1;
+
+        skillDamage = 0;
     }
 
     override public void Use()
@@ -121,6 +125,8 @@ public class Skill_1005 : Skill
         skillIconPath = skillName = "破势击";
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到力量伤害后，施加12层易伤。予debuff持有者的对手2层力量增伤";
+
+        skillDamage = 50;
     }
 
     override public void Use()
@@ -139,6 +145,8 @@ public class Skill_1006 : Skill
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到力量伤害后，给对手施加3层dot增伤和3层怪谈增伤";
         skillCost = 2;
+
+        skillDamage = 50;
     }
 
     override public void Use()
@@ -157,6 +165,8 @@ public class Skill_1007 : Skill
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到dot伤害或道具伤害后，给对手施加3层力量增伤";
         skillCost = 2;
+
+        skillDamage = 50;
     }
 
     override public void Use()
@@ -175,6 +185,8 @@ public class Skill_1008 : Skill
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到怪谈伤害后，予debuff持有者的对手施加3层力量增伤";
         skillCost = 2;
+
+        skillDamage = 50;
     }
 
     override public void Use()
@@ -193,6 +205,8 @@ public class Skill_1009 : Skill
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到dot伤害后，予debuff持有者的对手施加3层怪谈增伤和3层易伤";
         skillCost = 2;
+
+        skillDamage = 50;
     }
 
     override public void Use()
@@ -211,6 +225,8 @@ public class Skill_1010 : Skill
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到dot伤害后，给对手施加3层易伤";
         skillCost = 2;
+
+        skillDamage = 50;
     }
 
     override public void Use()
@@ -229,6 +245,8 @@ public class Skill_1020 : Skill
         skillDamageText = "20";
         skillBuffText = "①对手受到dot伤害后，自己+30%连击";
         skillCost = 1;
+
+        skillDamage = 20;
     }
 
     override public void Use()
@@ -247,6 +265,8 @@ public class Skill_1023 : Skill
         skillDamageText = "0";
         skillBuffText = "抵挡一次致命伤害。（剩余1点生命值）";
         skillCost = 1;
+
+        skillDamage = 0;
     }
 
     override public void Use()

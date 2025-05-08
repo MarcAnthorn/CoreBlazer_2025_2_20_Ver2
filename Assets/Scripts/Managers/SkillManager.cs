@@ -22,95 +22,146 @@ public class SkillManager : Singleton<SkillManager>
     // 释放技能
     public void ReleaseSkill(ref int actionPoint, int skillId, Player player, Enemy enemy)
     {
+        bool isActionPointEnough = true;
+        var skillDic = LoadManager.Instance.allSkills;
+
+        //技能名改成全自动了，只需要写 isActionPointEnough = false; 就行；
         switch (skillId)
         {
             case 1001:
-                Skill_1001(enemy);
                 if (actionPoint >= 1)
+                {
                     actionPoint -= 1;
+                    Skill_1001(enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 格斗");
+                    isActionPointEnough = false;
                 break;
+
             case 1002:
-                Skill_1002(enemy);
                 if (actionPoint >= 0)
+                {
                     actionPoint -= 0;
+                    Skill_1002(enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 毒针");
+                    isActionPointEnough = false;
                 break;
+
             case 1003:
                 Skill_1003(enemy);
-                if (actionPoint >= 3)
+                if (actionPoint >= 3) 
+                { 
                     actionPoint -= 3;
+                    Skill_1003(enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 新月之辉");
+                    isActionPointEnough = false;
                 break;
+
             case 1004:
-                Skill_1004(player);
                 if (actionPoint >= 1)
+                {
                     actionPoint -= 1;
+                    Skill_1004(player);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 心火");
+                    isActionPointEnough = false;
                 break;
+
             case 1005:
-                Skill_1005(player, enemy);
                 if (actionPoint >= 2)
+                {
                     actionPoint -= 2;
+                    Skill_1005(player, enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 破势击");
+                    isActionPointEnough = false;
                 break;
+
             case 1006:
-                Skill_1006(player, enemy);
                 if (actionPoint >= 2)
+                {
                     actionPoint -= 2;
+                    Skill_1006(player, enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 缚心铎声");
+                    isActionPointEnough = false;
                 break;
+                
             case 1007:
-                Skill_1007(enemy);
                 if (actionPoint >= 2)
+                {
                     actionPoint -= 2;
+                    Skill_1007(enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 落日");
+                    isActionPointEnough = false;
                 break;
+
             case 1008:
-                Skill_1008(player, enemy);
                 if (actionPoint >= 2)
+                {
                     actionPoint -= 2;
+                    Skill_1008(player, enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 湖中女的复仇");
+                    isActionPointEnough = false;
                 break;
+
             case 1009:
-                Skill_1009(enemy);
                 if (actionPoint >= 2)
+                {
                     actionPoint -= 2;
+                    Skill_1009(enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 魔音灌耳");
+                    isActionPointEnough = false;
                 break;
+
             case 1010:
-                Skill_1010(enemy);
                 if (actionPoint >= 2)
+                {
                     actionPoint -= 2;
+                    Skill_1010(enemy);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 伤口污染");
+                    isActionPointEnough = false;
                 break;
+
             case 1020:
-                Skill_1020(player);
                 if (actionPoint >= 1)
+                {
                     actionPoint -= 1;
+                    Skill_1020(player);
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 鼠群意志");
+                    isActionPointEnough = false;
                 break;
+
             case 1023:
-                Skill_1023();
                 if (actionPoint >= 1)
+                {
                     actionPoint -= 1;
+                    Skill_1023();
+                }
                 else
-                    Debug.Log("角色行动点不足以释放技能 最后一次守护");
+                    isActionPointEnough = false;
                 break;
+
             default:
                 break;
         }
+        string skillName = skillDic[skillId].skillName;
+        if(!isActionPointEnough)    //行动点不足释放
+        {
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"行动点不足以释放技能「{skillName}」", true);
+        }
+        else    //行动点足够释放
+        {
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"你释放了技能「{skillName}」", true);
+        }
+    
 
     }
 
@@ -128,7 +179,8 @@ public class SkillManager : Singleton<SkillManager>
         List<Damage> damages = PlayerManager.Instance.CauseDamage(enemy, damage, damageType);
         if (damages.Count == 0)
         {
-            Debug.Log("角色发出的伤害被闪避了!");
+            Debug.Log("闪避触发");
+            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-1, true);
         }
         else
         {
@@ -147,6 +199,7 @@ public class SkillManager : Singleton<SkillManager>
 
                 //结算出的对敌人的伤害
                 Debug.LogWarning($"结算出的对敌人的伤害：{dmg.damage}");
+                EventHub.Instance.EventTrigger("UpdateDamangeText", dmg.damage, true);
                 
                 //调用敌人受击方法
                 EnemyManager.Instance.EnemyHurted(enemy.positionId, dmg);

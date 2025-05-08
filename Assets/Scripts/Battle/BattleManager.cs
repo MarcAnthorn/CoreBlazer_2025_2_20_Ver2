@@ -146,7 +146,6 @@ public class BattleManager : Singleton<BattleManager>
         // 将技能点交给 ReleaseSkill 方法处理
         SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, enemies[playerTarget - 1]);
 
-        EventHub.Instance.EventTrigger("UpdateAllUIElements");
         // 阻塞，播放技能释放动画以及敌人受伤动画
         // 注意：播放动画的脚本处需要使用多线程
         while (true)
@@ -180,8 +179,7 @@ public class BattleManager : Singleton<BattleManager>
             PlayerUseItem();
 
 
-        //玩家发起进攻之后，更新UI：
-        EventHub.Instance.EventTrigger("UpdateAllUIElements");
+
 
         // 检查敌人状态
         List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
@@ -234,7 +232,7 @@ public class BattleManager : Singleton<BattleManager>
         // }
 
         // 行动点检查
-        if (actionPoint > 0)
+        if (actionPoint >= 0)
         {
             Debug.Log($"当前剩余{actionPoint}个行动点!");
             EventHub.Instance.EventTrigger("UpdateAllUIElements");
@@ -310,6 +308,9 @@ public class BattleManager : Singleton<BattleManager>
         foreach(var s in enemy.enemySkills)
         {
             s.Use(enemy);
+
+            //敌方释放技能的Tip：
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"「{enemy.name}」释放了技能「{s.skillName}」", true);
 
             yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
         }

@@ -172,11 +172,19 @@ public class BattleBuff_1001 : BattleBuff
         if(flag == 0)
         {
             BattleManager.Instance.player.HP.AddValue(-10 * overlyingCount);
+        
+            //更新伤害显示面板：
+            //注意：要想触发事件，必须要是浮点型
+            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)(10 * overlyingCount), true);    
         }
 
         else if(flag == 1)
         {
             BattleManager.Instance.enemies[0].HP -= 10 * overlyingCount;
+
+            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)(10 * overlyingCount), false);
+
+
         }
 
         else
