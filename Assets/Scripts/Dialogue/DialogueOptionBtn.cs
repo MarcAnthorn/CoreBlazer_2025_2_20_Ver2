@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class DialogueOptionBtn : MonoBehaviour
@@ -33,6 +34,9 @@ public class DialogueOptionBtn : MonoBehaviour
             if(myOrder.rootId == 2111 && (myOrder.orderId == 1003 || myOrder.orderId == 1012))
             {
                 //如果是，那么清理当前的avgpanel的回调，替换成直接给物品：
+                EventHub.Instance.EventTrigger<UnityAction<int>>("ReplaceCallback", (int 占位)=>{
+                    EquipmentManager.Instance.AddEquipment(1010, 1011, 1012, 1013, 1014, 1015, 1019);
+                });
                 
 
 
