@@ -164,6 +164,7 @@ public class BattleBuff_1001 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
         // overlyingCount++;
+        buffDescriptionText = "\"①在每个回合结束时的时候触发中毒伤害。②层数归零或者倒计时归零时移除该dot。\"";
     }
     
     // flag表示Buff持有者：flag == 0 时，持有者为角色
@@ -221,6 +222,7 @@ public class BattleBuff_1002 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
 
+        buffDescriptionText = "\"①在伤害结算的时候影响公式中的乘区②层数归零或者倒计时归零时移除该debuff。\"";
     }
 
     override public void OnEffect(int 占位)
@@ -254,6 +256,7 @@ public class BattleBuff_1003 : BattleBuff
         allowOverlying = false;
         overlyingLimit = 1;
 
+        buffDescriptionText = "\"①生命值高于50%时，可扣除自身当前生命值的80%，使自身暴击率提升100%\r\n②层数归零或者倒计时归零时移除该buff。\"";
     }
 
     override public void OnEffect(int 占位)
@@ -305,6 +308,7 @@ public class BattleBuff_1004 : BattleBuff
         allowOverlying = false;
         overlyingLimit = 1;
 
+        buffDescriptionText = "\"①debuff的持有者力量伤害后，给该debuff的持有者施加12层易伤，给该debuff的施加者施加2层力量增伤\"";
     }
 
     override public void OnEffect(int flag)
@@ -363,6 +367,7 @@ public class BattleBuff_1005 : BattleBuff
         allowOverlying = false;
         overlyingLimit = 1;
 
+        buffDescriptionText = "\"①debuff的持有者力量伤害后，给该debuff的持有者施加3层dot增伤和该debuff的施加者3层怪谈增伤\"";
     }
 
     override public void OnEffect(int flag)
@@ -421,6 +426,7 @@ public class BattleBuff_1006 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
 
+        buffDescriptionText = "\"①debuff的持有者受到dot伤害或道具伤害后，给该debuff的施加者施加3层力量增伤\"";
     }
 
     override public void OnEffect(int flag)
@@ -469,6 +475,7 @@ public class BattleBuff_1007 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
 
+        buffDescriptionText = "\"①debuff的持有者受到怪谈伤害后，给debuff的施加者施加3层力量增伤\"";
     }
 
     override public void OnEffect(int flag)
@@ -517,6 +524,7 @@ public class BattleBuff_1008 : BattleBuff
         allowOverlying = false;
         overlyingLimit = 1;
 
+        buffDescriptionText = "\"①debuff的持有者受到dot伤害后，给debuff的施加者施加3层怪谈增伤和3层易伤\"";
     }
 
     override public void OnEffect(int flag)
@@ -575,6 +583,7 @@ public class BattleBuff_1009 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
 
+        buffDescriptionText = "\"①debuff的持有者受到dot伤害后，给debuff的施加者施加3层易伤\"";
     }
 
     override public void OnEffect(int flag)
@@ -623,6 +632,7 @@ public class BattleBuff_1019 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 5;
 
+        buffDescriptionText = "\"①debuff的持有者受到dot伤害后，自己+30%连击\"";
     }
 
     override public void OnEffect(int flag)
@@ -663,6 +673,7 @@ public class BattleBuff_1022 : BattleBuff
         allowOverlying = false;
         overlyingLimit = 1;
 
+        buffDescriptionText = "\"抵挡一次致命伤害。（剩余1点生命值）\"";
     }
 
     override public void OnEffect(int flag = 0)
@@ -710,6 +721,7 @@ public class BattleBuff_1023 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
 
+        buffDescriptionText = "\"①在对应伤害结算的时候影响公式中的乘区\r\n②层数归零或者倒计时归零时移除该debuff。\"";
     }
 
     override public void OnEffect(int 占位)
@@ -744,6 +756,7 @@ public class BattleBuff_1024 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
 
+        buffDescriptionText = "\"①在对应伤害结算的时候影响公式中的乘区\r\n②层数归零或者倒计时归零时移除该debuff。\"";
     }
 
     override public void OnEffect(int 占位)
@@ -778,6 +791,7 @@ public class BattleBuff_1025 : BattleBuff
         allowOverlying = true;
         overlyingLimit = 99;
 
+        buffDescriptionText = "\"①在对应伤害结算的时候影响公式中的乘区\r\n②层数归零或者倒计时归零时移除该debuff。\"";
     }
 
     override public void OnEffect(int 占位)
