@@ -147,71 +147,136 @@ public class PlayerController : PlayerBase
         if (!isLightShrinking)
             return;
 
-        // 更新时间计数器
-        lightShrinkingTime += Time.deltaTime;
-
-        // 每满 1 秒，计算本秒应减少的值
-        shrinkingTimer += Time.deltaTime;
-        if (shrinkingTimer >= 1f)
-        {
-            shrinkingTimer -= 1f;
-
-            float t = Mathf.Min(lightShrinkingTime, 3f); // 最大 3 秒
-            shrinkingTarget = t * t; // 每秒减少 t²
-            shrinkingLeftThisSecond = shrinkingTarget;
-        }
-
-        // 平滑减少灯光值
-        if (shrinkingLeftThisSecond > 0f)
-        {
-            // 按帧等量减少
-            float reduceThisFrame = shrinkingTarget * (Time.deltaTime / 1f); // 在一秒内匀速减完
-            reduceThisFrame = Mathf.Min(reduceThisFrame, shrinkingLeftThisSecond);
-
-            L -= reduceThisFrame;
-            shrinkingLeftThisSecond -= reduceThisFrame;
-        }
-
-        Debug.Log($"L is {L}");
-
-        // 更新光照半径
+        // 更新时间计数器（限制最大9秒）
+        lightShrinkingTime = Mathf.Min(lightShrinkingTime + Time.deltaTime, 9f);
+        
+        // 计算当前t值（0-9秒）
+        float t = lightShrinkingTime;
+        
+        // 目标L值：LMax - t²
+        float targetL = LMax - t * t;
+        
+        // 平滑过渡到目标值（使用Lerp或阻尼弹簧）
+        L = Mathf.Lerp(L, targetL, Time.deltaTime * 5f); // 5是平滑系数，可调整
+        
+        // 确保不会低于目标值（防止lerp过冲）
+        L = Mathf.Max(L, targetL);
+        
+        // 更新光照半径（优化版）
+        float radiusMultiplier = 0f;
         switch (GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.Tutorial:
             case E_GameLevelType.Second:
-                spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;
+                radiusMultiplier = 0.02f / 20f;
                 break;
-
             case E_GameLevelType.First:
-                spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
+                radiusMultiplier = 0.015f / 20f;
                 break;
-
             case E_GameLevelType.Third:
-                spriteLight.pointLightOuterRadius = (0.03f / 20f) * L * L;
+                radiusMultiplier = 0.03f / 20f;
                 break;
         }
+        spriteLight.pointLightOuterRadius = radiusMultiplier * L * L;
 
         // 灯光最小保护
         if (spriteLight.pointLightOuterRadius <= 2.12f)
         {
-            if (!isWarningLocked)
-            {
-                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("灯光消散！ 正在受到黑暗侵蚀！", true);
-                isWarningLocked = true;
-            }
-
-            spriteLight.pointLightOuterRadius = 2.12f;
-            L = 21.2f;
-            TriggerLightShrinking(false);
-
-            isDamaging = isDamageLocked ? false : true;
-            if (isDamaging)
-            {
-                damageCoroutine = StartCoroutine(DamageCoroutine());
-                damageTime = 0;
-            }
+            HandleMinimumLight();
         }
     }
+
+    private void HandleMinimumLight()
+    {
+        if (!isWarningLocked)
+        {
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("灯光消散！ 正在受到黑暗侵蚀！", true);
+            isWarningLocked = true;
+        }
+
+        spriteLight.pointLightOuterRadius = 2.12f;
+        L = 21.2f;
+        TriggerLightShrinking(false);
+
+        isDamaging = isDamageLocked ? false : true;
+        if (isDamaging)
+        {
+            damageCoroutine = StartCoroutine(DamageCoroutine());
+            damageTime = 0;
+        }
+    }
+
+
+    // private void LightShrinking()
+    // {
+    //     if (!isLightShrinking)
+    //         return;
+
+    //     // 更新时间计数器
+    //     lightShrinkingTime += Time.deltaTime;
+
+    //     // 每满 1 秒，计算本秒应减少的值
+    //     shrinkingTimer += Time.deltaTime;
+    //     if (shrinkingTimer >= 1f)
+    //     {
+    //         shrinkingTimer -= 1f;
+
+    //         float t = Mathf.Min(lightShrinkingTime, 3f); // 最大 3 秒
+    //         shrinkingTarget = t * t; // 每秒减少 t²
+    //         shrinkingLeftThisSecond = shrinkingTarget;
+    //     }
+
+    //     // 平滑减少灯光值
+    //     if (shrinkingLeftThisSecond > 0f)
+    //     {
+    //         // 按帧等量减少
+    //         float reduceThisFrame = shrinkingTarget * (Time.deltaTime / 1f); // 在一秒内匀速减完
+    //         reduceThisFrame = Mathf.Min(reduceThisFrame, shrinkingLeftThisSecond);
+
+    //         L -= reduceThisFrame;
+    //         shrinkingLeftThisSecond -= reduceThisFrame;
+    //     }
+
+    //     Debug.Log($"L is {L}");
+
+    //     // 更新光照半径
+    //     switch (GameLevelManager.Instance.gameLevelType)
+    //     {
+    //         case E_GameLevelType.Tutorial:
+    //         case E_GameLevelType.Second:
+    //             spriteLight.pointLightOuterRadius = (0.02f / 20f) * L * L;
+    //             break;
+
+    //         case E_GameLevelType.First:
+    //             spriteLight.pointLightOuterRadius = (0.015f / 20f) * L * L;
+    //             break;
+
+    //         case E_GameLevelType.Third:
+    //             spriteLight.pointLightOuterRadius = (0.03f / 20f) * L * L;
+    //             break;
+    //     }
+
+    //     // 灯光最小保护
+    //     if (spriteLight.pointLightOuterRadius <= 2.12f)
+    //     {
+    //         if (!isWarningLocked)
+    //         {
+    //             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("灯光消散！ 正在受到黑暗侵蚀！", true);
+    //             isWarningLocked = true;
+    //         }
+
+    //         spriteLight.pointLightOuterRadius = 2.12f;
+    //         L = 21.2f;
+    //         TriggerLightShrinking(false);
+
+    //         isDamaging = isDamageLocked ? false : true;
+    //         if (isDamaging)
+    //         {
+    //             damageCoroutine = StartCoroutine(DamageCoroutine());
+    //             damageTime = 0;
+    //         }
+    //     }
+    // }
 
 
 
