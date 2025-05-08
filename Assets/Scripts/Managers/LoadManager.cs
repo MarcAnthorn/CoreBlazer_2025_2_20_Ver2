@@ -741,6 +741,9 @@ public class LoadManager : Singleton<LoadManager>
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
         tempBlock.rootId = showIndex;
 
+
+        Debug.Log($"当前的rootid是：{showIndex}");
+
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);
