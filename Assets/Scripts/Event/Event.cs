@@ -165,7 +165,8 @@ public class Event          //
             //如果有战斗，那么会将战斗id播放给BattlePanel：
             if(this.result.enemyId != 0)
             {
-                Debug.LogWarning($"遭遇敌人，id为：{result.enemyId }");
+                //等待文本播放结束：
+                EventHub.Instance.AddEventListener("TriggerEventBattle", TriggerEventBattle);
             }
             
 
@@ -186,6 +187,22 @@ public class Event          //
             Debug.LogWarning("正在尝试访问一个结果为 null 的事件结果");
         }
 
+    }
+
+    public void TriggerEventBattle()
+    {
+        TriggerBattle(this.result.enemyId);
+    }
+
+    public void TriggerBattle(int enemyId)
+    {
+        //关闭事件面板：
+        UIManager.Instance.HidePanel<GameMainPanel>();
+        
+        UIManager.Instance.ShowPanel<BattlePanel>().InitEnemyInfo(enemyId);
+
+        //触发之后，就移除自己：
+        EventHub.Instance.RemoveEventListener("TriggerEventBattle", TriggerEventBattle);
     }
 
     // public void ReadKaidanTextFrom(KaidanText begin)    //顺序读取怪诞文本

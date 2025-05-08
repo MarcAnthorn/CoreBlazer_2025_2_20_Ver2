@@ -300,7 +300,8 @@ public class GameMainPanel : BasePanel
             }
         }
 
-        
+        //播放结束：尝试进行调用战斗：
+        EventHub.Instance.EventTrigger("TriggerEventBattle");     
 
     }   
 

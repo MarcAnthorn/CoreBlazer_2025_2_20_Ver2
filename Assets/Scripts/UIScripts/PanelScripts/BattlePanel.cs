@@ -85,8 +85,12 @@ public class BattlePanel : BasePanel
 
 
         //----------------测试战斗：----------------------------
-        TestBattle();
+     //    TestBattle();
         //----------------测试战斗：----------------------------
+
+
+        //初始化战斗：
+        BeginBattle();
 
 
         //先遍历所有的装备，如果有是装备中的，那么就直接装备就行：
@@ -104,12 +108,13 @@ public class BattlePanel : BasePanel
      }
 
 
-
+     //测试方法：
      private void TestBattle()
      {
           //更新保存的上次血量字段：
           lastPlayerHealthValue = 0;
           lastEnemyHealthValue = 0;
+
 
           PlayerManager.Instance.InitPlayer();
           EnemySkill[] enemySkills = new EnemySkill[] { new EnemySkill_1001(), new EnemySkill_1002() };
@@ -150,6 +155,20 @@ public class BattlePanel : BasePanel
 
      }
 
+     //初始化战斗方法：
+     public void BeginBattle()
+     {
+          //更新保存的上次血量字段：
+          lastPlayerHealthValue = 0;
+          lastEnemyHealthValue = 0;
+
+          Enemy[] enemies = new Enemy[] { enemy };
+
+          //开始战斗：
+          BattleManager.Instance.BattleInit(PlayerManager.Instance.player, enemies);
+          BattleManager.Instance.BattleStart();
+     }
+
      void OnDestroy()
      {
           EventHub.Instance.RemoveEventListener<Equipment>("EquipTarget", EquipTarget);
@@ -160,6 +179,16 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
           EventHub.Instance.RemoveEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
      } 
+
+
+     //外部调用方法：初始化敌人信息：
+     public void InitEnemyInfo(int enemyId)
+     {   
+          Enemy _enemy = LoadManager.Instance.allEnemies[enemyId];
+
+          imgEnemy.sprite = Resources.Load<Sprite>("Enemy/" + enemyId);
+          enemy = _enemy;
+     }
 
     //广播方法：将某一个装备装备后调用；
     //注意，后续将这个方法的空闲Slot数量检查、UI面板关闭、遮罩调用全部迁移出去，到EquipmentCheckPanel中；
