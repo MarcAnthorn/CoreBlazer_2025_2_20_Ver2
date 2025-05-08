@@ -17,8 +17,7 @@ public class WarningPanel : BasePanel
     protected override void Init()
     {
         btnConfirm.onClick.AddListener(()=>{
-            UIManager.Instance.HidePanel<WarningPanel>();
-            callback?.Invoke();
+            UIManager.Instance.HidePanel<WarningPanel>(callback);
         });
     }
 

@@ -46,7 +46,7 @@ public class BuffCheckerLogic : MonoBehaviour
         //初始化：buff图标、叠加层数以及剩余回合数；
         imgBuff.sprite = Resources.Load<Sprite>(_buff.buffIconPath);
         txtRamainingLayerCount.text = _buff.lastTurns.ToString();
-        txtOverlyingLayerCount.text = _buff.GetOverlyingCount().ToString();
+        txtOverlyingLayerCount.text = _buff.overlyingCount.ToString();
 
         _buff.isShownOnUI = true;
     }
@@ -70,7 +70,7 @@ public class BuffCheckerLogic : MonoBehaviour
             //如果是，那么执行buff数量的减少：
             txtRamainingLayerCount.text = remainCount.ToString();
 
-            txtOverlyingLayerCount.text = targetBuff.GetOverlyingCount().ToString();
+            txtOverlyingLayerCount.text = targetBuff.overlyingCount.ToString();
 
             //如果归零，那么移除：
             if(remainCount == 0)

@@ -28,9 +28,9 @@ public class BuffCheckPanel : BasePanel
     public void InitPanel(BattleBuff _buff)
     {
         imgBuff.sprite = Resources.Load<Sprite>(_buff.buffIconPath);
-        txtRemainingLayerCount.text = _buff.lastTurns.ToString();
-        txtOverlyingLayerCount.text = _buff.GetOverlyingCount().ToString();
-        txtBuffDescription.text = _buff.buffDescriptionText;
+        txtRemainingLayerCount.text = $"Buff持续回合剩余：{_buff.lastTurns} ";
+        txtOverlyingLayerCount.text = $"Buff叠加层数：{_buff.overlyingCount} ";
+        txtBuffDescription.text = $"{_buff.name}, {_buff.buffDescriptionText}";
     }
 
 }

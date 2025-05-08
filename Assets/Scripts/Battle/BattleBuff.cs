@@ -68,6 +68,8 @@ public abstract class BattleBuff
     //buff的图标路径（用于在战斗面板显示）：
     public string buffIconPath;
 
+    public int overlyingCount = 0;
+
     //buff文本描述：
     public string buffDescriptionText;
 
@@ -97,57 +99,57 @@ public abstract class BattleBuff
     // Buff加成去除
     public abstract void OnEnd(int flag);
 
-    // 用于获取子类的static字段overlyingCount
-    public int GetOverlyingCount()
-    {
-        Type type = this.GetType();         // GetType()获取派生类的类型
+    // 用于获取子类字段overlyingCount
+    // public int GetOverlyingCount()
+    // {
+    //     Type type = this.GetType();         // GetType()获取派生类的类型
 
-        //Marc修改：原先的反射找不到静态字段；
-        FieldInfo fieldInfo = type.GetField("overlyingCount", 
-            BindingFlags.Static | 
-            BindingFlags.Public | 
-            BindingFlags.FlattenHierarchy);
+    //     //Marc修改：原先的反射找不到静态字段；
+    //     FieldInfo fieldInfo = type.GetField("overlyingCount", 
+    //         BindingFlags | 
+    //         BindingFlags.Public | 
+    //         BindingFlags.FlattenHierarchy);
 
-        if (fieldInfo != null)
-        {
-            int overlyingCount = (int)fieldInfo.GetValue(null);
-            return overlyingCount;
-        }
-        else
-        {
-            Debug.LogWarning($"找不到字段！, 返回-1");
-            return -1;
-        }
+    //     if (fieldInfo != null)
+    //     {
+    //         int overlyingCount = (int)fieldInfo.GetValue(null);
+    //         return overlyingCount;
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning($"找不到字段！, 返回-1");
+    //         return -1;
+    //     }
 
-    }
+    // }
 
-    // 用于获取子类的static字段overlyingCount并进行自加1
-    public void OverlyingCountPlus(int value)
-    {
-        Type type = this.GetType();         // GetType()获取派生类的类型
-        FieldInfo fieldInfo = type.GetField("overlyingCount", 
-            BindingFlags.Static | 
-            BindingFlags.Public | 
-            BindingFlags.FlattenHierarchy);
+    // 用于获取子类字段overlyingCount并进行自加1
+    // public void OverlyingCountPlus(int value)
+    // {
+    //     Type type = this.GetType();         // GetType()获取派生类的类型
+    //     FieldInfo fieldInfo = type.GetField("overlyingCount", 
+    //         BindingFlags | 
+    //         BindingFlags.Public | 
+    //         BindingFlags.FlattenHierarchy);
 
-        if (fieldInfo != null)
-        {
-            int overlyingCount = (int)fieldInfo.GetValue(null);
-            overlyingCount += value;                            // 加上value
-            fieldInfo.SetValue(null, overlyingCount);           // 重新赋回去
-        }
-        else
-        {
-            Debug.LogWarning($"找不到字段！, 返回-1");
-        }
-    }
+    //     if (fieldInfo != null)
+    //     {
+    //         int overlyingCount = (int)fieldInfo.GetValue(null);
+    //         overlyingCount += value;                            // 加上value
+    //         fieldInfo.SetValue(null, overlyingCount);           // 重新赋回去
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning($"找不到字段！, 返回-1");
+    //     }
+    // }
 
 }
 
 public class BattleBuff_1001 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1001()
     {
@@ -166,23 +168,24 @@ public class BattleBuff_1001 : BattleBuff
         // overlyingCount++;
     }
     
-    // flag表示Buff持有者：flag == 0 时，持有者为角色
+    // flag表示Buff「持有者」：flag == 0 时，持有者为角色
     public override void OnEffect(int flag)
     {
         if(flag == 0)
         {
+            Debug.Log("I am in buff 1001");
             BattleManager.Instance.player.HP.AddValue(-10 * overlyingCount);
         
             //更新伤害显示面板：
-            //注意：要想触发事件，必须要是浮点型
-            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)(10 * overlyingCount), true);    
+            EventHub.Instance.EventTrigger<int, bool>("UpdateDamangeTextInt", 10 * overlyingCount, false);    
         }
 
         else if(flag == 1)
         {
+            Debug.Log("I am in buff 1001");
             BattleManager.Instance.enemies[0].HP -= 10 * overlyingCount;
 
-            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)(10 * overlyingCount), false);
+            EventHub.Instance.EventTrigger<int, bool>("UpdateDamangeTextInt", 10 * overlyingCount, true);
 
 
         }
@@ -203,7 +206,7 @@ public class BattleBuff_1001 : BattleBuff
 public class BattleBuff_1002 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1002()
     {
@@ -237,7 +240,7 @@ public class BattleBuff_1002 : BattleBuff
 public class BattleBuff_1003 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1003()
     {
@@ -289,7 +292,7 @@ public class BattleBuff_1003 : BattleBuff
 public class BattleBuff_1004 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1004()
     {
@@ -347,7 +350,7 @@ public class BattleBuff_1004 : BattleBuff
 public class BattleBuff_1005 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1005()
     {
@@ -405,7 +408,7 @@ public class BattleBuff_1005 : BattleBuff
 public class BattleBuff_1006 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1006()
     {
@@ -453,7 +456,7 @@ public class BattleBuff_1006 : BattleBuff
 public class BattleBuff_1007 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1007()
     {
@@ -501,7 +504,7 @@ public class BattleBuff_1007 : BattleBuff
 public class BattleBuff_1008 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1008()
     {
@@ -559,7 +562,7 @@ public class BattleBuff_1008 : BattleBuff
 public class BattleBuff_1009 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1009()
     {
@@ -607,7 +610,7 @@ public class BattleBuff_1009 : BattleBuff
 public class BattleBuff_1019 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1019()
     {
@@ -646,7 +649,7 @@ public class BattleBuff_1019 : BattleBuff
 public class BattleBuff_1022 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1022()
     {
@@ -692,7 +695,7 @@ public class BattleBuff_1022 : BattleBuff
 public class BattleBuff_1023 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1023()
     {
@@ -726,7 +729,7 @@ public class BattleBuff_1023 : BattleBuff
 public class BattleBuff_1024 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1024()
     {
@@ -760,7 +763,7 @@ public class BattleBuff_1024 : BattleBuff
 public class BattleBuff_1025 : BattleBuff
 {
     // 叠加的层数
-    public static int overlyingCount = 0;
+    // public int overlyingCount = 0;
 
     public BattleBuff_1025()
     {

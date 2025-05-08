@@ -30,6 +30,21 @@ public class BattleManager : Singleton<BattleManager>
     //协程句柄：
     private Coroutine roundCoroutine = null;
 
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        EventHub.Instance.AddEventListener<bool>("GameOver", GameOver);
+    }
+
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        EventHub.Instance.RemoveEventListener<bool>("GameOver", GameOver);
+    }
+
     // 初始化战斗
     // 在战斗开始之前调用；
     public void BattleInit(Player player, params Enemy[] enemies)
@@ -191,7 +206,7 @@ public class BattleManager : Singleton<BattleManager>
                 BattleBuff buff;
                 if (e.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
                 {
-                    buff.OverlyingCountPlus(-1);
+                    buff.overlyingCount -= 1;
                     e.buffs.Remove(buff);
                     buff.OnEffect(1);
                 }
@@ -265,7 +280,7 @@ public class BattleManager : Singleton<BattleManager>
             BattleBuff buff;
             if (TurnCounter.Instance.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
             {
-                buff.OverlyingCountPlus(-1);
+                buff.overlyingCount += 1;
                 TurnCounter.Instance.playerBuffs.Remove(buff);
                 buff.OnEffect(0);
             }
@@ -341,11 +356,21 @@ public class BattleManager : Singleton<BattleManager>
     {
         if (isWin)
         {
-            Debug.Log("玩家胜利！");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"击败敌人「{enemies[0].name}」，战斗胜利", false, ()=>{
+                UIManager.Instance.HidePanel<BattlePanel>();
+
+
+                //如果需要触发战斗的后续奖励，在这里触发；
+            });
         }
         else
         {
-            Debug.Log("玩家落败！");
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"战斗失败", false, ()=>{
+                UIManager.Instance.HidePanel<BattlePanel>();
+
+
+                //如果需要触发战斗的后续奖励，在这里触发；
+            });
         }
 
         TurnCounter.Instance.ClearTurnCounter();

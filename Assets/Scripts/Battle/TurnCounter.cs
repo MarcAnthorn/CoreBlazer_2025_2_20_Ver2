@@ -137,6 +137,7 @@ public class TurnCounter : Singleton<TurnCounter>
         {
             if (existingItem.GetType() == itemType)
             {
+                buff = existingItem;    //更改引用，指向当前的实例；
                 Debug.Log($"已经有同类 {itemType.Name}，不添加buff");
                 isAddLock = true;
             }
@@ -145,9 +146,9 @@ public class TurnCounter : Singleton<TurnCounter>
         if(!isAddLock)
             playerBuffs.Add(buff);
 
-        if (buff.GetOverlyingCount() < buff.overlyingLimit)
+        if (buff.overlyingCount < buff.overlyingLimit)
         {
-            buff.OverlyingCountPlus(1);
+            buff.overlyingCount += 1;
             buff.OnStart(0);
         }
         else
@@ -167,10 +168,13 @@ public class TurnCounter : Singleton<TurnCounter>
         var list = BattleManager.Instance.enemies[positionId].buffs;
         bool isAddLock = false;
         Type itemType = buff.GetType();
+
+        
         foreach (var existingItem in list)
         {
             if (existingItem.GetType() == itemType)
             {
+                buff = existingItem;
                 Debug.Log($"已经有同类 {itemType.Name}，不添加buff");
                 isAddLock = true;
             }
@@ -179,10 +183,10 @@ public class TurnCounter : Singleton<TurnCounter>
         if(!isAddLock)
             BattleManager.Instance.enemies[positionId].buffs.Add(buff);
 
-        if (buff.GetOverlyingCount() < buff.overlyingLimit)
+        if (buff.overlyingCount < buff.overlyingLimit)
         {
 
-            buff.OverlyingCountPlus(1);
+            buff.overlyingCount += 1;
             buff.OnStart(1);
         }
         else
@@ -199,7 +203,7 @@ public class TurnCounter : Singleton<TurnCounter>
         playerBuffs.Remove(buff);
 
         buff.OnEnd(0);
-        buff.OverlyingCountPlus(-1);
+        buff.overlyingCount -= 1;
     }
 
     // 移除敌人Buff
@@ -208,7 +212,7 @@ public class TurnCounter : Singleton<TurnCounter>
         BattleManager.Instance.enemies[positionId].buffs.Remove(buff);
 
         buff.OnEnd(1);
-        buff.OverlyingCountPlus(-1);
+        buff.overlyingCount -= 1;
     }
 
     // 查找角色身上是否存在某一类型的BattleBuff
@@ -216,7 +220,7 @@ public class TurnCounter : Singleton<TurnCounter>
     {
         foreach (var b in playerBuffs)
         {
-            if (b.GetType() == typeof(T) && b.GetOverlyingCount() != 0)
+            if (b.GetType() == typeof(T) && b.overlyingCount != 0)
             {
                 buff = b;
                 return true;
@@ -299,7 +303,7 @@ public class TurnCounter : Singleton<TurnCounter>
             calType = buff.calculationType;
             if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
-                extraValue += buff.influence * buff.GetOverlyingCount();
+                extraValue += buff.influence * buff.overlyingCount;
             }
         }
 

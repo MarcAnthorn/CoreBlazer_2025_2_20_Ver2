@@ -48,6 +48,10 @@ public abstract class BasePanel : MonoBehaviour
     public virtual void HideMe(UnityAction callBack)
     {
         //canvasGroup.alpha = 1;
+        if(canvasGroup == null)
+        {
+            canvasGroup = this.GetComponent<CanvasGroup>();
+        }
         canvasGroup.LeanAlpha(0, fadingTime).setOnComplete(() =>
         {
             callBack?.Invoke();
