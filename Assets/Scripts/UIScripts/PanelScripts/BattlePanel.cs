@@ -231,7 +231,7 @@ public class BattlePanel : BasePanel
 
           _enemy.HP = _enemy.HP_limit;  //将血量回满；
 
-          imgEnemy.sprite = Resources.Load<Sprite>("Enemy/" + enemyId);
+          imgEnemy.sprite = Resources.Load<Sprite>(Path.Combine("Enemy", enemyId.ToString()));
           enemy = _enemy;
      }
 
