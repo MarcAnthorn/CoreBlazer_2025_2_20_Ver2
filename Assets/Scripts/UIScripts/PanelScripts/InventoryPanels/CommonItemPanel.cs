@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,7 +46,7 @@ public class CommonItemPanel : ItemPanel
                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                     continue;
 
-                GameObject nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                GameObject nowItem = Instantiate(Resources.Load<GameObject>(Path.Combine("TestResources", "ItemInventory")), itemContent, false);
                 InventoryItemLogic script = nowItem.GetComponentInChildren<InventoryItemLogic>();
                 script.Init(infoItem);
 

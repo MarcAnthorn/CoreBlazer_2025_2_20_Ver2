@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -117,7 +118,7 @@ public class CommonItemPanelInventory : BasePanel
                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                     continue;
 
-                nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                nowItem = Instantiate(Resources.Load<GameObject>(Path.Combine("TestResources", "ItemInventory")), itemContent, false);
                 script = nowItem.GetComponentInChildren<InventoryItemLogic>();
                 script.Init(infoItem);
 
@@ -149,7 +150,7 @@ public class CommonItemPanelInventory : BasePanel
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;
 
-                    nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                    nowItem = Instantiate(Resources.Load<GameObject>(Path.Combine("TestResources", "ItemInventory")), itemContent, false);
                     script = nowItem.GetComponentInChildren<InventoryItemLogic>();
                     script.Init(infoItem);
 
@@ -169,7 +170,7 @@ public class CommonItemPanelInventory : BasePanel
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;
 
-                    nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
+                    nowItem = Instantiate(Resources.Load<GameObject>(Path.Combine("TestResources", "ItemInventory")), itemContent, false);
                     script = nowItem.GetComponentInChildren<InventoryItemLogic>();
                     script.Init(infoItem);
 

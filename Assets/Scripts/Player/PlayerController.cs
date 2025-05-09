@@ -530,8 +530,8 @@ public class PlayerController : PlayerBase
         }
         else
         {
-            if(isDamaging)
-                damageCoroutine = StartCoroutine(DamageCoroutine());
+            if(damageCoroutine != null)
+                StopCoroutine(damageCoroutine);
         }
 
 

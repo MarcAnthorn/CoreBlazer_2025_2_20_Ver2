@@ -23,7 +23,12 @@ public class PlayerAttributePanel : BasePanel
     protected override void Init()
     {
         UpdateAttributeText();
-        if(Input.anyKeyDown)
+       
+    }
+
+    private void Update()
+    {
+         if(Input.anyKeyDown)
         {
             UIManager.Instance.HidePanel<PlayerAttributePanel>();
         }

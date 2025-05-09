@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class EquipmentPanelInventory : BasePanel
@@ -53,7 +54,7 @@ public class EquipmentPanelInventory : BasePanel
                 continue;
 
             //取出一个装备游戏对象，用于当前装备实例的显示：
-            GameObject nowEquipment = Instantiate(Resources.Load<GameObject>("TestResources/EquipmentInventory"), equipmentContainer, false);
+            GameObject nowEquipment = Instantiate(Resources.Load<GameObject>(Path.Combine("TestResources", "EquipmentInventory")), equipmentContainer, false);
 
             InventoryEquipmentLogic script = nowEquipment.GetComponentInChildren<InventoryEquipmentLogic>();
             script.Init(equipment);

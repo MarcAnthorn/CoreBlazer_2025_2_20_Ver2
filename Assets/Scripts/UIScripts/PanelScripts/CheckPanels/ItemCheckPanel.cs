@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -53,7 +54,7 @@ public class ItemCheckPanel : BasePanel
             UIManager.Instance.HidePanel<ItemCheckPanel>();
         });
 
-        string rootPath = "ArtResources/Item/" + myItem.name;
+        string rootPath = Path.Combine("ArtResources", "Item", myItem.name);
         imgSelf.sprite = Resources.Load<Sprite>(rootPath);
     }
 

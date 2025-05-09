@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,7 @@ public class TarotCheckPanel : BasePanel
 
     public void InitItemInfo(Item _item)
     {
-        string rootPath = "ArtResources/Tarot/" + _item.id;
+        string rootPath = Path.Combine("ArtResources", "Tarot", _item.id.ToString());
         imgCurrentTarot.sprite = Resources.Load<Sprite>(rootPath);
         txtCurrentDescription.text = _item.description;
     }
