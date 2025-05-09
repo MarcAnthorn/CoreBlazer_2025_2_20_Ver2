@@ -23,7 +23,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         }
         else
         {
-            string path = "Panels/" + panelName;
+            string path = Path.Combine("Panels", panelName);
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path));
             panelObject.transform.SetParent(fatherTransform,false);
             T panelScript = panelObject.GetComponent<T>();
@@ -47,7 +47,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         {
             string path = Path.Combine("Panels", panelName);
             Debug.Log(path);
-            
+
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path), father, false);
             T panelScript = panelObject.GetComponent<T>();
             shownPanelDic.Add(panelName, panelScript);
@@ -69,7 +69,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         }
         else
         {
-            string path = "Panels/" + panelName;
+            string path = Path.Combine("Panels", panelName);
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path));
             panelObject.transform.SetParent(fatherTransform, false);
             T panelScript = panelObject.GetComponent<T>();
@@ -92,7 +92,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         }
         else
         {
-            string path = "Panels/" + panelName;
+            string path = Path.Combine("Panels", panelName);
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path));
             panelObject.transform.SetParent(fatherTransform, false);
             T panelScript = panelObject.GetComponent<T>();
