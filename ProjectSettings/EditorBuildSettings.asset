@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MazeScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/StartScene.unity
+    guid: 40f8271ffbebf469589075f96ad27a06
   - enabled: 1
     path: Assets/Scenes/ShelterScene.unity
     guid: 3ebec8da25baa4dd1b3f886775caf077
   - enabled: 1
-    path: Assets/Scenes/StartScene.unity
-    guid: 40f8271ffbebf469589075f96ad27a06
+    path: Assets/Scenes/MazeScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

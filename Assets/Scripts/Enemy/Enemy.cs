@@ -63,7 +63,6 @@ public abstract class Enemy
 
 }
 
-
 public class Enemy_1001 : Enemy
 {
     public Enemy_1001(params EnemySkill[] enemySkills)
@@ -84,17 +83,7 @@ public class Enemy_1001 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
-    //override public void Attack(Player player)    //传入攻击的player实例
-    //{
-    //    Debug.Log("敌人发动攻击！");
-    //    //将STR属性值转化为 攻击值 
-    //    float rowDamage = STR * 1f;   //?? 假设伤害倍率就是100% ??
-    //    EnemyManager.Instance.DamageCalculation(player, this, rowDamage);
-    //}
-
 }
-
 
 public class Enemy_1002 : Enemy
 {
@@ -116,7 +105,6 @@ public class Enemy_1002 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1003 : Enemy
@@ -139,7 +127,6 @@ public class Enemy_1003 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1004 : Enemy
@@ -150,7 +137,7 @@ public class Enemy_1004 : Enemy
         name = "白国王";
         HP = 100;
         HP_limit = 100;
-        STR = 18;
+        STR = 15;  // 修正：从18改为15
         DEF = 3;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 2.0f;
@@ -162,7 +149,6 @@ public class Enemy_1004 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1005 : Enemy
@@ -185,7 +171,6 @@ public class Enemy_1005 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1006 : Enemy
@@ -208,7 +193,6 @@ public class Enemy_1006 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1007 : Enemy
@@ -231,7 +215,6 @@ public class Enemy_1007 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1008 : Enemy
@@ -242,7 +225,7 @@ public class Enemy_1008 : Enemy
         name = "话痨死神";
         HP = 70;
         HP_limit = 70;
-        STR = 100;
+        STR = 55;  // 修正：从100改为55
         DEF = 5;
         CRIT_Rate = 0.8f;
         CRIT_DMG = 1.2f;
@@ -254,7 +237,6 @@ public class Enemy_1008 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1009 : Enemy
@@ -265,7 +247,7 @@ public class Enemy_1009 : Enemy
         name = "日下罪人";
         HP = 200;
         HP_limit = 200;
-        STR = 70;
+        STR = 40;  // 修正：从70改为40
         DEF = 30;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
@@ -277,7 +259,6 @@ public class Enemy_1009 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1010 : Enemy
@@ -288,7 +269,7 @@ public class Enemy_1010 : Enemy
         name = "画中世界";
         HP = 70;
         HP_limit = 70;
-        STR = 80;
+        STR = 40;  // 修正：从80改为40
         DEF = 10;
         CRIT_Rate = 0.3f;
         CRIT_DMG = 1.2f;
@@ -300,7 +281,6 @@ public class Enemy_1010 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1011 : Enemy
@@ -323,7 +303,6 @@ public class Enemy_1011 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1012 : Enemy
@@ -346,7 +325,6 @@ public class Enemy_1012 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1013 : Enemy
@@ -357,8 +335,8 @@ public class Enemy_1013 : Enemy
         name = "群山之主的思绪";
         HP = 180;
         HP_limit = 180;
-        STR = 60;
-        DEF = 40;
+        STR = 55;  // 修正：从60改为55
+        DEF = 35;  // 修正：从40改为35
         CRIT_Rate = 0.7f;
         CRIT_DMG = 1.7f;
         AVO = 0.2f;
@@ -369,7 +347,6 @@ public class Enemy_1013 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
 
 public class Enemy_1014 : Enemy
@@ -380,7 +357,7 @@ public class Enemy_1014 : Enemy
         name = "格赫罗斯";
         HP = 300;
         HP_limit = 300;
-        STR = 80;
+        STR = 70;  // 修正：从80改为70
         DEF = 30;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 2.0f;
@@ -392,5 +369,4 @@ public class Enemy_1014 : Enemy
             this.enemySkills.Add(skl);
         }
     }
-
 }
