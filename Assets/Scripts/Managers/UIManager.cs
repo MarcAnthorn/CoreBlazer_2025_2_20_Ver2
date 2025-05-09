@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -44,7 +45,9 @@ public class UIManager : SingletonBaseManager<UIManager>
         }
         else
         {
-            string path = "Panels/" + panelName;
+            string path = Path.Combine("Panels", panelName);
+            Debug.Log(path);
+            
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path), father, false);
             T panelScript = panelObject.GetComponent<T>();
             shownPanelDic.Add(panelName, panelScript);
