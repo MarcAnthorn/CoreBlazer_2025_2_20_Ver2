@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -52,7 +53,7 @@ public class InventoryTarotLogic : MonoBehaviour
         myItemId = _item.id;
         txtSelfName.text = myItem.name;
 
-        string rootPath = "ArtResources/Tarot/" + _item.id;
+        string rootPath = Path.Combine("ArtResources", "Tarot", _item.id.ToString());
         imgSelf.sprite = Resources.Load<Sprite>(rootPath);
     }
 

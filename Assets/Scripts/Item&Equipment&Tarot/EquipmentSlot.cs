@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -72,7 +73,7 @@ public class EquipmentSlot : MonoBehaviour
             btnSkillUse.gameObject.SetActive(true);
         
             mySkill = LoadManager.Instance.allSkills[1001];
-            imgSkill.sprite = Resources.Load<Sprite>("ArtResources/" + mySkill.skillIconPath);
+            imgSkill.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", mySkill.skillIconPath));
             txtCost.text = $"消耗行动点：{mySkill.skillCost}";
             txtSkillDamage.text = mySkill.SkillDamage.ToString();
             txtSkillName.text = mySkill.skillName;
@@ -92,8 +93,8 @@ public class EquipmentSlot : MonoBehaviour
         myEquipment = _equipment;
         mySkill = _equipment.mySkill;
         //初始化相关的信息：
-        imgEquipment.sprite = Resources.Load<Sprite>("ArtResources/" + _equipment.iconPath);
-        imgSkill.sprite = Resources.Load<Sprite>("ArtResources/" + mySkill.skillIconPath);
+        imgEquipment.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", _equipment.iconPath));
+        imgSkill.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", mySkill.skillIconPath));
 
         txtCost.text = $"消耗行动点：{mySkill.skillCost}";
 

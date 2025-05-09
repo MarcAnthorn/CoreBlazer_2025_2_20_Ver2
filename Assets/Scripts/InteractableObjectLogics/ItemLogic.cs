@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,7 +43,7 @@ public class ItemLogic : MonoBehaviour
             UIManager.Instance.ShowPanel<ItemCheckPanel>().InitItemInfo(myItem, false);
         });
 
-        string rootPath = "ArtResources/Item/" + myItem.name;
+        string rootPath = Path.Combine("ArtResources", "Item", myItem.name.ToString());
         imgSelf.sprite = Resources.Load<Sprite>(rootPath);
     }
 
