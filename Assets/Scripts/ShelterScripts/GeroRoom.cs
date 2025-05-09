@@ -23,15 +23,15 @@ public class GeroRoom : MonoBehaviour
                 int avgId = 0;
                 switch((int)GameLevelManager.Instance.gameLevelType)
                 {
-                    case 0:
+                    case 1:
                         avgId = 1112;
                     break;
 
-                    case 1:
+                    case 2:
                         avgId = 1117;
                     break;
 
-                    case 2:
+                    case 3:
                         avgId = 1122;
                     break;
 
