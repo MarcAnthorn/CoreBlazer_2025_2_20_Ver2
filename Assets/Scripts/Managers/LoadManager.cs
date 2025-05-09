@@ -284,7 +284,7 @@ public class LoadManager : Singleton<LoadManager>
 
 
         dialogueDictionary = new Dictionary<int, Dialogue>();
-        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/DialogueDatas.csv");
+        string path = Path.Combine(Application.dataPath, "Resources", "DialogueData", "DialogueDatas.csv");
 
         if (File.Exists(path))
         {
@@ -326,7 +326,7 @@ public class LoadManager : Singleton<LoadManager>
         
         // string path = Path.Combine(Application.dataPath, "Resources/ItemData/AllItems.csv");
         //读取新表：
-        string path = Path.Combine(Application.dataPath, "Resources/ItemData/ItemSheet.csv");
+        string path = Path.Combine(Application.dataPath, "Resources", "ItemData", "ItemSheet.csv");
         
 
         if (File.Exists(path))
@@ -444,7 +444,7 @@ public class LoadManager : Singleton<LoadManager>
         string path = null;
         if (mapId >= 0 && mapId <= 3)
         {
-            path = Path.Combine(Application.dataPath, $"Resources/MapDatas/Map{mapId}.csv");    //命名规范！！！
+            path = Path.Combine(Application.dataPath, $"ResourcesMapDatas", $"Map{mapId}.csv");    //命名规范！！！
 
         }
         else
@@ -561,7 +561,7 @@ public class LoadManager : Singleton<LoadManager>
         optionEvents = new Dictionary<int, Event>();
         EventManager.Instance.weights = new Dictionary<int, float>();
         //加载已有事件数据(CSV格式)到events字典中，使用Assets(Application.dataPath)下的相对路径
-        string path = Path.Combine(Application.dataPath, "Resources/EventData/EventCSV/Event.csv");
+        string path = Path.Combine(Application.dataPath, "Resources", "EventData", "EventCSV", "Event.csv");
         int libIndex = 2001;
 
         if (File.Exists(path))
@@ -655,7 +655,7 @@ public class LoadManager : Singleton<LoadManager>
     {
         eventResults = new Dictionary<int, EventResult>();
 
-        string path = Path.Combine(Application.dataPath, "Resources/EventData/EventResult/EventResult.csv");
+        string path = Path.Combine(Application.dataPath, "Resources", "EventData", "EventResult", "EventResult.csv");
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);       //分割每一行存入lines
@@ -719,7 +719,7 @@ public class LoadManager : Singleton<LoadManager>
     private void LoadKaidanTexts(int eventIndex, Event @event)     //用在Event加载的时候
     {
         @event.textLib = new Dictionary<int, KaidanText>();
-        string path = Path.Combine(Application.dataPath, "Resources/DialogueData/EventDialogue.csv");
+        string path = Path.Combine(Application.dataPath, "Resources", "DialogueData", "EventDialogue.csv");
 
         if (File.Exists(path))
         {
@@ -772,7 +772,7 @@ public class LoadManager : Singleton<LoadManager>
 
         // Debug.Log($"当前加载的avg id：{avgId}");
 
-        string path = Path.Combine(Application.dataPath, $"Resources/DialogueData/AVG/{avgId}.csv");
+        string path = Path.Combine(Application.dataPath, $"Resources", $"DialogueData", "AVG", $"{avgId}.csv");
         int showIndex = avgId;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
         tempBlock.rootId = showIndex;
