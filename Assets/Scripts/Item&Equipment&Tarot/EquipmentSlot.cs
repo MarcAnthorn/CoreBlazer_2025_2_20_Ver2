@@ -10,6 +10,8 @@ public class EquipmentSlot : MonoBehaviour
     //当前的Slot是否已经装备了：
     public bool isSlotted = false;
 
+    
+
     //相关UI信息：
     public Image imgEquipment;
     public Image imgSkill;
@@ -18,6 +20,8 @@ public class EquipmentSlot : MonoBehaviour
     public TextMeshProUGUI txtCost;
     public TextMeshProUGUI txtSkillDamage;
     public TextMeshProUGUI txtSkillName;
+
+    public TextMeshProUGUI txtDuration;
     public Equipment myEquipment;
     public Skill mySkill;
 
@@ -36,6 +40,7 @@ public class EquipmentSlot : MonoBehaviour
     {
         btnSkillUse.onClick.AddListener(()=>{
             EventHub.Instance.EventTrigger("BroadcastNowEquipment", myEquipment);
+            EventHub.Instance.AddEventListener<Equipment>("UpdateEquipmentUI", UpdateEquipmentUI);
             //释放技能：
             mySkill.Use();
 
@@ -45,6 +50,7 @@ public class EquipmentSlot : MonoBehaviour
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener("UpdateAllSkillDamageText", UpdateAllSkillDamageText);
+        EventHub.Instance.RemoveEventListener<Equipment>("UpdateEquipmentUI", UpdateEquipmentUI);
         
     }
     
@@ -124,5 +130,15 @@ public class EquipmentSlot : MonoBehaviour
     {
         txtSkillDamage.text = mySkill.SkillDamage.ToString();
         
+    }
+
+
+    private void UpdateEquipmentUI(Equipment target)
+    {
+        if(target == myEquipment)
+        {
+            //主要就是更新耐久的UI：
+            txtDuration.text = $"耐久:{myEquipment.currentDuration}/{myEquipment.maxDuration}";
+        }
     }
 }

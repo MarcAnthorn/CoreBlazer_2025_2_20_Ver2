@@ -14,7 +14,14 @@ public class NPC20021 : NPCBase
         base.OnComplete(avgId);
         reward.SetActive(true);
 
-        GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId] = true;
+    
+
+
+        var panel = UIManager.Instance.ShowPanel<BattlePanel>();
+        panel.InitEnemyInfo(1011);
+        panel.callback = OnBattleComplete;
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
+
         
         Destroy(this.gameObject);
     }
@@ -33,6 +40,12 @@ public class NPC20021 : NPCBase
         }
         
        GameLevelManager.Instance.avgIndexIsTriggeredDic.TryAdd(avgId, false);
+    }
+
+    private void OnBattleComplete(int id)
+    {
+        GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId] = true;
+        EquipmentManager.Instance.AddEquipment(1010, 1011, 1012, 1013, 1014, 1015);
     }
 
 } 

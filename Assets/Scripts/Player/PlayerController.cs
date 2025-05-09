@@ -121,7 +121,7 @@ public class PlayerController : PlayerBase
         if(!isLightLocked)
             LightShrinking();
 
-        EventHub.Instance.EventTrigger("UpdateAllUIElements");
+        
         
     }
 
@@ -146,6 +146,8 @@ public class PlayerController : PlayerBase
     {
         if (!isLightShrinking)
             return;
+
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         // 更新时间计数器（限制最大9秒）
         lightShrinkingTime = Mathf.Min(lightShrinkingTime + Time.deltaTime, 9f);
@@ -560,6 +562,8 @@ public class PlayerController : PlayerBase
             {
                 EventHub.Instance.EventTrigger("OnPlayerDead");
             }
+
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         }
 

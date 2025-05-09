@@ -62,6 +62,10 @@ public class BattlePanel : BasePanel
      protected override void Init()
      {
           equipmentSlot1.InitSlot(null);
+
+
+          //再冻结一次：
+          EventHub.Instance.EventTrigger<bool>("Freeze", true);
           //将对应的Slot脚本加入容器：
           // equipmentSlotList.Add(equipmentSlot1);
           equipmentSlotList.Add(equipmentSlot2);

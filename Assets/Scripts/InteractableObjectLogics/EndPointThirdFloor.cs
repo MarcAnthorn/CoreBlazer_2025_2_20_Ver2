@@ -78,5 +78,6 @@ public class EndPointThirdFloor : MonoBehaviour
     public void OnCompletAfterEnd(int id)
     {
         Debug.LogWarning("回到游戏主界面");
+        EventHub.Instance.EventTrigger<bool>("Freeze", false);
     }
 }
