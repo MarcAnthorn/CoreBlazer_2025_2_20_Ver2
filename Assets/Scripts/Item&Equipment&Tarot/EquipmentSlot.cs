@@ -38,6 +38,7 @@ public class EquipmentSlot : MonoBehaviour
 
     void Start()
     {
+        UpdateEquipmentUI(myEquipment);
         btnSkillUse.onClick.AddListener(()=>{
             EventHub.Instance.EventTrigger("BroadcastNowEquipment", myEquipment);
             EventHub.Instance.AddEventListener<Equipment>("UpdateEquipmentUI", UpdateEquipmentUI);
@@ -135,7 +136,7 @@ public class EquipmentSlot : MonoBehaviour
 
     private void UpdateEquipmentUI(Equipment target)
     {
-        if(target == myEquipment)
+        if(txtDuration != null && target == myEquipment)
         {
             //主要就是更新耐久的UI：
             txtDuration.text = $"耐久:{myEquipment.currentDuration}/{myEquipment.maxDuration}";

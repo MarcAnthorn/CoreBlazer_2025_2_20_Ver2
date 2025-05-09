@@ -173,7 +173,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         Debug.Log($"角色释放技能{playerSkill}");
         // 将技能点交给 ReleaseSkill 方法处理
-        SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, enemies[playerTarget - 1]);
+        SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, enemies[0]);
 
         // 阻塞，播放技能释放动画以及敌人受伤动画
         // 注意：播放动画的脚本处需要使用多线程

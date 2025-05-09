@@ -3115,7 +3115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2618937315278847776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4644,7 +4644,7 @@ MonoBehaviour:
   txtCost: {fileID: 4964616766224266812}
   txtSkillDamage: {fileID: 395750545596269739}
   txtSkillName: {fileID: 8931465137452104764}
-  txtDuration: {fileID: 3704778017131148872}
+  txtDuration: {fileID: 0}
   unusedMask: {fileID: 4869410734258756022}
 --- !u!1 &6223495072376015069
 GameObject:

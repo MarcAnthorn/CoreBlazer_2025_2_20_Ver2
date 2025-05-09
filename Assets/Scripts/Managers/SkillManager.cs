@@ -177,6 +177,9 @@ public class SkillManager : Singleton<SkillManager>
         else    //行动点足够释放
         {
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"你释放了技能「{skillName}」", true);
+
+            if(equipment == null)
+                return; //对普通攻击特判
             //更新装备耐久：
             equipment.currentDuration -= 1;
             EquipmentManager.Instance.equipmentDurationDic[equipment] -= 1; 
