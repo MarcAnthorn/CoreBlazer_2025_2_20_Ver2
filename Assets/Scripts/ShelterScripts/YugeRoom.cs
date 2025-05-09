@@ -22,15 +22,15 @@ public class YugeRoom : MonoBehaviour
                 int avgId = 0;
                 switch((int)GameLevelManager.Instance.gameLevelType)
                 {
-                    case 0:
+                    case 1:
                         avgId = 1110;
                     break;
 
-                    case 1:
+                    case 2:
                         avgId = 1115;
                     break;
 
-                    case 2:
+                    case 3:
                         avgId = 1120;
                     break;
 

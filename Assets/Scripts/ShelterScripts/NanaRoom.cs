@@ -22,15 +22,15 @@ public class NanaRoom : MonoBehaviour
                 int avgId = 0;
                 switch((int)GameLevelManager.Instance.gameLevelType)
                 {
-                    case 0:
+                    case 1:
                         avgId = 1109;
                     break;
 
-                    case 1:
+                    case 2:
                         avgId = 1114;
                     break;
 
-                    case 2:
+                    case 3:
                         avgId = 1119;
                     break;
 
