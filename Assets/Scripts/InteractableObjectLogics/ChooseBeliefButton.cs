@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,7 +41,7 @@ public class ChooseBeliefButton : MonoBehaviour
     {
         myItemId = _itemId;
         Item item = LoadManager.Instance.allItems[_itemId];
-        string rootPath = "ArtResources/Item/" + item.name;
+        string rootPath = Path.Combine("ArtResources", "Item",  item.name);
         imgItem.sprite = Resources.Load<Sprite>(rootPath);
 
         if(PlayerManager.Instance.player.SAN.value < 20)

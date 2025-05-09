@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -77,7 +78,7 @@ public class InventoryItemLogic : MonoBehaviour
 
         });
 
-        string rootPath = "ArtResources/Item/" + myItem.name;
+        string rootPath = Path.Combine("ArtResources", "Item",  myItem.name);
         imgSelf.sprite = Resources.Load<Sprite>(rootPath);
     }
 

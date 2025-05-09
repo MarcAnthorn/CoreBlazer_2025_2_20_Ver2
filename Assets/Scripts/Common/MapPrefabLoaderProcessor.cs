@@ -156,16 +156,16 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             if(mapIndex == 3)
             {
                 if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region1");     //Blue Region
 
                 else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region2");     //Green
                 
                 else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region4");     //yellow
 
                 else 
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region3");     //red
             }
 
             string path = Path.Combine(levelPath, "PathGrid" + randomNum.ToString());
@@ -366,16 +366,16 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 if(mapIndex == 3)
                 {
                     if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
-                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+                        levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region1");     //Blue Region
 
                     else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
-                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                        levelPath = Path.Combine("Grids",  "LevelThreeGrids", "Region2");     //Green
                     
                     else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
-                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+                        levelPath = Path.Combine("Grids","LevelThreeGrids", "Region4");     //yellow
 
                     else 
-                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
+                        levelPath = Path.Combine("Grids","LevelThreeGrids", "Region3");     //red
                 }
 
                 me = currentMap[realX, realY];
@@ -413,10 +413,10 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 if(mapIndex == 3)
                 {
                     if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
-                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+                        levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region1");     //Blue Region
 
                     else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
-                        levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                        levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region2");     //Green
                     
                     else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
                         levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
@@ -490,16 +490,16 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             if(mapIndex == 3)
             {
                 if(realX >= 0 && realX <= 20 && realY >= 0 && realY <= 26)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region1");     //Blue Region
 
                 else if(realX >= 0 && realX <= 20 && realY > 26 && realY < 55)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region2");     //Green
                 
                 else if(realX >= 20 && realX < 43 && realY >= 0 && realY <= 26)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region4");     //yellow
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region4");     //yellow
 
                 else 
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
+                    levelPath = Path.Combine("Grids","LevelThreeGrids", "Region3");     //red
             }
 
             MapElement me = currentMap[realX, realY];
@@ -580,16 +580,16 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         string levelPath = null;
         switch(mapIndex){
             case 0:
-                levelPath = "Grids/LevelZeroGrids";
+                levelPath = Path.Combine("Grids", "LevelZeroGrids");
             break;
             case 1:
-                levelPath = "Grids/LevelTwoGrids";
+                levelPath = Path.Combine("Grids", "LevelTwoGrids");
             break;
             case 2:
-                levelPath = "Grids/LevelZeroGrids";
+                levelPath = Path.Combine("Grids", "LevelZeroGrids");
             break;
             case 3:
-                levelPath = "Grids/LevelThreeGrids";
+                levelPath = Path.Combine("Grids", "LevelThreeGrids");
             break;
 
         }
@@ -600,10 +600,10 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             if(mapIndex == 3)
             {
                 if(j >= 0 && j <= 27)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region1");     //Blue Region
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region1");     //Blue Region
 
                 else if(j >= 28 && j < 55)
-                    levelPath = Path.Combine("Grids/LevelThreeGrids", "Region2");     //Green
+                    levelPath = Path.Combine("Grids", "LevelThreeGrids", "Region2");     //Green
 
             }
 

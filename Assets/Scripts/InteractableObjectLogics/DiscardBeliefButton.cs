@@ -42,7 +42,7 @@ public class DiscardBeliefButton : MonoBehaviour
         myItemId = _itemId;
 
         Item item = LoadManager.Instance.allItems[_itemId];
-        string rootPath = "ArtResources/Item/" + item.name;
+        string rootPath = Path.Combine("ArtResources", "Item",  item.name); 
         imgItem.sprite = Resources.Load<Sprite>(rootPath);
         
 
