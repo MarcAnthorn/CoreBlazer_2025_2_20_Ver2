@@ -146,11 +146,121 @@ public class SkillManager : Singleton<SkillManager>
                     isActionPointEnough = false;
                 break;
 
+            case 1011:
+                if (actionPoint >= 1)
+                {
+                    actionPoint -= 1;
+                    Skill_1011(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1012:
+                if (actionPoint >= 2)
+                {
+                    actionPoint -= 2;
+                    Skill_1012(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1013:
+                if (actionPoint >= 1)
+                {
+                    actionPoint -= 1;
+                    Skill_1013(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1014:
+                if (actionPoint >= 2)
+                {
+                    actionPoint -= 2;
+                    Skill_1014(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1015:
+                if (actionPoint >= 2)
+                {
+                    actionPoint -= 2;
+                    Skill_1015(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1016:
+                if (actionPoint >= 1)
+                {
+                    actionPoint -= 1;
+                    Skill_1016(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1017:
+                if (actionPoint >= 1)
+                {
+                    actionPoint -= 1;
+                    Skill_1017(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1018:
+                if (actionPoint >= 2)
+                {
+                    actionPoint -= 2;
+                    Skill_1018(player);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1019:
+                if (actionPoint >= 1)
+                {
+                    actionPoint -= 1;
+                    Skill_1019(player);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
             case 1020:
                 if (actionPoint >= 1)
                 {
                     actionPoint -= 1;
                     Skill_1020(player);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1021:
+                if (actionPoint >= 2)
+                {
+                    actionPoint -= 2;
+                    Skill_1021(enemy);
+                }
+                else
+                    isActionPointEnough = false;
+                break;
+
+            case 1022:
+                if (actionPoint >= 2)
+                {
+                    actionPoint -= 2;
+                    Skill_1022(enemy);
                 }
                 else
                     isActionPointEnough = false;
@@ -409,17 +519,177 @@ public class SkillManager : Singleton<SkillManager>
         TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
+    // 幽影呓语
+    public void Skill_1011(Enemy enemy)
+    {
+        Debug.Log("角色发动 幽影呓语！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 20 + player.SPD.value * 1.0f + player.LVL.value * 1.0f;
+        Action action = () => AddBuffToSkill_1011(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Dot, action);
+    }
+    private void AddBuffToSkill_1011(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1010();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 恨意凝视
+    public void Skill_1012(Enemy enemy)
+    {
+        Debug.Log("角色发动 恨意凝视！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 20 + player.DEF.value * 1.0f;
+        Action action = () => AddBuffToSkill_1012(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Dot, action);
+    }
+    private void AddBuffToSkill_1012(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1011();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 瘟疫吐息
+    public void Skill_1013(Enemy enemy)
+    {
+        Debug.Log("角色发动 瘟疫吐息！");
+        float rowDamage = 20;
+        Action action = () => AddBuffToSkill_1013(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Dot, action);
+    }
+    private void AddBuffToSkill_1013(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1012();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 探知深空
+    public void Skill_1014(Enemy enemy)
+    {
+        Debug.Log("角色发动 探知深空！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 20 + player.SAN.value * 1.0f;
+        Action action = () => AddBuffToSkill_1014(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Dot, action);
+    }
+    private void AddBuffToSkill_1014(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1013();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 饥饿掠夺
+    public void Skill_1015(Enemy enemy)
+    {
+        Debug.Log("角色发动 饥饿掠夺！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 20 + (player.HP.value_limit - player.HP.value) * 1.0f;
+        Action action = () => AddBuffToSkill_1015(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Dot, action);
+    }
+    private void AddBuffToSkill_1015(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1014();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 怨念
+    public void Skill_1016(Enemy enemy)
+    {
+        Debug.Log("角色发动 怨念！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 30 + enemy.STR * 0.5f;
+        Action action = () => AddBuffToSkill_1016(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Dot, action);
+    }
+    private void AddBuffToSkill_1016(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1015();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 深海的呼唤
+    public void Skill_1017(Enemy enemy)
+    {
+        Debug.Log("角色发动 深海的呼唤！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 20 + enemy.STR * 0.5f;
+        Action action = () => AddBuffToSkill_1017(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToSkill_1017(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1016();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 深渊之主的回音
+    public void Skill_1018(Player player)
+    {
+        Debug.Log("角色发动 深渊之主的回音！");
+        player.HP.AddValue(60);
+        AddBuffToSkill_1018();
+    }
+    private void AddBuffToSkill_1018()
+    {
+        BattleBuff buff = new BattleBuff_1017();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 风起之时
+    public void Skill_1019(Player player)
+    {
+        Debug.Log("角色发动 风起之时！");
+        player.HP.AddValue(20);
+        AddBuffToSkill_1019();
+    }
+    private void AddBuffToSkill_1019()
+    {
+        BattleBuff buff = new BattleBuff_1018();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
     // 鼠群意志
     public void Skill_1020(Player player)
     {
         Debug.Log("角色发动 鼠群意志！");
-        player.HP.value -= 20 + player.SAN.value * 2.0f + player.SPD.value * 1.0f;
+        player.HP.AddValue(20 + player.SAN.value * 2.0f + player.SPD.value * 1.0f);
         AddBuffToSkill_1020();
     }
     private void AddBuffToSkill_1020()
     {
         BattleBuff buff = new BattleBuff_1019();
         TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 神骨之鞭
+    public void Skill_1021(Enemy enemy)
+    {
+        Debug.Log("角色发动 神骨之鞭！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 20 + player.STR.value * 1.0f + player.SAN.value * 1.0f;
+        Action action = () => AddBuffToSkill_1021(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToSkill_1021(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1020();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
+    // 禁咒
+    public void Skill_1022(Enemy enemy)
+    {
+        Debug.Log("角色发动 禁咒！");
+        Player player = BattleManager.Instance.player;
+        float rowDamage = 20 + (enemy.HP_limit - enemy.HP) * 0.8f;
+        Action action = () => AddBuffToSkill_1022(enemy);
+        SkillManager.Instance.PlayerDamageCalculation(enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToSkill_1022(Enemy enemy)
+    {
+        BattleBuff buff = new BattleBuff_1021();
+        TurnCounter.Instance.AddEnemyBuff(buff);
     }
 
     // 最后一次守护

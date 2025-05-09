@@ -236,6 +236,186 @@ public class Skill_1010 : Skill
     }
 }
 
+// 幽影呓语
+public class Skill_1011 : Skill
+{
+    public Skill_1011()
+    {
+        id = 1011;
+        skillIconPath = skillName = "幽影呓语";
+        skillDamageText = "20";
+        skillBuffText = "①debuff的持有者受到怪谈伤害后，给对手施加3层易伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1011();
+    }
+}
+
+// 恨意凝视
+public class Skill_1012 : Skill
+{
+    public Skill_1012()
+    {
+        id = 1012;
+        skillIconPath = skillName = "恨意凝视";
+        skillDamageText = "20";
+        skillBuffText = "①debuff的持有者受到力量伤害后，给对手施加3层力量增伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1012();
+    }
+}
+
+// 瘟疫吐息
+public class Skill_1013 : Skill
+{
+    public Skill_1013()
+    {
+        id = 1013;
+        skillIconPath = skillName = "瘟疫吐息";
+        skillDamageText = "20";
+        skillBuffText = "①debuff的持有者受到道具伤害后，给予debuff持有者的对手施加3层dot增伤和3层怪谈增伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1013();
+    }
+}
+
+// 探知深空
+public class Skill_1014 : Skill
+{
+    public Skill_1014()
+    {
+        id = 1014;
+        skillIconPath = skillName = "探知深空";
+        skillDamageText = "20";
+        skillBuffText = "①debuff的持有者受到怪谈伤害后，给予debuff持有者的对手施加3层dot增伤和3层力量增伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1014();
+    }
+}
+
+// 饥饿掠夺
+public class Skill_1015 : Skill
+{
+    public Skill_1015()
+    {
+        id = 1015;
+        skillIconPath = skillName = "饥饿掠夺";
+        skillDamageText = "20";
+        skillBuffText = "①debuff的持有者受到道具伤害后，给予debuff持有者的对手施加3层力量增伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1015();
+    }
+}
+
+// 怨念
+public class Skill_1016 : Skill
+{
+    public Skill_1016()
+    {
+        id = 1016;
+        skillIconPath = skillName = "怨念";
+        skillDamageText = "20";
+        skillBuffText = "①debuff持有者的受到怪谈伤害后，给予debuff持有者的对手施加3层dot增伤和3层力量增伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1016();
+    }
+}
+
+// 深海的呼唤
+public class Skill_1017 : Skill
+{
+    public Skill_1017()
+    {
+        id = 1017;
+        skillIconPath = skillName = "深海的呼唤";
+        skillDamageText = "20";
+        skillBuffText = "①debuff持有者受到力量伤害或道具伤害后，给予debuff持有者的对手施加3层易伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1017();
+    }
+}
+
+// 深渊之主的回音
+public class Skill_1018 : Skill
+{
+    public Skill_1018()
+    {
+        id = 1018;
+        skillIconPath = skillName = "深渊之主的回音";
+        skillDamageText = "20";
+        skillBuffText = "①对手受到dot伤害后，给对手施加3层易伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1018();
+    }
+}
+
+// 风起之时
+public class Skill_1019 : Skill
+{
+    public Skill_1019()
+    {
+        id = 1019;
+        skillIconPath = skillName = "风起之时";
+        skillDamageText = "20";
+        skillBuffText = "①对手受到道具伤害后，自己+30%连击";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1019();
+    }
+}
+
 // 鼠群意志
 public class Skill_1020 : Skill
 {
@@ -253,6 +433,46 @@ public class Skill_1020 : Skill
     override public void Use()
     {
         BattleManager.Instance.SelectSkill_1020();
+    }
+}
+
+// 神骨之鞭
+public class Skill_1021 : Skill
+{
+    public Skill_1021()
+    {
+        id = 1021;
+        skillIconPath = skillName = "风起之时";
+        skillDamageText = "20";
+        skillBuffText = "①debuff持有者受到怪谈伤害或力量伤害后，给对手施加3层力量增伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1021();
+    }
+}
+
+// 禁咒
+public class Skill_1022 : Skill
+{
+    public Skill_1022()
+    {
+        id = 1022;
+        skillIconPath = skillName = "禁咒";
+        skillDamageText = "20";
+        skillBuffText = "①对手受到怪谈伤害后，给予debuff持有者的对手施加3层易伤和3层dot增伤";
+        skillCost = 2;
+
+        skillDamage = 20;
+    }
+
+    override public void Use()
+    {
+        BattleManager.Instance.SelectSkill_1022();
     }
 }
 

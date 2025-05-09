@@ -616,6 +616,55 @@ public class BattleBuff_1009 : BattleBuff
 
 }
 
+public class BattleBuff_1010 : BattleBuff
+{
+    // 叠加的层数
+    // public int overlyingCount = 0;
+
+    public BattleBuff_1010()
+    {
+        id = 1010;
+        name = "失语";
+        damageType = DamageType.Skill;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+        buffDescriptionText = "\"①debuff的持有者受到怪谈伤害后，给debuff的施加者施加3层易伤\"";
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
 public class BattleBuff_1011 : BattleBuff
 {
     // 叠加的层数
@@ -724,6 +773,114 @@ public class BattleBuff_1012 : BattleBuff
 
 }
 
+public class BattleBuff_1013 : BattleBuff
+{
+    // 叠加的层数
+    // public int overlyingCount = 0;
+
+    public BattleBuff_1013()
+    {
+        id = 1013;
+        name = "失聪";
+        damageType = DamageType.Skill;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+        buffDescriptionText = "\"①debuff的持有者受到怪谈伤害后，给debuff的施加者施加3层dot增伤和3层力量增伤\"";
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1023();
+            BattleBuff buff2 = new BattleBuff_1025();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff2, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1023();
+            BattleBuff buff2 = new BattleBuff_1025();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff2);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1014 : BattleBuff
+{
+    // 叠加的层数
+    // public int overlyingCount = 0;
+
+    public BattleBuff_1014()
+    {
+        id = 1014;
+        name = "齿寒";
+        damageType = DamageType.Item;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+        buffDescriptionText = "\"①debuff的持有者受到道具伤害后，给debuff的施加者施加3层力量增伤\"";
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
 public class BattleBuff_1015 : BattleBuff
 {
     // 叠加的层数
@@ -783,6 +940,145 @@ public class BattleBuff_1015 : BattleBuff
 
 }
 
+public class BattleBuff_1016 : BattleBuff
+{
+    // 叠加的层数
+    // public int overlyingCount = 0;
+
+    public BattleBuff_1016()
+    {
+        id = 1016;
+        name = "深海恐惧";
+        damageType = DamageType.STR | DamageType.Item;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+        buffDescriptionText = "\"①debuff的持有者受到力量伤害或道具伤害后，给debuff的施加者施加3层易伤\"";
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1017 : BattleBuff
+{
+    // 叠加的层数
+    // public int overlyingCount = 0;
+
+    public BattleBuff_1017()
+    {
+        id = 1017;
+        name = "深渊回响";
+        damageType = DamageType.Dot;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 99;
+
+        buffDescriptionText = "\"①debuff的持有者受到dot伤害后，给debuff的施加者施加3层易伤\"";
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1002();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1018 : BattleBuff
+{
+    // 叠加的层数
+    // public int overlyingCount = 0;
+
+    public BattleBuff_1018()
+    {
+        id = 1018;
+        name = "乘风";
+        damageType = DamageType.Item;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = true;
+        overlyingLimit = 5;
+
+        buffDescriptionText = "\"①debuff的持有者受到道具伤害后，自己+210%连击\"";
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleManager.Instance.enemies[0].HIT += 2.1f;
+        }
+
+        else if (flag == 1)
+        {
+            BattleManager.Instance.player.HIT.AddValue(2.1f);
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
 public class BattleBuff_1019 : BattleBuff
 {
     // 叠加的层数
@@ -814,6 +1110,55 @@ public class BattleBuff_1019 : BattleBuff
         else if (flag == 1)
         {
             BattleManager.Instance.enemies[0].HP += 0.3f * overlyingCount;
+        }
+    }
+
+    public override void OnStart(int flag = 0) { }
+
+    public override void OnEnd(int flag = 0) { }
+
+}
+
+public class BattleBuff_1020 : BattleBuff
+{
+    // 叠加的层数
+    // public int overlyingCount = 0;
+
+    public BattleBuff_1020()
+    {
+        id = 1020;
+        name = "鞭挞";
+        damageType = DamageType.STR | DamageType.Skill;
+        calculationType = CalculationType.NONE;
+        influence = 0f;
+        lastTurnLimit = 2;
+        lastTurns = 2;
+        ReduceAtBeginning = true;
+        triggerTiming = TriggerTiming.BeHit;
+        allowOverlying = false;
+        overlyingLimit = 1;
+
+        buffDescriptionText = "\"①debuff的持有者受到怪谈伤害或力量伤害后，给debuff的施加者施加3层力量增伤\"";
+    }
+
+    override public void OnEffect(int flag)
+    {
+        if (flag == 0)  // 此时玩家持有Buff
+        {
+            BattleBuff buff1 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddEnemyBuff(buff1, 0);
+            }
+        }
+
+        else if (flag == 1)
+        {
+            BattleBuff buff1 = new BattleBuff_1023();
+            for (int i = 0; i < 3; i++)
+            {
+                TurnCounter.Instance.AddPlayerBuff(buff1);
+            }
         }
     }
 

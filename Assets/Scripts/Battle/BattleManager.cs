@@ -489,10 +489,87 @@ public class BattleManager : Singleton<BattleManager>
         PlayerAction(true);
     }
 
+    // 玩家选择技能  幽影呓语
+    public void SelectSkill_1011()
+    {
+        playerSkill = 1011;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  恨意凝视
+    public void SelectSkill_1012()
+    {
+        playerSkill = 1012;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  瘟疫吐息
+    public void SelectSkill_1013()
+    {
+        playerSkill = 1013;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  探知深空
+    public void SelectSkill_1014()
+    {
+        playerSkill = 1014;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  饥饿掠夺
+    public void SelectSkill_1015()
+    {
+        playerSkill = 1015;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  怨念
+    public void SelectSkill_1016()
+    {
+        playerSkill = 1016;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  深海的呼唤
+    public void SelectSkill_1017()
+    {
+        playerSkill = 1017;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  深渊之主的回音
+    public void SelectSkill_1018()
+    {
+        playerSkill = 1018;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  风起之时
+    public void SelectSkill_1019()
+    {
+        playerSkill = 1019;
+        PlayerAction(true);
+    }
+
     // 玩家选择技能  鼠群意志
     public void SelectSkill_1020()
     {
         playerSkill = 1020;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  神骨之鞭
+    public void SelectSkill_1021()
+    {
+        playerSkill = 1021;
+        PlayerAction(true);
+    }
+
+    // 玩家选择技能  禁咒
+    public void SelectSkill_1022()
+    {
+        playerSkill = 1022;
         PlayerAction(true);
     }
 
