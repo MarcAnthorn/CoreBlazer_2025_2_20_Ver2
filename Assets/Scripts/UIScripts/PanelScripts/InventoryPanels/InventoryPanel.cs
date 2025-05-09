@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class InventoryPanel : BasePanel
 {
@@ -98,8 +99,8 @@ public class InventoryPanel : BasePanel
 
 
         btnExit.onClick.AddListener(()=>{
-            EventHub.Instance.EventTrigger<bool>("Freeze", false);
-            UIManager.Instance.HidePanel<InventoryPanel>();
+            if(!UIManager.Instance.shownPanelDic.ContainsKey("BattlePanel"))
+                UIManager.Instance.HidePanel<InventoryPanel>();
         });
 
         btnSetting.onClick.AddListener(()=>{

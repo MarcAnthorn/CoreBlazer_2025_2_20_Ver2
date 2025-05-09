@@ -10,7 +10,7 @@ public class UIManager : SingletonBaseManager<UIManager>
 
     public Transform fatherTransform;
 
-    private Dictionary<string, BasePanel> shownPanelDic = new Dictionary<string, BasePanel>();
+    public Dictionary<string, BasePanel> shownPanelDic = new Dictionary<string, BasePanel>();
 
     public T ShowPanel<T>() where T:BasePanel
     {
