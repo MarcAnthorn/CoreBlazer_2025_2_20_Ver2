@@ -34,7 +34,7 @@ public class DiscardBeliefPanel: BasePanel
     private int optionPerPage = 2;
     private int currentPage; 
     private int allPageCount;
-    private string rootPath = "ArtResources/AVG";
+    private string rootPath = "ArtResources/Shop";
 
     protected override void Awake()
     {

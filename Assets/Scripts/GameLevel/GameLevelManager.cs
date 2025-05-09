@@ -65,8 +65,13 @@ public class GameLevelManager : Singleton<GameLevelManager>
         avgShelterIsTriggered[E_GameLevelType.First] = false;
         avgShelterIsTriggered[E_GameLevelType.Second] = false;
 
+        foreach(var key in avgIndexIsTriggeredDic.Keys){
+            avgIndexIsTriggeredDic[key] = false;
+        }
+
         avgShelterIsTriggered.Clear();
         gameLevelType = E_GameLevelType.Tutorial;
+        EventHub.Instance.EventTrigger<bool>("Freeze", false);
     }
     
 

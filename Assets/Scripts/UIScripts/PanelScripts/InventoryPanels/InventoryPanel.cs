@@ -103,7 +103,7 @@ public class InventoryPanel : BasePanel
         });
 
         btnSetting.onClick.AddListener(()=>{
-            
+            UIManager.Instance.ShowPanel<SettingPanel>();
         });
 
         btnCommonPanelReveal.onClick.AddListener(()=>{

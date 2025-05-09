@@ -16,7 +16,7 @@ public class ChooseBeliefPanel : BasePanel
     public Button btnNextPage;
     public Transform choiceContent;
     public Transform npcPos;
-    private string rootPath = "ArtResources/AVG";
+    private string rootPath = "ArtResources/Shop";
 
     //测试用：
     private E_NPCName currentNPCName;

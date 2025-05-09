@@ -23,6 +23,14 @@ public class TestCanvas : MonoBehaviour
         DontDestroyOnLoad(this.gameObject); // 只有首次实例会保留
     }
 
+    // void Update()
+    // {
+    //     if(Input.GetKeyDown(KeyCode.P))
+    //     {
+    //         UIManager.Instance.HidePanel
+    //     }
+    // }
+
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener<bool>("TestClearFunction", TestClearFunction);

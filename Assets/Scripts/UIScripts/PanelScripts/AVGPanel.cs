@@ -98,6 +98,12 @@ public class AVGPanel : BasePanel
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
             UIManager.Instance.HidePanel<AVGPanel>();
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.LogWarning("Try to setting");
+            UIManager.Instance.ShowPanel<SettingPanel>();
+        }
     }
 
     void OnDestroy()
@@ -111,6 +117,8 @@ public class AVGPanel : BasePanel
     protected override void Init()
     {
         isAvgOver = false;
+
+        EventHub.Instance.EventTrigger<UnityAction>("HideMask", null);
 
         //冻结玩家
         EventHub.Instance.EventTrigger<bool>("Freeze", true);

@@ -17,7 +17,8 @@ public class WarningPanel : BasePanel
     protected override void Init()
     {
         btnConfirm?.onClick.AddListener(()=>{
-            PoolManager.Instance.ReturnToPool("WarningPanel", this.gameObject);     
+            PoolManager.Instance.ReturnToPool("WarningPanel", this.gameObject);   
+            UIManager.Instance.HidePanel<WarningPanel>();  
             LeanTween.delayedCall(0.2f, ()=>{
                 callback?.Invoke();
             });          
@@ -41,6 +42,14 @@ public class WarningPanel : BasePanel
         }
 
         callback = _callback;
+
+    }
+
+    public void SetWarningText(string text, Color color)
+    {
+        txtWarning.color = color;
+        txtWarning.text = text;
+ 
 
     }
 

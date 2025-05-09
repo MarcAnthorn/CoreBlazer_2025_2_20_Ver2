@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,6 +16,8 @@ public class BattlePanel : BasePanel
     public Transform enemyBuffContainer;
     public Transform playerBuffContainer;
     public Image imgEnemy;
+
+    public Image imgForGero;
     public Button btnPlayerInfo;
     public Button btnInventory;
     public Button btnEndThisRound;
@@ -41,6 +44,7 @@ public class BattlePanel : BasePanel
 
      //当前处理的敌人：
      private Enemy enemy;
+     private int myEnemyId;
 
      //当前战斗结束之后的回调函数：
      public UnityAction<int> callback;
@@ -63,6 +67,20 @@ public class BattlePanel : BasePanel
      {
           equipmentSlot1.InitSlot(null);
 
+          int endNumber = myEnemyId % 1000;
+          int resultNumber = 10000 + endNumber;
+          string path = Path.Combine("ArtResources", "战斗图片", resultNumber.ToString());
+
+          if(myEnemyId != 1013)
+               imgEnemy.sprite = Resources.Load<Sprite>(path);
+          
+
+          else
+          {
+               imgEnemy.gameObject.SetActive(false);
+               imgForGero.gameObject.SetActive(true);
+               imgForGero.sprite = Resources.Load<Sprite>(path);
+          }
 
           //再冻结一次：
           EventHub.Instance.EventTrigger<bool>("Freeze", true);
@@ -74,6 +92,7 @@ public class BattlePanel : BasePanel
 
           btnPlayerInfo.onClick.AddListener(()=>{
                //此处展示玩家当前的数值：
+               UIManager.Instance.ShowPanel<PlayerAttributePanel>();
           });
 
           btnInventory.onClick.AddListener(()=>{
@@ -113,14 +132,14 @@ public class BattlePanel : BasePanel
           UpdateBattlePanelUI();
      }
 
-    //测试用：
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-          EventHub.Instance.EventTrigger("GameOver", true, callback);
-        }
-    }
+//     //测试用：
+//     void Update()
+//     {
+//         if(Input.GetKeyDown(KeyCode.T))
+//         {
+//           EventHub.Instance.EventTrigger("GameOver", true, callback);
+//         }
+//     }
 
 
 
@@ -203,6 +222,7 @@ public class BattlePanel : BasePanel
      public void InitEnemyInfo(int enemyId)
      {   
           Enemy _enemy = LoadManager.Instance.allEnemies[enemyId];
+          myEnemyId = enemyId;
 
           if(_enemy == null)
           {

@@ -40,7 +40,7 @@ public class CommonItemPanel : ItemPanel
             Item infoItem = LoadManager.Instance.allItems[itemId];
 
             //只有事件内道具显示
-            if(infoItem.type == Item.ItemType.Normal)
+            if(infoItem.usableScene[0] == 1)
             {
                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                     continue;

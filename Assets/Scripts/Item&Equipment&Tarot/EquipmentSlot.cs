@@ -115,6 +115,8 @@ public class EquipmentSlot : MonoBehaviour
         //加载封锁的美术资源；
         unusedMask.gameObject.SetActive(true);
 
+        myEquipment.Unequip();
+
         //处理相关的sprite:
         // imgEquipment.sprite
         // imgSkill.sprite

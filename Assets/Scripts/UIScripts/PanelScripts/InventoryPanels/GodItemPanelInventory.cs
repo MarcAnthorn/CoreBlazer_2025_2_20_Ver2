@@ -155,7 +155,7 @@ public class GodItemPanelInventory : BasePanel
             else 
             {
                 //处在战斗，才会初始化神明战斗道具：
-                if(infoItem.type == Item.ItemType.God_Battle && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
+                if((infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze) && infoItem.usableScene[1]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
                 {
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;
@@ -175,7 +175,7 @@ public class GodItemPanelInventory : BasePanel
                 }
 
                 //不然就是初始化迷宫道具：
-                else if(infoItem.type == Item.ItemType.God_Maze && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
+                else if((infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze) && infoItem.usableScene[2]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
                 {
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;

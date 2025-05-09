@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UIManager : SingletonBaseManager<UIManager>
 {
 
-    public Transform canvasTransform;
+    public Transform fatherTransform;
 
     private Dictionary<string, BasePanel> shownPanelDic = new Dictionary<string, BasePanel>();
 
@@ -24,7 +24,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         {
             string path = "Panels/" + panelName;
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path));
-            panelObject.transform.SetParent(canvasTransform,false);
+            panelObject.transform.SetParent(fatherTransform,false);
             T panelScript = panelObject.GetComponent<T>();
             shownPanelDic.Add(panelName, panelScript);
             panelScript.ShowMe();
@@ -68,7 +68,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         {
             string path = "Panels/" + panelName;
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path));
-            panelObject.transform.SetParent(canvasTransform, false);
+            panelObject.transform.SetParent(fatherTransform, false);
             T panelScript = panelObject.GetComponent<T>();
             shownPanelDic.Add(panelName, panelScript);
             panelScript.ShowMe();
@@ -91,7 +91,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         {
             string path = "Panels/" + panelName;
             GameObject panelObject = GameObject.Instantiate(Resources.Load<GameObject>(path));
-            panelObject.transform.SetParent(canvasTransform, false);
+            panelObject.transform.SetParent(fatherTransform, false);
             T panelScript = panelObject.GetComponent<T>();
             shownPanelDic.Add(panelName, panelScript);
             return panelScript;
@@ -131,6 +131,7 @@ public class UIManager : SingletonBaseManager<UIManager>
 
     }
 
+
     public T GetPanel<T>() where T:BasePanel
     {
         string panelName = typeof(T).Name;
@@ -154,8 +155,8 @@ public class UIManager : SingletonBaseManager<UIManager>
 
     private UIManager()
     {
-        canvasTransform = GameObject.Find("Canvas").transform;
-        GameObject.DontDestroyOnLoad(canvasTransform.gameObject);
+        fatherTransform = GameObject.Find("PanelFather").transform;
+        GameObject.DontDestroyOnLoad(fatherTransform.gameObject);
     }
 
 

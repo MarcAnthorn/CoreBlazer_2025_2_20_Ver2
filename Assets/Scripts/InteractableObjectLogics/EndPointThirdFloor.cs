@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EndPointThirdFloor : MonoBehaviour
 {
@@ -78,6 +79,11 @@ public class EndPointThirdFloor : MonoBehaviour
     public void OnCompletAfterEnd(int id)
     {
         Debug.LogWarning("回到游戏主界面");
-        EventHub.Instance.EventTrigger<bool>("Freeze", false);
+        EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+            LoadSceneManager.Instance.LoadSceneAsync("StartScene");  
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            GameLevelManager.Instance.ResetAllProgress();
+        });
+        
     }
 }

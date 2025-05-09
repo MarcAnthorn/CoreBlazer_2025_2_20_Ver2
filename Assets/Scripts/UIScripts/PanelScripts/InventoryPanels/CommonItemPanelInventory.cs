@@ -111,7 +111,7 @@ public class CommonItemPanelInventory : BasePanel
             GameObject nowItem = null;
             InventoryItemLogic script = null;
 
-            //安全屋，显示所有的神明道具：
+            //安全屋，显示所有的道具：
             if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Shelter && (infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType.Normal))
             {
                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
@@ -144,7 +144,7 @@ public class CommonItemPanelInventory : BasePanel
 
             else{
                 //处在战斗，才会初始化战斗道具：
-                if(infoItem.type == Item.ItemType.Battle  && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
+                if((infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Normal || infoItem.type == Item.ItemType.Maze) && infoItem.usableScene[1]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
                 {
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;
@@ -164,7 +164,7 @@ public class CommonItemPanelInventory : BasePanel
                 }
 
                 //不然就是初始化迷宫道具：
-                else if((infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType.Normal) && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
+                else if((infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Normal || infoItem.type == Item.ItemType.Maze) && infoItem.usableScene[2]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
                 {
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;

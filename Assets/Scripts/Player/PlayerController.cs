@@ -95,22 +95,22 @@ public class PlayerController : PlayerBase
     {
         base.Update();
 
-        //测试用，速死选项：
-        if(Input.GetKeyDown(KeyCode.M)){
-            EventHub.Instance.EventTrigger("OnPlayerDead");
-        }
+        // //测试用，速死选项：
+        // if(Input.GetKeyDown(KeyCode.M)){
+        //     EventHub.Instance.EventTrigger("OnPlayerDead");
+        // }
 
 
 
-        //测试用，速通道具分配：
-        if(Input.GetKeyDown(KeyCode.Y)){
-            ItemManager.Instance.AddItem(104);
-        }
+        // //测试用，速通道具分配：
+        // if(Input.GetKeyDown(KeyCode.Y)){
+        //     ItemManager.Instance.AddItem(104);
+        // }
 
-        //测试用：按键锁灯光 
-        if(Input.GetKeyDown(KeyCode.B)){
-            isLightLocked = !isLightLocked;
-        }
+        // //测试用：按键锁灯光 
+        // if(Input.GetKeyDown(KeyCode.B)){
+        //     isLightLocked = !isLightLocked;
+        // }
     
     }
 
@@ -443,6 +443,9 @@ public class PlayerController : PlayerBase
     {
         EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
             Debug.LogWarning("退出游戏到主界面");
+            LoadSceneManager.Instance.LoadSceneAsync("StartScene");  
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            GameLevelManager.Instance.ResetAllProgress();
         }); 
     }
 

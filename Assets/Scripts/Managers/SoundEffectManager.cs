@@ -151,7 +151,7 @@ public class SoundEffectManager : SingletonBaseManager<SoundEffectManager>
     public void SetSoundVolume(float volume_)
     {
         soundEffectVolume = volume_;
-        for (int i = 0; i < soundList.Count - 1; i++)
+        for (int i = 0; i < soundList.Count; i++)
         {
             soundList[i].volume = volume_;
         }

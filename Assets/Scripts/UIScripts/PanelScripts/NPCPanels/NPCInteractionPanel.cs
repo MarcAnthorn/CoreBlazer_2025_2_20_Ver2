@@ -28,7 +28,7 @@ public class NPCInteractionPanel : BasePanel
     //测试用：当前交互的NPC：
     public E_NPCName currentNPCName;
     private bool isContinueButtonClicked;
-    private string rootPath = "ArtResources/AVG";
+    private string rootPath = "ArtResources/Shop";
 
     protected override void Awake()
     {
