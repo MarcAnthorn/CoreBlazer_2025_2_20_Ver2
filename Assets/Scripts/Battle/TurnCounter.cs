@@ -39,7 +39,8 @@ public class TurnCounter : Singleton<TurnCounter>
     // 更新玩家回合
     public void UpdatePlayerTurn()
     {
-        DealWithPlayerBuff(TriggerTiming.AfterTurn);
+        // Dot伤害
+        DealWithPlayerBuff(TriggerTiming.AfterTurn, DamageType.Dot);
 
         playerTurn++;
         int n = playerBuffs.Count;
@@ -85,7 +86,8 @@ public class TurnCounter : Singleton<TurnCounter>
     // 更新positionId指定的敌方回合
     public void UpdateEnemyTurn(int positionId)
     {
-        DealWithEnemyBuff(TriggerTiming.AfterTurn, positionId);
+        // Dot伤害
+        DealWithEnemyBuff(TriggerTiming.AfterTurn, DamageType.Dot, positionId);
 
         enemyTurns[positionId]++;
         Enemy enemy = BattleManager.Instance.enemies[positionId];
@@ -230,12 +232,12 @@ public class TurnCounter : Singleton<TurnCounter>
         return false;
     }
 
-    // 结算玩家自身Buff的直接效果
-    private void DealWithPlayerBuff(TriggerTiming triggerTiming)
+    // 结算玩家自身Buff的直接效果(OnEffect)
+    public void DealWithPlayerBuff(TriggerTiming triggerTiming, DamageType damageType)
     {
         foreach(var buff in playerBuffs)
         {
-            if(buff.triggerTiming == triggerTiming)
+            if(buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
                 Debug.LogWarning($"player buff affected!, buff is:{buff.name}");
                 // 结算玩家
@@ -245,11 +247,11 @@ public class TurnCounter : Singleton<TurnCounter>
     }
 
     // 结算指定敌人自身Buff的直接效果
-    private void DealWithEnemyBuff(TriggerTiming triggerTiming, int positionId)
+    public void DealWithEnemyBuff(TriggerTiming triggerTiming, DamageType damageType, int positionId = 0)
     {
         foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
-            if (buff.triggerTiming == triggerTiming)
+            if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
                 Debug.LogWarning($"enemy buff affected!, buff is:{buff.name}");
                 //结算敌方；
@@ -276,13 +278,16 @@ public class TurnCounter : Singleton<TurnCounter>
         }
         foreach (var buff in playerBuffs)
         {
-            calType = buff.calculationType;
             if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
+                calType = buff.calculationType;
                 extraValue += buff.influence;
             }
         }
-
+        if(calType == CalculationType.NONE)
+        {
+            return value;
+        }
         value = CalculationAfterBuff(calType, value, extraValue);
 
         Debug.Log($"Turn counter cal player value is {value}");
@@ -303,13 +308,16 @@ public class TurnCounter : Singleton<TurnCounter>
 
         foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
         {
-            calType = buff.calculationType;
             if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
+                calType = buff.calculationType;
                 extraValue += buff.influence * buff.overlyingCount;
             }
         }
-
+        if (calType == CalculationType.NONE)
+        {
+            return value;
+        }
         value = CalculationAfterBuff(calType, value, extraValue);
 
         Debug.Log($"Turn counter cal enemy value is {value}");

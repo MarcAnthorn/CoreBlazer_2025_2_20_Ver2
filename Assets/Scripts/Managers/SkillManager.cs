@@ -231,7 +231,7 @@ public class SkillManager : Singleton<SkillManager>
                 Debug.Log($"进行第 {count} 次连击!");
                 // 造成伤害之前进行一些加成计算
                 // 先计算易伤(DeBuff)加成
-                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateDebuffDamage, dmg.damageType, enemy.positionId, dmg.damage);
+                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.BeHit, dmg.damageType, enemy.positionId, dmg.damage);
 
                 Debug.LogWarning($"step 1 结算出的对敌人的伤害：{dmg.damage}");
 
@@ -239,6 +239,12 @@ public class SkillManager : Singleton<SkillManager>
                 dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, dmg.damage);
 
                 Debug.LogWarning($"step 2 结算出的对敌人的伤害：{dmg.damage}");
+
+                // 敌人受击后添加新的Buff(只结算一遍)
+                if(count == 1)
+                {
+                    TurnCounter.Instance.DealWithEnemyBuff(TriggerTiming.BeHit, damageType);
+                }
 
                 //结算出的对敌人的伤害
                 Debug.LogWarning($"结算出的对敌人的伤害：{dmg.damage}");
@@ -248,7 +254,7 @@ public class SkillManager : Singleton<SkillManager>
                 EnemyManager.Instance.EnemyHurted(enemy.positionId, dmg);
 
                 // 之所以将附加Buff的方法放到这里来调用，是为了将 伤害命中 与 Buff命中 协同
-                if(action != null)
+                if(action != null && count == 1)
                 {
                     action.Invoke();
                 }

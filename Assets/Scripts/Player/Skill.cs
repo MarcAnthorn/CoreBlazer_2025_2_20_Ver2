@@ -311,7 +311,11 @@ public abstract class EnemySkill
 // 格斗
 public class EnemySkill_1001 : EnemySkill
 {
-
+    public EnemySkill_1001()
+    {
+        skillName = "格斗";
+    }
+    
     override public void Use(Enemy enemy)
     {
         EnemyManager.Instance.EnemySkill_1001(enemy);
@@ -321,6 +325,10 @@ public class EnemySkill_1001 : EnemySkill
 // 毒针
 public class EnemySkill_1002 : EnemySkill
 {
+    public EnemySkill_1002()
+    {
+        skillName = "毒针";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -331,6 +339,10 @@ public class EnemySkill_1002 : EnemySkill
 // 新月之辉
 public class EnemySkill_1003 : EnemySkill
 {
+    public EnemySkill_1003()
+    {
+        skillName = "新月之辉";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -341,6 +353,10 @@ public class EnemySkill_1003 : EnemySkill
 // 心火
 public class EnemySkill_1004 : EnemySkill
 {
+    public EnemySkill_1004()
+    {
+        skillName = "心火";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -351,6 +367,10 @@ public class EnemySkill_1004 : EnemySkill
 // 破势击
 public class EnemySkill_1005 : EnemySkill
 {
+    public EnemySkill_1005()
+    {
+        skillName = "破势击";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -361,6 +381,10 @@ public class EnemySkill_1005 : EnemySkill
 // 缚心铎声
 public class EnemySkill_1006 : EnemySkill
 {
+    public EnemySkill_1006()
+    {
+        skillName = "缚心铎声";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -371,6 +395,10 @@ public class EnemySkill_1006 : EnemySkill
 // 落日
 public class EnemySkill_1007 : EnemySkill
 {
+    public EnemySkill_1007()
+    {
+        skillName = "落日";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -381,6 +409,10 @@ public class EnemySkill_1007 : EnemySkill
 // 湖中女的复仇
 public class EnemySkill_1008 : EnemySkill
 {
+    public EnemySkill_1008()
+    {
+        skillName = "湖中女的复仇";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -391,6 +423,10 @@ public class EnemySkill_1008 : EnemySkill
 // 魔音灌耳
 public class EnemySkill_1009 : EnemySkill
 {
+    public EnemySkill_1009()
+    {
+        skillName = "魔音灌耳";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -401,6 +437,10 @@ public class EnemySkill_1009 : EnemySkill
 // 伤口污染
 public class EnemySkill_1010 : EnemySkill
 {
+    public EnemySkill_1010()
+    {
+        skillName = "伤口污染";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -411,6 +451,10 @@ public class EnemySkill_1010 : EnemySkill
 // 恨意凝视
 public class EnemySkill_1012 : EnemySkill
 {
+    public EnemySkill_1012()
+    {
+        skillName = "恨意凝视";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -421,6 +465,10 @@ public class EnemySkill_1012 : EnemySkill
 // 瘟疫吐息
 public class EnemySkill_1013 : EnemySkill
 {
+    public EnemySkill_1013()
+    {
+        skillName = "瘟疫吐息";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -431,6 +479,10 @@ public class EnemySkill_1013 : EnemySkill
 // 怨念
 public class EnemySkill_1016 : EnemySkill
 {
+    public EnemySkill_1016()
+    {
+        skillName = "怨念";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -441,6 +493,10 @@ public class EnemySkill_1016 : EnemySkill
 // 鼠群意志
 public class EnemySkill_1020 : EnemySkill
 {
+    public EnemySkill_1020()
+    {
+        skillName = "鼠群意志";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -451,6 +507,10 @@ public class EnemySkill_1020 : EnemySkill
 // 禁咒
 public class EnemySkill_1022 : EnemySkill
 {
+    public EnemySkill_1022()
+    {
+        skillName = "禁咒";
+    }
 
     override public void Use(Enemy enemy)
     {
@@ -461,6 +521,10 @@ public class EnemySkill_1022 : EnemySkill
 // 最后一次守护
 public class EnemySkill_1023 : EnemySkill
 {
+    public EnemySkill_1023()
+    {
+        skillName = "最后一次守护";
+    }
 
     override public void Use(Enemy enemy)
     {

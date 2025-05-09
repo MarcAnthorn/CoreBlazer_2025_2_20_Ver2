@@ -63,7 +63,7 @@ public class EnemyManager : Singleton<EnemyManager>
         //如果是易伤就跳过；
 
         //finalValue表示 战斗过程 造成的实际数值变化
-        // float finalValue = TurnCounter.Instance.EnemyBuffsBuffEffectInBattle(enemy, buffType, value);
+        float finalValue = TurnCounter.Instance.EnemyBuffsBuffEffectInBattle(enemy, buffType, value);
 
 
         return value;
@@ -79,7 +79,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         // 计算敌人身上的Buff
         float damageValue = rowDamage;
-        // EnemyManager.Instance.CalculateDamageAfterBuff(enemy, AttributeType.HP, rowDamage);
+        EnemyManager.Instance.CalculateDamageAfterBuff(enemy, AttributeType.HP, rowDamage);
 
         Debug.LogWarning($"current damage value:{damageValue}");
 
@@ -102,6 +102,12 @@ public class EnemyManager : Singleton<EnemyManager>
                 // 再判断伤害类型(方法内部自行判断)，并计算敌人增伤(GoodBuff)加成
                 dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, enemy.positionId, dmg.damage);
 
+                // 角色受击后添加新的Buff
+                if (count == 1)
+                {
+                    TurnCounter.Instance.DealWithPlayerBuff(TriggerTiming.BeHit, dmg.damageType);
+                }
+
                 //结算出的对玩家的伤害
                 Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");
                 EventHub.Instance.EventTrigger("UpdateDamangeText", dmg.damage, false);
@@ -112,7 +118,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 // TurnCounter.Instance.AddPlayerBuff(new BattleBuff_1001());
                 PlayerManager.Instance.player.BeHurted(dmg);
 
-                if (action != null)
+                if (action != null && count == 1)
                 {
                     action.Invoke();
                 }
