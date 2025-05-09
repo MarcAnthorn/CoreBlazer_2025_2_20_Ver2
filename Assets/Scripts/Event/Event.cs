@@ -165,6 +165,7 @@ public class Event          //
             //如果有战斗，那么尝试将战斗id播放给BattlePanel：
             if(this.result.enemyId != 0)
             {
+                Debug.Log($"有战斗, id:{result.enemyId}");
                 //等待文本播放结束：
                 EventHub.Instance.AddEventListener("TriggerEventBattle", TriggerEventBattle);
             }
@@ -191,6 +192,7 @@ public class Event          //
 
     public void TriggerEventBattle()
     {
+        Debug.Log($"选项战斗事件触发, id:{result.enemyId}");
         TriggerBattle(this.result.enemyId);
     }
 

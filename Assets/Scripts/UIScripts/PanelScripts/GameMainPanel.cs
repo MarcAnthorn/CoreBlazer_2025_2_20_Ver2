@@ -119,6 +119,9 @@ public class GameMainPanel : BasePanel
         EventHub.Instance.RemoveEventListener("UpdateOptions", UpdateOptions);
         EventHub.Instance.RemoveEventListener("ClearOptions", ClearOptions);
         EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateAttributeText);
+
+
+        EventHub.Instance.EventTrigger("TriggerEventBattle");       //try to trigger battle(if there is a battle);
     
 
         //解冻玩家
@@ -302,7 +305,7 @@ public class GameMainPanel : BasePanel
 
         //播放结束：尝试进行调用战斗：
         //该脚本在：Event中的ExecuteResult中 被注册；
-        EventHub.Instance.EventTrigger("TriggerEventBattle");     
+        
 
     }   
 
