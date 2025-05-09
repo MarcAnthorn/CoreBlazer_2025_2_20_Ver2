@@ -444,7 +444,7 @@ public class LoadManager : Singleton<LoadManager>
         string path = null;
         if (mapId >= 0 && mapId <= 3)
         {
-            path = Path.Combine(Application.dataPath, $"ResourcesMapDatas", $"Map{mapId}.csv");    //命名规范！！！
+            path = Path.Combine(Application.dataPath, $"Resources", "MapDatas", $"Map{mapId}.csv");    //命名规范！！！
 
         }
         else
@@ -453,8 +453,10 @@ public class LoadManager : Singleton<LoadManager>
             return;
         }
 
+        Debug.LogWarning(path);
         if (File.Exists(path))
         {
+            Debug.LogWarning(path);
             string[] lines = File.ReadAllLines(path);       //分割每一行存入lines
 
             for (int i = 0; i < lines.Length; i++)          //从第四行开始遍历每一行，获得各列的信息
