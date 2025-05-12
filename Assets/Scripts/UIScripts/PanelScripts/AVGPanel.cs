@@ -421,9 +421,9 @@ public class AVGPanel : BasePanel
         if(!orginalColorDic.ContainsKey(keyName))
         {
             color.a = 255;
-            color.r = 255;
-            color.g = 255;
-            color.b = 255;
+            // color.r = 255;
+            // color.g = 255;
+            // color.b = 255;
             orginalColorDic.Add(keyName, color);
         }
 
