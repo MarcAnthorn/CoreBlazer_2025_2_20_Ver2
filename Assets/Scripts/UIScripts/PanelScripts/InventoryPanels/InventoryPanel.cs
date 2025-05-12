@@ -7,6 +7,8 @@ using System.Linq;
 
 public class InventoryPanel : BasePanel
 {
+    //是否是在战斗中打开的背包；是的话，那关闭背包不会导致解冻：
+    public bool isInBattle;
     public Image imgPlayer;
     public Slider sliderHealth;
     public Slider sliderSanity;
@@ -99,8 +101,7 @@ public class InventoryPanel : BasePanel
 
 
         btnExit.onClick.AddListener(()=>{
-            if(!UIManager.Instance.shownPanelDic.ContainsKey("BattlePanel"))
-                UIManager.Instance.HidePanel<InventoryPanel>();
+            UIManager.Instance.HidePanel<InventoryPanel>();
         });
 
         btnSetting.onClick.AddListener(()=>{
@@ -237,6 +238,17 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.RemoveEventListener("ResetCurrentSelectedItem", ResetCurrentSelectedItem);
 
         ResetCurrentSelectedItem();
+
+        //只有不在战斗中，才会解冻：
+        if(!isInBattle){
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+        }
+    }
+
+    //设置是否在战斗中：
+    public void SetIfInBattle(bool _isInBattle)
+    {
+        isInBattle = _isInBattle;
     }
 
 

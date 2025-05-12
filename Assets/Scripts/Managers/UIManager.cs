@@ -158,7 +158,7 @@ public class UIManager : SingletonBaseManager<UIManager>
 
     private UIManager()
     {
-        fatherTransform = GameObject.Find("Canvas").transform;
+        fatherTransform = GameObject.Find("PanelFather").transform;
         GameObject.DontDestroyOnLoad(fatherTransform.gameObject);
     }
 

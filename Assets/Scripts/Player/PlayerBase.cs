@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerBase : MonoBehaviour
@@ -10,6 +11,8 @@ public class PlayerBase : MonoBehaviour
     public bool isDetectingEscape = true;
     private Animator animator;
     private SpriteRenderer sr;
+
+    public CinemachineVirtualCamera cam;
 
     protected virtual void Awake()
     {
@@ -23,6 +26,9 @@ public class PlayerBase : MonoBehaviour
 
         animator = this.GetComponent<Animator>();
         sr = this.GetComponent<SpriteRenderer>();
+
+
+        cam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
     }
 
 
@@ -110,6 +116,9 @@ public class PlayerBase : MonoBehaviour
         {
             return;
         }
+
+        Debug.Log($"now state:{_isFrozen}");
+        
         isMoving = !_isFrozen;
 
         if(_isFrozen)

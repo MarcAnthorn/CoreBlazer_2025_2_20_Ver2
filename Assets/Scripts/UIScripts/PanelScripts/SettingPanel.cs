@@ -23,7 +23,7 @@ public class SettingPanel : BasePanel
         btnExit.onClick.AddListener(()=>{
             UIManager.Instance.HidePanel<SettingPanel>();
 
-             EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
         });
     }
 

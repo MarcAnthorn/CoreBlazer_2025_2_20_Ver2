@@ -48,7 +48,6 @@ public class PlayerController : PlayerBase
     private bool isDamaging = false;
     public bool isDamageLocked = false;
     public float initialLightScope = 100;
-    public CinemachineVirtualCamera cam;
     private Coroutine damageCoroutine;
     private int initDamageValue = 1;
     private int damageTime = 0;
@@ -68,7 +67,6 @@ public class PlayerController : PlayerBase
     {
         base.Awake();
 
-        cam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
         cam.Follow = this.gameObject.transform;
 
         EventHub.Instance.AddEventListener("OnPlayerDead", OnPlayerDead);

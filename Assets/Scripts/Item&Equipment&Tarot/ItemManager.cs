@@ -16,7 +16,7 @@ public class ItemManager : Singleton<ItemManager>
     //更新：itemCountDic通过Item的id访问对应的Item还存在几个：
     public Dictionary<int, int> itemCountDic = new Dictionary<int, int>();  //供外部访问的数据结构
 
-    public void AddItem(int id, int count = 1)
+    public void AddItem(int id, bool isAddCount, int count = 1)
     {
         Item nowItem = LoadManager.Instance.allItems[id];
         if(itemList.Contains(id))

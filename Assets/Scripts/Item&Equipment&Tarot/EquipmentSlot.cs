@@ -32,6 +32,8 @@ public class EquipmentSlot : MonoBehaviour
     void Awake()
     {
         EventHub.Instance.AddEventListener("UpdateAllSkillDamageText", UpdateAllSkillDamageText);
+        //先注册，再广播，不然第一次使用不消耗耐久；
+        EventHub.Instance.AddEventListener<Equipment>("UpdateEquipmentUI", UpdateEquipmentUI);
 
         //先默认失活：
         btnSkillUse.gameObject.SetActive(false);
@@ -41,8 +43,8 @@ public class EquipmentSlot : MonoBehaviour
     {
         UpdateEquipmentUI(myEquipment);
         btnSkillUse.onClick.AddListener(()=>{
-            EventHub.Instance.EventTrigger("BroadcastNowEquipment", myEquipment);
-            EventHub.Instance.AddEventListener<Equipment>("UpdateEquipmentUI", UpdateEquipmentUI);
+            // EventHub.Instance.EventTrigger("BroadcastNowEquipment", myEquipment);
+            SkillManager.Instance.BroadcastNowEquipment(myEquipment);
             //释放技能：
             mySkill.Use();
 
@@ -91,6 +93,10 @@ public class EquipmentSlot : MonoBehaviour
         btnSkillUse.gameObject.SetActive(true);
         
         myEquipment = _equipment;
+
+        //更新耐久：
+        txtDuration.text = $"耐久:{myEquipment.currentDuration}/{myEquipment.maxDuration}";
+
         mySkill = _equipment.mySkill;
         //初始化相关的信息：
         imgEquipment.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", _equipment.iconPath));
@@ -104,6 +110,7 @@ public class EquipmentSlot : MonoBehaviour
         //这个更新，会通过广播的方式实现：
         txtSkillDamage.text = mySkill.SkillDamage.ToString();
         txtSkillName.text = mySkill.skillName;
+
 
         return;
     }
@@ -139,7 +146,7 @@ public class EquipmentSlot : MonoBehaviour
 
     private void UpdateEquipmentUI(Equipment target)
     {
-        if(txtDuration != null && target == myEquipment)
+        if(txtDuration != null && myEquipment != null && target == myEquipment)
         {
             //主要就是更新耐久的UI：
             txtDuration.text = $"耐久:{myEquipment.currentDuration}/{myEquipment.maxDuration}";

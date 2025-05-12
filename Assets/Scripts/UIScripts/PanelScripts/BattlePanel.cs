@@ -97,7 +97,8 @@ public class BattlePanel : BasePanel
 
           btnInventory.onClick.AddListener(()=>{
                //展示背包面板：
-               UIManager.Instance.ShowPanel<InventoryPanel>();
+               var panel = UIManager.Instance.ShowPanel<InventoryPanel>();
+               panel.SetIfInBattle(true);
           });
 
           btnEndThisRound.onClick.AddListener(()=>{

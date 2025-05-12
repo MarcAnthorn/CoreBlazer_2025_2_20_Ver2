@@ -24,14 +24,14 @@ public class SkillManager : Singleton<SkillManager>
     protected override void Awake()
     {
         base.Awake();
-        EventHub.Instance.AddEventListener<Equipment>("BroadcastNowEquipment", BroadcastNowEquipment);
+        // EventHub.Instance.AddEventListener<Equipment>("BroadcastNowEquipment", BroadcastNowEquipment);
     }
 
     protected override void OnDestroy() {
         base.OnDestroy();
-        EventHub.Instance.RemoveEventListener<Equipment>("BroadcastNowEquipment", BroadcastNowEquipment);
+        // EventHub.Instance.RemoveEventListener<Equipment>("BroadcastNowEquipment", BroadcastNowEquipment);
     }
-    private void BroadcastNowEquipment(Equipment _equipment)
+    public void BroadcastNowEquipment(Equipment _equipment)
     {
         equipment = _equipment;
     }
@@ -288,17 +288,18 @@ public class SkillManager : Singleton<SkillManager>
         {
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"你释放了技能「{skillName}」", true);
 
+
             if(equipment == null)
                 return; //对普通攻击特判
+                
             //更新装备耐久：
             equipment.currentDuration -= 1;
             EquipmentManager.Instance.equipmentDurationDic[equipment] -= 1; 
 
-            Debug.Log($"当前耐久：{equipment.currentDuration}");
-
             //更新equipment耐久UI：
             EventHub.Instance.EventTrigger("UpdateEquipmentUI", equipment);
 
+            Debug.Log($"当前耐久：{equipment.currentDuration}");
 
             //如果耐久归零：
             if(equipment.currentDuration == 0)
