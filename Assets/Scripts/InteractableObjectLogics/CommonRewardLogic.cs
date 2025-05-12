@@ -32,7 +32,7 @@ public class CommonRewardLogic : MonoBehaviour
 
             //按权重分发道具：
             int count = result == 501 || result == 303 ? 2 : 1;
-            ItemManager.Instance.AddItem(result, count);
+            ItemManager.Instance.AddItem(result, true, count);
 
             Destroy(this.gameObject);
         }

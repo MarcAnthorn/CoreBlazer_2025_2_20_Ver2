@@ -174,7 +174,7 @@ public class Event          //
             //如果只是道具投放，那么就会将道具加入到玩家背包：
             else if(result.itemId != 0)
             {
-                ItemManager.Instance.AddItem(result.itemId, result.itemCount);
+                ItemManager.Instance.AddItem(result.itemId, true, result.itemCount);
             }
 
             //如果装备不是0，那么需要投放装备：
