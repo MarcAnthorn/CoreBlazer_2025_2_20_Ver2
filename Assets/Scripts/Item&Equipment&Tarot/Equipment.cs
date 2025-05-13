@@ -427,7 +427,7 @@ public class Equipment_1011 : Equipment
         id = 1011;
         name = "科拉佐斯之眼";
         iconPath = "装备/科拉佐斯之眼";
-        effectDescriptionText = "装备后：命中 + 50%";
+        effectDescriptionText = "装备后：命中 + 50%，力量 + 20， 暴击率 + 50%";
         descriptionText = "在吞噬神明的阴谋之中，看到了不该看到的东西，因此被某位存在挖出双眼，眼珠依旧保持着憎恨的目光。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -440,7 +440,7 @@ public class Equipment_1011 : Equipment
     {
         player.HIT.AddValue(0.5f);
         player.STR.AddValue(20f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.5f);
+        player.CRIT_DMG.AddValue(0.5f);
         player.DebugInfo();
     }
 
@@ -448,7 +448,7 @@ public class Equipment_1011 : Equipment
     {
         player.HIT.AddValue(-0.5f);
         player.STR.AddValue(-20f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.5f);
+        player.CRIT_DMG.AddValue(0.5f);
         player.DebugInfo();
     }
 }
@@ -462,7 +462,7 @@ public class Equipment_1012 : Equipment
         id = 1012;
         name = "科拉佐斯之鼻";
         iconPath = "装备/科拉佐斯之鼻";
-        effectDescriptionText = "装备后：命中 + 30%";
+        effectDescriptionText = "装备后：命中 + 30%， 速度 + 20%";
         descriptionText = "科拉佐斯陨落后被割下的鼻子，虽然它的肉体已经死亡，但是这个鼻子依旧在自主呼吸，吐息之间散发着瘟疫。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -495,7 +495,7 @@ public class Equipment_1013 : Equipment
         id = 1013;
         name = "科拉佐斯之耳";
         iconPath = "装备/科拉佐斯之耳";
-        effectDescriptionText = "装备后：命中 + 50%";
+        effectDescriptionText = "装备后：命中 + 50%， 闪避率 + 20%";
         descriptionText = "“不该听的不要听”，这是犹格索托斯在这只耳边留下的最后一句话。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -507,14 +507,14 @@ public class Equipment_1013 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.5f);
-        player.AVO.AddValue(player.AVO.value * 0.2f);
+        player.AVO.AddValue(0.2f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.5f);
-        player.AVO.AddValue(-player.AVO.value * 0.2f);
+        player.AVO.AddValue(-0.2f);
         player.DebugInfo();
     }
 }
@@ -528,7 +528,7 @@ public class Equipment_1014 : Equipment
         id = 1014;
         name = "科拉佐斯之牙";
         iconPath = "装备/科拉佐斯之牙";
-        effectDescriptionText = "装备后：命中 + 50%";
+        effectDescriptionText = "装备后：连击率 + 50%";
         descriptionText = "“把牙扔到房顶上可以长高哦？哈哈，骗你的，毕竟你没有下半身了”";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -540,14 +540,15 @@ public class Equipment_1014 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.5f);
-        player.HIT.AddValue(player.HIT.value * 0.4f);
+//--------------------------------------------------------------------------------------------------
+        player.CRIT_Rate.AddValue(0.4f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-0.5f);
-        player.HIT.AddValue(-player.HIT.value * 0.4f);
+        player.CRIT_Rate.AddValue(-0.4f);
         player.DebugInfo();
     }
 }
@@ -556,12 +557,13 @@ public class Equipment_1014 : Equipment
 public class Equipment_1015 : Equipment
 {
     public Equipment_1015(Equipment other) : base(other) {}
+    float delta;
 
     public Equipment_1015(){
         id = 1015;
         name = "科拉佐斯之颅";
         iconPath = "装备/科拉佐斯之颅";
-        effectDescriptionText = "装备后：命中 + 200%";
+        effectDescriptionText = "装备后：命中 + 200%， 速度 + 100%";
         descriptionText = "可怜的信徒们拼了命的在肉泥中寻找，只找到了这块颅骨。索性它依旧带着一丝生命的气息，以及.....强大的怨气。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -573,14 +575,15 @@ public class Equipment_1015 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(2f);
-        player.SPD.AddValue(player.SPD.value * 1.0f);
+        delta = player.SPD.value * 1.0f;
+        player.SPD.AddValue(delta);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
         player.HIT.AddValue(-2f);
-        player.SPD.AddValue(-player.SPD.value * 1.0f);
+        player.SPD.AddValue(-delta);
         player.DebugInfo();
     }
 }
