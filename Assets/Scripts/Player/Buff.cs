@@ -28,6 +28,7 @@ public enum CalculationType
     Multiply = 2
 }
 
+
 // buff特殊能力
 public enum SpecialBuffType
 {

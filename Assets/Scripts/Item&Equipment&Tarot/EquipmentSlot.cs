@@ -75,7 +75,7 @@ public class EquipmentSlot : MonoBehaviour
             btnSkillUse.gameObject.SetActive(true);
         
             mySkill = LoadManager.Instance.allSkills[1001];
-            imgSkill.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", mySkill.skillIconPath));
+            imgSkill.sprite = Resources.Load<Sprite>(mySkill.skillIconPath);
             txtCost.text = $"消耗行动点：{mySkill.skillCost}";
             txtSkillDamage.text = mySkill.SkillDamage.ToString();
             txtSkillName.text = mySkill.skillName;

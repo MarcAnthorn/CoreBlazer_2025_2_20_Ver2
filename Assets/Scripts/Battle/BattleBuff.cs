@@ -250,7 +250,7 @@ public class BattleBuff_1003 : BattleBuff
     {
         id = 1003;
         name = "燃血狂怒";
-        buffIconPath = "暴击";
+        buffIconPath = "暴击率";
         type = BuffType.CRIT_Rate_Change;
         buffType = BattleBuffType.GoodBuff;
         calculationType = CalculationType.Multiply;
@@ -364,7 +364,7 @@ public class BattleBuff_1005 : BattleBuff
     {
         id = 1005;
         name = "缚心";
-        buffIconPath = "易伤";
+        buffIconPath = "力量增益";
         damageType = DamageType.STR;
         calculationType = CalculationType.NONE;
         influence = 0f;
@@ -424,7 +424,7 @@ public class BattleBuff_1006 : BattleBuff
     {
         id = 1006;
         name = "余晖";
-         buffIconPath = "易伤";
+         buffIconPath = "力量增益";
         damageType = DamageType.Dot | DamageType.Item;
         calculationType = CalculationType.NONE;
         influence = 0f;
@@ -474,7 +474,7 @@ public class BattleBuff_1007 : BattleBuff
     {
         id = 1007;
         name = "战斗意志";
-        buffIconPath = "易伤";
+        buffIconPath = "力量增益";
         damageType = DamageType.Skill;
         calculationType = CalculationType.NONE;
         influence = 0f;
@@ -1147,7 +1147,7 @@ public class BattleBuff_1020 : BattleBuff
     {
         id = 1020;
         name = "鞭挞";
-        buffIconPath = "力量";
+        buffIconPath = "力量增伤";
         damageType = DamageType.STR | DamageType.Skill;
         calculationType = CalculationType.NONE;
         influence = 0f;
@@ -1257,7 +1257,7 @@ public class BattleBuff_1022 : BattleBuff
     {
         id = 1022;
         name = "守护";
-        buffIconPath = "防御";
+        buffIconPath = "防御增益";
         type = BuffType.HP_Change;
         buffType = BattleBuffType.GoodBuff;
         calculationType = CalculationType.Multiply;
@@ -1305,7 +1305,7 @@ public class BattleBuff_1023 : BattleBuff
     {
         id = 1023;
         name = "力量增伤";
-        buffIconPath = "力量";
+        buffIconPath = "力量增益";
         type = BuffType.HP_Change;
         damageType = DamageType.STR;
         buffType = BattleBuffType.GoodBuff;
@@ -1341,7 +1341,7 @@ public class BattleBuff_1024 : BattleBuff
     {
         id = 1024;
         name = "怪谈技能增伤";
-        buffIconPath = "易伤";
+        buffIconPath = "力量增益";
         type = BuffType.HP_Change;
         damageType = DamageType.Skill;
         buffType = BattleBuffType.GoodBuff;
@@ -1377,7 +1377,7 @@ public class BattleBuff_1025 : BattleBuff
     {
         id = 1025;
         name = "dot增伤";
-        buffIconPath = "易伤";
+        buffIconPath = "中毒";
         type = BuffType.HP_Change;
         damageType = DamageType.Dot;
         buffType = BattleBuffType.GoodBuff;

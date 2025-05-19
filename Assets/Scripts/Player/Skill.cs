@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 
@@ -41,7 +42,9 @@ public class Skill_1001 : Skill
     public Skill_1001()
     {
         id = 1001;
-        skillIconPath = skillName = "格斗";
+        skillName = "格斗";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "力量增益");
+        
         skillDamageText = "等额于力量值";
         skillBuffText = "平a攻击，玩家自带的技能，使用平a攻击的逻辑结算伤害";
         skillCost = 1;
@@ -63,7 +66,9 @@ public class Skill_1002 : Skill
     public Skill_1002()
     {
         id = 1002;
-        skillIconPath = skillName = "毒针";
+        skillName = "毒针";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "中毒");
+        
         skillDamageText = "8+20%*速度值";
         skillBuffText = "攻击施加中毒";
         skillCost = 0;
@@ -83,7 +88,9 @@ public class Skill_1003 : Skill
     public Skill_1003()
     {
         id = 1003;
-        skillIconPath = skillName = "新月之辉";
+        skillName = "新月之辉";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "易伤");
+        
         skillDamageText = "50";
         skillCost = 3;
         skillBuffText = "攻击命中后，有较高概率附带10层易伤";
@@ -103,7 +110,9 @@ public class Skill_1004 : Skill
     public Skill_1004()
     {
         id = 1004;
-        skillIconPath = skillName = "心火";
+        skillName = "心火";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "暴击率");
+        
         skillDamageText = "10";
         skillBuffText = "对自己造成伤害，并获得'燃血狂怒'buff";
         skillCost = 1;
@@ -123,7 +132,9 @@ public class Skill_1005 : Skill
     public Skill_1005()
     {
         id = 1005;
-        skillIconPath = skillName = "破势击";
+        skillName = "破势击";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "力量增益");
+        
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到力量伤害后，施加12层易伤。予debuff持有者的对手2层力量增伤";
         skillCost = 2;
@@ -142,7 +153,9 @@ public class Skill_1006 : Skill
     public Skill_1006()
     {
         id = 1006;
-        skillIconPath = skillName = "缚心铎声";
+        skillName = "缚心铎声";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "");
+        
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到力量伤害后，给对手施加3层dot增伤和3层怪谈增伤";
         skillCost = 2;
@@ -162,7 +175,9 @@ public class Skill_1007 : Skill
     public Skill_1007()
     {
         id = 1007;
-        skillIconPath = skillName = "落日";
+        skillName = "落日";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "力量增益");
+        
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到dot伤害或道具伤害后，给对手施加3层力量增伤";
         skillCost = 2;
@@ -182,7 +197,9 @@ public class Skill_1008 : Skill
     public Skill_1008()
     {
         id = 1008;
-        skillIconPath = skillName = "湖中女的复仇";
+        skillName = "湖中女的复仇";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "力量增益");
+        
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到怪谈伤害后，予debuff持有者的对手施加3层力量增伤";
         skillCost = 2;
@@ -202,7 +219,9 @@ public class Skill_1009 : Skill
     public Skill_1009()
     {
         id = 1009;
-        skillIconPath = skillName = "魔音灌耳";
+        skillName = "魔音灌耳";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "易伤");
+        
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到dot伤害后，予debuff持有者的对手施加3层怪谈增伤和3层易伤";
         skillCost = 2;
@@ -222,7 +241,9 @@ public class Skill_1010 : Skill
     public Skill_1010()
     {
         id = 1010;
-        skillIconPath = skillName = "伤口污染";
+        skillName = "伤口污染";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "易伤");
+        
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到dot伤害后，给对手施加3层易伤";
         skillCost = 2;
@@ -242,7 +263,9 @@ public class Skill_1011 : Skill
     public Skill_1011()
     {
         id = 1011;
-        skillIconPath = skillName = "幽影呓语";
+        skillName = "幽影呓语";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "中毒");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff的持有者受到怪谈伤害后，给对手施加3层易伤";
         skillCost = 2;
@@ -262,7 +285,9 @@ public class Skill_1012 : Skill
     public Skill_1012()
     {
         id = 1012;
-        skillIconPath = skillName = "恨意凝视";
+        skillName = "恨意凝视";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "中毒");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff的持有者受到力量伤害后，给对手施加3层力量增伤";
         skillCost = 2;
@@ -282,7 +307,9 @@ public class Skill_1013 : Skill
     public Skill_1013()
     {
         id = 1013;
-        skillIconPath = skillName = "瘟疫吐息";
+        skillName = "瘟疫吐息";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "中毒");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff的持有者受到道具伤害后，给予debuff持有者的对手施加3层dot增伤和3层怪谈增伤";
         skillCost = 2;
@@ -302,7 +329,9 @@ public class Skill_1014 : Skill
     public Skill_1014()
     {
         id = 1014;
-        skillIconPath = skillName = "探知深空";
+        skillName = "探知深空";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "中毒");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff的持有者受到怪谈伤害后，给予debuff持有者的对手施加3层dot增伤和3层力量增伤";
         skillCost = 2;
@@ -322,7 +351,9 @@ public class Skill_1015 : Skill
     public Skill_1015()
     {
         id = 1015;
-        skillIconPath = skillName = "饥饿掠夺";
+        skillName = "饥饿掠夺";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "中毒");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff的持有者受到道具伤害后，给予debuff持有者的对手施加3层力量增伤";
         skillCost = 2;
@@ -342,7 +373,9 @@ public class Skill_1016 : Skill
     public Skill_1016()
     {
         id = 1016;
-        skillIconPath = skillName = "怨念";
+        skillName = "怨念";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "中毒");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff持有者的受到怪谈伤害后，给予debuff持有者的对手施加3层dot增伤和3层力量增伤";
         skillCost = 2;
@@ -362,7 +395,9 @@ public class Skill_1017 : Skill
     public Skill_1017()
     {
         id = 1017;
-        skillIconPath = skillName = "深海的呼唤";
+        skillName = "深海的呼唤";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "易伤");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff持有者受到力量伤害或道具伤害后，给予debuff持有者的对手施加3层易伤";
         skillCost = 2;
@@ -382,7 +417,9 @@ public class Skill_1018 : Skill
     public Skill_1018()
     {
         id = 1018;
-        skillIconPath = skillName = "深渊之主的回音";
+        skillName = "深渊之主的回音";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "易伤");
+        
         skillDamageText = "20";
         skillBuffText = "①对手受到dot伤害后，给对手施加3层易伤";
         skillCost = 2;
@@ -402,7 +439,9 @@ public class Skill_1019 : Skill
     public Skill_1019()
     {
         id = 1019;
-        skillIconPath = skillName = "风起之时";
+        skillName = "风起之时";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "连击");
+        
         skillDamageText = "20";
         skillBuffText = "①对手受到道具伤害后，自己+30%连击";
         skillCost = 2;
@@ -422,7 +461,9 @@ public class Skill_1020 : Skill
     public Skill_1020()
     {
         id = 1020;
-        skillIconPath = skillName = "鼠群意志";
+        skillName = "鼠群意志";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "连击");
+        
         skillDamageText = "20";
         skillBuffText = "①对手受到dot伤害后，自己+30%连击";
         skillCost = 1;
@@ -442,7 +483,9 @@ public class Skill_1021 : Skill
     public Skill_1021()
     {
         id = 1021;
-        skillIconPath = skillName = "风起之时";
+        skillName = "风起之时";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "力量增益");
+        
         skillDamageText = "20";
         skillBuffText = "①debuff持有者受到怪谈伤害或力量伤害后，给对手施加3层力量增伤";
         skillCost = 2;
@@ -462,7 +505,9 @@ public class Skill_1022 : Skill
     public Skill_1022()
     {
         id = 1022;
-        skillIconPath = skillName = "禁咒";
+        skillName = "禁咒";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "易伤");
+        
         skillDamageText = "20";
         skillBuffText = "①对手受到怪谈伤害后，给予debuff持有者的对手施加3层易伤和3层dot增伤";
         skillCost = 2;
@@ -482,7 +527,9 @@ public class Skill_1023 : Skill
     public Skill_1023()
     {
         id = 1023;
-        skillIconPath = skillName = "最后一次守护";
+        skillName = "最后一次守护";
+        skillIconPath = Path.Combine("ArtResources", "Buff", "力量增益");
+        
         skillDamageText = "0";
         skillBuffText = "抵挡一次致命伤害。（剩余1点生命值）";
         skillCost = 1;
