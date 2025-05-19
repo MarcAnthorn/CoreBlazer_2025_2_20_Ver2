@@ -48,6 +48,14 @@ public class BattlePanel : BasePanel
 
      //当前战斗结束之后的回调函数：
      public UnityAction<int> callback;
+
+     //五个遮罩对象：
+     //对应id：0:战斗开始；1：我方回合开始 2:我方回合结束 3:敌方回合开始 4：敌方回合结束
+     public GameObject maskBattleStart;
+     public GameObject maskPlayerTurnStart;
+     public GameObject maskPlayerTurnEnd;
+     public GameObject maskEnemyTurnStart;
+     public GameObject maskEnemyTurnEnd;
      protected override void Awake()
      {
           EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
@@ -56,12 +64,37 @@ public class BattlePanel : BasePanel
           //更新BattlePanel UI的事件注册：     
           EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
 
-       
+
           //更新伤害Ui的事件注册：
           EventHub.Instance.AddEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
           EventHub.Instance.AddEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
 
-          
+          EventHub.Instance.AddEventListener<int>("TriggerBattleMask", TriggerBattleMask);
+
+
+     }
+
+     private void TriggerBattleMask(int maskId)
+     {
+          switch (maskId)
+          {
+               case 0:
+                    maskBattleStart.SetActive(true);
+                    break;
+               case 1:
+                    maskPlayerTurnStart.SetActive(true);
+                    break;
+               case 2:
+                    maskPlayerTurnEnd.SetActive(true);
+                    break;
+               case 3:
+                    maskEnemyTurnStart.SetActive(true);
+                    break;
+               case 4:
+                    maskEnemyTurnEnd.SetActive(true);
+                    break;
+                    
+          }
      }
      protected override void Init()
      {
@@ -71,9 +104,9 @@ public class BattlePanel : BasePanel
           int resultNumber = 10000 + endNumber;
           string path = Path.Combine("ArtResources", "战斗图片", resultNumber.ToString());
 
-          if(myEnemyId != 1013)
+          if (myEnemyId != 1013)
                imgEnemy.sprite = Resources.Load<Sprite>(path);
-          
+
 
           else
           {
@@ -90,19 +123,22 @@ public class BattlePanel : BasePanel
           equipmentSlotList.Add(equipmentSlot3);
           equipmentSlotList.Add(equipmentSlot4);
 
-          btnPlayerInfo.onClick.AddListener(()=>{
+          btnPlayerInfo.onClick.AddListener(() =>
+          {
                //此处展示玩家当前的数值：
                UIManager.Instance.ShowPanel<PlayerAttributePanel>();
           });
 
-          btnInventory.onClick.AddListener(()=>{
+          btnInventory.onClick.AddListener(() =>
+          {
                //展示背包面板：
                var panel = UIManager.Instance.ShowPanel<InventoryPanel>();
                panel.SetIfInBattle(true);
           });
 
-          btnEndThisRound.onClick.AddListener(()=>{
-               
+          btnEndThisRound.onClick.AddListener(() =>
+          {
+
                Debug.LogWarning("Triggered!");
                //触发BattleManager中的bool标识，让回合协程继续：
                BattleManager.Instance.isRoundEndTriggered = true;
@@ -110,25 +146,25 @@ public class BattlePanel : BasePanel
           });
 
 
-        //----------------测试战斗：----------------------------
-     //    TestBattle();
-        //----------------测试战斗：----------------------------
+          //----------------测试战斗：----------------------------
+          //    TestBattle();
+          //----------------测试战斗：----------------------------
 
 
-        //初始化战斗：
-        BeginBattle();
+          //初始化战斗：
+          BeginBattle();
 
 
-        //先遍历所有的装备，如果有是装备中的，那么就直接装备就行：
-        foreach (var equipment in EquipmentManager.Instance.equipmentList)
+          //先遍历所有的装备，如果有是装备中的，那么就直接装备就行：
+          foreach (var equipment in EquipmentManager.Instance.equipmentList)
           {
-               if(equipment.isEquipped)
+               if (equipment.isEquipped)
                {
                     EquipTarget(equipment);
                }
           }
 
-          
+
           //初步更新UI：
           UpdateBattlePanelUI();
      }
@@ -215,6 +251,8 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
           EventHub.Instance.RemoveEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
 
+          EventHub.Instance.RemoveEventListener<int>("TriggerBattleMask", TriggerBattleMask);
+          
           EventHub.Instance.EventTrigger("Freeze", false);
      } 
 

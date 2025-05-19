@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,7 +28,8 @@ public class BuffCheckPanel : BasePanel
     //初始化内部显示的方法：
     public void InitPanel(BattleBuff _buff)
     {
-        imgBuff.sprite = Resources.Load<Sprite>(_buff.buffIconPath);
+        imgBuff.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", "Buff", _buff.buffIconPath));
+        
         txtRemainingLayerCount.text = $"Buff持续回合剩余：{_buff.lastTurns} ";
         txtOverlyingLayerCount.text = $"Buff叠加层数：{_buff.overlyingCount} ";
         txtBuffDescription.text = $"{_buff.name}, {_buff.buffDescriptionText}";

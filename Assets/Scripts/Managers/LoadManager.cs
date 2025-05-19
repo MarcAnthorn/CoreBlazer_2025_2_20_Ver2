@@ -340,6 +340,8 @@ public class LoadManager : Singleton<LoadManager>
                 if (values.Length > 3)
                 {
                     //此处进行道具分类
+                    Debug.LogWarning($"Item id is{values[1]}");
+                    
                     Item Item = ItemManager.Instance.ClassifyItems(int.Parse(values[1]));
                     Item.name = values[0];                              //A列
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,13 +45,14 @@ public class BuffCheckerLogic : MonoBehaviour
     {
         myBuff = _buff;
         //初始化：buff图标、叠加层数以及剩余回合数；
-        imgBuff.sprite = Resources.Load<Sprite>(_buff.buffIconPath);
+        imgBuff.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", "Buff", _buff.buffIconPath));
+
+
         txtRamainingLayerCount.text = _buff.lastTurns.ToString();
         txtOverlyingLayerCount.text = _buff.overlyingCount.ToString();
 
         _buff.isShownOnUI = true;
     }
-
 
     //响应事件：在所有buff可能的结算时机调用；（指的是：如果不止回合结束这一个时机，那么需要再在此方法内部进行判断）
     //调用后从BuffManager中找到自己，并且更新自己的剩余层数；

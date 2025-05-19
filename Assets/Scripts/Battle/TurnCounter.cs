@@ -89,8 +89,8 @@ public class TurnCounter : Singleton<TurnCounter>
         // Dot伤害
         DealWithEnemyBuff(TriggerTiming.AfterTurn, DamageType.Dot, positionId);
 
-        enemyTurns[positionId]++;
-        Enemy enemy = BattleManager.Instance.enemies[positionId];
+        enemyTurns[0]++;
+        Enemy enemy = BattleManager.Instance.enemies[0];
         int n = enemy.buffs.Count;
         bool cleanBattleBuff_1001 = false;
         for (int i = 0; i < n; i++)

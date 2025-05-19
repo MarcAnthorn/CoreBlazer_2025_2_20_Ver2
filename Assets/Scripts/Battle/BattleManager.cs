@@ -37,6 +37,8 @@ public class BattleManager : Singleton<BattleManager>
 
     private Coroutine enemyAttackCoroutine = null;
 
+    private bool isEnterTurnLocked = true;
+
 
     protected override void Awake()
     {
@@ -58,6 +60,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         this.player = player;
         isJudgedWhoWins = false;
+        isEnterTurnLocked = true;
         for (int i = 0; i < enemies.Length; i++)
         {
             // enemies[i].positionId = i;
@@ -118,28 +121,38 @@ public class BattleManager : Singleton<BattleManager>
         {
             Debug.Log($"当前敌人为null！");
         }
-
-//----------报错注释：（Marc）---------------------------------------------------------------
-        //TestBattle更改为Mono,该方法ViewActionQueue被设置为static;
-        // TestBattle.ViewActionQueue(actionQueue);
-
-        if(player.SPD.value >= enemies[0].SPD)
+        
+        EventHub.Instance.EventTrigger("TriggerBattleMask", 0);
+        LeanTween.delayedCall(1f, () =>
         {
-            Debug.Log("角色速度：" + player.SPD.value + "  >=  " + "敌人速度：" + enemies[0].SPD);
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("我方速度值更高，我方先手!", true);
-            EnterPlayerTurn();
-        }
-        else
-        {
-            Debug.Log("角色速度：" + player.SPD.value + "  <  " + "敌人速度：" + enemies[0].SPD);
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("敌方速度值更高，敌方先手!", true);
-            EnterEnemyTurn(1);
-        }
+            if (player.SPD.value >= enemies[0].SPD)
+            {
+                Debug.Log("角色速度：" + player.SPD.value + "  >=  " + "敌人速度：" + enemies[0].SPD);
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("我方速度值更高，我方先手!", true);
+                EnterPlayerTurn();
+            }
+            else
+            {
+                Debug.Log("角色速度：" + player.SPD.value + "  <  " + "敌人速度：" + enemies[0].SPD);
+                UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("敌方速度值更高，敌方先手!", true);
+                EnterEnemyTurn(1);
+            }
+        });
+
+        
     }
 
     // 进入角色回合
     public void EnterPlayerTurn()
     {
+        //激活我方的Mask UI：
+        if (!isEnterTurnLocked)
+        {
+            EventHub.Instance.EventTrigger("TriggerBattleMask", 1);
+        }
+
+        isEnterTurnLocked = false;
+
         playerTarget = 1;
         playerSkill = 1002;
     
@@ -281,7 +294,8 @@ public class BattleManager : Singleton<BattleManager>
     // 按下结束键则代表角色主动结束该回合
     public void ExitPlayerTurn()
     {
-        Debug.Log("Exit player's turn");
+        EventHub.Instance.EventTrigger("TriggerBattleMask", 2);
+
         // 更新角色回合(并做出一些Buff处理)
         TurnCounter.Instance.UpdatePlayerTurn();
         
@@ -316,20 +330,23 @@ public class BattleManager : Singleton<BattleManager>
     // 进入敌人回合
     public void EnterEnemyTurn(int positionId)
     {
+        if (!isEnterTurnLocked)
+        {
+            EventHub.Instance.EventTrigger("TriggerBattleMask", 3);
+        }
+
+        isEnterTurnLocked = false;
+       
         int index = positionId - 1;
-        Debug.Log("敌人发动攻击！");
+        LeanTween.delayedCall(0.5f, () =>
+        {
 
-        //使用协程替换原先的技能无间隔释放：
-        //改成一定时间间隔释放技能：
-        enemyAttackCoroutine = StartCoroutine(EnemyAttack(enemies[index], index));
+            //使用协程替换原先的技能无间隔释放：
+            //改成一定时间间隔释放技能：
+            enemyAttackCoroutine = StartCoroutine(EnemyAttack(enemies[index], index));
 
-
-        // // 判断游戏状态
-        // if (player.isDie)
-        // {
-        //     GameOver(false);
-        //     return;
-        // }
+        });
+       
     }
 
     //敌方释放技能的协程：
@@ -351,8 +368,19 @@ public class BattleManager : Singleton<BattleManager>
 
         // 排到队尾
         actionQueue.Enqueue(actionQueue.Dequeue());
+        
 
-        EnterPlayerTurn();
+        LeanTween.delayedCall(0.8f, () =>
+        {
+            EventHub.Instance.EventTrigger("TriggerBattleMask", 4);
+            LeanTween.delayedCall(0.8f, () =>
+            {
+                EnterPlayerTurn();
+            });
+            
+        });
+
+        
 
         // 判断下一个行动的对象
         //if (actionQueue.Peek().GetType() == typeof(Player))
