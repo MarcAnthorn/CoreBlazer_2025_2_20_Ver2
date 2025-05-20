@@ -221,35 +221,35 @@ public class BattleManager : Singleton<BattleManager>
 
 
 
-        // 检查敌人状态
-        List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
+        // // 检查敌人状态
+        // List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
 
-        foreach (var e in enemies)
-        {
-            if (e.isDead)
-            {
-                BattleBuff buff;
-                if (e.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
-                {
-                    buff.overlyingCount -= 1;
-                    e.buffs.Remove(buff);
-                    buff.OnEffect(1);
-                }
-                else
-                {
-                    deadEnemies.Add(e);   // 先记下来
-                    e.DieAnimation();     // 触发死亡动画
-                }
-            }
-        }
+        // foreach (var e in enemies)
+        // {
+        //     if (e.isDead)
+        //     {
+        //         BattleBuff buff;
+        //         if (e.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
+        //         {
+        //             buff.overlyingCount -= 1;
+        //             e.buffs.Remove(buff);
+        //             buff.OnEffect(1);
+        //         }
+        //         else
+        //         {
+        //             deadEnemies.Add(e);   // 先记下来
+        //             e.DieAnimation();     // 触发死亡动画
+        //         }
+        //     }
+        // }
 
-        // 循环结束后统一移除
-        foreach (var dead in deadEnemies)
-        {
-            enemies.Remove(dead);
-        }
+        // // 循环结束后统一移除
+        // foreach (var dead in deadEnemies)
+        // {
+        //     enemies.Remove(dead);
+        // }
 
-        deadEnemies.Clear();
+        // deadEnemies.Clear();
 
 //--------------------------------------------------------------------------------
 

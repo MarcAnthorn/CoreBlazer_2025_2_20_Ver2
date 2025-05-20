@@ -38,12 +38,12 @@ public abstract class Enemy
         
         HP -= damage.damage;
 
-        Debug.LogWarning($"Now Enemy HP is{HP}");
-        if (HP <= 0)
-        {
-            Debug.Log("敌人死亡");        
-            isDead = true;
-        }
+        // Debug.LogWarning($"Now Enemy HP is{HP}");
+        // if (HP <= 0)
+        // {
+        //     Debug.Log("敌人死亡");        
+        //     isDead = true;
+        // }
     }
 
     // 查找敌人身上是否存在某一类型的BattleBuff
