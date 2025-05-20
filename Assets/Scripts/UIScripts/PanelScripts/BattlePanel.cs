@@ -270,7 +270,7 @@ public class BattlePanel : BasePanel
 
           _enemy.HP = _enemy.HP_limit;  //将血量回满；
 
-          imgEnemy.sprite = Resources.Load<Sprite>(Path.Combine("Enemy", enemyId.ToString()));
+          // imgEnemy.sprite = Resources.Load<Sprite>(Path.Combine("Enemy", enemyId.ToString()));
           enemy = _enemy;
      }
 
@@ -472,6 +472,23 @@ public class BattlePanel : BasePanel
      //如果value是-1，说明是被闪避了；第二参数表示是否是我发出的伤害，用于区分敌方和我方；
      private void UpdateDamangeText(float damageValue, bool isPlayersDamage)
      {
+          //以-3为flag：如果是-4，那么就是开始之前的惯例UI更新
+          if (damageValue < -3)
+          {
+               if (isPlayersDamage)
+               {
+                    txtPlayerDamage.color = Color.white;
+                    txtPlayerDamage.text = $"尚未造成伤害";
+               }
+
+               else
+               {
+                    txtEnemyDamage.color = Color.white;
+                    txtEnemyDamage.text = $"尚未造成伤害";
+               }
+               return;
+
+          }
           Debug.Log("Damage Text is Updated!");
           if(isPlayersDamage)
           {

@@ -43,6 +43,9 @@ public class EquipmentSlot : MonoBehaviour
     {
         UpdateEquipmentUI(myEquipment);
         btnSkillUse.onClick.AddListener(()=>{
+
+            //先尝试更新伤害UI：
+            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-4, true);
             // EventHub.Instance.EventTrigger("BroadcastNowEquipment", myEquipment);
             SkillManager.Instance.BroadcastNowEquipment(myEquipment);
             //释放技能：

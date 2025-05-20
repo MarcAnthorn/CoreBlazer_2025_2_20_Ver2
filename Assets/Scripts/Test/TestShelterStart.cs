@@ -8,6 +8,10 @@ public class TestShelterStart : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //回复血量：
+        PlayerManager.Instance.player.HP.value = PlayerManager.Instance.player.HP.value_limit;
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
+
         UIManager.Instance.ShowPanel<MainPanel>();
         
         EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{

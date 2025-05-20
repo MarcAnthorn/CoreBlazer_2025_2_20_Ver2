@@ -13,8 +13,8 @@ public class BattleManager : Singleton<BattleManager>
 
     private bool isJudgedWhoWins;
 
-    // 行动队列
-    private Queue actionQueue = new Queue();
+    // // 行动队列
+    // private Queue actionQueue = new Queue();
     // 回合计数器
     // public TurnCounter turnCounter;
     // 角色攻击目标
@@ -44,7 +44,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         base.Awake();
         EventHub.Instance.AddEventListener<bool, UnityAction<int>>("GameOver", GameOver);
-        
+
         enemies.Clear();
     }
 
@@ -88,24 +88,24 @@ public class BattleManager : Singleton<BattleManager>
         return true;
     }
 
-    // 行动队列更新方法
-    public void UpdateActionQueue()
-    {
-        object temp = null;
-        for(int i = 0; i < actionQueue.Count; i++)
-        {
-            temp = actionQueue.Dequeue();
-            if(temp.GetType() != typeof(Player))
-            {
-                Enemy enemy = temp as Enemy;
-                if (enemy.isDead)
-                {
-                    continue;
-                }
-                actionQueue.Enqueue(temp);
-            }
-        }
-    }
+    // // 行动队列更新方法
+    // public void UpdateActionQueue()
+    // {
+    //     object temp = null;
+    //     for(int i = 0; i < actionQueue.Count; i++)
+    //     {
+    //         temp = actionQueue.Dequeue();
+    //         if(temp.GetType() != typeof(Player))
+    //         {
+    //             Enemy enemy = temp as Enemy;
+    //             if (enemy.isDead)
+    //             {
+    //                 continue;
+    //             }
+    //             actionQueue.Enqueue(temp);
+    //         }
+    //     }
+    // }
 
     // 战斗开始
     public void BattleStart()
@@ -113,11 +113,11 @@ public class BattleManager : Singleton<BattleManager>
         //调整当前玩家的playerSceneIndex
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Battle;
 
-        // 向行动队列中先后加入player和enemy
-        actionQueue.Enqueue(player);
+        // // 向行动队列中先后加入player和enemy
+        // actionQueue.Enqueue(player);
     
 
-        actionQueue.Enqueue(enemies[0]);
+        // actionQueue.Enqueue(enemies[0]);
 
         if(enemies[0] == null)
         {
@@ -267,7 +267,7 @@ public class BattleManager : Singleton<BattleManager>
 
 
         // 更新行动队列
-        UpdateActionQueue();
+        // UpdateActionQueue();
 
         // 更新敌人位置
         // for (int i = 0; i < enemies.Count; i++)
@@ -287,9 +287,9 @@ public class BattleManager : Singleton<BattleManager>
             Debug.Log("当前剩余0个行动点，轮到敌方行动!");
         }
 
-        // 排到队尾
-        if(actionQueue.Count != 0)
-            actionQueue.Enqueue(actionQueue.Dequeue());
+        // // 排到队尾
+        // if(actionQueue.Count != 0)
+        //     actionQueue.Enqueue(actionQueue.Dequeue());
     }
 
     // 退出角色回合
@@ -301,8 +301,8 @@ public class BattleManager : Singleton<BattleManager>
         // 更新角色回合(并做出一些Buff处理)
         TurnCounter.Instance.UpdatePlayerTurn();
         
-        // 排到队尾
-        actionQueue.Enqueue(actionQueue.Dequeue());
+        // // 排到队尾
+        // actionQueue.Enqueue(actionQueue.Dequeue());
 
         // 判断游戏状态
         // 在DamageCalculation中，存在player的BeHurt方法；该方法会进行一次是否死亡的判断；
@@ -357,8 +357,8 @@ public class BattleManager : Singleton<BattleManager>
         foreach(var s in enemy.enemySkills)
         {
             yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
-            s.Use(enemy);
-
+            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-4, false);
+            s.Use(enemy);       
             //敌方释放技能的Tip：
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"「{enemy.name}」释放了技能「{s.skillName}」", true);
 
@@ -368,8 +368,8 @@ public class BattleManager : Singleton<BattleManager>
         // 更新敌人回合(并做出一些Buff处理)
         TurnCounter.Instance.UpdateEnemyTurn(index);
 
-        // 排到队尾
-        actionQueue.Enqueue(actionQueue.Dequeue());
+        // // 排到队尾
+        // actionQueue.Enqueue(actionQueue.Dequeue());
         
 
         LeanTween.delayedCall(0.8f, () =>
