@@ -4032,6 +4032,7 @@ MonoBehaviour:
   maskPlayerTurnEnd: {fileID: 9053790500477471828}
   maskEnemyTurnStart: {fileID: 862378818789721147}
   maskEnemyTurnEnd: {fileID: 5644969076092972504}
+  maskTriggerButton: {fileID: 1579169454658083288}
 --- !u!1 &4435051740936922720
 GameObject:
   m_ObjectHideFlags: 0
