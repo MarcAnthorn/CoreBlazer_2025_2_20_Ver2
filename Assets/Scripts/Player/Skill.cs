@@ -154,7 +154,7 @@ public class Skill_1006 : Skill
     {
         id = 1006;
         skillName = "缚心铎声";
-        skillIconPath = Path.Combine("ArtResources", "Buff", "");
+        skillIconPath = Path.Combine("ArtResources", "Buff", "易伤");
         
         skillDamageText = "50";
         skillBuffText = "①debuff的持有者受到力量伤害后，给对手施加3层dot增伤和3层怪谈增伤";
