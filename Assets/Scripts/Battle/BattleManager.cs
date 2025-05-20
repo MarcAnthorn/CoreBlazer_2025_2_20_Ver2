@@ -60,6 +60,7 @@ public class BattleManager : Singleton<BattleManager>
     public void BattleInit(Player player, Enemy enemy)
     {
         enemies.Clear();
+        enemyId = enemy.id;
 
         this.player = player;
         isJudgedWhoWins = false;
