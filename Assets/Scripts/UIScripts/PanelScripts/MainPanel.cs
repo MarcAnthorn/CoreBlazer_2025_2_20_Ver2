@@ -30,12 +30,12 @@ public class MainPanel : BasePanel
 
             //显示是否退出游戏的Tip:
             var tipPanel = UIManager.Instance.ShowPanel<TipPanel>();
+            tipPanel.SetTipText("是否退出游戏？");
         
-            tipPanel.setOnConfirmAction += () => {
+            tipPanel.setOnConfirmAction += () =>
+            {
                 //退出游戏：
-                Debug.LogWarning("已存档并且退出游戏");
-
-
+                Application.Quit();                
             };
 
             tipPanel.setOnCancelAction +=  () => {

@@ -40,7 +40,7 @@ public class TipPanel : BasePanel
         setOnConfirmAction = null;
     }
 
-    private void SetTipText(string tipText)
+    public void SetTipText(string tipText)
     {
         txtTipText.text = tipText;
     }
