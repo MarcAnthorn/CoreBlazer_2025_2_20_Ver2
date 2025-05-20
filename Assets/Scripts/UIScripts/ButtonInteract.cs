@@ -74,6 +74,7 @@ public class ButtonInteract : MonoBehaviour
                     case "QuitButton":
                         SoundEffectManager.Instance.PlaySoundEffect("PanelRevealVer1");
                         var tip = UIManager.Instance.ShowPanel<TipPanel>();
+                        tip.SetTipText("是否退出游戏？");
                         tip.setOnCancelAction = OnTipCancel;
                         tip.setOnConfirmAction = OnTipComfirm;
                         break;
