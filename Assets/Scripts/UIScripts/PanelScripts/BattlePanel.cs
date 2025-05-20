@@ -260,7 +260,11 @@ public class BattlePanel : BasePanel
      //外部调用方法：初始化敌人信息：
      public void InitEnemyInfo(int enemyId)
      {   
+          
           Enemy _enemy = LoadManager.Instance.allEnemies[enemyId];
+
+          Debug.LogWarning($"Now encountered enemy is{_enemy.name}, id is{enemyId}");
+          
           myEnemyId = enemyId;
 
           if(_enemy == null)
