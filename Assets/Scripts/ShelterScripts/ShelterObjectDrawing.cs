@@ -16,15 +16,15 @@ public class ShelterObjectDrawing : MonoBehaviour
                 int avgId = 0;
                 switch((int)GameLevelManager.Instance.gameLevelType)
                 {
-                    case 0:
+                    case 1:
                         avgId = 3102;
                     break;
 
-                    case 1:
+                    case 2:
                         avgId = 3202;
                     break;
 
-                    case 2:
+                    case 3:
                         avgId = 3302;
                     break;
 

@@ -43,8 +43,9 @@ public class BattleManager : Singleton<BattleManager>
     protected override void Awake()
     {
         base.Awake();
-
         EventHub.Instance.AddEventListener<bool, UnityAction<int>>("GameOver", GameOver);
+        
+        enemies.Clear();
     }
 
 
@@ -57,7 +58,7 @@ public class BattleManager : Singleton<BattleManager>
     // 初始化战斗
     // 在战斗开始之前调用；
     public void BattleInit(Player player, params Enemy[] enemies)
-    {
+    {     
         this.player = player;
         isJudgedWhoWins = false;
         isEnterTurnLocked = true;
@@ -73,6 +74,7 @@ public class BattleManager : Singleton<BattleManager>
 
         // 初始化回合计数器
         TurnCounter.Instance.InitTurnCounter(enemies);
+        
         roundCoroutine = null;
 
  //----------------------初始化最大行动点是3:(Marc)-----------------------------------

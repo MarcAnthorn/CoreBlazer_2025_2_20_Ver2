@@ -16,15 +16,15 @@ public class ShelterObjectTele : MonoBehaviour
                 int avgId = 0;
                 switch((int)GameLevelManager.Instance.gameLevelType)
                 {
-                    case 0:
+                    case 1:
                         avgId = 3103;
                     break;
 
-                    case 1:
+                    case 2:
                         avgId = 3203;
                     break;
 
-                    case 2:
+                    case 3:
                         avgId = 3303;
                     break;
 

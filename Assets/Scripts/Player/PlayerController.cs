@@ -190,7 +190,7 @@ public class PlayerController : PlayerBase
     {
         if (!isWarningLocked)
         {
-            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("灯光消散！ 正在受到黑暗侵蚀！", true);
+            UIManager.Instance.ShowPanel<AboveWarningPanel>().SetWarningText("灯光消散！ 正在受到黑暗侵蚀！", true);
             isWarningLocked = true;
         }
 
