@@ -137,7 +137,7 @@ public class BattlePanel : BasePanel
           });
 
           btnEndThisRound.onClick.AddListener(() =>
-          {
+          { 
 
                Debug.LogWarning("Triggered!");
                //触发BattleManager中的bool标识，让回合协程继续：
@@ -264,7 +264,7 @@ public class BattlePanel : BasePanel
           Enemy _enemy = LoadManager.Instance.allEnemies[enemyId];
 
           Debug.LogWarning($"Now encountered enemy is{_enemy.name}, id is{enemyId}");
-          
+
           myEnemyId = enemyId;
 
           if(_enemy == null)

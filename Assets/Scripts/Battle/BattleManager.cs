@@ -345,7 +345,7 @@ public class BattleManager : Singleton<BattleManager>
 
             //使用协程替换原先的技能无间隔释放：
             //改成一定时间间隔释放技能：
-            enemyAttackCoroutine = StartCoroutine(EnemyAttack(enemies[index], index));
+            enemyAttackCoroutine = StartCoroutine(EnemyAttack(enemies[0], 0));
 
         });
        
