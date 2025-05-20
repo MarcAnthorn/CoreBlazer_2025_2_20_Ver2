@@ -13,6 +13,8 @@ public class DialogueOptionBtn : MonoBehaviour
     public DialogueOrder myOrder;
     public TextMeshProUGUI txtOptionText;
 
+    public int triggerCount;
+
     public GameObject mask;
 
     void Awake()
@@ -22,21 +24,26 @@ public class DialogueOptionBtn : MonoBehaviour
 
     void Start()
     {
-        //进行特殊判断：2111的选项：1003 & 1012，如果节点9没有触发，那么这两个选项不可选择：
-        if(GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(1009) && !GameLevelManager.Instance.avgIndexIsTriggeredDic[1009] && myOrder.rootId == 2111 && (myOrder.orderId == 1003 || myOrder.orderId == 1012))
-        {
-            mask.SetActive(true);
-        }
+        // //进行特殊判断：2111的选项：1003 & 1012，如果节点9没有触发，那么这两个选项不可选择：
+        // if(GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(1009) && !GameLevelManager.Instance.avgIndexIsTriggeredDic[1009] && myOrder.rootId == 2111 && (myOrder.orderId == 1003 || myOrder.orderId == 1012))
+        // {
+        //     mask.SetActive(true);
+        // }
 
         btnOption.onClick.AddListener(()=>{
 
             //进行特殊判断：2111的选项：如果节点9触发过，那么就可以被选中，此时判断是是否是选项1003 or 1012
-            if(myOrder.rootId == 2111 && (myOrder.orderId == 1003 || myOrder.orderId == 1012))
+            if (myOrder.rootId == 2111 && (myOrder.orderId == 2001 || myOrder.orderId == 2003))
             {
-                //如果是，那么清理当前的avgpanel的回调，替换成直接给物品：
-                EventHub.Instance.EventTrigger<UnityAction<int>>("ReplaceCallback", (int 占位)=>{
-                    EquipmentManager.Instance.AddEquipment(1010, 1011, 1012, 1013, 1014, 1015, 1019);
-                });
+                AVGPanel.replaceTriggerCount++;
+                if( AVGPanel.replaceTriggerCount == 2)
+                {
+                    Debug.LogWarning("Replaced!");
+                    //如果是，那么清理当前的avgpanel的回调，替换成直接给物品：
+                    EventHub.Instance.EventTrigger<UnityAction<int>>("ReplaceCallback", (int 占位)=>{
+                        EquipmentManager.Instance.AddEquipment(1010, 1011, 1012, 1013, 1014, 1015, 1019);
+                    });
+                }
                 
             }
 
