@@ -100,7 +100,7 @@ public class EquipmentSlot : MonoBehaviour
         mySkill = _equipment.mySkill;
         //初始化相关的信息：
         imgEquipment.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", _equipment.iconPath));
-        imgSkill.sprite = Resources.Load<Sprite>(Path.Combine("ArtResources", mySkill.skillIconPath));
+        imgSkill.sprite = Resources.Load<Sprite>(mySkill.skillIconPath);
 
         txtCost.text = $"消耗行动点：{mySkill.skillCost}";
 

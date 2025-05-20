@@ -31,8 +31,7 @@ public class SkillCheckPanel : BasePanel
     public void InitInfo(Skill _skill)
     {   
         //更新图标：
-        string path = Path.Combine("ArtResources", _skill.skillIconPath);
-        imgSkill.sprite = Resources.Load<Sprite>(path);
+        imgSkill.sprite = Resources.Load<Sprite>(_skill.skillIconPath);
 
         //更新相关的文本：
         txtCost.text = _skill.skillCost.ToString();
