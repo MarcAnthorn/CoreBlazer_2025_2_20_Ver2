@@ -109,20 +109,23 @@ public class ChooseBeliefPanel : BasePanel
     //参数用不上，只是为了匹配事件中心的回调签名
     private void UpdateConversation(int _int)
     {
-        switch(currentNPCName){
+        switch (currentNPCName)
+        {
             case E_NPCName.奈亚拉:
                 txtConversation.text = "欢迎光临，下次再来！！";
-            break;
+                break;
             case E_NPCName.优格:
                 txtConversation.text = "愿你不会停下对真理的探索。";
-            break;
+                break;
             case E_NPCName.莎布:
                 txtConversation.text = "希望这些能让你转危为安。";
-            break;
-            default:   
+                break;
+            default:
                 Debug.LogWarning("当前的NPC面板显示的NPC不存在");
-            break;
+                break;
         }
+        
+        txtSanity.text = PlayerManager.Instance.player.SAN.value.ToString();
     }
 
 

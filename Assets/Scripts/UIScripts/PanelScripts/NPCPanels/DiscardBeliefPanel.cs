@@ -108,6 +108,7 @@ public class DiscardBeliefPanel: BasePanel
     private void UpdateConversation(int _int)
     {
         txtConversation.text = "就这些吗？远远不够啊.........";
+        txtSanity.text = PlayerManager.Instance.player.SAN.value.ToString();
     }
 
     // 翻页：暂时用不到；
