@@ -9,7 +9,7 @@ public class MapTutorialFloor : MonoBehaviour
     void Awake()
     {
         
-        GameLevelManager.Instance.mapIndexStartPointDic.Add(0, startPoint.position);
-        GameLevelManager.Instance.mapIndexEndPointDic.Add(0, endPoint.position);
+        GameLevelManager.Instance.mapIndexStartPointDic.TryAdd(0, startPoint.position);
+        GameLevelManager.Instance.mapIndexEndPointDic.TryAdd(0, endPoint.position);
     }
 }

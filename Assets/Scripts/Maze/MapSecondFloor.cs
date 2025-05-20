@@ -9,7 +9,7 @@ public class MapSecondFloor : MonoBehaviour
     void Awake()
     {
         
-        GameLevelManager.Instance.mapIndexStartPointDic.Add(2, startPoint.position);
-        GameLevelManager.Instance.mapIndexEndPointDic.Add(2, endPoint.position);
+        GameLevelManager.Instance.mapIndexStartPointDic.TryAdd(2, startPoint.position);
+        GameLevelManager.Instance.mapIndexEndPointDic.TryAdd(2, endPoint.position);
     }
 }

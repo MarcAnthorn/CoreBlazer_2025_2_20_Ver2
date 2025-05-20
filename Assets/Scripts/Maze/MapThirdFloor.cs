@@ -9,7 +9,7 @@ public class MapThirdFloor : MonoBehaviour
     void Awake()
     {
         
-        GameLevelManager.Instance.mapIndexStartPointDic.Add(3, startPoint.position);
-        GameLevelManager.Instance.mapIndexEndPointDic.Add(3, endPoint.position);
+        GameLevelManager.Instance.mapIndexStartPointDic.TryAdd(3, startPoint.position);
+        GameLevelManager.Instance.mapIndexEndPointDic.TryAdd(3, endPoint.position);
     }
 }

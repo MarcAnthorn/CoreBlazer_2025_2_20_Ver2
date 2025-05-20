@@ -9,8 +9,8 @@ public class MapFirstFloor : MonoBehaviour
     void Awake()
     {
         
-        GameLevelManager.Instance.mapIndexStartPointDic.Add(1, startPoint.position);
-        GameLevelManager.Instance.mapIndexEndPointDic.Add(1, endPoint.position);
+        GameLevelManager.Instance.mapIndexStartPointDic.TryAdd(1, startPoint.position);
+        GameLevelManager.Instance.mapIndexEndPointDic.TryAdd(1, endPoint.position);
     }
     
 }

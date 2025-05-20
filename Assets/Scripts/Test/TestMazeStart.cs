@@ -35,81 +35,93 @@ public class TestMazeStart : MonoBehaviour
 
         //播放进入迷宫的音效：
         SoundEffectManager.Instance.PlaySoundEffect("进入离开迷宫时的音效");
+
+
+        //For Test:
+        GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
         
         //按照当前的GameLevelManager中的标识进行地图的加载：
-        switch(GameLevelManager.Instance.gameLevelType)
+        switch (GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.First:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapFirstFloor", (_gameObject)=>{
-                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapFirstFloor", (_gameObject) =>
+                {
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
-                    playerScript.LMax = 100; 
+                    playerScript.LMax = 100;
 
                     //播放特定的BGM：
-                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", () =>
+                    {
                         SoundEffectManager.Instance.PlayMusic("第一关BGM");
                         EventHub.Instance.EventTrigger<bool>("Freeze", false);
-                    }); 
-                   
+                    });
+
 
                 });
-                
-            
-            break;
-            case E_GameLevelType.Second:  
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapSecondFloor", (_gameObject)=>{
-                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
-                    playerScript.isDamageLocked = false;
-                    playerScript.LMax = 100; 
 
-                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
+
+                break;
+            case E_GameLevelType.Second:
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapSecondFloor", (_gameObject) =>
+                {
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity);
+                    playerScript.isDamageLocked = false;
+                    playerScript.LMax = 100;
+
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", () =>
+                    {
                         //播放特定的BGM：
                         SoundEffectManager.Instance.PlayMusic("第二关BGM");
                         EventHub.Instance.EventTrigger<bool>("Freeze", false);
-                    });   
+                    });
 
-                    
 
-                });           
-         
-            break;
+
+                });
+
+                break;
             case E_GameLevelType.Third:
 
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapThirdFloor", (_gameObject)=>{
-                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapThirdFloor", (_gameObject) =>
+                {
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
-                    playerScript.LMax = 100; 
+                    playerScript.LMax = 100;
 
-                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", () =>
+                    {
                         //播放特定的BGM：
                         SoundEffectManager.Instance.PlayMusic("第三关BGM");
                         EventHub.Instance.EventTrigger<bool>("Freeze", false);
-                    });   
+                    });
 
-                    
 
-                });      
 
-            break;
+                });
+
+                break;
 
             //新手关卡：灯光初始值60；锁定血量不会死亡：
             case E_GameLevelType.Tutorial:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapTutorialFloor", (_gameObject)=>{
-                    Instantiate(_gameObject, originalPoint, Quaternion.identity); 
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapTutorialFloor", (_gameObject) =>
+                {
+                    Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = true;
                     playerScript.LMax = 60;
-                    
-                    
-                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", ()=>{
-                        //播放特定的BGM：
-                        SoundEffectManager.Instance.PlayMusic("第二关BGM"); 
-                        EventHub.Instance.EventTrigger<bool>("Freeze", false);
-                    });  
-                    
 
-                });   
-                
-            break;
+
+                    EventHub.Instance.EventTrigger<UnityAction>("HideMask", () =>
+                    {
+                        //播放特定的BGM：
+                        SoundEffectManager.Instance.PlayMusic("第二关BGM");
+                        EventHub.Instance.EventTrigger<bool>("Freeze", false);
+                    });
+
+
+                });
+
+                break;
         }
         player.transform.position = originalPoint + new Vector3(0.41f, -0.91f);
     }

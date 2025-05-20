@@ -45,7 +45,7 @@ public class BattleManager : Singleton<BattleManager>
         base.Awake();
         EventHub.Instance.AddEventListener<bool, UnityAction<int>>("GameOver", GameOver);
 
-        enemies.Clear();
+        // enemies.Clear();
     }
 
 
@@ -57,23 +57,19 @@ public class BattleManager : Singleton<BattleManager>
 
     // 初始化战斗
     // 在战斗开始之前调用；
-    public void BattleInit(Player player, params Enemy[] enemies)
-    {     
+    public void BattleInit(Player player, Enemy enemy)
+    {
+        enemies.Clear();
+
         this.player = player;
         isJudgedWhoWins = false;
         isEnterTurnLocked = true;
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            // enemies[i].positionId = i;
-            this.enemies.Add(enemies[i]);
-        }
-
-        enemyId = enemies[0].id;
 
         // Debug.Log($"current enemy count:{this.enemies.Count}");
 
         // 初始化回合计数器
-        TurnCounter.Instance.InitTurnCounter(enemies);
+        TurnCounter.Instance.InitTurnCounter(enemy);
+        enemies.Add(enemy);
         
         roundCoroutine = null;
 

@@ -56,13 +56,11 @@ public class EquipmentCheckPanel : BasePanel
         });
 
         btnEquip.onClick.AddListener(()=>{
-            if(EquipmentManager.Instance.NowLeftSlotsCount() < 3)
+            if (EquipmentManager.Instance.NowLeftSlotsCount() < 3)
             {
-                Debug.LogWarning("???????");
-                
                 //调用处在BattlePanel中的事件：
-                EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);   
-                
+                EventHub.Instance.EventTrigger<Equipment>("EquipTarget", myEquipment);
+
                 //MaskEquipmentOrNot位于EquipmentPanelInventory，是「已装备」的遮罩；
                 EventHub.Instance.EventTrigger("MaskEquipmentOrNot", true, myEquipment);
                 myEquipment.isEquipped = true;
@@ -76,7 +74,9 @@ public class EquipmentCheckPanel : BasePanel
             }
             else
             {
+                Debug.LogWarning($"当前free slot数量：{EquipmentManager.Instance.NowLeftSlotsCount()}");
                 UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("精神值接近阈值! 装备数量达上限");
+
             }
         });
 

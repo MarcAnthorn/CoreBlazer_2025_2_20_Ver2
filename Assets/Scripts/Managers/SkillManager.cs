@@ -299,8 +299,6 @@ public class SkillManager : Singleton<SkillManager>
             //更新equipment耐久UI：
             EventHub.Instance.EventTrigger("UpdateEquipmentUI", equipment);
 
-            Debug.Log($"当前耐久：{equipment.currentDuration}");
-
             //如果耐久归零：
             if(equipment.currentDuration == 0)
             {

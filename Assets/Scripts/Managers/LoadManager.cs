@@ -133,11 +133,6 @@ public class LoadManager : Singleton<LoadManager>
         allSkills.Add(1022, skill1022);
         allSkills.Add(1023, skill1023);
 
-        foreach(var key in LoadManager.Instance.allSkills.Keys)
-        {
-            Debug.Log($"key:{key},value : {LoadManager.Instance.allSkills[key].skillName }");
-        }
-
         //测试：装备：
         // 初始化所有装备
         allEquipment.Add(1001, new Equipment_1001());
@@ -781,8 +776,6 @@ public class LoadManager : Singleton<LoadManager>
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
         tempBlock.rootId = showIndex;
 
-
-        Debug.Log($"当前的rootid是：{showIndex}");
 
         if (File.Exists(path))
         {

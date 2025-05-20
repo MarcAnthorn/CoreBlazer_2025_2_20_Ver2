@@ -71,6 +71,12 @@ public class BattlePanel : BasePanel
 
           EventHub.Instance.AddEventListener<int>("TriggerBattleMask", TriggerBattleMask);
 
+          //将对应的Slot脚本加入容器：
+          // equipmentSlotList.Add(equipmentSlot1);
+          equipmentSlotList.Add(equipmentSlot2);
+          equipmentSlotList.Add(equipmentSlot3);
+          equipmentSlotList.Add(equipmentSlot4);
+
 
      }
 
@@ -117,11 +123,15 @@ public class BattlePanel : BasePanel
 
           //再冻结一次：
           EventHub.Instance.EventTrigger<bool>("Freeze", true);
-          //将对应的Slot脚本加入容器：
-          // equipmentSlotList.Add(equipmentSlot1);
-          equipmentSlotList.Add(equipmentSlot2);
-          equipmentSlotList.Add(equipmentSlot3);
-          equipmentSlotList.Add(equipmentSlot4);
+
+          //先遍历所有的装备，如果有是装备中的，那么就直接装备就行：
+          foreach (var equipment in EquipmentManager.Instance.equipmentList)
+          {
+               if (equipment.isEquipped)
+               {
+                    EquipTarget(equipment);
+               }
+          }
 
           btnPlayerInfo.onClick.AddListener(() =>
           {
@@ -149,83 +159,8 @@ public class BattlePanel : BasePanel
           //----------------测试战斗：----------------------------
           //    TestBattle();
           //----------------测试战斗：----------------------------
-
-
-          //初始化战斗：
-          BeginBattle();
-
-
-          //先遍历所有的装备，如果有是装备中的，那么就直接装备就行：
-          foreach (var equipment in EquipmentManager.Instance.equipmentList)
-          {
-               if (equipment.isEquipped)
-               {
-                    EquipTarget(equipment);
-               }
-          }
-
-
-          //初步更新UI：
-          UpdateBattlePanelUI();
      }
 
-//     //测试用：
-//     void Update()
-//     {
-//         if(Input.GetKeyDown(KeyCode.T))
-//         {
-//           EventHub.Instance.EventTrigger("GameOver", true, callback);
-//         }
-//     }
-
-
-
-    //测试方法：
-    private void TestBattle()
-     {
-          //更新保存的上次血量字段：
-          lastPlayerHealthValue = 0;
-          lastEnemyHealthValue = 0;
-
-
-          PlayerManager.Instance.InitPlayer();
-          EnemySkill[] enemySkills = new EnemySkill[] { new EnemySkill_1001(), new EnemySkill_1002() };
-
-          Enemy enemy = new Enemy_1001(enemySkills);
-
-          //尝试给敌人加buff：
-          //中毒：
-          BattleBuff buff = new BattleBuff_1001();
-          BattleBuff buff1 = new BattleBuff_1001();
-
-
-
-          //易伤：
-          BattleBuff buff2 = new BattleBuff_1002();
-          BattleBuff buff3 = new BattleBuff_1002();
-          
-          Enemy[] enemies = new Enemy[] { enemy };
-
-          //开始战斗：
-          BattleManager.Instance.BattleInit(PlayerManager.Instance.player, enemies);
-
-          //先加敌人再加buff，不然会BattleManager.Instance.enemies越界：
-          //添加buff：
-          // TurnCounter.Instance.AddEnemyBuff(buff);
-          // TurnCounter.Instance.AddEnemyBuff(buff1);
-          // TurnCounter.Instance.AddEnemyBuff(buff2);
-          // TurnCounter.Instance.AddEnemyBuff(buff3);
-
-          //玩家buff：
-          BattleBuff buff4 = new BattleBuff_1001();
-          BattleBuff buff5 = new BattleBuff_1001();
-
-          // TurnCounter.Instance.AddPlayerBuff(buff4);
-          // TurnCounter.Instance.AddPlayerBuff(buff5);
-
-          BattleManager.Instance.BattleStart();
-
-     }
 
      //初始化战斗方法：
      public void BeginBattle()
@@ -234,10 +169,8 @@ public class BattlePanel : BasePanel
           lastPlayerHealthValue = 0;
           lastEnemyHealthValue = 0;
 
-          Enemy[] enemies = new Enemy[] { enemy };
-
           //开始战斗：
-          BattleManager.Instance.BattleInit(PlayerManager.Instance.player, enemies);
+          BattleManager.Instance.BattleInit(PlayerManager.Instance.player, enemy);
           BattleManager.Instance.BattleStart();
      }
 
@@ -254,49 +187,48 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener<int>("TriggerBattleMask", TriggerBattleMask);
           
           EventHub.Instance.EventTrigger("Freeze", false);
-     } 
+     }
 
 
      //外部调用方法：初始化敌人信息：
      public void InitEnemyInfo(int enemyId)
-     {   
-          
-          Enemy _enemy = LoadManager.Instance.allEnemies[enemyId];
+     {
+          enemy = LoadManager.Instance.allEnemies[enemyId];
 
-          Debug.LogWarning($"Now encountered enemy is{_enemy.name}, id is{enemyId}");
+          Debug.LogWarning($"Now encountered enemy is{enemy.name}, id is{enemyId}");
 
           myEnemyId = enemyId;
 
-          if(_enemy == null)
-          {
-               Debug.LogWarning("当前获取的敌人是null");
-          }
+          enemy.HP = enemy.HP_limit;  //将血量回满；
+          
+          //初始化战斗：
+          BeginBattle();
 
-          _enemy.HP = _enemy.HP_limit;  //将血量回满；
-
-          // imgEnemy.sprite = Resources.Load<Sprite>(Path.Combine("Enemy", enemyId.ToString()));
-          enemy = _enemy;
+          //初步更新UI：
+          UpdateBattlePanelUI();
      }
 
+
+
     //广播方法：将某一个装备装备后调用；
-    //注意，后续将这个方法的空闲Slot数量检查、UI面板关闭、遮罩调用全部迁移出去，到EquipmentCheckPanel中；
-    //这是因为出现了 允许装上装备但是BattlePanel不在的情况（安全屋）；
+     //注意，后续将这个方法的空闲Slot数量检查、UI面板关闭、遮罩调用全部迁移出去，到EquipmentCheckPanel中；
+     //这是因为出现了 允许装上装备但是BattlePanel不在的情况（安全屋）；
      private void EquipTarget(Equipment equipment)
      {
           Debug.Log($"Try to equip: {equipment.name}");
           //找到第一个空闲的Slot：
-          foreach(var slotScript in equipmentSlotList)
+          foreach (var slotScript in equipmentSlotList)
           {
-               if(!slotScript.isSlotted)
+               if (!slotScript.isSlotted)
                {
-                    Debug.Log($"This is not slotted");
+                    Debug.LogWarning($"This is not slotted");
                     //将该装备装入Slot：
                     slotScript.InitSlot(equipment);
 
                     //调用UI更新委托：
                     EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
-//------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
+                    //------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
                     //调整该装备的内部字段：
                     // equipment.isEquipped = true;
 
@@ -310,14 +242,15 @@ public class BattlePanel : BasePanel
                     //将这部分的逻辑迁移到BattlePanel外部，防止在一些场景中（如安全屋中）
                     //允许装上装备但是BattlePanel不在的情况；
                     // EventHub.Instance.EventTrigger("MaskEquipmentOrNot", true, equipment);
-//------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
+                    //------------已迁移到EquipmentCheckPanel---------------------------------------------------------------
                     //找到就return：
                     return;
                }
           }
-          
+
 
           //如果没找到空位，进行弹窗的弹出：
+          Debug.LogWarning($"当前free slot数量：{EquipmentManager.Instance.NowLeftSlotsCount()}");
           PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText("精神值接近阈值! 装备数量达上限");
      }
 
