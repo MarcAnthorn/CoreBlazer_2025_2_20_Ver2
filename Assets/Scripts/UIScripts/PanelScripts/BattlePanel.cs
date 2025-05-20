@@ -56,6 +56,8 @@ public class BattlePanel : BasePanel
      public GameObject maskPlayerTurnEnd;
      public GameObject maskEnemyTurnStart;
      public GameObject maskEnemyTurnEnd;
+
+     public GameObject maskTriggerButton;
      protected override void Awake()
      {
           EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
@@ -63,6 +65,10 @@ public class BattlePanel : BasePanel
 
           //更新BattlePanel UI的事件注册：     
           EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
+
+          EventHub.Instance.AddEventListener<bool>("MaskPlayerTriggerOrNot", MaskPlayerTriggerOrNot);
+
+          
 
 
           //更新伤害Ui的事件注册：
@@ -101,6 +107,11 @@ public class BattlePanel : BasePanel
                     break;
                     
           }
+     }
+
+     private void MaskPlayerTriggerOrNot(bool isMasked)
+     {
+          maskTriggerButton.SetActive(isMasked);
      }
      protected override void Init()
      {
@@ -147,7 +158,7 @@ public class BattlePanel : BasePanel
           });
 
           btnEndThisRound.onClick.AddListener(() =>
-          { 
+          {
 
                Debug.LogWarning("Triggered!");
                //触发BattleManager中的bool标识，让回合协程继续：
@@ -185,6 +196,8 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
 
           EventHub.Instance.RemoveEventListener<int>("TriggerBattleMask", TriggerBattleMask);
+
+          EventHub.Instance.RemoveEventListener<bool>("MaskPlayerTriggerOrNot", MaskPlayerTriggerOrNot);
           
           EventHub.Instance.EventTrigger("Freeze", false);
      }

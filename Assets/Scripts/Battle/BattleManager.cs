@@ -143,6 +143,8 @@ public class BattleManager : Singleton<BattleManager>
     // 进入角色回合
     public void EnterPlayerTurn()
     {
+        EventHub.Instance.EventTrigger<bool>("MaskPlayerTriggerOrNot", false);
+
         //激活我方的Mask UI：
         if (!isEnterTurnLocked)
         {
@@ -332,6 +334,8 @@ public class BattleManager : Singleton<BattleManager>
         {
             EventHub.Instance.EventTrigger("TriggerBattleMask", 3);
         }
+
+        EventHub.Instance.EventTrigger<bool>("MaskPlayerTriggerOrNot", true);
 
         isEnterTurnLocked = false;
        

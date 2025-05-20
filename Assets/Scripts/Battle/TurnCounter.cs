@@ -12,7 +12,7 @@ public class TurnCounter : Singleton<TurnCounter>
     //玩家回合计数：
     private int playerTurn;
 
-    private List<int> enemyTurns = new List<int>();
+    // private List<int> enemyTurns = new List<int>();
 
     //当前的玩家buff：(原先为什么是private,我更新为了public,我在BattlePanel中需要访问这个Buff列表)
     public List<BattleBuff> playerBuffs = new List<BattleBuff>();
@@ -21,17 +21,17 @@ public class TurnCounter : Singleton<TurnCounter>
     public void InitTurnCounter(params Enemy[] enemies)
     {
         playerTurn = 0;
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            enemyTurns.Add(0);
-        }
+        // for (int i = 0; i < enemies.Length; i++)
+        // {
+        //     enemyTurns.Add(0);
+        // }
     }
 
     // 清理回合计数器
     public void ClearTurnCounter()
     {
         playerTurn = -1;
-        enemyTurns.Clear();
+        // enemyTurns.Clear();
         playerBuffs.Clear();
     }
 
@@ -89,7 +89,8 @@ public class TurnCounter : Singleton<TurnCounter>
         // Dot伤害
         DealWithEnemyBuff(TriggerTiming.AfterTurn, DamageType.Dot, positionId);
 
-        enemyTurns[0]++;
+
+        // enemyTurns[0]++;
         Enemy enemy = BattleManager.Instance.enemies[0];
         int n = enemy.buffs.Count;
         bool cleanBattleBuff_1001 = false;
