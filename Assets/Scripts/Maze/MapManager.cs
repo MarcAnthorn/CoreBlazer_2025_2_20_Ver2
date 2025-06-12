@@ -75,7 +75,7 @@ public class MapManager : Singleton<MapManager>
             case 10001:
             case 10003: //假墙
             case 10014: //特殊墙壁 
-                element = new Wall(elementId);     //普通墙壁
+                element = new Wall(elementId, 1);     //普通墙壁
                 return element;
 
             case 10004: //起始点
@@ -141,7 +141,7 @@ public class MapManager : Singleton<MapManager>
             case 50004: //第一层boss点
             case 50005: //第二层boss点
             case 50006: //第三层boss点
-                element = new Ground(elementId);  //起始点
+                element = new Ground(elementId, 0);  //起始点
                 return element;
             default:
                 Debug.LogError($"找不到Id为 {elementId} 的建筑类型，返回null");

@@ -8,6 +8,10 @@ public abstract class MapElement
     protected int posY;
     public int elementId;
 
+    //flag info of the grid;
+    //used by path finding
+    public int flag;
+
 
     protected MapElement()
     {
@@ -24,7 +28,7 @@ public abstract class MapElement
     {
         return posX;
     }
-    public  int GetPosY()
+    public int GetPosY()
     {
         return posY;
     }
@@ -38,14 +42,20 @@ public abstract class MapElement
         return elementId;
     }
 
+    public void SetFlag(int _flag)
+    {
+        flag = _flag;
+    }
+
 }
 
 public class Wall : MapElement
 {
 
-    public Wall(int _id) : base()
+    public Wall(int _id, int _flag) : base()
     {
         SetId(_id);
+        SetFlag(_flag);
 
     }
 
@@ -60,9 +70,10 @@ public class Wall : MapElement
 // }
 public class Ground : MapElement
 {
-    public Ground(int _id) : base()
+    public Ground(int _id, int _flag = 0) : base()
     {
         SetId(_id);
+        SetFlag(_flag);
         
     }
 

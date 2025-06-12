@@ -54,107 +54,107 @@ public class GridMap<T> where T : MonoBehaviour
         }
 
 
-        //测试：遍历二维数组，输出每一个cell的坐标信息：
-        for(int i = 0; i < height; i++)
-        {
-            for(int j = 0; j < width; j++)
-            {
-                int x, y;
-                GetGridIndex(GetWorldPosition(i ,j), out x, out y);
-            }
+        // //测试：遍历二维数组，输出每一个cell的坐标信息：
+        // for(int i = 0; i < height; i++)
+        // {
+        //     for(int j = 0; j < width; j++)
+        //     {
+        //         int x, y;
+        //         GetGridIndex(GetWorldPosition(i ,j), out x, out y);
+        //     }
            
-        }
+        // }
     }
 
-    //实现一个重置当前cell中存储的对象的方法；value就是外界传入的新的cell实例；
-    //设置一个委托参数，将如何设置text文本交给外部的数据结构类自己定义；
-    public void SetObjectOfCell(Vector3 worldPosition, T value)
-    {
-        int x, y;
-        GetGridIndex(worldPosition, out x, out y);
-        if(x >= 0 && x < height && y >= 0 && y < width)
-        {
-            //坐标合法，进行值的设置：
-            grid[x, y] = value;
-            //为了让改变的值显示，我们同步调整对应的TMP数组；
-            tmpGrid[x, y].text = grid[x, y].ToString();    
-        }
-    }
+    // //实现一个重置当前cell中存储的对象的方法；value就是外界传入的新的cell实例；
+    // //设置一个委托参数，将如何设置text文本交给外部的数据结构类自己定义；
+    // public void SetObjectOfCell(Vector3 worldPosition, T value)
+    // {
+    //     int x, y;
+    //     GetGridIndex(worldPosition, out x, out y);
+    //     if(x >= 0 && x < height && y >= 0 && y < width)
+    //     {
+    //         //坐标合法，进行值的设置：
+    //         grid[x, y] = value;
+    //         //为了让改变的值显示，我们同步调整对应的TMP数组；
+    //         tmpGrid[x, y].text = grid[x, y].ToString();    
+    //     }
+    // }
 
-    //实现一个重置cell对象内部的value值显示，以及对应的text显示
-    //需要外界自己进行文本的设置，同时自己确定cell实例内部数值的调整策略（是更改还是增量等等）；
-    public void SetValueOfCellObject(Vector3 worldPosition, Action<T> setValueAction)
-    {
-        int x, y;
-        GetGridIndex(worldPosition, out x, out y);
-        if(x >= 0 && x < height && y >= 0 && y < width)
-        {
-            //为了让改变的值显示，我们同步调整对应的TMP数组；
-            //使用回调将当前需要调整的文本对象传递出去，让外界去自定设置文本显示；
-            setValueAction?.Invoke(GetObjectOfCell(worldPosition));          
-        }
-    }
+    // //实现一个重置cell对象内部的value值显示，以及对应的text显示
+    // //需要外界自己进行文本的设置，同时自己确定cell实例内部数值的调整策略（是更改还是增量等等）；
+    // public void SetValueOfCellObject(Vector3 worldPosition, Action<T> setValueAction)
+    // {
+    //     int x, y;
+    //     GetGridIndex(worldPosition, out x, out y);
+    //     if(x >= 0 && x < height && y >= 0 && y < width)
+    //     {
+    //         //为了让改变的值显示，我们同步调整对应的TMP数组；
+    //         //使用回调将当前需要调整的文本对象传递出去，让外界去自定设置文本显示；
+    //         setValueAction?.Invoke(GetObjectOfCell(worldPosition));          
+    //     }
+    // }
 
 
-    //实现一个SetValueOfCellObject的重载，
-    //该重载是传入cell的下标，进行调整：
-    public void SetValueOfCellObject(int x, int y, Action<T> setValueAction)
-    {
-        if(x >= 0 && x < height && y >= 0 && y < width)
-        {
-            //为了让改变的值显示，我们同步调整对应的TMP数组；
-            //使用回调将当前需要调整的文本对象传递出去，让外界去自定设置文本显示；
-            setValueAction?.Invoke(grid[x, y]);          
-        }
-    }
+    // //实现一个SetValueOfCellObject的重载，
+    // //该重载是传入cell的下标，进行调整：
+    // public void SetValueOfCellObject(int x, int y, Action<T> setValueAction)
+    // {
+    //     if(x >= 0 && x < height && y >= 0 && y < width)
+    //     {
+    //         //为了让改变的值显示，我们同步调整对应的TMP数组；
+    //         //使用回调将当前需要调整的文本对象传递出去，让外界去自定设置文本显示；
+    //         setValueAction?.Invoke(grid[x, y]);          
+    //     }
+    // }
 
-    //传入世界坐标系，获取对应位置cell的值：
-    public T GetObjectOfCell(Vector3 worldPosition)
-    {
-        int x, y;
-        GetGridIndex(worldPosition, out x, out y);
-        if(x >= 0 && x < height && y >= 0 && y < width)
-        {
-            //坐标合法，返回对应值：
-            return grid[x, y];
-        }
-        //如果没有cell，返回当前类型的默认值；
-        else
-            return default(T);
-    }
+    // //传入世界坐标系，获取对应位置cell的值：
+    // public T GetObjectOfCell(Vector3 worldPosition)
+    // {
+    //     int x, y;
+    //     GetGridIndex(worldPosition, out x, out y);
+    //     if(x >= 0 && x < height && y >= 0 && y < width)
+    //     {
+    //         //坐标合法，返回对应值：
+    //         return grid[x, y];
+    //     }
+    //     //如果没有cell，返回当前类型的默认值；
+    //     else
+    //         return default(T);
+    // }
 
-    //实现一个GetObjectOfCell的重载，
-    //该重载是传入cell的下标，返回实例：
-    public T GetObjectOfCell(int x, int y)
-    {
-        if(x >= 0 && x < height && y >= 0 && y < width)
-        {
-            //坐标合法，返回对应值：
-            return grid[x, y];
-        }
-        //如果没有cell，返回当前类型的默认值；
-        else
-            return default(T);
-    }
+    // //实现一个GetObjectOfCell的重载，
+    // //该重载是传入cell的下标，返回实例：
+    // public T GetObjectOfCell(int x, int y)
+    // {
+    //     if(x >= 0 && x < height && y >= 0 && y < width)
+    //     {
+    //         //坐标合法，返回对应值：
+    //         return grid[x, y];
+    //     }
+    //     //如果没有cell，返回当前类型的默认值；
+    //     else
+    //         return default(T);
+    // }
 
-    //一个获取世界坐标系的方法：传入当前cell坐标，返回Vector3；
-    //注意：因为Unity中的x', y'（传入Vector3中的）和我们此处的二维数组的x y（访问grid）并不一样；
-    //因此需要进行坐标上的转换，即x' = y; y' = -x;
-    private Vector3 GetWorldPosition(int x, int y)
-    {
-        //             x' = y; y' = -x;
-        return new Vector3(y, -x) * cellSize + offset;
-    }
+    // //一个获取世界坐标系的方法：传入当前cell坐标，返回Vector3；
+    // //注意：因为Unity中的x', y'（传入Vector3中的）和我们此处的二维数组的x y（访问grid）并不一样；
+    // //因此需要进行坐标上的转换，即x' = y; y' = -x;
+    // public Vector3 GetWorldPosition(int x, int y)
+    // {
+    //     //             x' = y; y' = -x;
+    //     return new Vector3(y, -x) * cellSize + offset;
+    // }
 
-    //一个根据世界坐标系推出grid中的对应的x、y值的方法：
-    //使用out关键字返回出x、y结果：
+    // //一个根据世界坐标系推出grid中的对应的x、y值的方法：
+    // //使用out关键字返回出x、y结果：
 
-    private void GetGridIndex(Vector3 worldPosition, out int x, out int y)
-    {
-        //转换的规则本质同样也是Unity <-> grid之间的xy的规则；
-        x = -Mathf.FloorToInt((worldPosition.y - offset.y) / cellSize);
-        y = Mathf.FloorToInt((worldPosition.x - offset.x) / cellSize);
-    }
+    // public void GetGridIndex(Vector3 worldPosition, out int x, out int y)
+    // {
+    //     //转换的规则本质同样也是Unity <-> grid之间的xy的规则；
+    //     x = -Mathf.FloorToInt((worldPosition.y - offset.y) / cellSize);
+    //     y = Mathf.FloorToInt((worldPosition.x - offset.x) / cellSize);
+    // }
 
     // private TextMeshPro CreateWorldText(string text, Transform parent, Vector3 localPosition, Color color, int fontSize = 4, int sortingOrder = 1)
     // {

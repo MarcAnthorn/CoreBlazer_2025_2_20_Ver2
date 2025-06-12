@@ -14,9 +14,6 @@ public class NPC20021 : NPCBase
         base.OnComplete(avgId);
         reward.SetActive(true);
 
-    
-
-
         var panel = UIManager.Instance.ShowPanel<BattlePanel>();
         panel.InitEnemyInfo(1011);
         panel.callback = OnBattleComplete;

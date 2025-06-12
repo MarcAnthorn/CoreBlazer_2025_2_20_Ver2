@@ -49,8 +49,8 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
     void Start()
     {
-//------------------------------------测试---------------------------------------------------
-        GameLevelManager.Instance.npcBlockDic.Add(30001, new NPCBlock());   
+        //------------------------------------测试---------------------------------------------------
+        GameLevelManager.Instance.npcBlockDic.Add(30001, new NPCBlock());
         GameLevelManager.Instance.npcBlockDic.Add(30002, new NPCBlock());
         GameLevelManager.Instance.npcBlockDic.Add(30003, new NPCBlock());
         GameLevelManager.Instance.npcBlockDic.Add(30004, new NPCBlock());
@@ -61,14 +61,15 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         GameLevelManager.Instance.npcBlockDic[30003].avgId = 1103;
         GameLevelManager.Instance.npcBlockDic[30004].avgId = 1104;
         GameLevelManager.Instance.npcBlockDic[30005].avgId = 1105;
-//------------------------------------测试---------------------------------------------------
+        //------------------------------------测试---------------------------------------------------
 
         // LoadMapToPrefab(0);
         // LoadMapToPrefab(1);
-        LoadMapToPrefab(2);
+        // LoadMapToPrefab(2);
         // LoadMapToPrefab(3);
 
-        
+        //测试用：输出当前的偏移点：
+        Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
 
     }
 

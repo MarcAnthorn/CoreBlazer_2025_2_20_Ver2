@@ -61,22 +61,34 @@ public class LoadManager : Singleton<LoadManager>
 
     public void LoadResources()
     {
-     
+
         LoadMaps();
 
 
 
-//--------------测试--------------------------------------------
+        //--------------测试--------------------------------------------
 
         //加载所有的avg：
-        LoadAllAvgs();
+        //暂时注释：
+        // LoadAllAvgs();
 
         //先技能后装备，因为装备需要LoadManager中的技能实例；
         // 初始化 allSkills（假设是 Dictionary<int, Skill>）
         // Dictionary<int, Skill> allSkills = new Dictionary<int, Skill>();
 
         // 手动实例化并添加所有技能
-        Skill_1001 skill1001 = new Skill_1001();
+
+
+        //--------------测试--------------------------------------------
+
+        LoadEvents();
+        LoadItems();
+        LoadEquipmentSkillAndEnemy();
+    }
+
+    private void LoadEquipmentSkillAndEnemy()
+    {
+         Skill_1001 skill1001 = new Skill_1001();
         Skill_1002 skill1002 = new Skill_1002();
         Skill_1003 skill1003 = new Skill_1003();
         Skill_1004 skill1004 = new Skill_1004();
@@ -209,53 +221,46 @@ public class LoadManager : Singleton<LoadManager>
         allEnemies.Add(1014, new Enemy_1014(
             new EnemySkill_1001(), new EnemySkill_1023(), new EnemySkill_1022()
             ));
-
-//--------------测试--------------------------------------------
-        
-        //LoadDialogues(0);
-        LoadEvents();
-        LoadItems();
     }
-
 
     private void LoadAllAvgs()
     {
-        for(int i = 1101; i <= 1122; i++)
+        for (int i = 1101; i <= 1122; i++)
         {
             LoadAVGDialogues(i);
         }
 
-        for(int i = 1201; i <= 1207; i++)
+        for (int i = 1201; i <= 1207; i++)
         {
             LoadAVGDialogues(i);
         }
 
-        for(int i = 1301; i <= 1303; i++)
+        for (int i = 1301; i <= 1303; i++)
         {
             LoadAVGDialogues(i);
         }
 
-        for(int i = 2101; i <= 2112; i++)
+        for (int i = 2101; i <= 2112; i++)
         {
             LoadAVGDialogues(i);
         }
 
-        for(int i = 2201; i <= 2208; i++)
+        for (int i = 2201; i <= 2208; i++)
         {
             LoadAVGDialogues(i);
         }
 
-        for(int i = 3101; i <= 3103; i++)
+        for (int i = 3101; i <= 3103; i++)
         {
             LoadAVGDialogues(i);
         }
 
-        for(int i = 3201; i <= 3203; i++)
+        for (int i = 3201; i <= 3203; i++)
         {
             LoadAVGDialogues(i);
         }
 
-        for(int i = 3301; i <= 3303; i++)
+        for (int i = 3301; i <= 3303; i++)
         {
             LoadAVGDialogues(i);
         }
@@ -335,7 +340,7 @@ public class LoadManager : Singleton<LoadManager>
                 if (values.Length > 3)
                 {
                     //此处进行道具分类
-                    Debug.LogWarning($"Item id is{values[1]}");
+                    // Debug.LogWarning($"Item id is{values[1]}");
                     
                     Item Item = ItemManager.Instance.ClassifyItems(int.Parse(values[1]));
                     Item.name = values[0];                              //A列
@@ -450,7 +455,6 @@ public class LoadManager : Singleton<LoadManager>
             return;
         }
 
-        Debug.LogWarning(path);
         if (File.Exists(path))
         {
             Debug.LogWarning(path);
@@ -794,103 +798,100 @@ public class LoadManager : Singleton<LoadManager>
                     nextValues = nextLine.Split(",");
                 }
 
+                //如果rootid为空，直接跳过当前的行：
+                if (values[0] == "")
+                    continue;
+
                 if (int.Parse(values[0]) == showIndex && values.Length >= 5)
-                {
-                    dialogue = new DialogueOrder();
-                    dialogue.rootId = int.Parse(values[0]);                 //A列
-                    dialogue.orderId = int.Parse(values[1]);                //B列                   
-                    dialogue.backgroundName = values[2];                    //C列
+                    {
+                        dialogue = new DialogueOrder();
 
+                        dialogue.rootId = int.Parse(values[0]);                 //A列
 
-                    dialogue.showUpNPCName = values[3];
-                    // if (values[3] == "奈亚拉")                               //D列
-                    //     dialogue.showUpNPCName = E_NPCName.奈亚拉;
-                    // else if (values[3] == "优格")
-                    //     dialogue.showUpNPCName = E_NPCName.优格;
-                    // else if (values[3] == "纱布")
-                    //     dialogue.showUpNPCName = E_NPCName.纱布;
-                    // else if(values[3] == "妇人")
-                    //     dialogue.showUpNPCName = E_NPCName.妇人; 
-                    // else if(values[3] == "施耐德太太")
-                    //     dialogue.showUpNPCName = E_NPCName.施耐德太太; 
-                    // else
-                    //     dialogue.showUpNPCName = E_NPCName.None; 
-                    
-
-
-                    dialogue.positionId = int.Parse(values[4]);             //E列
-
-
-                    dialogue.disappearNPCName = values[5];
-                    // if (values[5] == "奈亚拉")                               //F列
-                    //     dialogue.disappearNPCName = E_NPCName.奈亚拉;
-                    // else if (values[5] == "优格")
-                    //     dialogue.disappearNPCName = E_NPCName.优格;
-                    // else if (values[5] == "纱布")
-                    //     dialogue.disappearNPCName = E_NPCName.纱布;
-                    // else if(values[5] == "妇人")
-                    //     dialogue.disappearNPCName = E_NPCName.妇人; 
-                    // else if(values[5] == "施耐德太太")
-                    //     dialogue.disappearNPCName = E_NPCName.施耐德太太; 
-                    // else
-                    //     dialogue.disappearNPCName = E_NPCName.None; 
+                        //B列出现变动：变为条件判断：
                         
 
-                    dialogue.effectId = int.Parse(values[6]);               //G列
+                        //C列出现变动，变为需要累积的条件数量：
+
+                        dialogue.orderId = int.Parse(values[1]);                //B列                   
+                        dialogue.backgroundName = values[2];                    //C列
 
 
-                    dialogue.diffNPCName = values[7]; 
-                    // if (values[7] == "奈亚拉")                               //H列    
-                    //     dialogue.diffNPCName = E_NPCName.奈亚拉;
-                    // else if (values[7] == "优格")
-                    //     dialogue.diffNPCName = E_NPCName.优格;
-                    // else if (values[7] == "纱布")
-                    //     dialogue.diffNPCName = E_NPCName.纱布;
-                    // else
-                    //     dialogue.diffNPCName = E_NPCName.None;                          
+                        dialogue.showUpNPCName = values[3];
+
+                        dialogue.positionId = int.Parse(values[4]);             //E列
 
 
-                     dialogue.conversationNPCName = values[8]; 
-                    // if (values[8] == "奈亚拉")                               
-                    //     dialogue.conversationNPCName = E_NPCName.奈亚拉;
-                    // else if (values[8] == "优格")
-                    //     dialogue.conversationNPCName = E_NPCName.优格;
-                    // else if (values[8] == "纱布")
-                    //     dialogue.conversationNPCName = E_NPCName.纱布;
-                    // else if (values[8] == "妇人")
-                    //     dialogue.conversationNPCName = E_NPCName.妇人;
-                    // else if (values[8] == "施耐德太太")
-                    //     dialogue.conversationNPCName = E_NPCName.施耐德太太;
-                    // else
-                    //     dialogue.conversationNPCName = E_NPCName.None;
+                        dialogue.disappearNPCName = values[5];
+                        // if (values[5] == "奈亚拉")                               //F列
+                        //     dialogue.disappearNPCName = E_NPCName.奈亚拉;
+                        // else if (values[5] == "优格")
+                        //     dialogue.disappearNPCName = E_NPCName.优格;
+                        // else if (values[5] == "纱布")
+                        //     dialogue.disappearNPCName = E_NPCName.纱布;
+                        // else if(values[5] == "妇人")
+                        //     dialogue.disappearNPCName = E_NPCName.妇人; 
+                        // else if(values[5] == "施耐德太太")
+                        //     dialogue.disappearNPCName = E_NPCName.施耐德太太; 
+                        // else
+                        //     dialogue.disappearNPCName = E_NPCName.None; 
 
-                    dialogue.orderText = values[9];                         //I列
 
-                    // Debug.LogWarning(values[10]);
-                    dialogue.nextOrderId = int.Parse(values[10]);            //J列
-                    
+                        dialogue.effectId = int.Parse(values[6]);               //G列
 
-                    dialogue.audioClipStartName = values[11];               //K列
-                    dialogue.audioClipEndName = values[12];                 //L列
 
-                    if ((int.Parse(values[1]) / 1000) == 1)         //进行分类
-                        dialogue.orderType = E_OrderType.Common;
-                    else if ((int.Parse(values[1]) / 1000) == 2)
-                        dialogue.orderType = E_OrderType.Option;
-                    else if ((int.Parse(values[1]) / 1000) == 3)
-                        dialogue.orderType = E_OrderType.Break;
+                        dialogue.diffNPCName = values[7];
+                        // if (values[7] == "奈亚拉")                               //H列    
+                        //     dialogue.diffNPCName = E_NPCName.奈亚拉;
+                        // else if (values[7] == "优格")
+                        //     dialogue.diffNPCName = E_NPCName.优格;
+                        // else if (values[7] == "纱布")
+                        //     dialogue.diffNPCName = E_NPCName.纱布;
+                        // else
+                        //     dialogue.diffNPCName = E_NPCName.None;                          
 
-                    //检测是否需要对nextLineOrderId赋值
-                    if (nextLine != null && dialogue.orderType == E_OrderType.Option)   //可加处理细节
-                    {
-                        dialogue.nextLineOrderId = int.Parse(nextValues[1]);
-                        nextLine = null;
+
+                        dialogue.conversationNPCName = values[8];
+                        // if (values[8] == "奈亚拉")                               
+                        //     dialogue.conversationNPCName = E_NPCName.奈亚拉;
+                        // else if (values[8] == "优格")
+                        //     dialogue.conversationNPCName = E_NPCName.优格;
+                        // else if (values[8] == "纱布")
+                        //     dialogue.conversationNPCName = E_NPCName.纱布;
+                        // else if (values[8] == "妇人")
+                        //     dialogue.conversationNPCName = E_NPCName.妇人;
+                        // else if (values[8] == "施耐德太太")
+                        //     dialogue.conversationNPCName = E_NPCName.施耐德太太;
+                        // else
+                        //     dialogue.conversationNPCName = E_NPCName.None;
+
+                        dialogue.orderText = values[9];                         //I列
+
+                        // Debug.LogWarning(values[10]);
+                        dialogue.nextOrderId = int.Parse(values[10]);            //J列
+
+
+                        dialogue.audioClipStartName = values[11];               //K列
+                        dialogue.audioClipEndName = values[12];                 //L列
+
+                        if ((int.Parse(values[1]) / 1000) == 1)         //进行分类
+                            dialogue.orderType = E_OrderType.Common;
+                        else if ((int.Parse(values[1]) / 1000) == 2)
+                            dialogue.orderType = E_OrderType.Option;
+                        else if ((int.Parse(values[1]) / 1000) == 3)
+                            dialogue.orderType = E_OrderType.Break;
+
+                        //检测是否需要对nextLineOrderId赋值
+                        if (nextLine != null && dialogue.orderType == E_OrderType.Option)   //可加处理细节
+                        {
+                            dialogue.nextLineOrderId = int.Parse(nextValues[1]);
+                            nextLine = null;
+                        }
+
+                        // tempBlock.orderDic.Add(dialogue.rootId, dialogue);
+                        tempBlock.orderDic.Add(dialogue.orderId, dialogue);
+
                     }
-
-                    // tempBlock.orderDic.Add(dialogue.rootId, dialogue);
-                    tempBlock.orderDic.Add(dialogue.orderId, dialogue);
-
-                }
 
                 if (i + 1 <= lines.Length - 1)
                 {

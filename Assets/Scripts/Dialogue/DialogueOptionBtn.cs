@@ -47,6 +47,24 @@ public class DialogueOptionBtn : MonoBehaviour
                 
             }
 
+            // 2111 2001
+            // 2112 3001
+            // -> result
+            if (myOrder.rootId == 2111 && (myOrder.orderId == 2001 || myOrder.orderId == 2003))
+            {
+                AVGPanel.replaceTriggerCount++;
+                if (AVGPanel.replaceTriggerCount == 2)
+                {
+                    Debug.LogWarning("Replaced!");
+                    //如果是，那么清理当前的avgpanel的回调，替换成直接给物品：
+                    EventHub.Instance.EventTrigger<UnityAction<int>>("ReplaceCallback", (int 占位) =>
+                    {
+                        EquipmentManager.Instance.AddEquipment(1010, 1011, 1012, 1013, 1014, 1015, 1019);
+                    });
+                }
+
+            }
+
 
             //触发方法，让AVGPanel中的逻辑继续：
             EventHub.Instance.EventTrigger<int>("ChoiceIsMade", myOrder.nextOrderId);

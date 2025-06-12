@@ -39,10 +39,8 @@ public class PathGrid : MonoBehaviour
     private float intervalDistance;
 
 
-
-
     Vector3 centerPosition;
-    public void Init(GridMap<PathGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize, int _id)
+    public void Init(GridMap<PathGrid> _map, int _xMap, int _yMap, Vector3 _originalPoint, float _cellSize, int _id = -1)
     {
         myMap = _map;
         xMap = _xMap;
@@ -59,7 +57,7 @@ public class PathGrid : MonoBehaviour
         //注意：因为Unity中的x', y'（传入Vector3中的）和我们此处的二维数组的x y（访问grid）并不一样；
         //因此需要进行坐标上的转换，即x' = y; y' = -x;
 
-        offset = new Vector3(yMap, -xMap) * intervalDistance;
+        // offset = new Vector3(yMap, -xMap) * intervalDistance;
         basicOffset = cellSize / 2;
         //此处返回的是地块对象的中心点
         float centerX = yMap * (cellSize + intervalDistance) + basicOffset + originalPoint.x;
