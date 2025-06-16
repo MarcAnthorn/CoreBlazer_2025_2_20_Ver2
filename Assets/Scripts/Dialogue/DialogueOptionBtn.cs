@@ -14,6 +14,7 @@ public class DialogueOptionBtn : MonoBehaviour
     public TextMeshProUGUI txtOptionText;
 
     public int triggerCount;
+    private bool isBranchChoice;
 
     public GameObject mask;
 
@@ -67,17 +68,29 @@ public class DialogueOptionBtn : MonoBehaviour
 
 
             //触发方法，让AVGPanel中的逻辑继续：
-            EventHub.Instance.EventTrigger<int>("ChoiceIsMade", myOrder.nextOrderId);
+            if(isBranchChoice)
+                EventHub.Instance.EventTrigger<int>("ChoiceIsMade", -1);
+                
+            else
+                EventHub.Instance.EventTrigger<int>("ChoiceIsMade", myOrder.nextOrderId);
         });
     }
 
     //初始化当前Button信息的方法：
-    public void Init(DialogueOrder _order)
+    public void Init(DialogueOrder _order, bool _isOptionLocked, bool _isBranchChoice)
     {
         myOrder = _order;
         //初始化当前的文本信息：
         Debug.Log($"当前的文本信息是{myOrder.orderText}");
         txtOptionText.text = myOrder.orderText;
+
+        if (_isOptionLocked)
+        {
+            //如果上锁了，加上Mask:
+            mask.SetActive(true);
+        }
+
+        isBranchChoice = _isBranchChoice;
 
     }
 }

@@ -41,6 +41,12 @@ public class AVGPanel : BasePanel
     private bool isAvgOver = false;
     private bool isErased = false;
 
+    //当前处理的选项是否被封锁：
+    private bool isOptionLocked = false;
+    //当前处理的选项是否可以goto：
+    //需要满足：1.ifKey达到count；2.存在goto指令
+    private bool isGotoLocked = true;
+
     public string currentBackgroundName;
     public static int replaceTriggerCount;
     public string bgmName;
@@ -57,6 +63,9 @@ public class AVGPanel : BasePanel
     public Dictionary<string, Color> darkenColorDic = new Dictionary<string, Color>();
     //当前播放的循环音效：
     public Dictionary<string, AudioSource> audioDic = new Dictionary<string, AudioSource>();
+
+    //用于处理if赋值、判断的字典：
+    public Dictionary<int, int> ifKeyCountDic = new Dictionary<int, int>();
 
     public List<GameObject> optionList = new List<GameObject>();
 
@@ -151,53 +160,100 @@ public class AVGPanel : BasePanel
             E_OrderType type = currentOrder.orderType;
             isErased = false;
             isTimerDone = false;
+            isOptionLocked = false;
+            isGotoLocked = true;
+
+
+            //处理IF指令：
+            int ifKey = currentOrder.ifKey;
+            int targetCount = currentOrder.ifKeyTriggeredCount;
+            //首先要是分支选项才行，因此ifKey != 0
+            if (ifKey != 0)
+            {
+                //如果当前的指令不是选项但是存在分支策略，抛出警告：
+                if (type != E_OrderType.Option)
+                    Debug.LogWarning($"当前尝试对一个非选项执行分支处理，id为：{currentOrder.orderId}");
+
+                isOptionLocked = true;  //先置true，符合条件再置false
+                if (ifKeyCountDic.ContainsKey(ifKey) && ifKeyCountDic[ifKey] >= targetCount)
+                {
+                    //符合条件：
+                    isOptionLocked = false;
+
+                    //如果此时选项还存在goto指令，则解放goto：
+                    if (currentOrder.gotoRootId != 0)
+                    {
+                        isGotoLocked = false;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"当前选项存在if，但是不存在分支，id为：{currentOrder.orderId}");
+                    }
+            
+                }
+                
+            }
+
+            //处理当前的指令贡献：
+            int contributeKey = currentOrder.contributeKey;
+            if (currentOrder.contributeKey != 0)
+            {
+                if (ifKeyCountDic.ContainsKey(contributeKey))
+                    ifKeyCountDic[contributeKey]++;
+                else
+                    ifKeyCountDic.Add(contributeKey, 1);
+            }
+            
+            
 
             //当前指令是：普通指令 / 选项后对话指令
-            if(type == E_OrderType.Common)
+            if (type == E_OrderType.Common)
             {
-                LeanTween.delayedCall(0.5f, () => {
+                LeanTween.delayedCall(0.5f, () =>
+                {
                     isTimerDone = true;
                 });
                 //处理NPC消失的逻辑：
                 //直接复用npcName这个变量：
                 string npcName = currentOrder.disappearNPCName.ToString();
-                if(currentOrder.disappearNPCName != "0")
+                if (currentOrder.disappearNPCName != "0")
                 {
                     EraseNPC(npcName);
                 }
 
                 //处理背景：
                 currentBackgroundName = currentOrder.backgroundName;
-                if(currentBackgroundName != "0")
+                if (currentBackgroundName != "0")
                 {
                     string spritePath = Path.Combine(rootPath, currentBackgroundName);
 
                     imgBackground.sprite = Resources.Load<Sprite>(spritePath);
                     imgBackground.SetNativeSize();
                 }
-                
+
 
                 //处理音效：
-                if(currentOrder.audioClipStartName != "0" || currentOrder.audioClipEndName != "0")
+                if (currentOrder.audioClipStartName != "0" || currentOrder.audioClipEndName != "0")
                 {
                     //如果两个都不是0，并且两个相等，那么就是瞬时的一次性音效：
-                    if(currentOrder.audioClipStartName == currentOrder.audioClipEndName)
+                    if (currentOrder.audioClipStartName == currentOrder.audioClipEndName)
                     {
                         SoundEffectManager.Instance.PlaySoundEffect(currentOrder.audioClipStartName);
                     }
 
                     //如果开始播放的不是0，并且当前行不终止，那么就是循环音效：
-                    else if(currentOrder.audioClipStartName != "0")
+                    else if (currentOrder.audioClipStartName != "0")
                     {
                         //播放循环音效，同时加入字典，便于之后停止：
-                        SoundEffectManager.Instance.PlaySoundEffect(currentOrder.audioClipStartName, true, (audio)=>{
+                        SoundEffectManager.Instance.PlaySoundEffect(currentOrder.audioClipStartName, true, (audio) =>
+                        {
                             audioDic.Add(currentOrder.audioClipStartName, audio);
                         });
-                    
+
                     }
 
                     //如果结束播放不是0，那么就是终止之前的循环音效：
-                    else if(currentOrder.audioClipEndName != "0")
+                    else if (currentOrder.audioClipEndName != "0")
                     {
                         SoundEffectManager.Instance.StopAllSoundEffect(audioDic[currentOrder.audioClipEndName]);
                     }
@@ -213,7 +269,7 @@ public class AVGPanel : BasePanel
                 string loadName;
 
                 bool isDiff = false;
-                if(currentOrder.diffNPCName == "0")
+                if (currentOrder.diffNPCName == "0")
                 {
                     //如果差分栏是0，那么npcName就是showUpNPCName；
                     loadName = currentOrder.showUpNPCName.ToString();
@@ -224,37 +280,37 @@ public class AVGPanel : BasePanel
                     loadName = currentOrder.diffNPCName.ToString();
                     isDiff = true;
                 }
-                
-                if(currentOrder.showUpNPCName != "0")
+
+                if (currentOrder.showUpNPCName != "0")
                 {
                     //处理当前的位置：
-                    switch(currentOrder.positionId)
+                    switch (currentOrder.positionId)
                     {
                         case 0:
                             currentTargetPos = defaultPos;
-                        break;
+                            break;
                         case 1:
                             currentTargetPos = leftPos;
-                        break;
+                            break;
                         case 2:
                             currentTargetPos = midPos;
-                        break;
+                            break;
                         case 3:
                             currentTargetPos = rightPos;
-                        break;
+                            break;
                         default:
                             Debug.LogWarning("当前获取的位置id不存在，错误位置：AVGPanel");
-                        break;
+                            break;
                     }
 
                     //处理NPC的出现（或者是位置重置）
-                    if(currentNPCDic.ContainsKey(npcName))
+                    if (currentNPCDic.ContainsKey(npcName))
                     {
                         //如果包含,并且不是差分指令，那么就是重置位置:
-                        if(!isDiff)
+                        if (!isDiff)
                             MoveNPC(npcName, currentTargetPos);
 
-                        else 
+                        else
                         {
                             //差分：获取当前NPC位置；
                             //并且将差分立绘加载到当前位置，并且替换currentNPCDic中的value:
@@ -270,7 +326,7 @@ public class AVGPanel : BasePanel
                     }
 
                     //如果名字不是？？？，那么就是加载NPC：
-                    else if(npcName != "???")
+                    else if (npcName != "???")
                     {
                         //不包含，就是加入Dictionary，同时让NPC出现在对应的位置
                         InitNPC(npcName, loadName, currentTargetPos);
@@ -282,14 +338,14 @@ public class AVGPanel : BasePanel
 
                 npcName = currentOrder.conversationNPCName.ToString();
                 //处理NPC立绘动效的逻辑：
-                if(currentOrder.effectId != 0 && currentOrder.conversationNPCName != "0")
+                if (currentOrder.effectId != 0 && currentOrder.conversationNPCName != "0")
                 {
                     NPCEffect(npcName, currentOrder.effectId);
                 }
 
                 //处理对话者逻辑：
                 //注意：如果没有对话需要处理，说明是过程动画，给一个固定的时间间隔，然后就会继续处理下一个order；
-                if(currentOrder.conversationNPCName != "0")
+                if (currentOrder.conversationNPCName != "0")
                 {
                     ConverseWithNPC(npcName, currentOrder.orderText);
 
@@ -301,7 +357,7 @@ public class AVGPanel : BasePanel
                     isContinueButtonClicked = false;    //等待；
                 }
 
-                else if(currentOrder.conversationNPCName == "0" && currentOrder.orderText != "0")
+                else if (currentOrder.conversationNPCName == "0" && currentOrder.orderText != "0")
                 {
                     ConverseWithNPC("", currentOrder.orderText);
                     //等待玩家点击后再进行：
@@ -311,14 +367,14 @@ public class AVGPanel : BasePanel
                 }
 
                 //如果对话者名字为空，同时无对话文本，那么就是过场order（即：处理人物出现 / 消失等等的order）
-                else 
+                else
                 {
                     //等待一定时间就继续：先设置等设定的时间；
                     yield return new WaitForSeconds(intervalTime);
                 }
 
                 //更新当前order（只有Common的指令才是顺序的， Option & Break都不是严格顺序的）
-                if(currentOrder.nextOrderId == -1)
+                if (currentOrder.nextOrderId == -1)
                 {
                     Debug.LogWarning("演出已终止");
                     //trigger the callback:
@@ -327,24 +383,31 @@ public class AVGPanel : BasePanel
                     isAvgOver = true;
                     break;
                 }
+
+                //此处：如果存在满足了GOTO条件的情况（满足IF的触发的次数累计到count次）
+                //那么需要替换掉下一个过程的orderBlock，并且注意不要清除当前AVG中的相关资源（包括背景等等）；
                 currentOrder = orderBlock.orderDic[currentOrder.nextOrderId];
             }
 
             //当前指令是：选项类型
-            else if(type == E_OrderType.Option)
+            else if (type == E_OrderType.Option)
             {
                 //如果是选项类型，那么就会一直执行指令；直到中断指令出现
                 //处理当前的orderId对应的选项内容：
                 GameObject option = Instantiate(Resources.Load<GameObject>("DialogueOptionButton"), optionContainer, false);
                 option.SetActive(false);
                 DialogueOptionBtn script = option.GetComponent<DialogueOptionBtn>();
-                script.Init(currentOrder);
+
+                //由于If列的出现，导致选项是否被封锁，需要先判断并且告知该选项：
+                //并且，如果goto解锁了，那么需要告知该选项是分支选项；
+                //isGotoLocked如果是false，那么_isBranchChoice就是true
+                script.Init(currentOrder, isOptionLocked, !isGotoLocked);
                 optionList.Add(option);
 
                 //更新当前的order：
                 //其orderId就是当前的Option的orderId + 1:
                 //前提是下一行不是中断指令
-                if(currentOrder.nextLineOrderId / 1000 != 3)
+                if (currentOrder.nextLineOrderId / 1000 != 3)
                 {
                     currentOrder = orderBlock.orderDic[currentOrder.orderId + 1];
                 }
@@ -581,20 +644,30 @@ public class AVGPanel : BasePanel
     private void BroadcastCurrentOrderBlock(DialogueOrderBlock _orderBlock)
     {
         orderBlock = _orderBlock;
-    }   
+    }
 
     //方法；DialogueOptionBtn中调用：更新布尔变量，让对话继续：
+    //规定：如果nextOrderId给定的是-1，说明当前被选中的选项，是分支选项；需要根据goto的内容进行avg的跳转；
     private void ChoiceIsMade(int nextOrderId)
     {
         isChoiceMade = true;
-        //更新当前需要处理的选项：
-        currentOrder = orderBlock.orderDic[nextOrderId];
+        //注意：如果是-1，那么更新orderBlock和currentOrder:
+        if (nextOrderId == -1)
+        {
+            orderBlock = LoadManager.Instance.orderBlockDic[currentOrder.gotoRootId];
+            currentOrder = orderBlock.orderDic[1001];
+        }
+        else
+        {
+            //更新当前需要处理的选项：
+            currentOrder = orderBlock.orderDic[nextOrderId];
+        }
 
         //清空当前显示的所有Options，并且清空List：
         optionContainerGameObject.SetActive(false);
-        foreach(var option in optionList)
+        foreach (var option in optionList)
         {
-            Destroy(option);   
+            Destroy(option);
         }
         optionList.Clear();
     }
@@ -625,6 +698,17 @@ public class DialogueOrder
     public int rootId;
     //当前指令的id
     public int orderId;
+
+    //if指定的key：
+    public int ifKey;
+    //if指定的key的触发次数;如果不满足，会封锁当前的optionButton；
+    public int ifKeyTriggeredCount;
+    //当前语句的贡献ifKey：如果有贡献，那么字典中，ifKey对应的value + 1:
+    public int contributeKey;
+    //goto的演出表rootid：
+    public int gotoRootId;
+    
+
     //位置的flag；
     public int positionId;
     //人物效果的flag：1是抖动，2是镜像；

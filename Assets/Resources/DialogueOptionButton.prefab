@@ -406,6 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   txtOptionText: {fileID: 5924450309638235638}
+  triggerCount: 0
   mask: {fileID: 7937828023520408939}
 --- !u!1 &7937828023520408939
 GameObject:
