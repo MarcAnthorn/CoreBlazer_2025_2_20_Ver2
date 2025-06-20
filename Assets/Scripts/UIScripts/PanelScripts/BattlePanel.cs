@@ -223,7 +223,7 @@ public class BattlePanel : BasePanel
 
 
 
-    //广播方法：将某一个装备装备后调用；
+     //广播方法：将某一个装备装备后调用；
      //注意，后续将这个方法的空闲Slot数量检查、UI面板关闭、遮罩调用全部迁移出去，到EquipmentCheckPanel中；
      //这是因为出现了 允许装上装备但是BattlePanel不在的情况（安全屋）；
      private void EquipTarget(Equipment equipment)

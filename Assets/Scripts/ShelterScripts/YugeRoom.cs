@@ -7,43 +7,33 @@ public class YugeRoom : MonoBehaviour
     private bool isTriggerLock = true;
     private GameObject txtObject;
     private Vector3 offset = new Vector3(0, 0.5f);
+    
+     
+    private E_NPCName myName = E_NPCName.优格;
 
-    private void Update() {
-        if(!isTriggerLock)
+    private void Update()
+    {
+        if (!isTriggerLock)
         {
-            if(Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.J))
             {
-                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(E_NPCName.优格);
+                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(myName);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
 
-            else if(Input.GetKeyDown(KeyCode.K))
+            else if (Input.GetKeyDown(KeyCode.K))
             {
-                int avgId = 0;
-                switch((int)GameLevelManager.Instance.gameLevelType)
-                {
-                    case 1:
-                        avgId = 1110;
-                    break;
-
-                    case 2:
-                        avgId = 1115;
-                    break;
-
-                    case 3:
-                        avgId = 1120;
-                    break;
-
-                }
+                int avgId = AVGDistributeManager.Instance.FetchAVGId(myName);
 
                 DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
                 var panel = UIManager.Instance.ShowPanel<AVGPanel>();
                 panel.orderBlock = ob;
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
-
         }
     }
+
+
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Player"))

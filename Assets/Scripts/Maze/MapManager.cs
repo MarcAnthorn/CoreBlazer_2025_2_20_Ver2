@@ -58,16 +58,23 @@ public class MapManager : Singleton<MapManager>
             colume = 55
         };
 
+        Map map4 = new Map()
+        {
+            row = 65,
+            colume = 152
+        };
+
         Maps.Add(0, map0);
         Maps.Add(1, map1);
         Maps.Add(2, map2);
-        Maps.Add(3, map3);    
+        Maps.Add(3, map3);   
+        Maps.Add(4, map4);    
     }
 
     public MapElement CreateMapElement(int elementId)
     {
-        //如果是-1就跳过：
-        if(elementId == -1)
+        //如果是-1 or 0就跳过：
+        if(elementId == -1 || elementId == 0)
             return null;
         MapElement element = null;
         switch (elementId)

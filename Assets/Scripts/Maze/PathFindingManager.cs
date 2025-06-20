@@ -82,6 +82,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
         dicElementMap.Add(1, LoadManager.Instance.mapFirstFloor);
         dicElementMap.Add(2, LoadManager.Instance.mapSecondFloor);
         dicElementMap.Add(3, LoadManager.Instance.mapThirdFloor);
+        dicElementMap.Add(4, LoadManager.Instance.mapCentralFloor);
     }
 
     //初始化空间坐标系下的地图内容；

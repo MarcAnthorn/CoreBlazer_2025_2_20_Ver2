@@ -52,6 +52,11 @@ public class LoadManager : Singleton<LoadManager>
     public MapElement[,] mapThirdFloor;
 
 
+    //大地图：
+    public int[,] mapCentralFloorIndex = new int[65, 153];
+    public MapElement[,] mapCentralFloor;
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -63,24 +68,6 @@ public class LoadManager : Singleton<LoadManager>
     {
 
         LoadMaps();
-
-
-
-        //--------------测试--------------------------------------------
-
-        //加载所有的avg：
-        //暂时注释：
-        // LoadAllAvgs();
-
-        //先技能后装备，因为装备需要LoadManager中的技能实例；
-        // 初始化 allSkills（假设是 Dictionary<int, Skill>）
-        // Dictionary<int, Skill> allSkills = new Dictionary<int, Skill>();
-
-        // 手动实例化并添加所有技能
-
-
-        //--------------测试--------------------------------------------
-
         LoadEvents();
         LoadItems();
         LoadEquipmentSkillAndEnemy();
@@ -88,7 +75,7 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadEquipmentSkillAndEnemy()
     {
-         Skill_1001 skill1001 = new Skill_1001();
+        Skill_1001 skill1001 = new Skill_1001();
         Skill_1002 skill1002 = new Skill_1002();
         Skill_1003 skill1003 = new Skill_1003();
         Skill_1004 skill1004 = new Skill_1004();
@@ -411,6 +398,9 @@ public class LoadManager : Singleton<LoadManager>
 
         LoadMapElements(3);
         InitMapElements(3);
+
+        LoadMapElements(4);
+        InitMapElements(4);
     }
     //MapId对应：0 -> 新手关； 2 -> 第二层
     private void LoadMapElements(int mapId)
@@ -437,6 +427,9 @@ public class LoadManager : Singleton<LoadManager>
                         mapThirdFloorIndex[i, j] = -1;
                     break;
 
+                    case 4:
+                        mapCentralFloorIndex[i, j] = -1;
+                    break;
 
                 }
             }
@@ -444,7 +437,7 @@ public class LoadManager : Singleton<LoadManager>
 
 
         string path = null;
-        if (mapId >= 0 && mapId <= 3)
+        if (mapId >= 0 && mapId <= 4)
         {
             path = Path.Combine(Application.streamingAssetsPath, "MapDatas", $"Map{mapId}.csv");    //命名规范！！！
 
@@ -488,6 +481,10 @@ public class LoadManager : Singleton<LoadManager>
 
                         case 3:
                             mapThirdFloorIndex[i, j] = int.Parse(values[j]);
+                        break;
+
+                        case 4:
+                            mapCentralFloorIndex[i, j] = int.Parse(values[j]);
                         break;
     
                     }
@@ -550,6 +547,17 @@ public class LoadManager : Singleton<LoadManager>
                     for (int j = 0; j < mapThirdFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
                     {
                         mapThirdFloor[i, j] = MapManager.Instance.CreateMapElement(mapThirdFloorIndex[i, j]);
+                    }
+                }
+            break;
+
+            case 4:
+                mapCentralFloor = new MapElement[65, 153];
+                for (int i = 0; i < mapCentralFloor.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
+                {
+                    for (int j = 0; j < mapCentralFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
+                    {
+                        mapCentralFloor[i, j] = MapManager.Instance.CreateMapElement(mapCentralFloorIndex[i, j]);
                     }
                 }
             break;

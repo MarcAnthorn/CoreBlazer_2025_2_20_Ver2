@@ -8,33 +8,21 @@ public class NanaRoom : MonoBehaviour
     private GameObject txtObject;
     private Vector3 offset = new Vector3(0, 0.5f);
 
-    private void Update() {
-        if(!isTriggerLock)
+    private E_NPCName myName = E_NPCName.奈亚拉;
+
+    private void Update()
+    {
+        if (!isTriggerLock)
         {
-            if(Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.J))
             {
-                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(E_NPCName.奈亚拉);
+                UIManager.Instance.ShowPanel<NPCInteractionPanel>().setNPCAction(myName);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
 
-            else if(Input.GetKeyDown(KeyCode.K))
+            else if (Input.GetKeyDown(KeyCode.K))
             {
-                int avgId = 0;
-                switch((int)GameLevelManager.Instance.gameLevelType)
-                {
-                    case 1:
-                        avgId = 1109;
-                    break;
-
-                    case 2:
-                        avgId = 1114;
-                    break;
-
-                    case 3:
-                        avgId = 1119;
-                    break;
-
-                }
+                int avgId = AVGDistributeManager.Instance.FetchAVGId(myName);
 
                 DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
                 var panel = UIManager.Instance.ShowPanel<AVGPanel>();

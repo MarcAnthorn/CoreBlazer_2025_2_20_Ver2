@@ -56,7 +56,6 @@ public class Skill_1001 : Skill
     override public void Use()
     {
         BattleManager.Instance.SelectSkill_1001();
-        
     }
 }
 

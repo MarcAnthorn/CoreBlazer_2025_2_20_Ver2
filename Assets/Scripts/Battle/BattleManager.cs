@@ -76,6 +76,7 @@ public class BattleManager : Singleton<BattleManager>
 
  //----------------------初始化最大行动点是3:(Marc)-----------------------------------
         actionPointMax = 3;
+        
     }
 
     // 角色攻击动画(假设有)

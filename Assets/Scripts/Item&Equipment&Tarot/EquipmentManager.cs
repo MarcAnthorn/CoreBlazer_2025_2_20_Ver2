@@ -21,10 +21,14 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
     //key -> 装备实例；value -> 耐久
     public Dictionary<Equipment, int> equipmentDurationDic = new Dictionary<Equipment, int>();
 
+    //唯一装备标识：uniqueId:
+    public int uniqueId = 0;
+
 
     //向当前的持有中加入新的装备：
     //使用id进行添加；方法内部会new一个新的实例，以实现新装备的添加和存储
-    public void AddEquipment(int id)
+    //第二参数：指定装备的耐久；如果不指定，就是默认满耐久；
+    public void AddEquipment(int id, int duration = -1)
     {
         Equipment depulicateSource = LoadManager.Instance.allEquipment[id];
 
@@ -35,12 +39,18 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         //相同的装备不是叠放的，而是独立放置的；因此有一个就加一个；
         equipmentList.Add(depulicatedResult);
 
-        equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);  
+        if(duration == -1)  
+        {
+            equipmentDurationDic.Add(depulicatedResult, depulicatedResult.maxDuration);  
+        }
+        else    //如果指定耐久，那么更新耐久；
+        {
+            equipmentDurationDic.Add(depulicatedResult, duration);
+            depulicatedResult.currentDuration = duration;
+        }
+              
 
         PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"获得装备「{depulicateSource.name}」");
-
-        
-  
     }
 
     public void AddEquipment(params int[] ids)

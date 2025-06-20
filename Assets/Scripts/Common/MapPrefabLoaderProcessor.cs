@@ -67,6 +67,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         // LoadMapToPrefab(1);
         // LoadMapToPrefab(2);
         // LoadMapToPrefab(3);
+        LoadMapToPrefab(4);
 
         //测试用：输出当前的偏移点：
         Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
@@ -132,6 +133,10 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 currentMap = LoadManager.Instance.mapThirdFloor;
                 levelPath = "Grids/LevelThreeGrids";
             break;
+            case 4:
+                currentMap = LoadManager.Instance.mapCentralFloor;
+                levelPath = "Grids/LevelTwoGrids";
+            break;
 
         }
 
@@ -174,7 +179,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             GameObject pathGridObj = Resources.Load<GameObject>(path);
             PathGrid gridScript = pathGridObj.GetComponent<PathGrid>();
  
-            Debug.Log($"x : {realX}, y : {realY}");
+            Debug.Log($"path grid, x : {realX}, y : {realY}");
 
             MapElement me = currentMap[realX, realY];
 
@@ -379,6 +384,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                         levelPath = Path.Combine("Grids","LevelThreeGrids", "Region3");     //red
                 }
 
+                Debug.Log($"horizontal wall grid, x : {realX}, y : {realY}");
                 me = currentMap[realX, realY];
 
                 //如果是空的话，直接return：
@@ -426,7 +432,9 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                         levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
                 }
 
+                Debug.Log($"vertical wall grid, x : {realX}, y : {realY}");
                 me = currentMap[realX, realY];
+                
 
 
                 string wallVerticalPath = "WallGridVertical" + randomNum.ToString();
@@ -535,7 +543,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         });
 
         //补充生成上方和左侧的墙壁：
-        GenerateExtraWall(mapIndex);
+        // GenerateExtraWall(mapIndex);
 
 
         //最后将所有的父对象归总到SaveObject中：
@@ -562,6 +570,9 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             break;
             case 3:
                 PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapThirdFloor.prefab");
+            break;
+            case 4:
+                PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapCentralFloor.prefab");
             break;
 
         }

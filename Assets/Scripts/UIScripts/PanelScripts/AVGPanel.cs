@@ -19,7 +19,6 @@ public class AVGPanel : BasePanel
     public GameObject optionContainerGameObject;
     public TextMeshProUGUI txtConversation;
     public TextMeshProUGUI txtConverseNPCName;
-   
     
     public Image imgBackground;
     public Button btnContinue;
@@ -392,17 +391,22 @@ public class AVGPanel : BasePanel
             //当前指令是：选项类型
             else if (type == E_OrderType.Option)
             {
-                //如果是选项类型，那么就会一直执行指令；直到中断指令出现
-                //处理当前的orderId对应的选项内容：
-                GameObject option = Instantiate(Resources.Load<GameObject>("DialogueOptionButton"), optionContainer, false);
-                option.SetActive(false);
-                DialogueOptionBtn script = option.GetComponent<DialogueOptionBtn>();
+                //如果选项是封锁的，那么直接就是不生成选项：
+                if(!isOptionLocked)
+                {
+                    //如果是选项类型，那么就会一直执行指令；直到中断指令出现
+                    //处理当前的orderId对应的选项内容：
+                    GameObject option = Instantiate(Resources.Load<GameObject>("DialogueOptionButton"), optionContainer, false);
+                    option.SetActive(false);
+                    DialogueOptionBtn script = option.GetComponent<DialogueOptionBtn>();
 
-                //由于If列的出现，导致选项是否被封锁，需要先判断并且告知该选项：
-                //并且，如果goto解锁了，那么需要告知该选项是分支选项；
-                //isGotoLocked如果是false，那么_isBranchChoice就是true
-                script.Init(currentOrder, isOptionLocked, !isGotoLocked);
-                optionList.Add(option);
+                    //由于If列的出现，导致选项是否被封锁，需要先判断并且告知该选项：
+                    //并且，如果goto解锁了，那么需要告知该选项是分支选项；
+                    //isGotoLocked如果是false，那么_isBranchChoice就是true
+                    script.Init(currentOrder, isOptionLocked, !isGotoLocked);
+                    optionList.Add(option);
+                }
+                
 
                 //更新当前的order：
                 //其orderId就是当前的Option的orderId + 1:
@@ -675,14 +679,6 @@ public class AVGPanel : BasePanel
 
 }
 
-
-public enum E_NPCName{
-    None = -1,
-    奈亚拉 = 0,
-    优格 = 1,
-    莎布 = 2,  
-    格赫罗斯 = 3,
-}
 
 public enum E_OrderType{
     Common = 0,

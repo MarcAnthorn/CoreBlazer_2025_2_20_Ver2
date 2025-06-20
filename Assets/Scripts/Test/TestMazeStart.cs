@@ -53,8 +53,16 @@ public class TestMazeStart : MonoBehaviour
                         EventHub.Instance.EventTrigger<bool>("Freeze", false);
                     });
 
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 1114);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 1115);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 1116);
+                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.格赫罗斯, 1112);
+                
+
 
                 });
+
+
 
 
                 break;
@@ -71,6 +79,12 @@ public class TestMazeStart : MonoBehaviour
                         SoundEffectManager.Instance.PlayMusic("第二关BGM");
                         EventHub.Instance.EventTrigger<bool>("Freeze", false);
                     });
+
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 1119);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 1120);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 1121);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.格赫罗斯, 1117);
+        
 
 
 
@@ -92,7 +106,7 @@ public class TestMazeStart : MonoBehaviour
                         EventHub.Instance.EventTrigger<bool>("Freeze", false);
                     });
 
-
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.格赫罗斯, 1122);
 
                 });
 
@@ -113,6 +127,10 @@ public class TestMazeStart : MonoBehaviour
                         SoundEffectManager.Instance.PlayMusic("第二关BGM");
                         EventHub.Instance.EventTrigger<bool>("Freeze", false);
                     });
+
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 1109);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 1110);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 1111);
 
 
                 });

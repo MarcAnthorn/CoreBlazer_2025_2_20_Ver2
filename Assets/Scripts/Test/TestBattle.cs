@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//暂时先更改成Mono，挂在TestStart上，可一些
+//暂时先更改成Mono，挂在TestStart上，可以删除
 public class TestBattle : MonoBehaviour
 {
     private void Awake()
