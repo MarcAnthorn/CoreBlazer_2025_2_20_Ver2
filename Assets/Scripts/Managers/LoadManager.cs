@@ -898,16 +898,16 @@ public class LoadManager : Singleton<LoadManager>
                         if (!string.IsNullOrEmpty(nextLine.Trim()) && !string.IsNullOrEmpty(nextLine.Replace(",", "").Trim()))
                         {
                             string[] nextValues = nextLine.Split(',');
-                            if (nextValues.Length > 1) // 确保有 values[1]
+                            if (nextValues.Length > 3) // 确保有第四列
                             {
                                 int parsedNextLineOrderId;
-                                if (int.TryParse(nextValues[1], out parsedNextLineOrderId))
+                                if (int.TryParse(nextValues[3], out parsedNextLineOrderId))
                                 {
                                     dialogue.nextLineOrderId = parsedNextLineOrderId;
                                 }
                                 else
                                 {
-                                    Debug.LogWarning($"LoadManager: Failed to parse nextLineOrderId '{nextValues[1]}' in line {i + 1}. Using default 0. Line: '{nextLine}'");
+                                    Debug.LogWarning($"LoadManager: Failed to parse nextLineOrderId '{nextValues[3]}' in line {i + 1}. Using default 0. Line: '{nextLine}'");
                                 }
                             }
                             else

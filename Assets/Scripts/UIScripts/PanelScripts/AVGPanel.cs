@@ -411,6 +411,7 @@ public class AVGPanel : BasePanel
                 //更新当前的order：
                 //其orderId就是当前的Option的orderId + 1:
                 //前提是下一行不是中断指令
+                Debug.LogWarning(currentOrder.nextLineOrderId);
                 if (currentOrder.nextLineOrderId / 1000 != 3)
                 {
                     currentOrder = orderBlock.orderDic[currentOrder.orderId + 1];
