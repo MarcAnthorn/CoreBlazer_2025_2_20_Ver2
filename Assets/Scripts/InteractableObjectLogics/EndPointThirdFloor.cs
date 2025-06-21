@@ -82,7 +82,9 @@ public class EndPointThirdFloor : MonoBehaviour
         EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
             LoadSceneManager.Instance.LoadSceneAsync("StartScene");  
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
-            GameLevelManager.Instance.ResetAllProgress();
+        
+            //清空玩家当前的存档：
+            SaveManager.Instance.ClearGame(); 
         });
         
     }

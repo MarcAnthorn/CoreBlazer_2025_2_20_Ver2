@@ -69,7 +69,7 @@ public class GameLevelManager : Singleton<GameLevelManager>
             avgIndexIsTriggeredDic[key] = false;
         }
 
-        avgShelterIsTriggered.Clear();
+        // avgShelterIsTriggered.Clear();
         gameLevelType = E_GameLevelType.Tutorial;
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
     }
@@ -86,6 +86,7 @@ public enum E_GameLevelType
     First = 1,
     Second = 2,
     Third = 3,
+    Central = 4,
 }
 
 

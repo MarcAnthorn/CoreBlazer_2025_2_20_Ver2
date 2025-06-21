@@ -54,6 +54,10 @@ public class TestShelterStart : MonoBehaviour
 
 
         });
+
+
+        //自动存档：
+        SaveManager.Instance.SaveGame();
     }
 
 }

@@ -85,10 +85,18 @@ public class TimeManager : Singleton<TimeManager>
             timer.isSuspend = false;
         }
     }
+    //直接从计时器中删除道具，不触发道具结束的回调的方法
     public void RemoveTimer(int key)
     {
-        timersDic.Remove(key);
-        index--;
+        if(key == -1)   //无效key
+            return;
+
+        if(timersDic.ContainsKey(key))
+        {
+            var timer = timersDic[key];
+            listToDelete.Add(timer);
+        }
+    
     }
     public void SuspendAllTimers()                         //进入事件 或者 游戏暂停时调用
     {

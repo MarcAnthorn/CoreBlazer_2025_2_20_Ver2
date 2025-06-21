@@ -71,6 +71,7 @@ public class LoadManager : Singleton<LoadManager>
         LoadEvents();
         LoadItems();
         LoadEquipmentSkillAndEnemy();
+        LoadAllAvgs();
     }
 
     private void LoadEquipmentSkillAndEnemy()
@@ -777,156 +778,212 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadAVGDialogues(int avgId)
     {
-        //1107特殊处理：不存在该avg文件：
-        if(avgId == 1107)
+        // 1107特殊处理：不存在该avg文件：
+        if (avgId == 1107)
             return;
 
-        // Debug.Log($"当前加载的avg id：{avgId}");
+        Debug.Log($"当前加载的avg id：{avgId}");
 
-        string path = Path.Combine(Application.streamingAssetsPath, $"DialogueData", "AVG", $"{avgId}.csv");
+        string path = Path.Combine(Application.streamingAssetsPath, "DialogueData", "AVG", $"{avgId}.csv");
         int showIndex = avgId;
         DialogueOrderBlock tempBlock = new DialogueOrderBlock();
         tempBlock.rootId = showIndex;
-
 
         if (File.Exists(path))
         {
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);
             DialogueOrder dialogue = null;
 
+            // 从第二行开始（跳过标题行）
             for (int i = 1; i < lines.Length; i++)
             {
                 string line = lines[i];
-                string[] values = line.Split(',');          //将每一列按照逗号分割
-                string nextLine = null;
-                string[] nextValues = null;
-                if (i + 1 != lines.Length)
+
+                // --- 健壮性检查：跳过空行和只有逗号的无效行 ---
+                // Trim() 去除首尾空白，IsNullOrEmpty() 检查是否为空或只有空格
+                // Replace(",", "") 替换所有逗号，然后检查是否为空字符串
+                if (string.IsNullOrEmpty(line.Trim()) || string.IsNullOrEmpty(line.Replace(",", "").Trim()))
                 {
-                    nextLine = lines[i + 1];
-                    nextValues = nextLine.Split(",");
-                }
-
-                //如果rootid为空，直接跳过当前的行：
-                if (values[0] == "")
-                    continue;
-
-                if (int.Parse(values[0]) == showIndex && values.Length >= 5)
-                    {
-                        dialogue = new DialogueOrder();
-
-                        dialogue.rootId = int.Parse(values[0]);                 //A列
-
-                        //B列出现变动：变为条件判断：
-                        
-
-                        //C列出现变动，变为需要累积的条件数量：
-
-                        dialogue.orderId = int.Parse(values[1]);                //B列                   
-                        dialogue.backgroundName = values[2];                    //C列
-
-
-                        dialogue.showUpNPCName = values[3];
-
-                        dialogue.positionId = int.Parse(values[4]);             //E列
-
-
-                        dialogue.disappearNPCName = values[5];
-                        // if (values[5] == "奈亚拉")                               //F列
-                        //     dialogue.disappearNPCName = E_NPCName.奈亚拉;
-                        // else if (values[5] == "优格")
-                        //     dialogue.disappearNPCName = E_NPCName.优格;
-                        // else if (values[5] == "纱布")
-                        //     dialogue.disappearNPCName = E_NPCName.纱布;
-                        // else if(values[5] == "妇人")
-                        //     dialogue.disappearNPCName = E_NPCName.妇人; 
-                        // else if(values[5] == "施耐德太太")
-                        //     dialogue.disappearNPCName = E_NPCName.施耐德太太; 
-                        // else
-                        //     dialogue.disappearNPCName = E_NPCName.None; 
-
-
-                        dialogue.effectId = int.Parse(values[6]);               //G列
-
-
-                        dialogue.diffNPCName = values[7];
-                        // if (values[7] == "奈亚拉")                               //H列    
-                        //     dialogue.diffNPCName = E_NPCName.奈亚拉;
-                        // else if (values[7] == "优格")
-                        //     dialogue.diffNPCName = E_NPCName.优格;
-                        // else if (values[7] == "纱布")
-                        //     dialogue.diffNPCName = E_NPCName.纱布;
-                        // else
-                        //     dialogue.diffNPCName = E_NPCName.None;                          
-
-
-                        dialogue.conversationNPCName = values[8];
-                        // if (values[8] == "奈亚拉")                               
-                        //     dialogue.conversationNPCName = E_NPCName.奈亚拉;
-                        // else if (values[8] == "优格")
-                        //     dialogue.conversationNPCName = E_NPCName.优格;
-                        // else if (values[8] == "纱布")
-                        //     dialogue.conversationNPCName = E_NPCName.纱布;
-                        // else if (values[8] == "妇人")
-                        //     dialogue.conversationNPCName = E_NPCName.妇人;
-                        // else if (values[8] == "施耐德太太")
-                        //     dialogue.conversationNPCName = E_NPCName.施耐德太太;
-                        // else
-                        //     dialogue.conversationNPCName = E_NPCName.None;
-
-                        dialogue.orderText = values[9];                         //I列
-
-                        // Debug.LogWarning(values[10]);
-                        dialogue.nextOrderId = int.Parse(values[10]);            //J列
-
-
-                        dialogue.audioClipStartName = values[11];               //K列
-                        dialogue.audioClipEndName = values[12];                 //L列
-
-                        if ((int.Parse(values[1]) / 1000) == 1)         //进行分类
-                            dialogue.orderType = E_OrderType.Common;
-                        else if ((int.Parse(values[1]) / 1000) == 2)
-                            dialogue.orderType = E_OrderType.Option;
-                        else if ((int.Parse(values[1]) / 1000) == 3)
-                            dialogue.orderType = E_OrderType.Break;
-
-                        //检测是否需要对nextLineOrderId赋值
-                        if (nextLine != null && dialogue.orderType == E_OrderType.Option)   //可加处理细节
-                        {
-                            dialogue.nextLineOrderId = int.Parse(nextValues[1]);
-                            nextLine = null;
-                        }
-
-                        // tempBlock.orderDic.Add(dialogue.rootId, dialogue);
-                        tempBlock.orderDic.Add(dialogue.orderId, dialogue);
-
-                    }
-
-                if (i + 1 <= lines.Length - 1)
-                {
-                    line = lines[i + 1];
-                    int charToFind = line.IndexOf(",");
-
-                    string firstValue = line.Substring(0, charToFind);
-                    if (int.Parse(firstValue) != showIndex)          //代表下一行开始是新的演出id
+                    Debug.LogWarning($"LoadManager: Skipping empty or invalid line at index {i} in {path}. Line content: '{line}'");
+                    // 在循环的最后一次迭代，确保最后一个 tempBlock 被添加
+                    if (!orderBlockDic.ContainsKey(showIndex)) // 避免重复添加
                     {
                         orderBlockDic.Add(showIndex, tempBlock);
-                        tempBlock = new DialogueOrderBlock();
-                        showIndex++;
+                    }
+                    continue; // 跳过此行
+                }
+                // --- 结束健壮性检查 ---
+
+
+                string[] values = line.Split(','); // 将每一列按照逗号分割
+
+                // 检查当前行是否包含足够的数据列（至少是第一个要解析的列）
+                // CSV样例中至少有17列，所以我们至少需要检查到values[16]
+                const int MIN_REQUIRED_COLUMNS = 17; 
+                if (values.Length < MIN_REQUIRED_COLUMNS)
+                {
+                    Debug.LogWarning($"LoadManager: Line {i} in {path} has insufficient columns ({values.Length}). Expected at least {MIN_REQUIRED_COLUMNS}. Skipping this line. Line content: '{line}'");
+                    continue; // 跳过列数不足的行
+                }
+
+                // 检查 values[0] (rootId) 是否为空，并尝试安全解析
+                if (string.IsNullOrEmpty(values[0].Trim()))
+                {
+                    Debug.LogWarning($"LoadManager: Skipping line {i} due to empty RootId (Column A). Line content: '{line}'");
+                    continue; // 跳过 rootId 为空的行
+                }
+
+                int currentRootId;
+                if (!int.TryParse(values[0], out currentRootId))
+                {
+                    Debug.LogError($"LoadManager: Failed to parse RootId '{values[0]}' as integer in line {i}. Skipping this line. Line content: '{line}'");
+                    continue; // 解析失败，跳过此行
+                }
+
+                // 核心逻辑：只有当当前行的RootId匹配showIndex时才进行解析和添加
+                if (currentRootId == showIndex)
+                {
+                    dialogue = new DialogueOrder();
+                    dialogue.rootId = currentRootId; // A列
+
+                    // 使用 TryParse 安全解析其他列，并提供默认值或错误处理
+                    if (!int.TryParse(values[1], out dialogue.ifKey)) Debug.LogWarning($"LoadManager: Failed to parse ifKey in line {i}. Using default 0. Line: '{line}'");
+                    if (!int.TryParse(values[2], out dialogue.ifKeyTriggeredCount)) Debug.LogWarning($"LoadManager: Failed to parse ifKeyTriggeredCount in line {i}. Using default 0. Line: '{line}'");
+                    
+                    if (!int.TryParse(values[3], out dialogue.orderId)) 
+                    {
+                        Debug.LogError($"LoadManager: Failed to parse orderId '{values[3]}' in line {i}. This is critical. Skipping this dialogue. Line: '{line}'");
+                        continue; // orderId是关键，如果解析失败则跳过此对话
+                    }
+
+                    dialogue.backgroundName = values[4];
+                    dialogue.showUpNPCName = values[5];
+                    
+                    if (!int.TryParse(values[6], out dialogue.positionId)) Debug.LogWarning($"LoadManager: Failed to parse positionId in line {i}. Using default 0. Line: '{line}'");
+                    
+                    dialogue.disappearNPCName = values[7];
+                    
+                    if (!int.TryParse(values[8], out dialogue.effectId)) Debug.LogWarning($"LoadManager: Failed to parse effectId in line {i}. Using default 0. Line: '{line}'");
+                    
+                    dialogue.diffNPCName = values[9];
+                    dialogue.conversationNPCName = values[10];
+                    dialogue.orderText = values[11];
+                    
+                    if (!int.TryParse(values[12], out dialogue.nextOrderId)) Debug.LogWarning($"LoadManager: Failed to parse nextOrderId in line {i}. Using default 0. Line: '{line}'");
+                    
+                    dialogue.audioClipStartName = values[13];
+                    dialogue.audioClipEndName = values[14];
+
+                    // 新增列：
+                    if (!int.TryParse(values[15], out dialogue.contributeKey)) Debug.LogWarning($"LoadManager: Failed to parse contributeKey in line {i}. Using default 0. Line: '{line}'");
+                    if (!int.TryParse(values[16], out dialogue.gotoRootId)) Debug.LogWarning($"LoadManager: Failed to parse gotoRootId in line {i}. Using default 0. Line: '{line}'");
+
+                    // 确定 orderType
+                    int orderIdPrefix = dialogue.orderId / 1000;
+                    if (orderIdPrefix == 1)
+                        dialogue.orderType = E_OrderType.Common;
+                    else if (orderIdPrefix == 2)
+                        dialogue.orderType = E_OrderType.Option;
+                    else if (orderIdPrefix == 3)
+                        dialogue.orderType = E_OrderType.Break;
+                    else
+                        dialogue.orderType = E_OrderType.Common; // 默认值，或者你想要LogError
+
+                    // 检测是否需要对nextLineOrderId赋值
+                    // 需要确保下一行存在，并且下一行的值数组有足够的元素
+                    if (dialogue.orderType == E_OrderType.Option && i + 1 < lines.Length)
+                    {
+                        string nextLine = lines[i + 1];
+                        // 再次对下一行进行健壮性检查，防止其也是无效行
+                        if (!string.IsNullOrEmpty(nextLine.Trim()) && !string.IsNullOrEmpty(nextLine.Replace(",", "").Trim()))
+                        {
+                            string[] nextValues = nextLine.Split(',');
+                            if (nextValues.Length > 1) // 确保有 values[1]
+                            {
+                                int parsedNextLineOrderId;
+                                if (int.TryParse(nextValues[1], out parsedNextLineOrderId))
+                                {
+                                    dialogue.nextLineOrderId = parsedNextLineOrderId;
+                                }
+                                else
+                                {
+                                    Debug.LogWarning($"LoadManager: Failed to parse nextLineOrderId '{nextValues[1]}' in line {i + 1}. Using default 0. Line: '{nextLine}'");
+                                }
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"LoadManager: Next line {i + 1} for option has insufficient columns for nextLineOrderId. Line content: '{nextLine}'");
+                            }
+                        }
+                    }
+
+                    // 添加到当前的 DialogueOrderBlock
+                    if (!tempBlock.orderDic.ContainsKey(dialogue.orderId))
+                    {
+                        tempBlock.orderDic.Add(dialogue.orderId, dialogue);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"LoadManager: Duplicate OrderId {dialogue.orderId} found in AVG {avgId} for current showIndex {showIndex}. Skipping duplicate. Line: '{line}'");
                     }
                 }
 
-                if(i + 1 == lines.Length)
+                // --- 处理演出ID切换或文件结束的逻辑 (确保只有一份) ---
+                // 检查下一行是否是新演出ID的开始，或者是否是文件的最后一行
+                if (i + 1 < lines.Length)
                 {
-                    orderBlockDic.Add(showIndex, tempBlock);
+                    string nextLineContent = lines[i + 1];
+                    int charToFind = nextLineContent.IndexOf(",");
+
+                    // 再次健壮性检查下一行是否有效
+                    if (string.IsNullOrEmpty(nextLineContent.Trim()) || string.IsNullOrEmpty(nextLineContent.Replace(",", "").Trim()))
+                    {
+                        // 如果下一行是无效行，不做任何特殊处理，继续循环
+                        // Debug.LogWarning($"LoadManager: Next line {i+1} is invalid. Not checking for showIndex change.");
+                    }
+                    else if (charToFind > 0 && charToFind < nextLineContent.Length)
+                    {
+                        string firstValueNextLine = nextLineContent.Substring(0, charToFind);
+                        int parsedFirstValueNextLine;
+                        if (int.TryParse(firstValueNextLine, out parsedFirstValueNextLine))
+                        {
+                            if (parsedFirstValueNextLine != showIndex) // 代表下一行开始是新的演出id
+                            {
+                                orderBlockDic.Add(showIndex, tempBlock);
+                                tempBlock = new DialogueOrderBlock();
+                                showIndex = parsedFirstValueNextLine; // 更新showIndex为下一行的ID
+                                tempBlock.rootId = showIndex; // 设置新块的rootId
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"LoadManager: Failed to parse first value '{firstValueNextLine}' of next line {i + 1} as int. This line's showIndex check will be skipped. Line content: '{nextLineContent}'");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"LoadManager: Next line {i + 1} does not have a valid comma for first value check. Line content: '{nextLineContent}'");
+                    }
                 }
-
+                else if (i + 1 == lines.Length) // 已经是最后一行
+                {
+                    Debug.LogWarning($"Try to add avg into dic:{showIndex}");
+                    // 在循环的最后一次迭代，确保最后一个 tempBlock 被添加
+                    if (!orderBlockDic.ContainsKey(showIndex)) // 避免重复添加
+                    {
+                        orderBlockDic.Add(showIndex, tempBlock);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"LoadManager: Attempted to add duplicate showIndex {showIndex} at end of file for AVG {avgId}.");
+                    }
+                }
+                // --- 结束处理演出ID切换或文件结束的逻辑 ---
             }
-
         }
         else
         {
-            Debug.LogWarning("事件数据文件不存在！");
+            Debug.LogWarning($"事件数据文件不存在！Path: {path}");
         }
     }
-
 }

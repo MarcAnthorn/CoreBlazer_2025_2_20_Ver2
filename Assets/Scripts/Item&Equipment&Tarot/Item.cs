@@ -31,11 +31,15 @@ public abstract class Item                  //所有道具类的基类
     public Buff buff;
     //Marc添加：道具生效结束之后的回调函数：
     public UnityAction onCompleteCallback = null;
+    // 新增：统一的OnComplete委托
+    public Action onCompleteDelegate;
 
     //Marc添加：该道具是否被插入左/右插槽：
     public bool isSlottedToLeft;
     public bool isSlottedToRight;
     public Dictionary<E_AffectPlayerAttributeType, float> effectFinalValueDic = new Dictionary<E_AffectPlayerAttributeType, float>();
+
+    public int timerIndex = -1;
 
     public enum ItemType
     {
@@ -70,18 +74,13 @@ public abstract class Item                  //所有道具类的基类
 //使用后灯光值立刻+20，短时间内不会衰减
 public class Item_101 : Item
 {
-
+    public Item_101() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
-
         Debug.Log($"道具 \"灯火助燃剂\" 使用！");
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.灯光值, PlayerManager.Instance.player.LVL.value + 20);
-
-        
     }
 
     private void OnStart()
@@ -118,7 +117,8 @@ public class Item_102 : Item
 
 public class Item_103 : Item
 {
-    
+    public Item_103() { onCompleteDelegate = UsedCallback; }
+
     public override void Use()
     {
         effectFinalValueDic.Clear();
@@ -234,16 +234,15 @@ public class Item_201 : Item
 }
 
 public class Item_202 : Item
-{ 
+{
+    public Item_202() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"燃血战神\" 使用！");
         //生命值高于50%时，可扣除自身当前生命值的80%，使自身暴击率提升100%
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(6f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HP.value * 0.2f);
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.暴击率,  PlayerManager.Instance.player.CRIT_Rate.value + 1f);
     }
@@ -290,15 +289,14 @@ public class Item_203 : Item
 
 public class Item_204 : Item
 {
+    public Item_204() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"最强防御\" 使用！");
         //使用后防御值短时间*1.5倍，在此期间暴击率归0
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, Mathf.Min(PlayerManager.Instance.player.DEF.value * 1.5f, PlayerManager.Instance.player.DEF.value_limit));
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.暴击率, 0);
     }
@@ -330,15 +328,14 @@ public class Item_204 : Item
 
 public class Item_205 : Item
 {
+    public Item_205() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"最强攻击\" 使用！");
         //使用后力量短时间*1.5倍，在此期间防御值归0
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value * 1.5f,PlayerManager.Instance.player.STR.value_limit));
     }
 
@@ -361,15 +358,14 @@ public class Item_205 : Item
 
 public class Item_206 : Item
 {
+    public Item_206() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"最强闪避\" 使用！");
         //使用后闪避短时间*1.8倍，在此期间受到的伤害*1.5倍
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.闪避值, Mathf.Min(PlayerManager.Instance.player.AVO.value * 1.8f,PlayerManager.Instance.player.AVO.value_limit));
     }
 
@@ -392,12 +388,12 @@ public class Item_206 : Item
 
 public class Item_207 : Item
 {
+    public Item_207() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"最强苟命王\" 使用！");
         //使用后短时间内生命值冻结，技能结束前未结束战斗生命值归0
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
     }
@@ -424,19 +420,16 @@ public class Item_207 : Item
 
 public class Item_208 : Item
 {
+    public Item_208() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"绝地反击\" 使用！");
         //生命值低于20%时可使用，使用后短时间内暴击率提升100%、攻击*1.5倍
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.暴击率, Mathf.Min(PlayerManager.Instance.player.CRIT_Rate.value + 1f,PlayerManager.Instance.player.CRIT_Rate.value_limit));
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value * 1.5f,PlayerManager.Instance.player.STR.value_limit));
-
-        
     }
 
     private void OnStart()
@@ -474,12 +467,12 @@ public class Item_301 : Item
 
 public class Item_302 : Item
 {
+    public Item_302() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"速!速!速!\" 使用！");
         //使用后在迷宫内移动速度短时间翻倍
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(10f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
     }
@@ -517,17 +510,15 @@ public class Item_303 : Item
 
 public class Item_401 : Item
 {
+    public Item_401() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"生命果实\" 使用！");
         //生命值上限+10
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HP.value + 10);
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值上限, PlayerManager.Instance.player.HP.value_limit + 10);
     }
 
@@ -547,16 +538,15 @@ public class Item_401 : Item
 
 public class Item_402 : Item
 {
+    public Item_402() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"防御果实\" 使用！");
         //防御值上限+10
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, PlayerManager.Instance.player.DEF.value_limit + 10);
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值上限, PlayerManager.Instance.player.DEF.value_limit + 10);
     }
 
@@ -577,14 +567,13 @@ public class Item_402 : Item
 
 public class Item_403 : Item
 {
+    public Item_403() { onCompleteDelegate = OnComplete; }
     public override void Use()
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"攻击果实\" 使用！");
         //使用后力量+20
-        int timerIndex;
         timerIndex = TimeManager.Instance.AddTimer(18f, () => OnStart(), () => OnComplete());
-
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 20,PlayerManager.Instance.player.STR.value_limit));
     }
 

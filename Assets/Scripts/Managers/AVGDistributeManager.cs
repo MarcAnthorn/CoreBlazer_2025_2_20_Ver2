@@ -9,6 +9,7 @@ using UnityEngine;
 //2.将当前队列中的第一个合法AVGid返回出去用于访问正确的AVG演出表
 public class AVGDistributeManager : SingletonBaseManager<AVGDistributeManager>
 {
+    private AVGDistributeManager(){}
     //所有NPC的事件等待队列:
     //所有事件都是取出不放回的；如果队列为空，那么就会重复触发默认对话；
     //奈亚拉队列，字典中id为0

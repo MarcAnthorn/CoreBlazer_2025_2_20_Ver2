@@ -52,6 +52,9 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
 
     public void InitPlayer()
     {
+        if(player != null)
+            player = null;
+            
         //PlayerManager 管理的全局唯一Player实例
         player = new Player()
         {

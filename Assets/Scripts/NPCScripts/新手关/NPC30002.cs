@@ -10,6 +10,10 @@ public class NPC30002  : NPCBase
         base.OnComplete(avgId);
         Destroy(door10010);
         PlayerManager.Instance.player.LVL.value += 20;
+
+        //分配：101
+        ItemManager.Instance.AddItem(101);
+        
         Destroy(this.gameObject);
         
     } 
@@ -18,7 +22,7 @@ public class NPC30002  : NPCBase
     protected override void Awake()
     {
         base.Awake();
-       avgId = 1102;
+        avgId = 1102;
     }
     
 }

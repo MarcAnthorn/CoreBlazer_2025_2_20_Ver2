@@ -6,16 +6,65 @@ using Newtonsoft.Json;
 
 public class SaveManager : SingletonBaseManager<SaveManager>
 {
+    private SaveManager(){}
     private static string savePath => Application.persistentDataPath + "/player_save.json";
     private static string gameLevelSavePath => Application.persistentDataPath + "/gamelevel_save.json";
     private static string equipmentSavePath => Application.persistentDataPath + "/equipment_save.json";
     private static string itemSavePath => Application.persistentDataPath + "/item_save.json";
 
+    //存档接口：
+    public void SaveGame()
+    {
+        SavePlayerAttribute(); 
+        SaveGameLevel();
+        SaveEquipment();
+        SaveItem();
+    }
+
+    //读档接口：
+    public void LoadGame()
+    {
+        LoadPlayerAttribute();
+        LoadGameLevel();
+        LoadEquipment();
+        LoadItem();
+    }
+
+    //清空当前游戏进度的方法；
+    //在重新开始游戏的时候调用；
+    public void ClearGame()
+    {
+        // 删除存档文件
+        if (File.Exists(savePath)) File.Delete(savePath);
+        if (File.Exists(gameLevelSavePath)) File.Delete(gameLevelSavePath);
+        if (File.Exists(equipmentSavePath)) File.Delete(equipmentSavePath);
+        if (File.Exists(itemSavePath)) File.Delete(itemSavePath);
+
+        // 清空内存中的数据
+        // 玩家属性重置
+        PlayerManager.Instance.InitPlayer();
+        
+        // 关卡进度重置
+        GameLevelManager.Instance.ResetAllProgress();
+
+        // 装备重置
+        var em = EquipmentManager.Instance;
+        em.equipmentList.Clear();
+        em.equipmentDurationDic.Clear();
+
+        // 道具重置
+        var im = ItemManager.Instance;
+        im.itemList.Clear();
+        im.itemCountDic.Clear();
+
+        Debug.Log("所有存档已清空，玩家进度已重置！");
+    }
 
 //---------------------------玩家属性存档--------------------------------------------------
     // 存储玩家属性
-    public void SavePlayerAttribute(Player player)
+    private void SavePlayerAttribute()
     {
+        Player player = PlayerManager.Instance.player;
         PlayerSaveData data = new PlayerSaveData
         {
             HP = new PlayerAttributeSaveData(player.HP),
@@ -36,8 +85,9 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     }
 
     // 读取玩家属性
-    public void LoadPlayerAttribute(Player player)
+    private void LoadPlayerAttribute()
     {
+        Player player = PlayerManager.Instance.player;
         if (!File.Exists(savePath))
         {
             Debug.LogWarning("未找到存档文件，无法读档！");
@@ -76,7 +126,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
 
 //---------------------------关卡进度存档--------------------------------------------------
     // 存储GameLevelManager相关内容
-    public void SaveGameLevel()
+    private void SaveGameLevel()
     {
         var glm = GameLevelManager.Instance;
 
@@ -107,7 +157,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     }
 
     // 读取GameLevelManager相关内容
-    public void LoadGameLevel()
+    private void LoadGameLevel()
     {
         if (!File.Exists(gameLevelSavePath))
         {
@@ -136,7 +186,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
 
 //---------------------------道具装备存档--------------------------------------------------
 // 存储EquipmentManager相关内容
-    public void SaveEquipment()
+    private void SaveEquipment()
     {
         var em = EquipmentManager.Instance;
         EquipmentSaveData data = new EquipmentSaveData();
@@ -157,7 +207,8 @@ public class SaveManager : SingletonBaseManager<SaveManager>
             //最终通过整除1000 + 1000的方式恢复成1001；
             //对于1011，就是11 * 1000 + uniqueId；
             //最终通过整除1000 + 1000的方式恢复成1011；
-            int uniqueId = (kv.Key.id % 100) + EquipmentManager.Instance.uniqueId++;
+            int uniqueId = (kv.Key.id % 100) * 1000 + EquipmentManager.Instance.uniqueId++;
+            Debug.Log($"current unique id is{uniqueId}");
             data.equipmentDurationList.Add(new KeyValuePair<int, int>(uniqueId, kv.Value));
         }
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -166,7 +217,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     }
 
     // 读取EquipmentManager相关内容
-    public void LoadEquipment()
+    private void LoadEquipment()
     {
         if (!File.Exists(equipmentSavePath))
         {
@@ -185,14 +236,15 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         {
             int uniqueId = pair.Key;
             int rawId = (uniqueId / 1000) + 1000;
-            EquipmentManager.Instance.AddEquipment(rawId, pair.Value);
+            Debug.Log($"current raw id is{rawId}");
+            EquipmentManager.Instance.AddEquipment(rawId, pair.Value, true);
         }
 
         Debug.Log("装备信息已从存档恢复！");
     }
 
     // 存储ItemManager相关内容
-    public void SaveItem()
+    private void SaveItem()
     {
         var im = ItemManager.Instance;
         ItemSaveData data = new ItemSaveData();
@@ -208,7 +260,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     }
 
     // 读取ItemManager相关内容
-    public void LoadItem()
+    private void LoadItem()
     {
         if (!File.Exists(itemSavePath))
         {
@@ -266,6 +318,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
 
     // GameLevel存档数据结构
     [System.Serializable]
+
     public class GameLevelSaveData
     {
         public int gameLevelType;

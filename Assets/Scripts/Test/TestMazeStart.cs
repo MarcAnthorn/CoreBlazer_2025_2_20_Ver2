@@ -23,8 +23,7 @@ public class TestMazeStart : MonoBehaviour
         player = Instantiate(Resources.Load<GameObject>("Player"));
 
 
-        originalPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
-        originalPoint.z = 0; 
+        originalPoint = Vector3.zero;
 
         PlayerController playerScript = player.GetComponent<PlayerController>();
 
@@ -56,7 +55,7 @@ public class TestMazeStart : MonoBehaviour
                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 1114);
                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 1115);
                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 1116);
-                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.格赫罗斯, 1112);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.格赫罗斯, 1112);
                 
 
 

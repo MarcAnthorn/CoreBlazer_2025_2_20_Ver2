@@ -39,11 +39,14 @@ public class BattleManager : Singleton<BattleManager>
 
     private bool isEnterTurnLocked = true;
 
+    private Transform canvas;
+
 
     protected override void Awake()
     {
         base.Awake();
         EventHub.Instance.AddEventListener<bool, UnityAction<int>>("GameOver", GameOver);
+        canvas = GameObject.Find("Canvas").transform;
 
         // enemies.Clear();
     }
@@ -421,7 +424,8 @@ public class BattleManager : Singleton<BattleManager>
 
                 UIManager.Instance.HidePanel<BattlePanel>();
 
-                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"击败敌人，战斗胜利", false, ()=>{
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas);
+                GetComponent<WarningPanel>().SetWarningText($"击败敌人，战斗胜利", false, ()=>{
                     //如果需要触发战斗的后续奖励，在这里触发；
                     Debug.Log("callback is called");
                     callback?.Invoke(enemyId);
@@ -432,7 +436,8 @@ public class BattleManager : Singleton<BattleManager>
                 Debug.Log("is lost");
 
                 UIManager.Instance.HidePanel<BattlePanel>();
-                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"战斗失败",  false, ()=>{
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas);
+                GetComponent<WarningPanel>().SetWarningText($"战斗失败",  false, ()=>{
                     EventHub.Instance.EventTrigger("OnPlayerDead");
                 });
                 

@@ -74,6 +74,8 @@ public class PlayerController : PlayerBase
         EventHub.Instance.AddEventListener<bool>("TriggerLightShrinking", TriggerLightShrinking);
         EventHub.Instance.AddEventListener<Vector3>("SetPlayerPosition", SetPlayerPosition);
 
+        EventHub.Instance.AddEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
+
     }
     // Start is called before the first frame update
     void Start()
@@ -93,10 +95,10 @@ public class PlayerController : PlayerBase
     {
         base.Update();
 
-        // //测试用，速死选项：
-        // if(Input.GetKeyDown(KeyCode.M)){
-        //     EventHub.Instance.EventTrigger("OnPlayerDead");
-        // }
+        //测试用，速死选项：
+        if(Input.GetKeyDown(KeyCode.M)){
+            EventHub.Instance.EventTrigger("OnPlayerDead");
+        }
 
 
 
@@ -130,6 +132,10 @@ public class PlayerController : PlayerBase
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.RemoveEventListener<bool>("TriggerLightShrinking", TriggerLightShrinking);
         EventHub.Instance.RemoveEventListener<Vector3>("SetPlayerPosition", SetPlayerPosition);
+
+        EventHub.Instance.RemoveEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
+
+        
         
     }
 
@@ -138,6 +144,12 @@ public class PlayerController : PlayerBase
     private void TriggerLightShrinking(bool _isShrinking)
     {
         isLightShrinking = _isShrinking;
+    }
+
+    //暴露当前玩家的位置信息的方法：
+    private void ExposePlayerTransform(UnityAction<Transform> action)
+    {
+        action?.Invoke(this.gameObject.transform);
     }
 
     private void LightShrinking()
@@ -412,6 +424,10 @@ public class PlayerController : PlayerBase
         //音效：
         SoundEffectManager.Instance.PlaySoundEffect("死亡音效");
 
+        //清除所有死亡清除的道具：(装备不清除)
+        ItemManager.Instance.ResetItemAfterDeath();
+
+
         //如果死亡的时候，发现是玩家的SAN归零死亡的，那么直接播放剧情，然后回到游戏主界面：
         if(PlayerManager.Instance.player.SAN.value <= 0)
         {
@@ -443,7 +459,7 @@ public class PlayerController : PlayerBase
             Debug.LogWarning("退出游戏到主界面");
             LoadSceneManager.Instance.LoadSceneAsync("StartScene");  
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
-            GameLevelManager.Instance.ResetAllProgress();
+                        
         }); 
     }
 

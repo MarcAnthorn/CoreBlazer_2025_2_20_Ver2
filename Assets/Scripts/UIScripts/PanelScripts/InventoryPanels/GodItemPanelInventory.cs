@@ -193,11 +193,11 @@ public class GodItemPanelInventory : BasePanel
                     //如果该Item是快捷装备中，那么就需要调用InventoryPanel中的方法，进行插槽
                     if(infoItem.isSlottedToLeft)
                     {
-                        EventHub.Instance.EventTrigger<GameObject>("SlotItemToLeft", nowItem);
+                        EventHub.Instance.EventTrigger<GameObject, string>("SlotItemToLeft", nowItem, script.myItem.name);
                     }
                     else if(infoItem.isSlottedToRight)
                     {
-                        EventHub.Instance.EventTrigger<GameObject>("SlotItemToRight", nowItem);
+                        EventHub.Instance.EventTrigger<GameObject, string>("SlotItemToRight", nowItem, script.myItem.name);
                     }
 
                     itemScriptList.Add(script);

@@ -185,14 +185,14 @@ public class CommonItemPanelInventory : BasePanel
             }
 
             if(infoItem.type == Item.ItemType.Maze || infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Normal)
-            {
+            { 
                 if(infoItem.isSlottedToLeft)
                 {
-                    EventHub.Instance.EventTrigger<GameObject>("SlotItemToLeft", nowItem);
+                    EventHub.Instance.EventTrigger<GameObject, string>("SlotItemToLeft", nowItem, script.myItem.name);
                 }
                 else if(infoItem.isSlottedToRight)
                 {
-                    EventHub.Instance.EventTrigger<GameObject>("SlotItemToRight", nowItem);
+                    EventHub.Instance.EventTrigger<GameObject, string>("SlotItemToRight", nowItem, script.myItem.name);
                 }
             }
         }

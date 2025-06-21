@@ -146,7 +146,10 @@ public class PoolManager : SingletonBaseManager<PoolManager>
             poolRoot = new GameObject("Pool");   //此语句表示的是创建一个以“Pool”命名的空物体；
 
         if (objToPool == null)
-            Debug.LogError("当前希望加入对象池的对象为空，请进行检查！");
+        {
+            Debug.LogWarning ("当前希望加入对象池的对象为空，请进行检查！");
+            return;
+        }
         objToPool.SetActive(false);
 
         if (poolDictionary.ContainsKey(key))

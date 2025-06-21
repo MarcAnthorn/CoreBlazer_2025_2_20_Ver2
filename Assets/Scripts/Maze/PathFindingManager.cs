@@ -34,12 +34,12 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
     //当前的策划地图：
     //使用地图坐标可以转化为策划坐标；使用策划坐标进行寻路；
-    private PathNode[,] nowPathNodeMap;
+    //private PathNode[,] nowPathNodeMap;
 
-    private PriorityQueue<PathNode> openList;
-    private List<PathNode> closedList;
-    private List<PathNode> temPathList;
-    private List<Vector3> pathList;
+    //private PriorityQueue<PathNode> openList;
+    //private List<PathNode> closedList;
+    //private List<PathNode> temPathList;
+    //private List<Vector3> pathList;@
     private Vector3 offset;
     private int[] manhattanMove = new int[5]{-1, 0, 1, 0, -1};
     private bool isInitialized = false;
@@ -63,16 +63,18 @@ public class PathFindingManager : Singleton<PathFindingManager>
         LoadOriginalMapElements();
         LoadWorldSpaceMapGrids();
     }
-    private void TestF()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            Vector3 worldPosition = new Vector3(UnityEngine.Random.Range(0f, 10f), UnityEngine.Random.Range(-10f, 0f), 0);
-            int x, y;
-            GetGridIndex(worldPosition, out x, out y);
-            Debug.LogWarning($"{worldPosition}的当前的坐标是：x:{x}, y:{y}");
-        }
-    }
+    // private void TestF()
+    // {
+    //     for (int i = 0; i < 10; i++)
+    //     {
+    //         Vector3 worldPosition = new Vector3(UnityEngine.Random.Range(0f, 10f), UnityEngine.Random.Range(-10f, 0f), 0);
+    //         int x, y;
+    //         GetGridIndex(worldPosition, out x, out y);
+    //         Debug.LogWarning($"{worldPosition}的当前的坐标是：x:{x}, y:{y}");
+    //     }
+    // }
+
+    
     //初始化策划表格的地图信息；
     //其中，如果是路径，那么MapElement.flag == 0;
     //如果不是路径，那么MapElement.flag == 1;
@@ -83,6 +85,24 @@ public class PathFindingManager : Singleton<PathFindingManager>
         dicElementMap.Add(2, LoadManager.Instance.mapSecondFloor);
         dicElementMap.Add(3, LoadManager.Instance.mapThirdFloor);
         dicElementMap.Add(4, LoadManager.Instance.mapCentralFloor);
+    }
+
+
+    /// <summary>
+    /// 更改逻辑地图的flag的方法（比如临时生成墙壁等等）
+    /// </summary>
+    /// <param name="_flag">变更的flag去向</param>
+    /// <param name="x">变更的策划坐标x</param>
+    /// <param name="y">变更的策划坐标y</param>
+    public void ModifyGridFlag(int _flag, int x, int y)
+    {
+        //当前所处的地图：
+        int currentMapIndex = (int)GameLevelManager.Instance.gameLevelType;
+        dicGridMap[currentMapIndex][x, y].flag = _flag;
+
+        //同时，需要让所有当前正在寻路的对象重新调整路线；
+        //使用事件中心向所有正在寻路的对象发布广播：
+        EventHub.Instance.EventTrigger("FindNewPath");
     }
 
     //初始化空间坐标系下的地图内容；
@@ -118,6 +138,22 @@ public class PathFindingManager : Singleton<PathFindingManager>
         }
     }
 
+    // List对象池工具类
+    public static class ListPool<T>
+    {
+        private static readonly Stack<List<T>> pool = new Stack<List<T>>();
+
+        public static List<T> Get()
+        {
+            return pool.Count > 0 ? pool.Pop() : new List<T>();
+        }
+
+        public static void Release(List<T> toRelease)
+        {
+            toRelease.Clear();
+            pool.Push(toRelease);
+        }
+    }
 
     public List<Vector3> FindPath(Vector3 monsterPosition, Vector3 targetPosition)
     {
@@ -126,74 +162,43 @@ public class PathFindingManager : Singleton<PathFindingManager>
             Init();
             isInitialized = true;
         }
-            
-        if (pathList == null)
-            pathList = new List<Vector3>();
-
-        else
-            pathList.Clear();
-            
+        
+        List<Vector3> pathList = ListPool<Vector3>.Get();
         //当前的地图：
         int mapIndex = (int)GameLevelManager.Instance.gameLevelType;
-        nowPathNodeMap = dicGridMap[mapIndex];
+        Debug.LogWarning($"now map is:{mapIndex}");
+        PathNode[,] nowPathNodeMap = dicGridMap[mapIndex];
 
         //获取目标点的坐标信息：
-        //注意，获取的坐标直接就是策划的坐标下：
         int endX, endY, startX, startY;
         GetGridIndex(targetPosition, out endX, out endY);
-
-        //获取当前怪物所处的坐标信息：
         GetGridIndex(monsterPosition, out startX, out startY);
 
         Debug.LogWarning($"Current Start position is {monsterPosition}, Index is:{startX}, {startY}\nCurrent End position is {targetPosition},Index is:{endX}, {endY}");
-        //开始寻路进程：
-        List<PathNode> nodeResultList = FindPathManhattan(startX, startY, endX, endY);
+        List<PathNode> nodeResultList = FindPathManhattan(startX, startY, endX, endY, nowPathNodeMap);
 
-        //显示路径的连线：
-        // LineRenderer lineRenderer = gameObject.GetComponent<LineRenderer>();
-        // if (lineRenderer == null)
-        // {
-        //     lineRenderer = gameObject.AddComponent<LineRenderer>();
-        // }
-        // lineRenderer.positionCount = nodeResultList.Count;
-        // lineRenderer.startWidth = 0.1f;
-        // lineRenderer.endWidth = 0.1f;
-        // lineRenderer.endColor = Color.red; 
-
-        //将节点信息全部转化为世界坐标信息：
-        foreach (var node in nodeResultList)
+        if (nodeResultList != null)
         {
-            pathList.Add(node.myWorldPosition);
+            foreach (var node in nodeResultList)
+            {
+                pathList.Add(node.myWorldPosition);
+            }
         }
-
-        // for (int i = 0; i < pathList.Count - 1; i++)
-        // {
-        //     lineRenderer.SetPosition(i, pathList[i]);
-        //     lineRenderer.SetPosition(i + 1, pathList[i + 1]);
-        // }
+        // 注意：调用者用完pathList后需要手动回收 ListPool<Vector3>.Release(pathList);
         return pathList;
-
     }
 
     //声明寻路算法函数，传入源点坐标和目标点坐标，返回存储了路径节点的容器作为结果
-    private List<PathNode> FindPathManhattan(int startX, int startY, int endX, int endY)
+    private List<PathNode> FindPathManhattan(int startX, int startY, int endX, int endY, PathNode[,] nowPathNodeMap)
     {
-        //获取当前起始点和终点的节点实例：
         PathNode startNode = nowPathNodeMap[startX, startY];
         PathNode endNode = nowPathNodeMap[endX, endY];
         int width = nowPathNodeMap.GetLength(0);
         int height = nowPathNodeMap.GetLength(1);
 
-        //A*数据容器：
-        //优先级队列，根据PathNode的cost进行降序排序；
-        if(openList == null)
-            openList = new PriorityQueue<PathNode>(Comparer<PathNode>.Create((a, b) => (int)(a.cost - b.cost)));
-
-        //closedList实际上就是visited；
-        if (closedList == null)
-            closedList = new List<PathNode>();
-        else
-            closedList.Clear();
+        var openList = new PriorityQueue<PathNode>(Comparer<PathNode>.Create((a, b) => (int)(a.cost - b.cost)));
+        var closedList = new List<PathNode>();
+        var temPathList = new List<PathNode>();
 
         //遍历所有的节点，初始化信息：
         for (int i = 0; i < nowPathNodeMap.GetLength(0); i++)
@@ -201,12 +206,16 @@ public class PathFindingManager : Singleton<PathFindingManager>
             for (int j = 0; j < nowPathNodeMap.GetLength(1); j++)
             {
                 PathNode curNode = nowPathNodeMap[i, j];
+
+                //因为存在不是齐整的地图，所以需要进行判空：
+                if(curNode == null)
+                    continue;
+                    
                 curNode.distance = int.MaxValue;
                 //初始化所有cost：
                 curNode.CalCost();
                 //初始化前驱节点：
                 curNode.prevNode = null;
-
             }
         }
         //初始化源点的实际距离和预估距离：
@@ -225,7 +234,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 continue;
             //如果到达终点，返回路径列表：
             if (cur == endNode)
-                return CalPath(endNode);
+                return CalPath(endNode, temPathList);
 
             cur.myWorldPosition = GetWorldPosition(x, y);
             closedList.Add(cur);
@@ -255,7 +264,6 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
         Debug.LogWarning("无可用路径！");
         return null;
-
     }
 
     private int CalManhattan(PathNode a, PathNode b)
@@ -266,7 +274,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
     }
 
     //计算路径列表的方法：
-    private List<PathNode> CalPath(PathNode endNode)
+    private List<PathNode> CalPath(PathNode endNode, List<PathNode> temPathList)
     {
         if (temPathList == null)
             temPathList = new List<PathNode>();

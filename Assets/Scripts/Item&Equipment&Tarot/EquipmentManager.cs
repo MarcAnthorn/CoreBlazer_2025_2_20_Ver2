@@ -9,6 +9,7 @@ using UnityEngine;
 //通过id访问LoadManager中的对应dic，获取该道具的实例；
 public class EquipmentManager : SingletonBaseManager<EquipmentManager>
 {
+    private GameObject canvas;
     private EquipmentManager(){}
     //当前持有的所有装备：存储的是实例，不是id；
     //这是因为相同的装备不是叠加放置，而是独立放置；
@@ -25,11 +26,18 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
     public int uniqueId = 0;
 
 
-    //向当前的持有中加入新的装备：
-    //使用id进行添加；方法内部会new一个新的实例，以实现新装备的添加和存储
-    //第二参数：指定装备的耐久；如果不指定，就是默认满耐久；
-    public void AddEquipment(int id, int duration = -1)
+    /// <summary>
+    /// 向当前的持有中加入新的装备：
+    /// 使用id进行添加；方法内部会new一个新的实例，以实现新装备的添加和存储
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="duration">指定装备的耐久；如果不指定，就是默认满耐久；</param>
+    /// <param name="isWithoutWarning">指定是否需要显示提示面板；默认显示</param>
+    public void AddEquipment(int id, int duration = -1, bool isWithoutWarning = false)
     {
+        if(canvas == null)
+            canvas = GameObject.Find("Canvas");
+            
         Equipment depulicateSource = LoadManager.Instance.allEquipment[id];
 
         //对这个新的实例进行成员的填充： 
@@ -49,12 +57,16 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
             depulicatedResult.currentDuration = duration;
         }
               
-
-        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"获得装备「{depulicateSource.name}」");
+        if(!isWithoutWarning)
+        {
+            PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas.transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"获得装备「{depulicateSource.name}」");
+        }
     }
 
     public void AddEquipment(params int[] ids)
     {
+        if(canvas == null)
+            canvas = GameObject.Find("Canvas");
         StringBuilder sb = new StringBuilder();
         foreach(int id in ids){
             Equipment depulicateSource = LoadManager.Instance.allEquipment[id];
@@ -72,7 +84,7 @@ public class EquipmentManager : SingletonBaseManager<EquipmentManager>
         }
          
 
-        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", GameObject.Find("Canvas").transform).gameObject.GetComponent<WarningPanel>().SetWarningText(sb.ToString());
+        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas.transform).gameObject.GetComponent<WarningPanel>().SetWarningText(sb.ToString());
   
     }
 

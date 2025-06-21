@@ -53,14 +53,14 @@ public class TestItem : MonoBehaviour
 
 
         //测试塔罗牌：
-        ItemManager.Instance.AddItem(601, 602, 603);
+        ItemManager.Instance.AddItem(302, 303);
 
-        ItemManager.Instance.AddItem(501, 101);
+        ItemManager.Instance.AddItem(103, 104);
 
         ItemManager.Instance.AddItem(501, true, 2);
 
         //测试破墙：
-        ItemManager.Instance.AddItem(103);
+        // ItemManager.Instance.AddItem(103);
     }
 
     // Update is called once per frame
