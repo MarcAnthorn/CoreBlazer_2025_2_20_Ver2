@@ -425,7 +425,7 @@ public class SkillManager : Singleton<SkillManager>
     public void Skill_1004(Player player)
     {
         Debug.Log("角色发动 心火！");
-        player.HP.value -= 10;
+        player.HP.AddValue(-10);
         AddBuffToSkill_1004();
     }
     private void AddBuffToSkill_1004()

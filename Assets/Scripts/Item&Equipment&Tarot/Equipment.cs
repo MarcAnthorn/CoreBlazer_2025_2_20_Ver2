@@ -118,7 +118,7 @@ public class Equipment_1002 : Equipment
         descriptionText = "苏美尔人遗迹中出土的铁质弯月形祭祀用品，记载着两河流域对某个古神的信仰。";
         level = E_EquiptmentLevel.OrangeMedium;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1003];
     }
@@ -152,7 +152,7 @@ public class Equipment_1003 : Equipment
         descriptionText = "被不知名力量封印在琥珀中的火焰，以莲花的形状持续燃烧着。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1004];
     }
@@ -189,7 +189,7 @@ public class Equipment_1004 : Equipment
         descriptionText = "它的刀刃像是有生命一样颤动着，可以依靠高频振动撕裂敌人的血肉。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1005];
     }
@@ -225,7 +225,7 @@ public class Equipment_1005 : Equipment
         descriptionText = "长满了铜锈的青铜铃铛，据说摇响这个铃铛会发生可怕的事情。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1006];
     }
@@ -260,7 +260,7 @@ public class Equipment_1006 : Equipment
         descriptionText = "一位战士打造的武器，据说是为了射下多余的“太阳”，但是哪些东西真的是太阳吗？";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1007];
     }
@@ -295,7 +295,7 @@ public class Equipment_1007 : Equipment
         descriptionText = "一把折断的银剑，它的上一位主人在和哪些东西战斗的过程中陨落了，但是它依旧保持着锐利的杀意。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1008];
     }
@@ -330,7 +330,7 @@ public class Equipment_1008 : Equipment
         descriptionText = "曾经寄宿着人们的童年回忆，但是在被污染后变成了旧日信仰的传播器。它似乎忘记了自己的初心，变成了杀戮的机器。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1009];
     }
@@ -398,7 +398,7 @@ public class Equipment_1010 : Equipment
         descriptionText = "在激烈的抵抗中被撕扯下的嘴巴。虽然已经离开了本体，但是依旧会发出喃喃低语。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1011];
     }
@@ -431,7 +431,7 @@ public class Equipment_1011 : Equipment
         descriptionText = "在吞噬神明的阴谋之中，看到了不该看到的东西，因此被某位存在挖出双眼，眼珠依旧保持着憎恨的目光。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1012];
     }
@@ -466,7 +466,7 @@ public class Equipment_1012 : Equipment
         descriptionText = "科拉佐斯陨落后被割下的鼻子，虽然它的肉体已经死亡，但是这个鼻子依旧在自主呼吸，吐息之间散发着瘟疫。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1013];
     }
@@ -499,7 +499,7 @@ public class Equipment_1013 : Equipment
         descriptionText = "“不该听的不要听”，这是犹格索托斯在这只耳边留下的最后一句话。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1014];
     }
@@ -532,7 +532,7 @@ public class Equipment_1014 : Equipment
         descriptionText = "“把牙扔到房顶上可以长高哦？哈哈，骗你的，毕竟你没有下半身了”";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1015];
     }
@@ -567,7 +567,7 @@ public class Equipment_1015 : Equipment
         descriptionText = "可怜的信徒们拼了命的在肉泥中寻找，只找到了这块颅骨。索性它依旧带着一丝生命的气息，以及.....强大的怨气。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1016];
     }
@@ -601,7 +601,7 @@ public class Equipment_1016 : Equipment
         descriptionText = "拉莱耶古城中破败的雕像，它们所崇拜的主人早已逃离，只留下一片破败的废墟。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1017];
     }
@@ -638,7 +638,7 @@ public class Equipment_1017 : Equipment
         descriptionText = "旧神领袖最爱惜的东西就是他漂亮的胡子，如今却被砍下，散落人间。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1018];
     }
@@ -677,7 +677,7 @@ public class Equipment_1018 : Equipment
         descriptionText = "黄衣之主的披风被强大的力量撕扯成无数块，即便如此每块碎片依旧保留了风的力量。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1019];
     }
@@ -712,7 +712,7 @@ public class Equipment_1019 : Equipment
         descriptionText = "用来保存科拉佐斯力量的容器，以此来逃避上位神的追杀。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1020];
     }
@@ -747,7 +747,7 @@ public class Equipment_1020 : Equipment
         descriptionText = "腐烂的只剩下骨头的尾巴，即便如此，上面的神性力量依旧不容小觑。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1021];
     }
@@ -782,7 +782,7 @@ public class Equipment_1021 : Equipment
         descriptionText = "死灵之书是人类接触禁忌知识相对安全的安全屏障，虽然只有一张残页，但是上面的咒语依旧十分危险。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
-        maxDuration = 5;
+        maxDuration = 3;
         currentDuration = maxDuration;
         mySkill = LoadManager.Instance.allSkills[1022];
     }

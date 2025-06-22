@@ -80,12 +80,12 @@ public class Item_101 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"灯火助燃剂\" 使用！");
         timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.灯光值, PlayerManager.Instance.player.LVL.value + 20);
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.灯光值, PlayerManager.Instance.player.LVL.value + 40);
     }
 
     private void OnStart()
     {
-        PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +20f);
+        PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +40f);
         PlayerManager.Instance.player.DebugInfo();
         //锁定玩家的灯光值：
         EventHub.Instance.EventTrigger("TriggerLightShrinking", false);
@@ -94,7 +94,7 @@ public class Item_101 : Item
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, -20f);
+        // PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, -40f);
         PlayerManager.Instance.player.DebugInfo();
         //解锁：
         EventHub.Instance.EventTrigger("TriggerLightShrinking", true);
@@ -109,9 +109,20 @@ public class Item_102 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"封存的灯火\" 使用！");
         //获得后，后续每次额外获得2灯光值
-        BuffManager.Instance.AddBuff(UseCase.GrowUp, BuffType.LVL_Change, CalculationType.Add, +2f);     //代表加成
+        // BuffManager.Instance.AddBuff(UseCase.GrowUp, BuffType.LVL_Change, CalculationType.Add, +2f);     //代表加成
+
+        EventHub.Instance.AddEventListener("AddExtraLight", AddExtraLight);
+
+
         PlayerManager.Instance.player.DebugInfo();
     }
+
+
+    private void AddExtraLight()
+    {
+        PlayerManager.Instance.player.LVL.AddValueLimit(10);
+    }
+
 
 }
 
@@ -244,7 +255,7 @@ public class Item_202 : Item
         timerIndex = TimeManager.Instance.AddTimer(6f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HP.value * 0.2f);
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.暴击率,  PlayerManager.Instance.player.CRIT_Rate.value + 1f);
+        PlayerManager.Instance.player.CRIT_Rate.AddValue(1f);
     }
 
     bool isEffected;
@@ -254,7 +265,7 @@ public class Item_202 : Item
         if (condition1)
         {
             PlayerManager.Instance.player.HP.MultipleValue(0.2f);
-            PlayerManager.Instance.player.CRIT_Rate.value += 1f;
+            PlayerManager.Instance.player.CRIT_Rate.AddValue(1f);
             isEffected = true;
         }
     }
@@ -265,7 +276,7 @@ public class Item_202 : Item
         if (isEffected)
         {
             PlayerManager.Instance.player.HP.MultipleValue(1 / 0.2f);
-            PlayerManager.Instance.player.CRIT_Rate.value -= 1f;
+            PlayerManager.Instance.player.CRIT_Rate.AddValue(-1f);
         }
     }
 
@@ -309,7 +320,7 @@ public class Item_204 : Item
         //PlayerManager.Instance.player.DEF.value *= 1.5f;
 
         defenseValueTmp = PlayerManager.Instance.player.DEF.value * 1.5f;
-        PlayerManager.Instance.player.DEF.value += defenseValueTmp;
+        PlayerManager.Instance.player.DEF.AddValue(defenseValueTmp);
 
         temp = PlayerManager.Instance.player.CRIT_Rate.value;
         PlayerManager.Instance.player.CRIT_Rate.value = 0f;
@@ -320,8 +331,8 @@ public class Item_204 : Item
         onCompleteCallback?.Invoke();
 
         //通过减去之前加上的百分比数值，恢复到原先的值；
-        PlayerManager.Instance.player.DEF.value -= defenseValueTmp;
-        PlayerManager.Instance.player.CRIT_Rate.value += temp;
+        PlayerManager.Instance.player.DEF.AddValue(-defenseValueTmp);
+        PlayerManager.Instance.player.CRIT_Rate.AddValue(temp);
     }
 
 }
@@ -342,7 +353,7 @@ public class Item_205 : Item
     float temp;
     private void OnStart()
     {
-        PlayerManager.Instance.player.STR.value *= 1.5f;
+        PlayerManager.Instance.player.STR.MultipleValue(1.5f);
         temp = PlayerManager.Instance.player.DEF.value;
         PlayerManager.Instance.player.CRIT_Rate.value = 0f;
     }
@@ -350,8 +361,8 @@ public class Item_205 : Item
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.STR.value /= 1.5f;
-        PlayerManager.Instance.player.DEF.value += temp;
+        PlayerManager.Instance.player.STR.MultipleValue(1 / 1.5f);
+        PlayerManager.Instance.player.DEF.AddValue(temp);
     }
 
 }
@@ -372,14 +383,14 @@ public class Item_206 : Item
     int index;
     private void OnStart()
     {
-        PlayerManager.Instance.player.AVO.value *= 1.8f;
+        PlayerManager.Instance.player.AVO.MultipleValue(1.8f);
         index = BuffManager.Instance.AddBuff(UseCase.Battle, BuffType.HP_Change, CalculationType.Multiply, 1.0f / 1.5f);    //减益表示为除法
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.AVO.value /= 1.8f;
+        PlayerManager.Instance.player.AVO.MultipleValue(1 / 1.8f);
         BuffManager.Instance.RemoveBuff(index);
     }
 
@@ -434,15 +445,15 @@ public class Item_208 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.CRIT_Rate.value += 1f;
-        PlayerManager.Instance.player.STR.value *= 1.5f;
+        PlayerManager.Instance.player.CRIT_Rate.AddValue(1f);
+        PlayerManager.Instance.player.STR.MultipleValue(1.5f);
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.CRIT_Rate.value -= 1f;
-        PlayerManager.Instance.player.STR.value /= 1.5f;
+        PlayerManager.Instance.player.CRIT_Rate.AddValue(-1f);
+        PlayerManager.Instance.player.STR.MultipleValue(1 / 1.5f);
     }
 
 }
@@ -457,7 +468,7 @@ public class Item_301 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.灯光值, Mathf.Min(PlayerManager.Instance.player.LVL.value + 20,PlayerManager.Instance.player.LVL.value_limit));
         
         //获得后灯光值+20
-        PlayerManager.Instance.player.LVL.value += 20;
+        PlayerManager.Instance.player.LVL.AddValue(20);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -479,13 +490,13 @@ public class Item_302 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.SPD.value *= 2f;
+        PlayerManager.Instance.player.SPD.MultipleValue(2f);
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.SPD.value /= 2f;
+        PlayerManager.Instance.player.SPD.MultipleValue(1 / 2f);
     }
 
 }
@@ -500,7 +511,7 @@ public class Item_303 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值, Mathf.Min(PlayerManager.Instance.player.SAN.value + 3,PlayerManager.Instance.player.SAN.value_limit));
 
         //使用后当前精神值+3
-        PlayerManager.Instance.player.SAN.value += 3;
+        PlayerManager.Instance.player.SAN.AddValue(3);
         PlayerManager.Instance.player.DebugInfo();
 
          
@@ -552,15 +563,14 @@ public class Item_402 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.DEF.value_limit += 10f;
-        PlayerManager.Instance.player.DEF.value += 10f;          //当前value随着limit_value一同变化
+        PlayerManager.Instance.player.DEF.AddValueLimit(10f);
+
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.DEF.value_limit -= 10f;
-        PlayerManager.Instance.player.DEF.value -= 10f;
+        PlayerManager.Instance.player.DEF.AddValue(-10f);
     }
 
 }
@@ -580,7 +590,7 @@ public class Item_403 : Item
     private void OnStart()
     {
         // PlayerManager.Instance.player.STR.value_limit += 10f;
-        PlayerManager.Instance.player.STR.value += 20f;
+        PlayerManager.Instance.player.STR.AddValue(20f);
         PlayerManager.Instance.player.DebugInfo();
     }
 
@@ -588,7 +598,7 @@ public class Item_403 : Item
     {
         onCompleteCallback?.Invoke();
         // PlayerManager.Instance.player.STR.value_limit -= 10f;
-        PlayerManager.Instance.player.STR.value -= 20f;
+        PlayerManager.Instance.player.STR.AddValue(-20f);
         PlayerManager.Instance.player.DebugInfo();
     }
 
@@ -641,7 +651,7 @@ public class Item_502 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, Mathf.Min(PlayerManager.Instance.player.DEF.value + 10,PlayerManager.Instance.player.DEF.value_limit));
 
         //获得后防御+10
-        PlayerManager.Instance.player.DEF.value += 10f;
+        PlayerManager.Instance.player.DEF.AddValue(10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -659,7 +669,7 @@ public class Item_503 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.闪避值, Mathf.Min(PlayerManager.Instance.player.AVO.value + 10,PlayerManager.Instance.player.AVO.value_limit));
 
         //获得后闪避+10
-        PlayerManager.Instance.player.AVO.value += 10f;
+        PlayerManager.Instance.player.AVO.AddValue(10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -676,7 +686,7 @@ public class Item_504 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 10,PlayerManager.Instance.player.STR.value_limit));
 
         //获得后力量+10
-        PlayerManager.Instance.player.STR.value += 10f;
+        PlayerManager.Instance.player.STR.AddValue(10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -693,7 +703,7 @@ public class Item_505 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit - 10);
 
         //获得后精神值上限-10
-        PlayerManager.Instance.player.SAN.value_limit -= 10f;
+        PlayerManager.Instance.player.SAN.AddValue(-10f);
         PlayerManager.Instance.player.SAN.value -= 10f;
         PlayerManager.Instance.player.DebugInfo();
 
@@ -712,7 +722,7 @@ public class Item_506 : Item
          effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 10,PlayerManager.Instance.player.STR.value_limit));
 
         //获得后攻击+10
-        PlayerManager.Instance.player.STR.value += 10f;
+        PlayerManager.Instance.player.STR.AddValue(10f);
         PlayerManager.Instance.player.DebugInfo();
 
        
@@ -730,7 +740,7 @@ public class Item_507 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 40,PlayerManager.Instance.player.STR.value_limit));
 
         //获得后攻击+40
-        PlayerManager.Instance.player.STR.value += 40f;
+        PlayerManager.Instance.player.STR.AddValue(40f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -750,24 +760,25 @@ public class Item_508 : Item
         if (randomNum == 0)
         {
             effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit + 20);
-            PlayerManager.Instance.player.SAN.value_limit += 20f;
+            PlayerManager.Instance.player.SAN.AddValueLimit(20f);
 
             
         }
         else if (randomNum == 1)
         {
             effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit + 10);
-            PlayerManager.Instance.player.SAN.value_limit += 10f;
+            PlayerManager.Instance.player.SAN.AddValueLimit(10f);
             
         }
         else if (randomNum == 2)
         {
-            PlayerManager.Instance.player.SAN.value += 0f;
+            PlayerManager.Instance.player.SAN.AddValue(0f);
         }
         else if (randomNum == 3)
         {
             effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值, 10);
-            PlayerManager.Instance.player.SAN.value = 10f;
+            PlayerManager.Instance.player.SAN.AddValueLimit(-10f);
+            PlayerManager.Instance.player.SAN.AddValue(-10f);
             
         }
         PlayerManager.Instance.player.DebugInfo();
@@ -781,7 +792,7 @@ public class Item_601 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -789,7 +800,7 @@ public class Item_602 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -797,7 +808,7 @@ public class Item_603 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -805,7 +816,7 @@ public class Item_604 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -813,7 +824,7 @@ public class Item_605 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -821,7 +832,7 @@ public class Item_606 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -829,7 +840,7 @@ public class Item_607 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -837,7 +848,7 @@ public class Item_608 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -845,7 +856,7 @@ public class Item_609 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -853,7 +864,7 @@ public class Item_610 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -861,7 +872,7 @@ public class Item_611 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -869,7 +880,7 @@ public class Item_612 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -877,7 +888,7 @@ public class Item_613 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -885,7 +896,7 @@ public class Item_614 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -893,7 +904,7 @@ public class Item_615 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -901,7 +912,7 @@ public class Item_616 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -909,7 +920,7 @@ public class Item_617 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -917,7 +928,7 @@ public class Item_618 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -925,7 +936,7 @@ public class Item_619 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -933,7 +944,7 @@ public class Item_620 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.value += 5;
+        PlayerManager.Instance.player.SAN.AddValue(5);
     }
 }
 
@@ -980,8 +991,8 @@ public class Item_2013 : Item
     //使用后：当前生命值+100，防御+10
     public override void Use()
     {
-        PlayerManager.Instance.player.HP.value += 100;
-        PlayerManager.Instance.player.DEF.value += 100;
+        PlayerManager.Instance.player.HP.AddValue(100);
+        PlayerManager.Instance.player.DEF.AddValue(100);
     }
 
 
@@ -992,10 +1003,8 @@ public class Item_2014 : Item
     //使用后：当前灯光值与生命值以及他们的上限+50。
     public override void Use()
     {
-        PlayerManager.Instance.player.LVL.value += 50;
-        PlayerManager.Instance.player.LVL.value_limit += 50;
-        PlayerManager.Instance.player.HP.value += 50;
-        PlayerManager.Instance.player.HP.value_limit += 50;
+        PlayerManager.Instance.player.LVL.AddValueLimit(50);
+        PlayerManager.Instance.player.HP.AddValueLimit(50);
     }
 
 }
@@ -1057,36 +1066,18 @@ public class Item_2016 : Item
     private void RandomBenifit()
     {
         Debug.LogWarning("RandomBenifit is triggerd!");
-        int randomNum = UnityEngine.Random.Range(1, 7); // 注意上限是4，不包含4！
+        int randomNum = UnityEngine.Random.Range(1, 4); // 注意上限是4，不包含4！
         switch(randomNum){
             case 1:
-                PlayerManager.Instance.player.STR.value += 10;
-                PlayerManager.Instance.player.STR.value_limit += 10;
+                PlayerManager.Instance.player.STR.AddValueLimit(10);
             break;
                 
             case 2:
-                PlayerManager.Instance.player.SPD.value += 10;
-                PlayerManager.Instance.player.SPD.value_limit += 10;
+                PlayerManager.Instance.player.SPD.AddValueLimit(10);
             break;
                     
             case 3:
-                PlayerManager.Instance.player.DEF.value += 10;
-                PlayerManager.Instance.player.DEF.value_limit += 10;
-            break;
-
-            case 4:
-                PlayerManager.Instance.player.STR.value -= 10;
-                PlayerManager.Instance.player.STR.value_limit -= 10;
-            break;
-                
-            case 5:
-                PlayerManager.Instance.player.SPD.value -= 10;
-                PlayerManager.Instance.player.SPD.value_limit -= 10;
-            break;
-                    
-            case 6:
-                PlayerManager.Instance.player.DEF.value -= 10;
-                PlayerManager.Instance.player.DEF.value_limit -= 10;
+                PlayerManager.Instance.player.DEF.AddValueLimit(10);
             break;
         }
     }

@@ -51,12 +51,19 @@ public class Player               //存储角色信息等
         //这个方法会将当前加成后的数值和上限值之间取较小值；
         public void AddValue(float change)
         {
-            value = Mathf.Min(value + change, value_limit);           
+            value = Mathf.Min(value + change, value_limit);    
+            //如果是灯光值，并且change > 0,尝试触发道具102的效果：
+            if(change > 0)
+                EventHub.Instance.EventTrigger("AddExtraLight");       
         }
 
         public void MultipleValue(float change)
         {
             value = Mathf.Min(value * change, value_limit);
+
+            //如果是灯光值，并且change > 0,尝试触发道具102的效果：
+            if(change > 1f)
+                EventHub.Instance.EventTrigger("AddExtraLight"); 
         }
 
         public void SetValue(float value)
@@ -67,6 +74,10 @@ public class Player               //存储角色信息等
         //修正方法：所有需要调整数值&上限值的，直接使用这个方法；
         public void AddValueLimit(float change)
         {
+            //如果是灯光值，并且change > 0,尝试触发道具102的效果：
+            if(change > 0)
+                EventHub.Instance.EventTrigger("AddExtraLight"); 
+
             value += change;
             value_limit += change;
         }
@@ -80,32 +91,6 @@ public class Player               //存储角色信息等
         {
             this.value = value;
         }
-
-        //public void ChangeValue(float change)     //用于调整角色属性
-        //{
-        //    if (type == 0)          //整数
-        //    {
-        //        value += change;
-        //    }
-        //    else                    //万分比
-        //    {
-        //        //Marc调整：调整前：
-        //        //value += change * 0.0001f;
-        //        value += value * change * 0.0001f;
-        //    }
-
-        //    if (value < 0)
-        //    {
-        //        Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最小值");
-        //        value = 0;          //假设 属性值 不能为负值
-        //    }
-
-        //    if (value > 100 && type == 0)
-        //    {
-        //        Debug.Log($"属性id：{this.id}，属性名称：{this.name}  已达最大值");
-        //        value = 100;        //假设 整数类型属性值 最大为100
-        //    }
-        //}
 
     }
     

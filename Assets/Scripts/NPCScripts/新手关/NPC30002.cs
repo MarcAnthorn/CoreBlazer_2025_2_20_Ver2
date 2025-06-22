@@ -9,7 +9,7 @@ public class NPC30002  : NPCBase
     {
         base.OnComplete(avgId);
         Destroy(door10010);
-        PlayerManager.Instance.player.LVL.value += 20;
+        PlayerManager.Instance.player.LVL.AddValue(20);
 
         //分配：101
         ItemManager.Instance.AddItem(101);

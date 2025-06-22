@@ -159,35 +159,33 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         {
             case AttributeType.HP:
                 PlayerManager.Instance.player.HP.AddValue(finalValue);
-                //  PlayerManager.Instance.player.HP.value = Math.Min(PlayerManager.Instance.player.HP.value + finalValue, PlayerManager.Instance.player.HP.value);
-                
                 break;
             case AttributeType.STR:
-                PlayerManager.Instance.player.STR.value += finalValue;
+                PlayerManager.Instance.player.STR.AddValue(finalValue);
                 break;
             case AttributeType.DEF:
-                PlayerManager.Instance.player.DEF.value += finalValue;
+                PlayerManager.Instance.player.DEF.AddValue(finalValue);
                 break;
             case AttributeType.LVL:
-                PlayerManager.Instance.player.LVL.value += finalValue;
+                PlayerManager.Instance.player.LVL.AddValue(finalValue);
                 break;
             case AttributeType.SAN:
-                PlayerManager.Instance.player.SAN.value += finalValue;
+                PlayerManager.Instance.player.SAN.AddValue(finalValue);
                 break;
             case AttributeType.SPD:
-                PlayerManager.Instance.player.SPD.value += finalValue;
+                PlayerManager.Instance.player.SPD.AddValue(finalValue);
                 break;
             case AttributeType.CRIT_Rate:
-                PlayerManager.Instance.player.CRIT_Rate.value += finalValue;
+                PlayerManager.Instance.player.CRIT_Rate.AddValue(finalValue);
                 break;
             case AttributeType.CRIT_DMG:
-                PlayerManager.Instance.player.CRIT_DMG.value += finalValue;
+                PlayerManager.Instance.player.CRIT_DMG.AddValue(finalValue);
                 break;
             case AttributeType.HIT:
-                PlayerManager.Instance.player.HIT.value += finalValue;
+                PlayerManager.Instance.player.HIT.AddValue(finalValue);
                 break;
             case AttributeType.AVO:
-                PlayerManager.Instance.player.AVO.value += finalValue;
+                PlayerManager.Instance.player.AVO.AddValue(finalValue);
                 break;
             default:
                 break;

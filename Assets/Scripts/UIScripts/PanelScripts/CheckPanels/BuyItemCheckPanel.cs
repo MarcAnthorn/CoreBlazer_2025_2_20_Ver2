@@ -29,7 +29,7 @@ public class BuyItemCheckPanel : BasePanel
             //两个都被封装在BuyItemCallback这个事件key中：
 
             //先扣除精神值：
-            PlayerManager.Instance.player.SAN.value -= 20;
+            PlayerManager.Instance.player.SAN.AddValue(-20);
         
             //更新UI：
             EventHub.Instance.EventTrigger("UpdateAllUIElements");
