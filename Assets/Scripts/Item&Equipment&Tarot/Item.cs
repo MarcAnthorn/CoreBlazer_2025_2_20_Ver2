@@ -786,6 +786,14 @@ public class Item_508 : Item
 
 }
 
+public class Item_509 : Item
+{
+    public override void Use()
+    {
+        
+    }
+}
+
 
 //塔罗牌：
 public class Item_601 : Item

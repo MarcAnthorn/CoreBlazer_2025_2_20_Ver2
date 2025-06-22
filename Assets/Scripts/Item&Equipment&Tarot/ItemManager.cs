@@ -354,6 +354,9 @@ public class ItemManager : Singleton<ItemManager>
             case 508:
                 return new Item_508();
 
+            case 509:
+                return new Item_509();
+
         //塔罗牌：
              case 601:
                 return new Item_601();
