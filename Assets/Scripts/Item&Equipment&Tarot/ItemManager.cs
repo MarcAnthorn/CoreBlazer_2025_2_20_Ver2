@@ -294,6 +294,11 @@ public class ItemManager : Singleton<ItemManager>
         }
     }
 
+    //检查是否存在指定id的Item：
+    public bool CheckIfItemExist(int id)
+    {
+        return itemList.Contains(id);
+    }
 
     public Item ClassifyItems(int ItemId)               //用于将道具分类
     {

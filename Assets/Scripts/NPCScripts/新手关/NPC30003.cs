@@ -22,6 +22,9 @@ public class NPC30003  : NPCBase
             cameraForDoor.Priority = 0;
             EventHub.Instance.EventTrigger<bool>("Freeze", false);   //解冻玩家；
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("【回头看看吧】");
+
+            //分配：钥匙道具：
+            ItemManager.Instance.AddItem(509);
         });
        
             

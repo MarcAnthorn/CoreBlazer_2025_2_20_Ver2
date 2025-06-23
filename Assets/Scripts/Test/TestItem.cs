@@ -53,11 +53,11 @@ public class TestItem : MonoBehaviour
 
 
         //测试塔罗牌：
-        ItemManager.Instance.AddItem(302, 303);
+        ItemManager.Instance.AddItem(509);
 
-        ItemManager.Instance.AddItem(103, 104);
+        // ItemManager.Instance.AddItem(103, 104);
 
-        ItemManager.Instance.AddItem(501, true, 2);
+        // ItemManager.Instance.AddItem(501, true, 2);
 
         //测试破墙：
         // ItemManager.Instance.AddItem(103);

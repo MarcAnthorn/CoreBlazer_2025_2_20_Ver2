@@ -10,7 +10,7 @@ public class MonsterChase101 : MonsterBase
 {
     [Header("怪物101配置")]
     public float detectionRange = 100f;        // 检测范围
-    public float chaseSpeed = 4f;            // 追逐速度
+    public float chaseSpeed; // 追逐速度
 
     //虚拟相机：
     public CinemachineVirtualCamera _cam;
@@ -21,6 +21,7 @@ public class MonsterChase101 : MonsterBase
     {
         Debug.LogWarning($"Monster Initialized!");
         
+        chaseSpeed = 1.2f * 3 * (1 + (5 * PlayerManager.Instance.player.SPD.value - 10) / 100);       
         // 创建自定义状态
         patrolState = null;
         chaseState = new Chase101State(this);
@@ -65,9 +66,20 @@ public class MonsterChase101 : MonsterBase
     {
         base.OnComplete();
         
+        DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1106];
+        var panel = UIManager.Instance.ShowPanel<AVGPanel>();
+        panel.orderBlock = ob;
+        panel.callback = OnAVGComplete;
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
+
+    }
+
+    private void OnAVGComplete(int id)
+    {
         Destroy(this.gameObject);
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
         LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
+        EventHub.Instance.EventTrigger<bool>("Freeze", false);
     }
 
 
