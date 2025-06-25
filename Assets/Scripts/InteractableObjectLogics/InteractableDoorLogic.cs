@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class InteractableDoorLogic : MonoBehaviour
 {
     public UnityAction actionDoorTrigger;
-    public GameObject monster1001;
+    // public GameObject monster1001;
 
     void Awake()
     {
@@ -16,7 +16,7 @@ public class InteractableDoorLogic : MonoBehaviour
     private void DoorTrigger()
     {
         //触发怪物追逐：
-        monster1001.gameObject.SetActive(true);
+        // monster1001.gameObject.SetActive(true);
         Destroy(this.gameObject);   //暂时使用销毁；
     }
 }

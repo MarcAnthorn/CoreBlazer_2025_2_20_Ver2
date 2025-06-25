@@ -1,4 +1,4 @@
- using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -47,6 +47,13 @@ public class InventoryPanel : BasePanel
     public Transform itemPanelContainer;
     public List<GameObject> tarotList = new List<GameObject>();
 
+    //存储三个Button Image组建的List:
+    //0:装备
+    //1:神明道具
+    //2:普通道具
+    private List<Image> buttonImageList = new List<Image>();
+    private Color buttonDarkenColor = new Color(0.5f, 0.5f, 0.5f, 1f); // 变暗
+
     //当前的快速插槽（左和右）是否处在等待插入道具的状态：
     //如果是，那么下次点击对应的插槽就会把当前处在isPreselected状态的Item实例化一份到插槽；
     //注意：始终只会有一个Slot处在预备态；两个插槽不能同时处在预备态；
@@ -73,6 +80,7 @@ public class InventoryPanel : BasePanel
     public GameObject commonItemPanelObject;
 
 
+
     
 
 
@@ -90,8 +98,15 @@ public class InventoryPanel : BasePanel
         //     equiptmentPanelObject.SetActive(true);
         // }
 
-        equiptmentPanelObject.SetActive(true);
+        commonItemPanelObject.SetActive(true);
 
+        buttonImageList.Add(btnEquipmentPanelReveal.GetComponent<Image>());
+        buttonImageList.Add(btnGodPanelReveal.GetComponent<Image>());
+        buttonImageList.Add(btnCommonPanelReveal.GetComponent<Image>());
+
+        buttonImageList[1].color = buttonDarkenColor;
+
+        
         //不然就是commonItemPanelObject；同时禁用让equiptmentPanelObject显示的Button：
         // else
         // {
@@ -113,6 +128,11 @@ public class InventoryPanel : BasePanel
             godItemPanelObject.SetActive(false);
             equiptmentPanelObject.SetActive(false);
 
+            // 让该按钮变暗，其他两个恢复正常
+            buttonImageList[0].color = Color.white;
+            buttonImageList[1].color = Color.white;
+            buttonImageList[2].color = buttonDarkenColor;
+
             ResetCurrentSelectedItem();
         });
 
@@ -121,6 +141,11 @@ public class InventoryPanel : BasePanel
             commonItemPanelObject.SetActive(false);
             equiptmentPanelObject.SetActive(false);
 
+            // 让该按钮变暗，其他两个恢复正常
+            buttonImageList[0].color = Color.white;
+            buttonImageList[1].color = buttonDarkenColor;
+            buttonImageList[2].color = Color.white;
+
             ResetCurrentSelectedItem();
         });
 
@@ -128,6 +153,11 @@ public class InventoryPanel : BasePanel
             equiptmentPanelObject.SetActive(true);
             godItemPanelObject.SetActive(false);
             commonItemPanelObject.SetActive(false);
+
+            // 让该按钮变暗，其他两个恢复正常
+            buttonImageList[0].color = buttonDarkenColor;
+            buttonImageList[1].color = Color.white;
+            buttonImageList[2].color = Color.white;
 
             ResetCurrentSelectedItem();
         });
