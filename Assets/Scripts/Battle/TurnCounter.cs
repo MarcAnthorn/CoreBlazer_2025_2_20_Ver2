@@ -91,7 +91,7 @@ public class TurnCounter : Singleton<TurnCounter>
 
 
         // enemyTurns[0]++;
-        Enemy enemy = BattleManager.Instance.enemies[0];
+        Enemy enemy = BattleManager.Instance.battleEnemy;
         int n = enemy.buffs.Count;
         bool cleanBattleBuff_1001 = false;
         for (int i = 0; i < n; i++)
@@ -168,7 +168,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 添加敌人Buff
     public void AddEnemyBuff(BattleBuff buff, int positionId = 0)
     {
-        var list = BattleManager.Instance.enemies[positionId].buffs;
+        var list = BattleManager.Instance.battleEnemy.buffs;
         bool isAddLock = false;
         Type itemType = buff.GetType();
 
@@ -184,7 +184,7 @@ public class TurnCounter : Singleton<TurnCounter>
         }
             
         if(!isAddLock)
-            BattleManager.Instance.enemies[positionId].buffs.Add(buff);
+            BattleManager.Instance.battleEnemy.buffs.Add(buff);
 
         if (buff.overlyingCount < buff.overlyingLimit)
         {
@@ -212,7 +212,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 移除敌人Buff
     public void RemoveEnemyBuff(BattleBuff buff, int positionId)
     {
-        BattleManager.Instance.enemies[positionId].buffs.Remove(buff);
+        BattleManager.Instance.battleEnemy.buffs.Remove(buff);
 
         buff.OnEnd(1);
         buff.overlyingCount -= 1;
@@ -250,7 +250,7 @@ public class TurnCounter : Singleton<TurnCounter>
     // 结算指定敌人自身Buff的直接效果
     public void DealWithEnemyBuff(TriggerTiming triggerTiming, DamageType damageType, int positionId = 0)
     {
-        foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
+        foreach (var buff in BattleManager.Instance.battleEnemy.buffs)
         {
             if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {
@@ -301,13 +301,13 @@ public class TurnCounter : Singleton<TurnCounter>
     public float CalculateWithEnemyBuff(TriggerTiming triggerTiming, DamageType damageType, int positionId, float value)
     {
      
-        if(BattleManager.Instance.enemies[positionId].buffs.Count == 0)
+        if(BattleManager.Instance.battleEnemy.buffs.Count == 0)
             return value;
 
         CalculationType calType = CalculationType.NONE;
         float extraValue = 0;
 
-        foreach (var buff in BattleManager.Instance.enemies[positionId].buffs)
+        foreach (var buff in BattleManager.Instance.battleEnemy.buffs)
         {
             if (buff.triggerTiming == triggerTiming && buff.damageType.HasFlag(damageType))
             {

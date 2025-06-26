@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class BattleManager : Singleton<BattleManager>
 {
     public Player player;
-    public List<Enemy> enemies = new List<Enemy>();
+    public Enemy battleEnemy;
     private int enemyId;
 
     private bool isJudgedWhoWins;
@@ -64,7 +64,7 @@ public class BattleManager : Singleton<BattleManager>
     // 在战斗开始之前调用；
     public void BattleInit(Player player, Enemy enemy)
     {
-        enemies.Clear();
+        battleEnemy = null;
         enemyId = enemy.id;
 
         this.player = player;
@@ -75,8 +75,8 @@ public class BattleManager : Singleton<BattleManager>
 
         // 初始化回合计数器
         TurnCounter.Instance.InitTurnCounter(enemy);
-        enemies.Add(enemy);
-        
+        battleEnemy = enemy;
+
         roundCoroutine = null;
 
  //----------------------初始化最大行动点是3:(Marc)-----------------------------------
@@ -122,7 +122,7 @@ public class BattleManager : Singleton<BattleManager>
 
         // actionQueue.Enqueue(enemies[0]);
 
-        if(enemies[0] == null)
+        if(battleEnemy == null)
         {
             Debug.Log($"当前敌人为null！");
         }
@@ -130,15 +130,15 @@ public class BattleManager : Singleton<BattleManager>
         EventHub.Instance.EventTrigger("TriggerBattleMask", 0);
         LeanTween.delayedCall(1f, () =>
         {
-            if (player.SPD.value >= enemies[0].SPD)
+            if (player.SPD.value >= battleEnemy.SPD)
             {
-                Debug.Log("角色速度：" + player.SPD.value + "  >=  " + "敌人速度：" + enemies[0].SPD);
+                Debug.Log("角色速度：" + player.SPD.value + "  >=  " + "敌人速度：" + battleEnemy.SPD);
                 UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("我方速度值更高，我方先手!", true);
                 EnterPlayerTurn();
             }
             else
             {
-                Debug.Log("角色速度：" + player.SPD.value + "  <  " + "敌人速度：" + enemies[0].SPD);
+                Debug.Log("角色速度：" + player.SPD.value + "  <  " + "敌人速度：" + battleEnemy.SPD);
                 UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("敌方速度值更高，敌方先手!", true);
                 EnterEnemyTurn(1);
             }
@@ -193,7 +193,7 @@ public class BattleManager : Singleton<BattleManager>
     {
         Debug.Log($"角色释放技能{playerSkill}");
         // 将技能点交给 ReleaseSkill 方法处理
-        SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, enemies[0]);
+        SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, battleEnemy);
 
         // 阻塞，播放技能释放动画以及敌人受伤动画
         // 注意：播放动画的脚本处需要使用多线程
@@ -352,7 +352,7 @@ public class BattleManager : Singleton<BattleManager>
 
             //使用协程替换原先的技能无间隔释放：
             //改成一定时间间隔释放技能：
-            enemyAttackCoroutine = StartCoroutine(EnemyAttack(enemies[0], 0));
+            enemyAttackCoroutine = StartCoroutine(EnemyAttack(battleEnemy, 0));
 
         });
        

@@ -158,6 +158,7 @@ public enum DamageType : uint
 
 public class Damage
 {
+
     // 是否是暴击伤害
     public bool isCritical;
     // 伤害量

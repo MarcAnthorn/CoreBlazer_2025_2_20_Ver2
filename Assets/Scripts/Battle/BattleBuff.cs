@@ -185,7 +185,7 @@ public class BattleBuff_1001 : BattleBuff
         else if(flag == 1)
         {
             Debug.Log("I am in buff 1001");
-            BattleManager.Instance.enemies[0].HP -= 10 * overlyingCount;
+            BattleManager.Instance.battleEnemy.HP -= 10 * overlyingCount;
 
             EventHub.Instance.EventTrigger<int, bool>("UpdateDamangeTextInt", 10 * overlyingCount, true);
 
@@ -1082,7 +1082,7 @@ public class BattleBuff_1018 : BattleBuff
     {
         if (flag == 0)  // 此时玩家持有Buff
         {
-            BattleManager.Instance.enemies[0].HIT += 2.1f;
+            BattleManager.Instance.battleEnemy.HIT += 2.1f;
         }
 
         else if (flag == 1)
@@ -1128,7 +1128,7 @@ public class BattleBuff_1019 : BattleBuff
         }
         else if (flag == 1)
         {
-            BattleManager.Instance.enemies[0].HP += 0.3f * overlyingCount;
+            BattleManager.Instance.battleEnemy.HP += 0.3f * overlyingCount;
         }
     }
 
@@ -1280,7 +1280,7 @@ public class BattleBuff_1022 : BattleBuff
         }
         else if (flag == 1)
         {
-            BattleManager.Instance.enemies[0].HP = 0;
+            BattleManager.Instance.battleEnemy.HP = 0;
         }
     }
 

@@ -305,11 +305,11 @@ public class BattlePanel : BasePanel
      //在对应战斗内容（使用技能、回合结算等）结束之后就会调用：
      public void UpdateBattlePanelUI()
      {
-          Debug.Log(BattleManager.Instance.enemies.Count);
+          Debug.Log(BattleManager.Instance.battleEnemy);
 
           //获取当前的敌人：
-          if(BattleManager.Instance.enemies.Count == 1)
-               enemy = BattleManager.Instance.enemies[0];
+          if(BattleManager.Instance.battleEnemy != null)
+               enemy = BattleManager.Instance.battleEnemy;
 
 
           if(enemy == null)
