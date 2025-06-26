@@ -13,12 +13,8 @@ public class EndPointThirdFloor : MonoBehaviour
             SoundEffectManager.Instance.StopMusic();
             int avgId = 1206;
 
-
-            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-            panel.orderBlock = ob;
-            panel.callback = OnComplete;
-            EventHub.Instance.EventTrigger<bool>("Freeze", true);     
+            UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(avgId, OnComplete);
+ 
         }     
     }
 
@@ -36,10 +32,7 @@ public class EndPointThirdFloor : MonoBehaviour
 
     public void OnCompleteAfterBattle(int id)
     {
-        DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1207];
-        var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-        panel.orderBlock = ob;
-        panel.callback = OnCompleteAfter1207;
+        UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1207, OnCompleteAfter1207);
         EventHub.Instance.EventTrigger<bool>("Freeze", true);
     }
 
@@ -52,26 +45,18 @@ public class EndPointThirdFloor : MonoBehaviour
         {
             Debug.Log("愚人结局达成");
             avgId = 1303;
-
         }
-
         else if(san <= 60 && san >= 20)
         {
             Debug.Log("月亮结局达成");
             avgId = 1302;
         }
-
         else{
             Debug.Log("高塔结局达成");
             avgId = 1301;
-
         }
-
         LeanTween.delayedCall(0.5f, ()=>{
-            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-            panel.orderBlock = ob;
-            panel.callback = OnCompletAfterEnd;
+            UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(avgId, OnCompletAfterEnd);
             EventHub.Instance.EventTrigger<bool>("Freeze", true);
         });
     }

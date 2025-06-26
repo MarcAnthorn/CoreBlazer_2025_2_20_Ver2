@@ -124,6 +124,7 @@ public class AVGPanel : BasePanel
         EventHub.Instance.RemoveEventListener<UnityAction<int>>("ReplaceCallback", ReplaceCallback);
     }
 
+    
     protected override void Init()
     {
         isAvgOver = false;
@@ -137,6 +138,19 @@ public class AVGPanel : BasePanel
             isContinueButtonClicked = true;
         });
         ExecuteOrder();
+    }
+
+    /// <summary>
+    /// 初始化AVG唯一方法；
+    /// 在使用UIManager.Instance.ShowPanel<AVGPanel>显示AVG面板之后，可以获取到AVGPanel脚本，
+    /// 通过AVGPanel可以调用InitAVG，从而初始化必要的AVG内容；
+    /// </summary>
+    /// <param name="dialogueBlockId">初始化的AVG唯一id，参考策划给定的AVG触发需求，传入对应的id就行</param>
+    /// <param name="callback">AVG播放结束之后自动调用的回调；默认是null，表示当前AVG无后续结果需要处理；参数是整型，表示对应AVG的id，是否使用该id取决于是否在回调中有使用id的需求；绝大多数情况下，该参数只传不用</param>
+    public void InitAVG(int dialogueBlockId, UnityAction<int> callback = null)
+    {
+        this.orderBlock =  LoadManager.Instance.orderBlockDic[dialogueBlockId];
+        this.callback = callback;
     }
 
     //执行指令的方法；是一个协同程序

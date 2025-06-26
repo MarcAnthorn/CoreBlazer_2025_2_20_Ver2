@@ -53,8 +53,9 @@ public class Player               //存储角色信息等
         {
             value = Mathf.Min(value + change, value_limit);    
             //如果是灯光值，并且change > 0,尝试触发道具102的效果：
-            if(change > 0)
-                EventHub.Instance.EventTrigger("AddExtraLight");       
+            if(change > 0 && this.id == 4)
+                EventHub.Instance.EventTrigger("AddExtraLight");  
+
         }
 
         public void MultipleValue(float change)
@@ -75,7 +76,7 @@ public class Player               //存储角色信息等
         public void AddValueLimit(float change)
         {
             //如果是灯光值，并且change > 0,尝试触发道具102的效果：
-            if(change > 0)
+            if(change > 0 && this.id == 4)
                 EventHub.Instance.EventTrigger("AddExtraLight"); 
 
             value += change;

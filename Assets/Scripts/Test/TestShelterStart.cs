@@ -28,27 +28,21 @@ public class TestShelterStart : MonoBehaviour
             if(GameLevelManager.Instance.gameLevelType == E_GameLevelType.First && !GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.First])
             {
                 GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.First] = true;
-                DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1108];
-                var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-                panel.orderBlock = ob;
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1108);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
 
             else if(GameLevelManager.Instance.gameLevelType == E_GameLevelType.Second && !GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.Second])
             {
                 GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.Second] = true;
-                DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1113];
-                var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-                panel.orderBlock = ob;
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1113);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
 
             else if(GameLevelManager.Instance.gameLevelType == E_GameLevelType.Third && !GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.Third])
             {
                 GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.Third] = true;
-                DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1118];
-                var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-                panel.orderBlock = ob;
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1118);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
 

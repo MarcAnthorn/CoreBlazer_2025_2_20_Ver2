@@ -30,9 +30,10 @@ public class ShelterObjectFishJar : MonoBehaviour
 
                 }
 
-                DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-                var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-                panel.orderBlock = ob;
+                // DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
+                // var panel = UIManager.Instance.ShowPanel<AVGPanel>();
+                // panel.orderBlock = ob;
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(avgId);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
         }

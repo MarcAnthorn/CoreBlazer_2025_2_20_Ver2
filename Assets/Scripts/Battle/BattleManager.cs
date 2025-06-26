@@ -42,13 +42,15 @@ public class BattleManager : Singleton<BattleManager>
     private Transform canvas;
 
 
+
+
     protected override void Awake()
     {
         base.Awake();
         EventHub.Instance.AddEventListener<bool, UnityAction<int>>("GameOver", GameOver);
         canvas = GameObject.Find("Canvas").transform;
 
-        // enemies.Clear();
+        // enemies.Clear(); 
     }
 
 
@@ -363,7 +365,7 @@ public class BattleManager : Singleton<BattleManager>
         {
             yield return new WaitForSeconds(2f);    //假设设定为2s执行一次进攻；
             EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-4, false);
-            s.Use(enemy);       
+            s.Use(enemy);          
             //敌方释放技能的Tip：
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText($"「{enemy.name}」释放了技能「{s.skillName}」", true);
 

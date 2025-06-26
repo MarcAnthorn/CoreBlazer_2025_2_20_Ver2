@@ -24,10 +24,7 @@ public class YugeRoom : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.K))
             {
                 int avgId = AVGDistributeManager.Instance.FetchAVGId(myName);
-
-                DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-                var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-                panel.orderBlock = ob;
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(avgId);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
         }

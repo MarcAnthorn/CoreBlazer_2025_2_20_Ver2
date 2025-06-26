@@ -11,7 +11,7 @@ public class TestAVG : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.J))
             {
-                UIManager.Instance.ShowPanel<AVGPanel>().orderBlock = LoadManager.Instance.orderBlockDic[1108];
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1108);
             }
         }
     }

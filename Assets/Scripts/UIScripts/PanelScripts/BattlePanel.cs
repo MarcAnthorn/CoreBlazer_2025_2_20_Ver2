@@ -412,7 +412,6 @@ public class BattlePanel : BasePanel
           {
                Debug.LogWarning("敌人死亡！");
                EventHub.Instance.EventTrigger("GameOver", true, callback);
-
           }
      }
 
@@ -420,8 +419,13 @@ public class BattlePanel : BasePanel
      //更新伤害面板的事件
      //主要是为了避免短时间多次调用UpdateBattlePanelUI导致UI显示（主要是Slider）出错
      //如果value是-1，说明是被闪避了；第二参数表示是否是我发出的伤害，用于区分敌方和我方；
+
+               // EventHub.Instance.EventTrigger("UpdateDamangeText", damage, false);
+
+               // EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-4, true);
      private void UpdateDamangeText(float damageValue, bool isPlayersDamage)
      {
+          
           //以-3为flag：如果是-4，那么就是开始之前的惯例UI更新
           if (damageValue < -3)
           {

@@ -19,12 +19,7 @@ public abstract class NPCBase : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Player"))
         {
-            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-            panel.orderBlock = ob;
-            panel.callback = OnComplete;
-            EventHub.Instance.EventTrigger<bool>("Freeze", true);
-
+            UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(avgId, OnComplete);
         }
     }
 

@@ -431,12 +431,8 @@ public class PlayerController : PlayerBase
         //如果死亡的时候，发现是玩家的SAN归零死亡的，那么直接播放剧情，然后回到游戏主界面：
         if(PlayerManager.Instance.player.SAN.value <= 0)
         {
-            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1301];
-            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-            panel.orderBlock = ob;
-            panel.callback = OnComplete;
+            UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1301, OnComplete);
             EventHub.Instance.EventTrigger<bool>("Freeze", true);
-
             return; //直接终止死亡的后续逻辑；
         }
 

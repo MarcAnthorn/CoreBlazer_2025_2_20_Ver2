@@ -64,13 +64,8 @@ public class MonsterChase101 : MonsterBase
 
     protected override void OnComplete()
     {
-        base.OnComplete();
-        
-        DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1106];
-        var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-        panel.orderBlock = ob;
-        panel.callback = OnAVGComplete;
-        EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        base.OnComplete();    
+        UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1106, OnAVGComplete);
 
     }
 
