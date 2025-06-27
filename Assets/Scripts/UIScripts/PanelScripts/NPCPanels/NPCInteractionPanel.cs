@@ -108,7 +108,7 @@ public class NPCInteractionPanel : BasePanel
 
     private IEnumerator WaitForContinue(E_NPCName _npcName)  
     {
-
+ 
         
         switch (_npcName)
         {

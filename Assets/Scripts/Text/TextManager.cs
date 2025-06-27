@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json; 
-
+ 
 public class TextManager : MonoBehaviour
 {
     private static TextManager _instance;
