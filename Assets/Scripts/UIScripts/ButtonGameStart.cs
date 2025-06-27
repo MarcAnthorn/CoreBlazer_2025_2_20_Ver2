@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
+using TMPro;
 public class ButtonGameStart : MonoBehaviour
 {
     public Button btnStartGame;
+    public TextMeshProUGUI txtSanity;
+    public TextMeshProUGUI txtConversation;
     void Start()
-    {
+    {   
+        btnStartGame = this.GetComponent<Button>();
+        var tmp = btnStartGame.GetComponentInChildren<TextMeshProUGUI>();
+        if (tmp != null)
+        {
+            tmp.text = TextManager.Instance.GetText("按钮文本", "主界面", "新游戏");
+        }
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.Tutorial;
         btnStartGame.onClick.AddListener(()=>{
 

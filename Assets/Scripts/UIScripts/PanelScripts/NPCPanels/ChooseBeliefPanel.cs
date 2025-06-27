@@ -84,17 +84,17 @@ public class ChooseBeliefPanel : BasePanel
         //并且初始化相关的选项：
         switch(_npcName){
             case E_NPCName.奈亚拉:
-                txtConversation.text = "那可以看看祂的好东西，不保证物有所值哦。";
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "商店", "1");
                 btnScript1.Init(2015);
                 btnScript2.Init(2016);
             break;
             case E_NPCName.优格:
-                txtConversation.text = "想了解点什么？宇宙的真理可不是能轻易参透的。";
+                txtConversation.text = TextManager.Instance.GetText("优格", "商店", "1");
                 btnScript1.Init(2013);
                 btnScript2.Init(2014);
             break;
             case E_NPCName.莎布:
-                txtConversation.text = "祂也给我了不少好东西，来看看吧！";
+                txtConversation.text = TextManager.Instance.GetText("莎布", "商店", "1");
                 btnScript1.Init(2011);
                 btnScript2.Init(2012);
             break;
@@ -112,13 +112,13 @@ public class ChooseBeliefPanel : BasePanel
         switch (currentNPCName)
         {
             case E_NPCName.奈亚拉:
-                txtConversation.text = "欢迎光临，下次再来！！";
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "商店", "2");
                 break;
             case E_NPCName.优格:
-                txtConversation.text = "愿你不会停下对真理的探索。";
+                txtConversation.text = TextManager.Instance.GetText("优格", "商店", "2");
                 break;
             case E_NPCName.莎布:
-                txtConversation.text = "希望这些能让你转危为安。";
+                txtConversation.text = TextManager.Instance.GetText("莎布", "商店", "2");
                 break;
             default:
                 Debug.LogWarning("当前的NPC面板显示的NPC不存在");
