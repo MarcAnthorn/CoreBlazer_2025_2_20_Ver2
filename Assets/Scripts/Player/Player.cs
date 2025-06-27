@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public enum AttributeType
 {
@@ -123,19 +124,9 @@ public class Player               //存储角色信息等
 
     // }
 
-    public void BeHurted(Damage damage)
+    public void BeHurted(float value)
     {
-        HP.AddValue(-damage.damage);
-
-        // if (HP.value <= 0)
-        // {
-        //     //等待UI更新结束之后再处理死亡：
-        //     // LeanTween.delayedCall(0.6f, () => {
-        //     //     Debug.Log("玩家死亡!");
-        //     //     GameOver();
-        //     // });
-           
-        // }
+        HP.AddValue(-value);
     }
 
     public void DebugInfo()
@@ -158,17 +149,58 @@ public enum DamageType : uint
 
 public class Damage
 {
+    // 不要直接访问!!!改用索引器访问
+    private List<SingleDamage> damageValues = new List<SingleDamage>();
 
-    // 是否是暴击伤害
-    public bool isCritical;
-    // 伤害量
-    public float damage;
-    // 伤害类型
-    public DamageType damageType;
+    public bool isAvoided;                      // 闪避标识
+    public bool isCombo;                        // 连击标识
+    public DamageType damageType;               // 伤害类型
+
+    public class SingleDamage
+    {
+        public bool isCritical;                 // 暴击标识
+        public float damage;                      // 伤害量
+
+        public SingleDamage(bool isCritical, float damage)
+        {
+            this.isCritical = isCritical;
+            this.damage = damage;
+        }
+    }
 
     public Damage(DamageType damageType)
     {
         this.damageType = damageType;
     }
 
+    public SingleDamage this[int index]
+    {
+        get 
+        {
+            if (index < 0 || index >= damageValues.Count)
+                throw new IndexOutOfRangeException("索引超出范围");
+            return damageValues[index]; 
+        }
+        set 
+        {
+            if (index < 0 || index >= damageValues.Count)
+                throw new IndexOutOfRangeException("索引超出范围");
+            damageValues[index] = value;
+        }
+    }
+
+    public int GetSize()
+    {
+        return damageValues.Count;
+    }
+
+    public void AddSingleDamage(bool isCritical, float value)
+    {
+        damageValues.Add(new SingleDamage(isCritical, (int)value));
+    }
+
+    public void ParseDamage()
+    {
+
+    }
 }

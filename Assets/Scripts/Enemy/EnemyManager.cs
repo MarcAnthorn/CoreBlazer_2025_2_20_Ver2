@@ -13,18 +13,6 @@ public class EnemyManager : Singleton<EnemyManager>
     //所有的敌方buff存在于Enemy中的buffs中；
     // public Dictionary<int, Enemy> enemies = new Dictionary<int, Enemy>();   // <positionId, enemy>
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private BuffType GetEnemyBuffType(AttributeType type)
     {
         switch (type)
@@ -80,12 +68,9 @@ public class EnemyManager : Singleton<EnemyManager>
         // 计算敌人身上的Buff
         float damageValue = rowDamage;
         EnemyManager.Instance.CalculateDamageAfterBuff(enemy, AttributeType.HP, rowDamage);
-
         Debug.LogWarning($"current damage value:{damageValue}");
-
-        List<Damage> damages = EnemyManager.Instance.CauseDamage(enemy, damageValue, damageType);
-        
-        if (damages.Count == 0)
+        Damage damages = EnemyManager.Instance.CauseDamage(enemy, player, damageValue, damageType);
+        if (damages.isCombo)
         {
             Debug.Log("敌人发出的伤害被闪避了!");
             EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-1, false);
@@ -93,30 +78,29 @@ public class EnemyManager : Singleton<EnemyManager>
         else 
         {
             int count = 1;
-            foreach (var dmg in damages)
+            for (int i = 0; i < damages.GetSize(); ++i)
             {
                 Debug.Log($"进行第 {count} 次连击!");
                 // 造成伤害之前进行一些加成计算
                 // 先计算易伤(DeBuff)加成
-                dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDebuffDamage, dmg.damageType, dmg.damage);
+                damages[i].damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateDebuffDamage, damages.damageType, damages[i].damage);
                 // 再判断伤害类型(方法内部自行判断)，并计算敌人增伤(GoodBuff)加成
-                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, enemy.positionId, dmg.damage);
+                damages[i].damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.CalculateGoodBuffDamage, damages.damageType, enemy.positionId, damages[i].damage);
 
                 // 角色受击后添加新的Buff
                 if (count == 1)
                 {
-                    TurnCounter.Instance.DealWithPlayerBuff(TriggerTiming.BeHit, dmg.damageType);
+                    TurnCounter.Instance.DealWithPlayerBuff(TriggerTiming.BeHit, damages.damageType);
                 }
 
                 //结算出的对玩家的伤害
-                Debug.LogWarning($"结算出的对玩家的伤害：{dmg.damage}");
-                EventHub.Instance.EventTrigger("UpdateDamangeText", dmg.damage, false);
+                Debug.LogWarning($"结算出的对玩家的伤害：{damages[i].damage}");
+                EventHub.Instance.EventTrigger("UpdateDamangeText", damages[i].damage, false);
 
 
                 //调用玩家受击方法+特殊效果(中毒)
                 //改方法内部存在对玩家的死亡判断；
                 // TurnCounter.Instance.AddPlayerBuff(new BattleBuff_1001());
-                PlayerManager.Instance.player.BeHurted(dmg);
 
                 if (action != null && count == 1)
                 {
@@ -127,29 +111,32 @@ public class EnemyManager : Singleton<EnemyManager>
                 count++;
             }
 
+            //调用玩家受击方法
+            PlayerManager.Instance.PlayerHurted(damages);
         }
     }
 
     // 造成伤害
-    public List<Damage> CauseDamage(Enemy enemy, float singleDamage, DamageType damageType)
+    public Damage CauseDamage(Enemy enemy, Player player, float singleDamage, DamageType damageType)
     {
-        List<Damage> damages = new List<Damage>();
-        if (JugdeAvoid(enemy))
+        Damage damages = new Damage(damageType);
+        if (JugdeAvoid(player))
         {
+            damages.isAvoided = true;
             return damages;
         }
         else
         {
-            JudgeHit(enemy, singleDamage, damageType, out damages);
+            JudgeHit(enemy, singleDamage, damages);
         }
 
         return damages;
     }
 
     //命中判定
-    private bool JugdeAvoid(Enemy enemy)
+    private bool JugdeAvoid(Player player)
     {
-        float avo = enemy.AVO;
+        float avo = player.AVO.value;
         float random = UnityEngine.Random.Range(0f, 1f);
         if (random < avo)
         {
@@ -160,68 +147,61 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     //连击判定
-    private void JudgeHit(Enemy enemy, float singleDamage, DamageType damageType, out List<Damage> damages)
+    private void JudgeHit(Enemy enemy, float singleDamage, Damage damages)
     {
-        /*连击判定(由Player类来处理每一次连击的效果)
-         *  对每一次连击进行暴击判定
-         */
-        List<Damage> damages_return = new List<Damage>();
-
-        //获取连击率
+        // 连击判定(由Player类来处理每一次连击的效果)
+        // 对每一次连击进行暴击判定
+        damages.isCombo = false;
         float hit = enemy.HIT;
-
-        // baseHit 
         int baseHit = (int)Math.Ceiling(hit);       //向上取整
         if ((float)baseHit == hit)
             baseHit++;
-
-        // hitRate
         float hitRate = hit + 1 - baseHit;
         float crit_rate = enemy.CRIT_Rate;
         float crit_dmg = enemy.CRIT_DMG;
-
         float constHit = baseHit;
         for (int i = 0; i < constHit + 1; i++)
         {
-            Damage tempDamage = new Damage(damageType);
-            float random1 = UnityEngine.Random.Range(0f, 1f);
-            if (random1 < crit_rate)
-            {
-                tempDamage.damage = singleDamage * (1 + crit_dmg);
-                tempDamage.isCritical = true;
-            }
-            else
-            {
-                tempDamage.damage = singleDamage;
-                tempDamage.isCritical = false;
-            }
-
             // 对下一次是否继续循环进行判断（连击判断）
             if (baseHit == 0)
             {
-                float random2 = UnityEngine.Random.Range(0f, 1f);
-                if (random2 >= hitRate)
+                float random1 = UnityEngine.Random.Range(0f, 1f);
+                if (random1 >= hitRate)
                 {
                     break;
                 }
+                damages.isCombo = true;
             }
 
-            damages_return.Add(tempDamage);
+            float random2 = UnityEngine.Random.Range(0f, 1f);
+            if (random2 < crit_rate)
+            {
+                Debug.Log("is critical");
+                damages.AddSingleDamage(true, singleDamage * (1 + crit_dmg));
+            }
+            else
+            {
+                damages.AddSingleDamage(false, singleDamage);
+            }
+
             baseHit--;
         }
-
-        damages = damages_return;
-
     }
 
-    public void EnemyHurted(int positionId, Damage damage)
+    public void EnemyHurted(Damage damages)
     {
-        // 在这里可以添加一些对伤害的检测(比如检测是否是暴击伤害) + 局内效果实现
+        // 在这里可以添加一些对伤害的解析(比如检测是否连击) + 局内效果实现
+        damages.ParseDamage();
 
-
-        BattleManager.Instance.battleEnemy.BeHurted(damage);
+        // 计算伤害
+        for (int i = 0; i < damages.GetSize(); ++i)
+        {
+            BattleManager.Instance.battleEnemy.BeHurted(damages[i].damage);
+        }
     }
 
+
+    //----------------------------------------------------------------------------------------------------
     // 敌人技能定义处
     // 格斗
     public void EnemySkill_1001(Enemy enemy)

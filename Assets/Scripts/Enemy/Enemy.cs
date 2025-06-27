@@ -32,18 +32,9 @@ public abstract class Enemy
 
     // public abstract void Attack(Player player);
 
-    public void BeHurted(Damage damage)
+    public void BeHurted(float value)
     {
-        Debug.LogWarning($"Now Enemy Damage is{damage.damage}");
-        
-        HP -= damage.damage;
-
-        // Debug.LogWarning($"Now Enemy HP is{HP}");
-        // if (HP <= 0)
-        // {
-        //     Debug.Log("敌人死亡");        
-        //     isDead = true;
-        // }
+        HP -= value;
     }
 
     // 查找敌人身上是否存在某一类型的BattleBuff

@@ -159,6 +159,7 @@ public class BattleBuff_1001 : BattleBuff
         type = BuffType.HP_Change;
         buffType = BattleBuffType.Dot;
         calculationType = CalculationType.Add;
+        damageType = DamageType.Dot;
         influence = 10;
         lastTurnLimit = 3;
         lastTurns = 3;

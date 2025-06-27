@@ -323,11 +323,9 @@ public class SkillManager : Singleton<SkillManager>
         Debug.Log($"raw damage is{rowDamage}");
         // 计算角色身上的Buff加成
         float damage = PlayerManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
-
         Debug.Log($"Damage before buff is{damage}");
-        
-        List<Damage> damages = PlayerManager.Instance.CauseDamage(enemy, damage, damageType);
-        if (damages.Count == 0)
+        Damage damages = PlayerManager.Instance.CauseDamage(enemy, damage, damageType);
+        if (damages.isCombo)
         {
             Debug.Log("闪避触发");
             EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-1, true);
@@ -335,19 +333,19 @@ public class SkillManager : Singleton<SkillManager>
         else
         {
             int count = 1;
-            foreach (var dmg in damages)
+            for (int i = 0; i < damages.GetSize(); ++i)
             {
                 Debug.Log($"进行第 {count} 次连击!");
                 // 造成伤害之前进行一些加成计算
                 // 先计算易伤(DeBuff)加成
-                dmg.damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.BeHit, dmg.damageType, enemy.positionId, dmg.damage);
+                damages[i].damage = TurnCounter.Instance.CalculateWithEnemyBuff(TriggerTiming.BeHit, damages.damageType, enemy.positionId, damages[i].damage);
 
-                Debug.LogWarning($"step 1 结算出的对敌人的伤害：{dmg.damage}");
+                Debug.LogWarning($"step 1 结算出的对敌人的伤害：{damages[i].damage}");
 
                 // 再判断伤害类型(方法内部自行判断)，并计算角色增伤(GoodBuff)加成
-                dmg.damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateGoodBuffDamage, dmg.damageType, dmg.damage);
+                damages[i].damage = TurnCounter.Instance.CalculateWithPlayerBuff(TriggerTiming.CalculateGoodBuffDamage, damages.damageType, damages[i].damage);
 
-                Debug.LogWarning($"step 2 结算出的对敌人的伤害：{dmg.damage}");
+                Debug.LogWarning($"step 2 结算出的对敌人的伤害：{damages[i].damage}");
 
                 // 敌人受击后添加新的Buff(只结算一遍)
                 if(count == 1)
@@ -355,12 +353,9 @@ public class SkillManager : Singleton<SkillManager>
                     TurnCounter.Instance.DealWithEnemyBuff(TriggerTiming.BeHit, damageType);
                 }
 
-                //结算出的对敌人的伤害
-                Debug.LogWarning($"结算出的对敌人的伤害：{dmg.damage}");
-                EventHub.Instance.EventTrigger("UpdateDamangeText", dmg.damage, true);
-                
-                //调用敌人受击方法
-                EnemyManager.Instance.EnemyHurted(enemy.positionId, dmg);
+                // 结算出的对敌人的伤害
+                Debug.LogWarning($"结算出的对敌人的伤害：{damages[i].damage}");
+                EventHub.Instance.EventTrigger("UpdateDamangeText", damages[i].damage, true);
 
                 // 之所以将附加Buff的方法放到这里来调用，是为了将 伤害命中 与 Buff命中 协同
                 if(action != null && count == 1)
@@ -369,6 +364,9 @@ public class SkillManager : Singleton<SkillManager>
                 }
                 count++;
             }
+
+            //调用敌人受击方法
+            EnemyManager.Instance.EnemyHurted(damages);
         }
     }
         
