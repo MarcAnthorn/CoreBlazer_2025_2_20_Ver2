@@ -15,6 +15,8 @@ public class NPCInteractionPanel : BasePanel
     public TextMeshProUGUI txtConversation;
     
 
+    
+
     //需要判断当前的NPC是什么类型的，根据这个进行信仰Button的实例化；
     public Button btnDiscardBelief;
     public Button btnChooseBelief;
@@ -108,20 +110,28 @@ public class NPCInteractionPanel : BasePanel
 
     private IEnumerator WaitForContinue(E_NPCName _npcName)  
     {
- 
+
         
         switch (_npcName)
         {
             case E_NPCName.奈亚拉:
                 txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "1");
                 break;
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "1");
+                break;
             case E_NPCName.优格:
+                txtConversation.text = TextManager.Instance.GetText("优格", "交互", "1");
+                break;
                 txtConversation.text = TextManager.Instance.GetText("优格", "交互", "1");
                 break;
             case E_NPCName.莎布:
                 txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "1");
                 break;
+                txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "1");
+                break;
             default:    //此处是格赫罗斯
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "1");
+                break;
                 txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "1");
                 break;
         }
@@ -131,15 +141,19 @@ public class NPCInteractionPanel : BasePanel
         switch(_npcName){
             case E_NPCName.奈亚拉:
                 txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "2");
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "2");
             break;
             case E_NPCName.优格:
+                txtConversation.text = TextManager.Instance.GetText("优格", "交互", "2");
                 txtConversation.text = TextManager.Instance.GetText("优格", "交互", "2");
             break;
             case E_NPCName.莎布:
                 txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "2");
+                txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "2");
             break;
 
             default:    //此处是格赫罗斯
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
                 txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
             break;
         }
@@ -153,6 +167,7 @@ public class NPCInteractionPanel : BasePanel
             break;
 
             default:    //此处是格赫罗斯
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
                 txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
             break;
         }
