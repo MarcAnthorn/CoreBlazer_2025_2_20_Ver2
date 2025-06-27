@@ -32,6 +32,7 @@ public class TextManager : MonoBehaviour
 
     /// <summary>
     /// 根据角色名、事件名、对话id获取对应的文本内容。
+    /// 文本保存到Assets\Resources\Text\TextData.json
     /// </summary>
     /// <param name="role">角色名</param>
     /// <param name="eventName">事件名</param>
