@@ -90,7 +90,7 @@ public class NPCInteractionPanel : BasePanel
     }
 
     private void SetCurrentNPC(E_NPCName _npcName)
-    {
+    { 
         //将当前交互的NPC
         currentNPCName = _npcName;
         string path = Path.Combine(rootPath, currentNPCName.ToString());
