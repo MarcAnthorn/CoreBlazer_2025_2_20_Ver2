@@ -46,10 +46,16 @@ public class EquipmentSlot : MonoBehaviour
 
             //先尝试更新伤害UI：
             EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-4, true);
-            // EventHub.Instance.EventTrigger("BroadcastNowEquipment", myEquipment);
             SkillManager.Instance.BroadcastNowEquipment(myEquipment);
             //释放技能：
             mySkill.Use();
+
+            //遮挡所有交互，避免重复显示伤害：
+            EventHub.Instance.EventTrigger<bool>("MaskPlayerTriggerOrNot", true);
+
+            LeanTween.delayedCall(1.2f, ()=>{
+                EventHub.Instance.EventTrigger<bool>("MaskPlayerTriggerOrNot", false);
+            });
 
         });
     }

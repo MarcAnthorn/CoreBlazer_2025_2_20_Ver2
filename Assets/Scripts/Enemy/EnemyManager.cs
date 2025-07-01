@@ -70,10 +70,10 @@ public class EnemyManager : Singleton<EnemyManager>
         EnemyManager.Instance.CalculateDamageAfterBuff(enemy, AttributeType.HP, rowDamage);
         Debug.LogWarning($"current damage value:{damageValue}");
         Damage damages = EnemyManager.Instance.CauseDamage(enemy, player, damageValue, damageType);
-        if (damages.isCombo)
+        if (damages.isAvoided)
         {
             Debug.Log("敌人发出的伤害被闪避了!");
-            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-1, false);
+            EventHub.Instance.EventTrigger("ParseDamage", damages, 0);
         }
         else 
         {
@@ -191,7 +191,8 @@ public class EnemyManager : Singleton<EnemyManager>
     public void EnemyHurted(Damage damages)
     {
         // 在这里可以添加一些对伤害的解析(比如检测是否连击) + 局内效果实现
-        damages.ParseDamage();
+        EventHub.Instance.EventTrigger("ParseDamage", damages, 1);
+
 
         // 计算伤害
         for (int i = 0; i < damages.GetSize(); ++i)

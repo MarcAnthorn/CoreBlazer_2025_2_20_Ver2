@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -29,10 +30,17 @@ public class BattlePanel : BasePanel
     float lastEnemyHealthValue;
 
 
-     //伤害Text：
-     public TextMeshProUGUI txtEnemyDamage;
-     public TextMeshProUGUI txtPlayerDamage;
-
+     // //伤害Text：
+     // public TextMeshProUGUI txtEnemyDamage;
+     // public TextMeshProUGUI txtPlayerDamage;
+     
+     //玩家受伤Content:
+     // public Transform playerHurtContent;
+     // public Transform enemyHurtContent;
+     //更改成：两个pivot，按照pivot的随机偏移放置伤害数字：
+     public Transform playerHurtFather;
+     public Transform enemyHurtFather;
+     private Vector2 xOffset = new Vector2(60, 0);
      
 
     public EquipmentSlot equipmentSlot1;
@@ -57,7 +65,18 @@ public class BattlePanel : BasePanel
      public GameObject maskEnemyTurnStart;
      public GameObject maskEnemyTurnEnd;
 
+     //闪避触发TMP：
+     public GameObject playerMissTextObject;
+     public GameObject enemyMissTextObject;
+
      public GameObject maskTriggerButton;
+
+     // 预先缓存路径
+     private static readonly string DamageNumberCritPrefix = Path.Combine("ArtResources", "DamageNumber", "DamageNumberCrit");
+
+     private static readonly string DamageNumberCritPrefixExtra = Path.Combine("ArtResources", "DamageNumber", "DamageCritMark");
+     private static readonly string DamageNumberPrefix = Path.Combine("ArtResources", "DamageNumber", "DamageNumber");
+
      protected override void Awake()
      {
           EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
@@ -72,9 +91,7 @@ public class BattlePanel : BasePanel
 
 
           //更新伤害Ui的事件注册：
-          EventHub.Instance.AddEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
-          EventHub.Instance.AddEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
-
+          EventHub.Instance.AddEventListener<Damage, int>("ParseDamage", ParseDamage);
           EventHub.Instance.AddEventListener<int>("TriggerBattleMask", TriggerBattleMask);
 
           //将对应的Slot脚本加入容器：
@@ -192,8 +209,8 @@ public class BattlePanel : BasePanel
 
           EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
 
-          EventHub.Instance.RemoveEventListener<float, bool>("UpdateDamangeText", UpdateDamangeText);
-          EventHub.Instance.RemoveEventListener<int, bool>("UpdateDamangeTextInt", UpdateDamangeTextInt);
+          EventHub.Instance.RemoveEventListener<Damage, int>("ParseDamage", ParseDamage);
+   
 
           EventHub.Instance.RemoveEventListener<int>("TriggerBattleMask", TriggerBattleMask);
 
@@ -416,94 +433,175 @@ public class BattlePanel : BasePanel
      }
 
 
-     //更新伤害面板的事件
-     //主要是为了避免短时间多次调用UpdateBattlePanelUI导致UI显示（主要是Slider）出错
-     //如果value是-1，说明是被闪避了；第二参数表示是否是我发出的伤害，用于区分敌方和我方；
-
-               // EventHub.Instance.EventTrigger("UpdateDamangeText", damage, false);
-
-               // EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-4, true);
-     private void UpdateDamangeText(float damageValue, bool isPlayersDamage)
+     //解析伤害的方法；
+     //注意区分：0表示是玩家受伤；1表示是敌人受伤：
+     private void ParseDamage(Damage damage, int flag)
      {
-          
-          //以-3为flag：如果是-4，那么就是开始之前的惯例UI更新
-          if (damageValue < -3)
+
+          bool isMiss = damage.isAvoided;
+          bool isCombo = damage.isCombo;
+          //如果连击，伤害数量：
+          int damageCount = damage.GetSize();
+
+          Transform damageTextFather;
+          GameObject missTextObject;
+
+          if(flag == 0)
           {
-               if (isPlayersDamage)
+               //玩家受伤
+               damageTextFather = playerHurtFather;
+               missTextObject = playerMissTextObject;
+
+          }
+          else
+          {
+               //敌人受伤
+               damageTextFather = enemyHurtFather;
+               missTextObject = enemyMissTextObject;
+          }
+
+          //如果闪避：
+          if(isMiss)
+          {
+               // 假设你有唯一的missTextObject
+               int missTweenId = -1;
+               if (missTweenId != -1)
+                    LeanTween.cancel(missTweenId);
+
+               missTextObject.SetActive(true);
+               TextMeshProUGUI tmp = missTextObject.GetComponent<TextMeshProUGUI>();
+               if (tmp != null)
                {
-                    txtPlayerDamage.color = Color.white;
-                    txtPlayerDamage.text = $"尚未造成伤害";
+                    Color c = tmp.color;
+                    c.a = 1f;
+                    tmp.color = c;
+
+                    missTweenId = LeanTween.value(missTextObject, 1f, 0f, 1f)
+                         .setOnUpdate((float val) =>
+                         {
+                              Color cc = tmp.color;
+                              cc.a = val;
+                              tmp.color = cc;
+                         })
+                         .setOnComplete(() =>
+                         {
+                              missTextObject.SetActive(false);
+                              missTweenId = -1;
+                         }).id;
                }
 
-               else
-               {
-                    txtEnemyDamage.color = Color.white;
-                    txtEnemyDamage.text = $"尚未造成伤害";
-               }
                return;
-
           }
-          Debug.Log("Damage Text is Updated!");
-          if(isPlayersDamage)
+          
+          //如果连击：
+          //解析用Stringbuilder:
+          StringBuilder sb = new StringBuilder();
+          for(int i = 0; i < damageCount; i++)
           {
-               
-               if(Math.Abs(damageValue + 1) <= 0.01f){   //闪避,注意浮点型是取绝对值误差判断！
-                    txtPlayerDamage.color = Color.red;
-                    txtPlayerDamage.text = "你的伤害被闪避了！";
-               }
-               else
+               // 每次伤害都设定偏移范围
+               float offsetRange = 100f; // 可根据需要调整
+               Vector3 randomOffset = new Vector3(
+                    UnityEngine.Random.Range(-offsetRange, offsetRange),
+                    UnityEngine.Random.Range(-offsetRange, offsetRange),
+                    0
+               );
+
+               //位数统计：
+               int digitCount = 0;
+
+               sb.Clear();
+               int damageValue = (int)damage[i].damage;
+
+               int tempValue = damageValue;
+               int divisor = 1;
+
+               while (tempValue / divisor >= 10)
                {
-                    txtPlayerDamage.color = Color.white;
-                    txtPlayerDamage.text = $"你造成伤害：{damageValue}";
+                    divisor *= 10;
                }
+               while (divisor > 0)
+               {
+                    sb.Clear();
+                    if(damage[i].isCritical)
+                         sb.Append(DamageNumberCritPrefix);
+                    else
+                         sb.Append(DamageNumberPrefix);
+
+                    int digit = tempValue / divisor;
+                    sb.Append(digit.ToString());
+
+                    Debug.LogWarning($"now path is {sb.ToString()}");
+                    //获取这个sb对应的字体资源，加入显示中：
+                    GameObject textObject = PoolManager.Instance.SpawnFromPool(sb.ToString(), damageTextFather);
+
+                    //设置随机的偏移：
+                    RectTransform textRect = textObject.GetComponent<RectTransform>();
+                    if (textRect != null)
+                    {
+                         textRect.localScale = Vector3.one; // 重置缩放，防止"越用越小"
+                         textRect.anchoredPosition = Vector2.zero; // 先归零，再加偏移
+                         textRect.anchoredPosition += (Vector2)randomOffset;
+                         textRect.anchoredPosition += digitCount * (Vector2)xOffset;
+                    }
+
+                    digitCount++;
+
+                    // 获取Image组件
+                    Image img = textObject.GetComponent<Image>();
+                    img.SetNativeSize(); // 让图片恢复原始尺寸
+
+                    if (img != null)
+                    {
+                         Color c = img.color;
+                         c.a = 1f;
+                         img.color = c;
+
+
+                         LeanTween.delayedCall(1, ()=>{
+                              LeanTween.value(textObject, 1f, 0f, 1f)
+                                        .setOnUpdate((float val) =>
+                                        {
+                                             Color cc = img.color;
+                                             cc.a = val;
+                                             img.color = cc;
+                                        })
+                                        .setOnComplete(() =>
+                                        {
+                                             PoolManager.Instance.ReturnToPool(sb.ToString(), textObject);
+                                        });
+                         });
+
+                         
+                    }
+
+                    tempValue %= divisor;
+                    divisor /= 10;
+               }
+
+               //如果是暴击，额外加上一个图片：
+               if(damage[i].isCritical)
+               {
+                    GameObject textObject = PoolManager.Instance.SpawnFromPool(DamageNumberCritPrefixExtra, damageTextFather);
+
+                    //设置随机的偏移：
+                    RectTransform textRect = textObject.GetComponent<RectTransform>();
+                    if (textRect != null)
+                    {
+                         textRect.localScale = Vector3.one; // 重置缩放，防止"越用越小"
+                         textRect.anchoredPosition = Vector2.zero; // 先归零，再加偏移
+                         textRect.anchoredPosition += (Vector2)randomOffset;
+                         textRect.anchoredPosition += digitCount * (Vector2)xOffset;
+                    }
+
+                    digitCount++;
+                }
+
           }
 
-          else 
-          {
-               if(Math.Abs(damageValue + 1) <= 0.01f){   //闪避,注意浮点型是取绝对值误差判断！
-                    txtEnemyDamage.color = Color.red;
-                    txtEnemyDamage.text = $"敌方的伤害被闪避了！";
-               }
-               else
-               {
-                    txtEnemyDamage.color = Color.white;
-                    txtEnemyDamage.text = $"敌方造成伤害：{damageValue}";
-               }
-
-          }
      }
 
-     //整型重载：
-     private void UpdateDamangeTextInt(int damageValue, bool isPlayersDamage)
-     {
-          Debug.Log("Damage(int)Text is Updated!");
-          if(isPlayersDamage)
-          {
-               
-               if(damageValue == -1){   //闪避
-                    txtPlayerDamage.color = Color.red;
-                    txtPlayerDamage.text = "你的伤害被闪避了！";
-               }
-               else
-               {
-                    txtPlayerDamage.color = Color.white;
-                    txtPlayerDamage.text = $"你造成伤害：{damageValue}";
-               }
-          }
 
-          else 
-          {
-               if(damageValue == -1){   //闪避
-                    txtEnemyDamage.color = Color.red;
-                    txtEnemyDamage.text = $"敌方的伤害被闪避了！";
-               }
-               else
-               {
-                    txtEnemyDamage.color = Color.white;
-                    txtEnemyDamage.text = $"敌方造成伤害：{damageValue}";
-               }
-
-          }
-     }
+    
+     
 
 }
