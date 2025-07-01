@@ -4,13 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using UnityEngine.Events;
+using TMPro;
 
 public class ButtonGameContinue : MonoBehaviour
 {
     private Button btnSelf;
+    public TextMeshProUGUI txtSanity;
+    public TextMeshProUGUI txtConversation;
+    
     void Awake()
     {
         btnSelf = this.GetComponent<Button>();
+        btnSelf.GetComponentInChildren<TextMeshProUGUI>().text = TextManager.Instance.GetText("按钮文本", "主界面", "继续游戏");
     }
     void Start()
     {

@@ -178,13 +178,16 @@ public class Damage
         get 
         {
             if (index < 0 || index >= damageValues.Count)
-                throw new IndexOutOfRangeException("索引超出范围");
+            {
+            
+                throw new IndexOutOfRangeException($"索引超出范围 get, count is {damageValues.Count}, index is {index}");
+            }
             return damageValues[index]; 
         }
         set 
         {
             if (index < 0 || index >= damageValues.Count)
-                throw new IndexOutOfRangeException("索引超出范围");
+                throw new IndexOutOfRangeException("索引超出范围 set");
             damageValues[index] = value;
         }
     }
@@ -199,8 +202,19 @@ public class Damage
         damageValues.Add(new SingleDamage(isCritical, (int)value));
     }
 
-    public void ParseDamage()
-    {
+    // 解析伤害 迁移到BattlePanel中；
+    // //注意需要区分伤害的施加来源
+    // //其中，0是表示玩家受伤；1是表示敌人受伤
+    // public void ParseDamage(int flag)
+    // {
+    //     if(flag == 0)
+    //     {
+    //         //玩家受伤
+    //     }
 
-    }
+    //     else
+    //     {
+    //         //敌人受伤
+    //     }
+    // }
 }

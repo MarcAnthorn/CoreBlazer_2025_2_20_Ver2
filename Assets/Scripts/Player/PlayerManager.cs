@@ -290,7 +290,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     public void PlayerHurted(Damage damages)
     {
         // 在这里可以添加一些对伤害的解析(比如检测是否连击) + 局内效果实现
-        damages.ParseDamage();
+        EventHub.Instance.EventTrigger("ParseDamage", damages, 0);
 
         // 计算伤害
         for (int i = 0; i < damages.GetSize(); ++i)

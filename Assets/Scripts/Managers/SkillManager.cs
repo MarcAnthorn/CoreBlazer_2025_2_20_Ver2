@@ -325,10 +325,11 @@ public class SkillManager : Singleton<SkillManager>
         float damage = PlayerManager.Instance.CalculateDamageAfterBuff(AttributeType.HP, rowDamage);
         Debug.Log($"Damage before buff is{damage}");
         Damage damages = PlayerManager.Instance.CauseDamage(enemy, damage, damageType);
-        if (damages.isCombo)
+        if (damages.isAvoided)
         {
             Debug.Log("闪避触发");
-            EventHub.Instance.EventTrigger("UpdateDamangeText", (float)-1, true);
+            //更新显示UI：
+            EventHub.Instance.EventTrigger("ParseDamage", damages, 1);
         }
         else
         {

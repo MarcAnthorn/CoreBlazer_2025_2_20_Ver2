@@ -35,7 +35,16 @@ public class NPCInteractionAera : MonoBehaviour
         {
             isTriggerLock = false;
             txtObject = PoolManager.Instance.SpawnFromPool("TipText");
-            EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", "按下「J」进入信仰绑定界面\n按下「K」进入对话", this.transform.position + offset);
+            var tmpUGUI = txtObject.GetComponent<TMPro.TextMeshProUGUI>();
+            var tmp3D = txtObject.GetComponent<TMPro.TextMeshPro>();
+            var font = Resources.Load<TMPro.TMP_FontAsset>("Noto_Sans_SC/static/NotoSansSC-Black SDF");
+            if (font != null)
+            {
+                if (tmpUGUI != null) tmpUGUI.font = font;
+                if (tmp3D != null) tmp3D.font = font;
+                Debug.Log($"字体已设置为: {font.name}");
+            }
+            EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", TextManager.Instance.GetText("交互提示", "信仰", "绑定"), this.transform.position + offset);
 
         }
     }
