@@ -13,6 +13,9 @@ public class NPCInteractionPanel : BasePanel
     public Transform npcPos;
     public TextMeshProUGUI txtSanity;
     public TextMeshProUGUI txtConversation;
+    
+
+    
 
     //需要判断当前的NPC是什么类型的，根据这个进行信仰Button的实例化；
     public Button btnDiscardBelief;
@@ -107,36 +110,51 @@ public class NPCInteractionPanel : BasePanel
 
     private IEnumerator WaitForContinue(E_NPCName _npcName)  
     {
-        switch(_npcName){
+ 
+        
+        switch (_npcName)
+        {
             case E_NPCName.奈亚拉:
-                txtConversation.text = "哦，你还对那位有兴趣？";
-            break;
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "1");
+                break;
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "1");
+                break;
             case E_NPCName.优格:
-                txtConversation.text = "空间与时间，一切法则基于此而衍生。";
-            break;
+                txtConversation.text = TextManager.Instance.GetText("优格", "交互", "1");
+                break;
+                txtConversation.text = TextManager.Instance.GetText("优格", "交互", "1");
+                break;
             case E_NPCName.莎布:
-                txtConversation.text = "世上有诸多不公，但生命永远平等，即使是在祂的职责里面也是如此。";
-            break;
+                txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "1");
+                break;
+                txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "1");
+                break;
             default:    //此处是格赫罗斯
-                txtConversation.text = "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
-            break;
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "1");
+                break;
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "1");
+                break;
         }
         isContinueButtonClicked = false;
         yield return new WaitUntil(() => isContinueButtonClicked);
 
         switch(_npcName){
             case E_NPCName.奈亚拉:
-                txtConversation.text = "那可以看看祂的好东西，不保证物有所值哦。";
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "2");
+                txtConversation.text = TextManager.Instance.GetText("奈亚拉", "交互", "2");
             break;
             case E_NPCName.优格:
-                txtConversation.text = "想了解点什么？宇宙的真理可不是能轻易参透的。";
+                txtConversation.text = TextManager.Instance.GetText("优格", "交互", "2");
+                txtConversation.text = TextManager.Instance.GetText("优格", "交互", "2");
             break;
             case E_NPCName.莎布:
-                txtConversation.text = "祂也给我了不少好东西，来看看吧！";
+                txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "2");
+                txtConversation.text = TextManager.Instance.GetText("莎布", "交互", "2");
             break;
 
             default:    //此处是格赫罗斯
-                txtConversation.text = "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
             break;
         }
 
@@ -149,7 +167,8 @@ public class NPCInteractionPanel : BasePanel
             break;
 
             default:    //此处是格赫罗斯
-                txtConversation.text = "哼哼，你终于愿意弃暗投明了吗，让我来帮你吧！";
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
+                txtConversation.text = TextManager.Instance.GetText("格赫罗斯", "交互", "2");
             break;
         }
 
