@@ -171,8 +171,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u6B64\u5904\u662F\u63D0\u793A"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
-  m_sharedMaterial: {fileID: 5724969808464279161, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2478d054a5dd047598837b4d1bd56ae2, type: 2}
+  m_sharedMaterial: {fileID: -6288978879547402825, guid: 2478d054a5dd047598837b4d1bd56ae2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

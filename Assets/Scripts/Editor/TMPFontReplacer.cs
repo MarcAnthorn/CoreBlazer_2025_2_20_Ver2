@@ -124,7 +124,12 @@ public class TMPFontReplacer : EditorWindow
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
                 if (prefab != null)
                 {
+                    // 检查根对象和所有子物体
                     CheckObjectForTMPComponents(prefab);
+                    foreach (var child in GetAllChildren(prefab.transform))
+                    {
+                        CheckObjectForTMPComponents(child.gameObject);
+                    }
                 }
             }
         }
@@ -212,5 +217,17 @@ public class TMPFontReplacer : EditorWindow
             $"Successfully replaced {replacedCount} TMP components from '{sourceFont.name}' to '{targetFont.name}'.", "OK");
 
         Debug.Log($"Font replacement completed. Replaced {replacedCount} components.");
+    }
+
+    private IEnumerable<Transform> GetAllChildren(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            yield return child;
+            foreach (var grandChild in GetAllChildren(child))
+            {
+                yield return grandChild;
+            }
+        }
     }
 } 
