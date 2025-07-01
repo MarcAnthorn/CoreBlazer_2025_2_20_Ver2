@@ -71,7 +71,7 @@ public class Equipment_1001 : Equipment
         id = 1001;
         name = "尾后针";
         iconPath = "装备/尾后针";
-        effectDescriptionText = "装备后：速度 + 10, 力量 + 10%";
+        effectDescriptionText = "装备后：速度 + 10, 力量 + 10%, 暴击伤害 + 10%";
         descriptionText = "来源于旧日信徒毒蝎之王的毒针，虽然它随着毒蝎之王的陨落早已没有往日的光泽，但是对大对数低等生命体来说依旧是致命的。";
         level = E_EquiptmentLevel.RedHighest;
         isEquipped = false;
@@ -148,7 +148,7 @@ public class Equipment_1003 : Equipment
         id = 1003;
         name = "琥珀火莲";
         iconPath = "装备/琥珀火莲";
-        effectDescriptionText = "装备后：力量 + 5, 防御 + 5, 生命 + 15";
+        effectDescriptionText = "装备后：力量 + 10, 防御 + 10, 闪避 + 15%";
         descriptionText = "被不知名力量封印在琥珀中的火焰，以莲花的形状持续燃烧着。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -159,17 +159,17 @@ public class Equipment_1003 : Equipment
 
     public override void Equip()
     {
-        player.STR.AddValue(5);
-        player.DEF.AddValue(5);
-        player.HP.AddValue(15);
+        player.STR.AddValue(10);
+        player.DEF.AddValue(10);
+        player.HP.MultipleValue(1.15f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-5);
-        player.DEF.AddValue(-5);
-        player.HP.AddValue(-15);
+        player.STR.AddValue(-10);
+        player.DEF.AddValue(-10);
+        player.HP.MultipleValue(1f / 1.15f);
         player.DebugInfo();
     }
 }
@@ -185,7 +185,7 @@ public class Equipment_1004 : Equipment
         id = 1004;
         name = "嗡鸣殛刀";
         iconPath = "装备/嗡鸣殛刀";
-        effectDescriptionText = "装备后：力量 + 100%";
+        effectDescriptionText = "装备后：力量 + 100%, 连击 + 40%, 暴击伤害 + 10%";
         descriptionText = "它的刀刃像是有生命一样颤动着，可以依靠高频振动撕裂敌人的血肉。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -221,7 +221,7 @@ public class Equipment_1005 : Equipment
         id = 1005;
         name = "诅咒锈铎";
         iconPath = "装备/诅咒锈铎";
-        effectDescriptionText = "装备后：力量 + 20, 暴击率 + 10%";
+        effectDescriptionText = "装备后：力量 + 20, 暴击率 + 10%, 暴击伤害 + 30%";
         descriptionText = "长满了铜锈的青铜铃铛，据说摇响这个铃铛会发生可怕的事情。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -256,7 +256,7 @@ public class Equipment_1006 : Equipment
         id = 1006;
         name = "逐日弓";
         iconPath = "装备/逐日弓";
-        effectDescriptionText = "装备后：力量 + 10, 防御 + 10";
+        effectDescriptionText = "装备后：力量 + 10, 防御 + 10, 暴击率 + 30%";
         descriptionText = "一位战士打造的武器，据说是为了射下多余的“太阳”，但是哪些东西真的是太阳吗？";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -326,7 +326,7 @@ public class Equipment_1008 : Equipment
         id = 1008;
         name = "八音盒";
         iconPath = "装备/八音盒";
-        effectDescriptionText = "装备后：命中 + 50%";
+        effectDescriptionText = "装备后：命中 + 50%, 暴击伤害 + 30%, , 暴击率 + 30%";
         descriptionText = "曾经寄宿着人们的童年回忆，但是在被污染后变成了旧日信仰的传播器。它似乎忘记了自己的初心，变成了杀戮的机器。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -361,7 +361,7 @@ public class Equipment_1009 : Equipment
         id = 1009;
         name = "破伤风之刃";
         iconPath = "装备/破伤风之刃";
-        effectDescriptionText = "装备后：命中 + 20%";
+        effectDescriptionText = "装备后：命中 + 20%， 暴击率 + 40%";
         descriptionText = "被刀划伤并不可怕，可怕的是被锈迹斑斑的刀划伤了....";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -540,7 +540,6 @@ public class Equipment_1014 : Equipment
     public override void Equip()
     {
         player.HIT.AddValue(0.5f);
-//--------------------------------------------------------------------------------------------------
         player.CRIT_Rate.AddValue(0.4f);
         player.DebugInfo();
     }
@@ -708,7 +707,7 @@ public class Equipment_1019 : Equipment
         id = 1019;
         name = "荧光石";
         iconPath = "装备/荧光石";
-        effectDescriptionText = "装备后：闪避 + 100";
+        effectDescriptionText = "装备后：闪避 + 100, 速度 + 15, 暴击率 + 30%";
         descriptionText = "用来保存科拉佐斯力量的容器，以此来逃避上位神的追杀。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -778,7 +777,7 @@ public class Equipment_1021 : Equipment
         id = 1021;
         name = "死灵之书残页";
         iconPath = "装备/死灵之书残页";
-        effectDescriptionText = "装备后：命中 + 200%";
+        effectDescriptionText = "装备后：命中 + 200%， 暴击伤害 + 100%";
         descriptionText = "死灵之书是人类接触禁忌知识相对安全的安全屏障，虽然只有一张残页，但是上面的咒语依旧十分危险。";
         level = E_EquiptmentLevel.BlueLowest;
         isEquipped = false;
@@ -811,7 +810,7 @@ public class Equipment_1022 : Equipment
         id = 1022;
         name = "嫁衣";
         iconPath = "装备/嫁衣";
-        effectDescriptionText = "装备后：防御 + 100, 速度 + 100";
+        effectDescriptionText = "装备后：防御 + 100, 速度 + 100, 暴击率 + 80%";
         descriptionText = "虽然是一次错误的相遇，但是它依旧慷慨的给予了你一件宝物，希望你能活着带回它心上人的消息。";
         level = E_EquiptmentLevel.RedHighest;
         isEquipped = false;
