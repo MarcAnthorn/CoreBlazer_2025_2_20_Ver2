@@ -41,6 +41,7 @@ public class BattlePanel : BasePanel
      public Transform playerHurtFather;
      public Transform enemyHurtFather;
      private Vector2 xOffset = new Vector2(60, 0);
+     private Coroutine damageCoroutine;
      
 
     public EquipmentSlot equipmentSlot1;
@@ -493,13 +494,28 @@ public class BattlePanel : BasePanel
                return;
           }
           
-          //如果连击：
-          //解析用Stringbuilder:
-          StringBuilder sb = new StringBuilder();
+          //如果连击，使用协程来处理延迟显示：
+          if(damageCount >= 1)
+          {
+               if(damageCoroutine != null)
+                    StopCoroutine(damageCoroutine);
+
+               damageCoroutine =  StartCoroutine(ShowComboDamageWithDelay(damage, damageTextFather));
+          }
+
+
+
+     }
+
+     // 协程：显示连击伤害，每次伤害之间有延迟
+     private IEnumerator ShowComboDamageWithDelay(Damage damage, Transform damageTextFather)
+     {
+          int damageCount = damage.GetSize();
+          
           for(int i = 0; i < damageCount; i++)
           {
                // 每次伤害都设定偏移范围
-               float offsetRange = 100f; // 可根据需要调整
+               float offsetRange = 20f; // 可根据需要调整
                Vector3 randomOffset = new Vector3(
                     UnityEngine.Random.Range(-offsetRange, offsetRange),
                     UnityEngine.Random.Range(-offsetRange, offsetRange),
@@ -509,7 +525,7 @@ public class BattlePanel : BasePanel
                //位数统计：
                int digitCount = 0;
 
-               sb.Clear();
+               StringBuilder sb = new StringBuilder();
                int damageValue = (int)damage[i].damage;
 
                int tempValue = damageValue;
@@ -556,7 +572,6 @@ public class BattlePanel : BasePanel
                          c.a = 1f;
                          img.color = c;
 
-
                          LeanTween.delayedCall(1, ()=>{
                               LeanTween.value(textObject, 1f, 0f, 1f)
                                         .setOnUpdate((float val) =>
@@ -571,7 +586,8 @@ public class BattlePanel : BasePanel
                                         });
                          });
 
-                         
+                         // 添加字体上移效果
+                         LeanTween.moveLocalY(textObject, textObject.transform.localPosition.y + 15f, 1.2f).setEase(LeanTweenType.easeOutQuad);
                     }
 
                     tempValue %= divisor;
@@ -593,11 +609,40 @@ public class BattlePanel : BasePanel
                          textRect.anchoredPosition += digitCount * (Vector2)xOffset;
                     }
 
-                    digitCount++;
-                }
+                    Image img = textObject.GetComponent<Image>();
+                    img.SetNativeSize(); // 让图片恢复原始尺寸
 
+                    if (img != null)
+                    {
+                         Color c = img.color;
+                         c.a = 1f;
+                         img.color = c;
+
+                         LeanTween.delayedCall(1, ()=>{
+                              LeanTween.value(textObject, 1f, 0f, 1f)
+                                        .setOnUpdate((float val) =>
+                                        {
+                                             Color cc = img.color;
+                                             cc.a = val;
+                                             img.color = cc;
+                                        })
+                                        .setOnComplete(() =>
+                                        {
+                                             PoolManager.Instance.ReturnToPool(sb.ToString(), textObject);
+                                        });
+                         });
+
+                         // 添加字体上移效果
+                         LeanTween.moveLocalY(textObject, textObject.transform.localPosition.y + 15f, 1.2f).setEase(LeanTweenType.easeOutQuad);
+                    }
+               }
+
+               // 在每次伤害显示之间添加延迟（除了最后一次）
+               if(i < damageCount - 1)
+               {
+                    yield return new WaitForSeconds(0.4f); // 200毫秒延迟，可以根据需要调整
+               }
           }
-
      }
 
 

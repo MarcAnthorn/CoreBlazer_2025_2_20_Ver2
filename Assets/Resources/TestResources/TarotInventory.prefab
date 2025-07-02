@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u4E16\u754C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
-  m_sharedMaterial: {fileID: 5724969808464279161, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2478d054a5dd047598837b4d1bd56ae2, type: 2}
+  m_sharedMaterial: {fileID: -6288978879547402825, guid: 2478d054a5dd047598837b4d1bd56ae2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -268,3 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec347e08f456a49eca4afdd2b43a42a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myItemId: 0
+  imgSelf: {fileID: 0}
+  txtSelfName: {fileID: 0}
+  outlineObjects: {fileID: 0}
