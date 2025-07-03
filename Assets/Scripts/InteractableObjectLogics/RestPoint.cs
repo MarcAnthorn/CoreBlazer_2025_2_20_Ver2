@@ -100,5 +100,17 @@ public class RestPoint : MonoBehaviour
     {
         //将当前的休息点变化为达贡：
         Debug.LogWarning("当前休息点变为达贡");
+        GameObject dagoon =  Resources.Load<GameObject>("NPC/达贡");
+        Instantiate<GameObject>(dagoon, this.transform.position, Quaternion.identity);
+
+        //向达贡字典中添加默认通用对话：
+        AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.达贡, 2303, 0);
+        this.gameObject.SetActive(false);
+
+        //新增三神的新交流：
+        AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 2402);
+        AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 2403);
+        AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 2404);
+        AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.格赫罗斯, 2401);
     }
 }
