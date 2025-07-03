@@ -98,7 +98,7 @@ public class InventoryPanel : BasePanel
         //     equiptmentPanelObject.SetActive(true);
         // }
 
-        commonItemPanelObject.SetActive(true);
+        godItemPanelObject.SetActive(true);
 
         buttonImageList.Add(btnEquipmentPanelReveal.GetComponent<Image>());
         buttonImageList.Add(btnGodPanelReveal.GetComponent<Image>());

@@ -95,7 +95,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
                 //结算出的对玩家的伤害
                 Debug.LogWarning($"结算出的对玩家的伤害：{damages[i].damage}");
-                EventHub.Instance.EventTrigger("UpdateDamangeText", damages[i].damage, false);
+                // EventHub.Instance.EventTrigger("UpdateDamangeText", damages[i].damage, false);
 
 
                 //调用玩家受击方法+特殊效果(中毒)
@@ -106,8 +106,6 @@ public class EnemyManager : Singleton<EnemyManager>
                 {
                     action.Invoke();
                 }
-                // 调用UI更新：
-                EventHub.Instance.EventTrigger("UpdateAllUIElements");
                 count++;
             }
 
@@ -199,6 +197,10 @@ public class EnemyManager : Singleton<EnemyManager>
         {
             BattleManager.Instance.battleEnemy.BeHurted(damages[i].damage);
         }
+
+        // 调用UI更新：
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
+        EventHub.Instance.EventTrigger("UpdateSliders");
     }
 
 

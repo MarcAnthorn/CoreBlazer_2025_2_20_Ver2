@@ -85,6 +85,7 @@ public class BattlePanel : BasePanel
 
           //更新BattlePanel UI的事件注册：     
           EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
+          EventHub.Instance.AddEventListener("UpdateSliders", UpdateSliders);
 
           EventHub.Instance.AddEventListener<bool>("MaskPlayerTriggerOrNot", MaskPlayerTriggerOrNot);
 
@@ -209,6 +210,7 @@ public class BattlePanel : BasePanel
           EventHub.Instance.RemoveEventListener<Equipment>("UnequipTarget", UnequipTarget);
 
           EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateBattlePanelUI);
+          EventHub.Instance.RemoveEventListener("UpdateSliders", UpdateSliders);
 
           EventHub.Instance.RemoveEventListener<Damage, int>("ParseDamage", ParseDamage);
    
@@ -217,6 +219,16 @@ public class BattlePanel : BasePanel
 
           EventHub.Instance.RemoveEventListener<bool>("MaskPlayerTriggerOrNot", MaskPlayerTriggerOrNot);
           
+          // 停止所有与BattlePanel相关的Tween
+          LeanTween.cancel(gameObject); // 或 LeanTween.cancelAll();
+
+          // 停止伤害数字的协程
+          if (damageCoroutine != null)
+          {
+               StopCoroutine(damageCoroutine);
+               damageCoroutine = null;
+          }
+
           EventHub.Instance.EventTrigger("Freeze", false);
      }
 
@@ -324,6 +336,63 @@ public class BattlePanel : BasePanel
      public void UpdateBattlePanelUI()
      {
           Debug.Log(BattleManager.Instance.battleEnemy);
+          //buff的显示更新；
+          foreach(var playerBuff in TurnCounter.Instance.playerBuffs)
+          {
+               // Debug.LogWarning($"尝试更新我方buff：{playerBuff.name}");
+
+
+               //此处是我方的buff；
+               //如果没有显示过，那么就执行游戏对象的实例化：
+               if(!playerBuff.isShownOnUI)
+               {
+                    Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), playerBuffContainer, false);
+               }
+
+               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
+               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
+               EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", playerBuff);
+     
+
+          }
+
+          //敌方buff的更新:
+          foreach(var enemyBuff in enemy.buffs)
+          {
+               // Debug.LogWarning($"尝试更新敌方buff：{enemyBuff.name}");
+               //此处是敌方的buff：
+               //如果没有显示过，那么就执行游戏对象的实例化：
+               if(!enemyBuff.isShownOnUI)
+               {
+                    Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), enemyBuffContainer, false);
+               }
+
+               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
+               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
+               EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", enemyBuff);
+          }
+          
+          //以及剩余行动点数、最大行动点数的更新：
+          txtLeftCost.text = BattleManager.Instance.actionPoint.ToString();
+          txtMaxCost.text = BattleManager.Instance.actionPointMax.ToString();
+
+          if(PlayerManager.Instance.player.HP.value <= 0) //玩家死亡
+          {
+               //GameOver在BattleManager中；
+               Debug.LogWarning("玩家死亡！");
+               EventHub.Instance.EventTrigger("GameOver", false, callback);     //callback只有获胜才会调用，内部会进判断的；
+          }
+
+          else if(enemy.HP <= 0) //敌人死亡
+          {
+               Debug.LogWarning("敌人死亡！");
+               EventHub.Instance.EventTrigger("GameOver", true, callback);
+          }
+     }
+
+     //更新Slider的方法
+     private void UpdateSliders()
+     {
 
           //获取当前的敌人：
           if(BattleManager.Instance.battleEnemy != null)
@@ -374,63 +443,6 @@ public class BattlePanel : BasePanel
           lastEnemyHealthValue = enemy.HP;
 
 
-          
-
-
-          //buff的显示更新；
-          foreach(var playerBuff in TurnCounter.Instance.playerBuffs)
-          {
-               // Debug.LogWarning($"尝试更新我方buff：{playerBuff.name}");
-
-
-               //此处是我方的buff；
-               //如果没有显示过，那么就执行游戏对象的实例化：
-               if(!playerBuff.isShownOnUI)
-               {
-                    Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), playerBuffContainer, false);
-               }
-
-               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
-               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
-               EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", playerBuff);
-     
-
-          }
-
-          //敌方buff的更新:
-          foreach(var enemyBuff in enemy.buffs)
-          {
-               // Debug.LogWarning($"尝试更新敌方buff：{enemyBuff.name}");
-
-
-               //此处是敌方的buff：
-               //如果没有显示过，那么就执行游戏对象的实例化：
-               if(!enemyBuff.isShownOnUI)
-               {
-                    Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), enemyBuffContainer, false);
-               }
-
-               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
-               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
-               EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", enemyBuff);
-          }
-          
-          //以及剩余行动点数、最大行动点数的更新：
-          txtLeftCost.text = BattleManager.Instance.actionPoint.ToString();
-          txtMaxCost.text = BattleManager.Instance.actionPointMax.ToString();
-
-          if(PlayerManager.Instance.player.HP.value <= 0) //玩家死亡
-          {
-               //GameOver在BattleManager中；
-               Debug.LogWarning("玩家死亡！");
-               EventHub.Instance.EventTrigger("GameOver", false, callback);     //callback只有获胜才会调用，内部会进判断的；
-          }
-
-          else if(enemy.HP <= 0) //敌人死亡
-          {
-               Debug.LogWarning("敌人死亡！");
-               EventHub.Instance.EventTrigger("GameOver", true, callback);
-          }
      }
 
 
@@ -480,13 +492,15 @@ public class BattlePanel : BasePanel
                     missTweenId = LeanTween.value(missTextObject, 1f, 0f, 1f)
                          .setOnUpdate((float val) =>
                          {
+                              if (tmp == null || !tmp.gameObject.activeInHierarchy) return;
                               Color cc = tmp.color;
                               cc.a = val;
                               tmp.color = cc;
                          })
                          .setOnComplete(() =>
                          {
-                              missTextObject.SetActive(false);
+                              if (tmp == null || !tmp.gameObject.activeInHierarchy) return;
+                              tmp.gameObject.SetActive(false);
                               missTweenId = -1;
                          }).id;
                }
@@ -515,7 +529,7 @@ public class BattlePanel : BasePanel
           for(int i = 0; i < damageCount; i++)
           {
                // 每次伤害都设定偏移范围
-               float offsetRange = 20f; // 可根据需要调整
+               float offsetRange = 40f; // 可根据需要调整
                Vector3 randomOffset = new Vector3(
                     UnityEngine.Random.Range(-offsetRange, offsetRange),
                     UnityEngine.Random.Range(-offsetRange, offsetRange),
@@ -573,15 +587,18 @@ public class BattlePanel : BasePanel
                          img.color = c;
 
                          LeanTween.delayedCall(1, ()=>{
+                              if (img == null || textObject == null || !textObject.activeInHierarchy) return;
                               LeanTween.value(textObject, 1f, 0f, 1f)
                                         .setOnUpdate((float val) =>
                                         {
+                                             if (img == null || textObject == null || !textObject.activeInHierarchy) return;
                                              Color cc = img.color;
                                              cc.a = val;
                                              img.color = cc;
                                         })
                                         .setOnComplete(() =>
                                         {
+                                             if (textObject == null || !textObject.activeInHierarchy) return;
                                              PoolManager.Instance.ReturnToPool(sb.ToString(), textObject);
                                         });
                          });
@@ -619,15 +636,18 @@ public class BattlePanel : BasePanel
                          img.color = c;
 
                          LeanTween.delayedCall(1, ()=>{
+                              if (img == null || textObject == null || !textObject.activeInHierarchy) return;
                               LeanTween.value(textObject, 1f, 0f, 1f)
                                         .setOnUpdate((float val) =>
                                         {
+                                             if (img == null || textObject == null || !textObject.activeInHierarchy) return;
                                              Color cc = img.color;
                                              cc.a = val;
                                              img.color = cc;
                                         })
                                         .setOnComplete(() =>
                                         {
+                                             if (textObject == null || !textObject.activeInHierarchy) return;
                                              PoolManager.Instance.ReturnToPool(sb.ToString(), textObject);
                                         });
                          });
@@ -640,7 +660,7 @@ public class BattlePanel : BasePanel
                // 在每次伤害显示之间添加延迟（除了最后一次）
                if(i < damageCount - 1)
                {
-                    yield return new WaitForSeconds(0.4f); // 200毫秒延迟，可以根据需要调整
+                    yield return new WaitForSeconds(0.7f); // 200毫秒延迟，可以根据需要调整
                }
           }
      }

@@ -356,7 +356,7 @@ public class SkillManager : Singleton<SkillManager>
 
                 // 结算出的对敌人的伤害
                 Debug.LogWarning($"结算出的对敌人的伤害：{damages[i].damage}");
-                EventHub.Instance.EventTrigger("UpdateDamangeText", damages[i].damage, true);
+                // EventHub.Instance.EventTrigger("UpdateDamangeText", damages[i].damage, true);
 
                 // 之所以将附加Buff的方法放到这里来调用，是为了将 伤害命中 与 Buff命中 协同
                 if(action != null && count == 1)

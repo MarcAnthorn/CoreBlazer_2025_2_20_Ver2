@@ -793,7 +793,274 @@ public class Item_509 : Item
         
     }
 }
+public class Item_510 : Item
+{
+    public override void Use()
+    {
+        
+    }
+}
 
+
+public class Item_511 : Item
+{
+    public Item_511() { onCompleteDelegate = UsedCallback; }
+
+    public override void Use()
+    {
+        effectFinalValueDic.Clear();
+
+        PlayerManager.Instance.player.HP.AddValueLimit(100);
+        PlayerManager.Instance.player.DEF.AddValueLimit(15);
+        //注册取消道具的方法：
+        EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
+        
+    }
+
+    private void UsedCallback()
+    {
+        //移除对应的响应事件：
+        EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
+
+        PlayerManager.Instance.player.HP.AddValueLimit(-100);
+        PlayerManager.Instance.player.DEF.AddValueLimit(-15);
+
+        //执行生效结束后的回调：
+        onCompleteCallback?.Invoke();
+
+    }
+}
+
+
+public class Item_512 : Item
+{
+    public Item_512() { onCompleteDelegate = UsedCallback; }
+
+    public override void Use()
+    {
+        effectFinalValueDic.Clear();
+
+        PlayerManager.Instance.player.SAN.AddValue(164);
+        PlayerManager.Instance.player.AVO.AddValue(0.15f);
+        //注册取消道具的方法：
+        EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
+        
+    }
+
+    private void UsedCallback()
+    {
+        //移除对应的响应事件：
+        EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
+
+        // PlayerManager.Instance.player.SAN.AddValue(-164);
+        PlayerManager.Instance.player.AVO.AddValue(-0.15f);
+
+        //执行生效结束后的回调：
+        onCompleteCallback?.Invoke();
+
+    }
+}
+
+
+public class Item_513 : Item
+{
+   public Item_513() { onCompleteDelegate = UsedCallback; }
+    public override void Use()
+    {
+        effectFinalValueDic.Clear();
+
+        PlayerManager.Instance.player.STR.AddValueLimit(20);
+        PlayerManager.Instance.player.CRIT_DMG.AddValueLimit(0.25f);
+        PlayerManager.Instance.player.CRIT_Rate.AddValueLimit(0.25f);
+        PlayerManager.Instance.player.HIT.AddValueLimit(0.35f);
+        //注册取消道具的方法：
+        EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
+        
+    }
+
+    private void UsedCallback()
+    {
+        //移除对应的响应事件：
+        EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
+
+       
+        PlayerManager.Instance.player.STR.AddValueLimit(-20);
+        PlayerManager.Instance.player.CRIT_DMG.AddValueLimit(-0.25f);
+        PlayerManager.Instance.player.CRIT_Rate.AddValueLimit(-0.25f);
+        PlayerManager.Instance.player.HIT.AddValueLimit(-0.35f);
+
+        //执行生效结束后的回调：
+        onCompleteCallback?.Invoke();
+
+    }
+}
+
+
+public class Item_514 : Item
+{
+    public Item_514() { onCompleteDelegate = UsedCallback; }
+
+    private bool isTriggered = false;
+    private float strDelta;
+    public override void Use()
+    {
+        effectFinalValueDic.Clear();
+
+        EventHub.Instance.AddEventListener("Item514OnEffect", Item514OnEffect);
+        EventHub.Instance.AddEventListener("Item514OnEffectOff", Item514OnEffectOff);
+
+        //注册取消道具的方法：
+        EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
+        
+        
+
+    }
+
+    //在死亡后手动执行的道具销毁：
+    private void UsedCallback()
+    {
+        //移除对应的响应事件：
+        EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
+
+        EventHub.Instance.RemoveEventListener("Item514OnEffect", Item514OnEffect);
+        EventHub.Instance.RemoveEventListener("Item514OnEffectOff", Item514OnEffectOff);
+
+        //如果生效过，那么需要取消生效：
+        if(isTriggered)
+        {
+            Item514OnEffectOff();
+        }
+
+        //执行生效结束后的回调：
+        onCompleteCallback?.Invoke();
+
+    }
+
+
+    private void Item514OnEffect()
+    {
+        isTriggered = true;
+        strDelta = PlayerManager.Instance.player.STR.value;
+        //道具效果：
+        PlayerManager.Instance.player.STR.AddValue(strDelta);
+        PlayerManager.Instance.player.HP.AddValueLimit(25);
+        PlayerManager.Instance.player.LVL.AddValueLimit(150);
+
+    }
+
+    private void Item514OnEffectOff()
+    {
+        isTriggered = false;
+        PlayerManager.Instance.player.STR.AddValue(-strDelta);
+        PlayerManager.Instance.player.HP.AddValueLimit(-25);
+        PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+    }
+}
+
+
+public class Item_515 : Item
+{
+    public Item_515() { onCompleteDelegate = UsedCallback; }
+
+    private bool isTriggered = false;
+    private float strDelta;
+    public override void Use()
+    {
+        effectFinalValueDic.Clear();
+
+        EventHub.Instance.AddEventListener("Item515OnEffect", Item515OnEffect);
+        EventHub.Instance.AddEventListener("Item515OnEffectOff", Item515OnEffectOff);
+
+        //注册取消道具的方法：
+        EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
+        
+        
+
+    }
+
+    //在死亡后手动执行的道具销毁：
+    private void UsedCallback()
+    {
+        //移除对应的响应事件：
+        EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
+
+        EventHub.Instance.RemoveEventListener("Item515OnEffect", Item515OnEffect);
+        EventHub.Instance.RemoveEventListener("Item515OnEffectOff", Item515OnEffectOff);
+
+        //如果生效过，那么需要取消生效：
+        if(isTriggered)
+        {
+            Item515OnEffectOff();
+        }
+
+        //执行生效结束后的回调：
+        onCompleteCallback?.Invoke();
+
+    }
+
+
+    private void Item515OnEffect()
+    {
+        isTriggered = true;
+        strDelta = PlayerManager.Instance.player.STR.value;
+        //道具效果：
+        PlayerManager.Instance.player.STR.AddValue(strDelta);
+        PlayerManager.Instance.player.DEF.AddValueLimit(25);
+        PlayerManager.Instance.player.LVL.AddValueLimit(150);
+
+    }
+
+    private void Item515OnEffectOff()
+    {
+        isTriggered = false;
+        PlayerManager.Instance.player.STR.AddValue(-strDelta);
+        PlayerManager.Instance.player.DEF.AddValueLimit(-25);
+        PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+    }
+
+
+}
+
+
+
+//不论是什么情况，都不会清除这个道具以及它的效果；
+public class Item_516 : Item
+{
+    public Item_516() { onCompleteDelegate = UsedCallback; }
+
+    public override void Use()
+    {
+        effectFinalValueDic.Clear();
+
+        EventHub.Instance.AddEventListener("Item516OnEffect", Item516OnEffect);
+
+    }
+
+    //在死亡后手动执行的道具销毁：
+    private void UsedCallback()
+    {
+        //移除对应的响应事件：
+
+        //执行生效结束后的回调：
+        onCompleteCallback?.Invoke();
+
+    }
+
+    private void Item516OnEffect()
+    {
+        PlayerManager.Instance.player.STR.MultipleValue(1.08f);
+        PlayerManager.Instance.player.DEF.MultipleValue(1.08f);
+
+        PlayerManager.Instance.player.HP.MultipleValueLimit(1.08f);
+        PlayerManager.Instance.player.LVL.MultipleValueLimit(1.08f);
+
+         PlayerManager.Instance.player.SAN.AddValue(5);
+
+
+    }
+
+
+}
 
 //塔罗牌：
 public class Item_601 : Item

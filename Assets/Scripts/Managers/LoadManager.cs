@@ -213,7 +213,7 @@ public class LoadManager : Singleton<LoadManager>
 
     private void LoadAllAvgs()
     {
-        for (int i = 1101; i <= 1122; i++)
+        for (int i = 1100; i <= 1122; i++)
         {
             LoadAVGDialogues(i);
         }
@@ -237,6 +237,22 @@ public class LoadManager : Singleton<LoadManager>
         {
             LoadAVGDialogues(i);
         }
+
+        for (int i = 2301; i <= 2311; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for (int i = 2401; i <= 2410; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for (int i = 2501; i <= 2504; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
 
         for (int i = 3101; i <= 3103; i++)
         {
@@ -782,7 +798,7 @@ public class LoadManager : Singleton<LoadManager>
         if (avgId == 1107)
             return;
 
-        Debug.Log($"当前加载的avg id：{avgId}");
+        // Debug.Log($"当前加载的avg id：{avgId}");
 
         string path = Path.Combine(Application.streamingAssetsPath, "DialogueData", "AVG", $"{avgId}.csv");
         int showIndex = avgId;
@@ -967,7 +983,7 @@ public class LoadManager : Singleton<LoadManager>
                 }
                 else if (i + 1 == lines.Length) // 已经是最后一行
                 {
-                    Debug.LogWarning($"Try to add avg into dic:{showIndex}");
+                    // Debug.LogWarning($"Try to add avg into dic:{showIndex}");
                     // 在循环的最后一次迭代，确保最后一个 tempBlock 被添加
                     if (!orderBlockDic.ContainsKey(showIndex)) // 避免重复添加
                     {

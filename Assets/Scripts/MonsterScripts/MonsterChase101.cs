@@ -12,6 +12,7 @@ public class MonsterChase101 : MonsterBase
     public float detectionRange = 100f;        // 检测范围
     public float chaseSpeed; // 追逐速度
 
+    private float chaseDelayTime = 2;   //唤醒到追逐的延迟时间
     //虚拟相机：
     public CinemachineVirtualCamera _cam;
 
@@ -27,12 +28,14 @@ public class MonsterChase101 : MonsterBase
         chaseState = new Chase101State(this);
            
         // 设置初始状态为追逐
-        SwitchToChase();
+        LeanTween.delayedCall(chaseDelayTime, ()=>{
+            SwitchToChase();
+        });
+        
     }
 
     protected override void Awake() {
         base.Awake();
-
         // 设置怪物特殊属性
         moveSpeedBase = chaseSpeed;
         enemyId = 1001;

@@ -84,9 +84,16 @@ public class Player               //存储角色信息等
             value_limit += change;
         }
 
+        public void SetValueToLimit()
+        {
+            this.value = this.value_limit;
+        }
+
         public void MultipleValueLimit(float change)
         {
-            value *= change;
+            float delta = value * change;
+            value_limit += delta;
+            value += delta;
         }
 
         public void SetValueLimit(float value)

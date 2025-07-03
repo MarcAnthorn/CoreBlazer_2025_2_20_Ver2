@@ -49,6 +49,10 @@ public class GameLevelManager : Singleton<GameLevelManager>
     public static Event currentEvent;
 
 
+    //当前的uniqueId的可交互门是否解锁过：
+    public Dictionary<int, bool> doorIsUnlockedDic = new Dictionary<int, bool>();
+
+
     //Debug用：
     public void DebugAVGInfo()
     {

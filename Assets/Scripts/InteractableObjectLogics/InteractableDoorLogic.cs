@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class InteractableDoorLogic : MonoBehaviour
+public class InteractableDoorLogic : DoorLogicBase
 {
-    public UnityAction actionDoorTrigger;
-    // public GameObject monster1001;
-
-    void Awake()
+    protected override void DoorTrigger()
     {
-        actionDoorTrigger += DoorTrigger;
-    }
-
-    private void DoorTrigger()
-    {
-        //触发怪物追逐：
-        // monster1001.gameObject.SetActive(true);
         Destroy(this.gameObject);   //暂时使用销毁；
+
+        ItemManager.Instance.RemoveItem(509);   //移除钥匙；
+        
+        //手动确保不可交互：
+        isDoorInteractable = false;
     }
+
 }
