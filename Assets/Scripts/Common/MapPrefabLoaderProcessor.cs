@@ -196,23 +196,23 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             //如果是灯塔，除了基本的地块资源，还需要灯塔资源：
             if(id == 10005)
             {
-                GameObject lightHouse = Resources.Load<GameObject>("LightHouse");
+                GameObject lightHouse = Resources.Load<GameObject>(Path.Combine("MapPOIs", "LightHouse"));
                 Instantiate(lightHouse, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(lightHouseObject.transform, false);
                 // Debug.Log($"x : {realX}, y : {realY}");
             }
             else if(id == 10004)   //起点
             {
-                GameObject startPoint = Resources.Load<GameObject>("MazeStartPoint");
+                GameObject startPoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "MazeStartPoint"));
                 Instantiate(startPoint, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(startEndPointObject.transform, false);
             }
             else if(id == 10008)   //终点
             {
-                GameObject endPoint = Resources.Load<GameObject>("MazeEndPoint");
+                GameObject endPoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "MazeEndPoint"));
                 Instantiate(endPoint, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(startEndPointObject.transform, false);         
             }
             else if(id == 10010 || id == 10012) //上锁的门：
             {
-                GameObject doorObj = Resources.Load<GameObject>("Door");
+                GameObject doorObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "Door"));
                 doorObj.name = $"Door{id}";
                 Instantiate(doorObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(npcObject.transform, false);
             }
@@ -223,13 +223,13 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 switch(id)
                 {
                     case 20010:
-                        POIObj = Resources.Load<GameObject>("POI20010");
+                        POIObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "POI20010"));
                     break;
                     case 20020:
-                        POIObj = Resources.Load<GameObject>("POI20020");
+                        POIObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "POI20020"));
                     break;
                     case 20030:
-                        POIObj = Resources.Load<GameObject>("POI20030");
+                        POIObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "POI20030"));
                     break;
                 }
                 POIObj.name = $"POI{id}";
@@ -242,7 +242,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 //初始化其中的NPC位置信息（Vector3）
                 GameLevelManager.Instance.npcBlockDic[id].position = gridScript.GetWorldPosition();
 
-                GameObject NPCObj = Resources.Load<GameObject>("NPC");
+                GameObject NPCObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "NPC"));
                 NPCObj.name = $"NPC{id}";
                 Instantiate(NPCObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(npcObject.transform, false);
 
@@ -250,7 +250,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
             else if(id == 10015)
             {
-                GameObject NPCObj = Resources.Load<GameObject>("NPC");
+                GameObject NPCObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "NPC"));
                 NPCObj.name = $"回收商品NPC";
                 Instantiate(NPCObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(npcObject.transform, false);
             }
@@ -258,7 +258,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             //支线：第一层 墙中鼠支线点位：
             else if(id >= 20016 && id <= 20021)
             {
-                GameObject sideObj = Resources.Load<GameObject>("SideQuest");
+                GameObject sideObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "SideQuest"));
                 sideObj.name = $"墙中鼠支线：{id}";
                 Instantiate(sideObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(sideQuestObj.transform, false);
             }
@@ -266,7 +266,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             //支线：第二层 调查员难题 支线：
             else if(id >= 30016 && id <= 30018)
             {
-                GameObject sideObj = Resources.Load<GameObject>("SideQuest");
+                GameObject sideObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "SideQuest"));
                 sideObj.name = $"调查员难题支线：{id}";
                 Instantiate(sideObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(sideQuestObj.transform, false);
             }
@@ -274,7 +274,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             //支线：第三层 支线：
             else if(id >= 40016 && id <= 40017)
             {
-                GameObject sideObj = Resources.Load<GameObject>("SideQuest");
+                GameObject sideObj = Resources.Load<GameObject>(Path.Combine("MapPOIs", "SideQuest"));
                 sideObj.name = $"第三关支线：{id}";
                 Instantiate(sideObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(sideQuestObj.transform, false);
             }
@@ -285,13 +285,13 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             {
                 GameObject reward = null;
                 if(id == 20022)
-                    reward = Resources.Load<GameObject>("RewardCommon");
+                    reward = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RewardCommon"));
 
                 else if(id == 20023)
-                    reward = Resources.Load<GameObject>("RewardRare");
+                    reward = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RewardRare"));
 
                 else 
-                    reward = Resources.Load<GameObject>("RewardSpecial");
+                    reward = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RewardSpecial"));
                 reward.name = $"宝箱{id}";
                 Instantiate(reward, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(rewardObj.transform, false);
             }
@@ -299,7 +299,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             //塔罗牌投放地块：
             else if(id == 50001)
             {
-                GameObject reward = Resources.Load<GameObject>("RewardTarot");
+                GameObject reward = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RewardTarot"));
                 reward.name = $"塔罗牌点位";
                 Instantiate(reward, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(rewardObj.transform, false);
 
@@ -311,31 +311,31 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 GameObject battle = null;
                 if(id == 50002)
                 {
-                    battle = Resources.Load<GameObject>("BattleLevelOne");
+                    battle = Resources.Load<GameObject>(Path.Combine("MapPOIs", "BattleLevelOne"));
                     battle.name = $"战斗点位50002";
                 }
 
                 else if(id == 50003)
                 {
-                    battle = Resources.Load<GameObject>("BattleLevelTwo");
+                    battle = Resources.Load<GameObject>(Path.Combine("MapPOIs", "BattleLevelTwo"));
                     battle.name = $"战斗点位50003";
                 }
 
                 else if(id == 50004)
                 {
-                    battle = Resources.Load<GameObject>("EndBossFirstFloor");
+                    battle = Resources.Load<GameObject>(Path.Combine("MapPOIs", "EndBossFirstFloor"));
                     battle.name = $"战斗点位50004";
                 }
 
                 else if(id == 50005)
                 {
-                    battle = Resources.Load<GameObject>("EndBossSecondFloor");
+                    battle = Resources.Load<GameObject>(Path.Combine("MapPOIs", "EndBossSecondFloor"));
                     battle.name = $"战斗点位50005";
                 }
 
                 else if(id == 50006)
                 {
-                    battle = Resources.Load<GameObject>("EndBossThirdFloor");
+                    battle = Resources.Load<GameObject>(Path.Combine("MapPOIs", "EndBossThirdFloor"));
                     battle.name = $"战斗点位50006";
                 }
                 Instantiate(battle, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(battleObj.transform, false);

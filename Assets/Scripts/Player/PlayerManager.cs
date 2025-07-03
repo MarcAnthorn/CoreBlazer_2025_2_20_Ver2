@@ -14,6 +14,19 @@ public enum E_PlayerSceneIndex{
 public class PlayerManager : Singleton<PlayerManager>          //用于管理角色的事件
 {
     public Player player;               //当前角色
+
+    public Transform PlayerTransform{
+        get{
+            if(playerTransform == null)
+            {
+                EventHub.Instance.EventTrigger<UnityAction<Transform>>("ExposePlayerTransform", (_transform) =>{
+                    playerTransform = _transform;
+                });
+            }
+            return playerTransform;
+        }
+    }
+    private Transform playerTransform;
     public Vector3 initPosition;
 
     //特殊字段：当前玩家所处的场景；
@@ -26,11 +39,13 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     protected override void Awake()
     {
         base.Awake();
-
-        //测试用：
-        //该方法在Awake中调用，确保全局只触发一次
         InitPlayer();
+    
+    }
 
+    void Start()
+    {
+        
     }
 
     //使用只读属性暴露玩家数值
@@ -54,6 +69,13 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     {
         if(player != null)
             player = null;
+        
+        if(playerTransform == null)
+        {
+            EventHub.Instance.EventTrigger<UnityAction<Transform>>("ExposePlayerTransform", (_transform) =>{
+                playerTransform = _transform;
+            });
+        }
             
         //PlayerManager 管理的全局唯一Player实例
         player = new Player()
@@ -290,12 +312,16 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     public void PlayerHurted(Damage damages)
     {
         // 在这里可以添加一些对伤害的解析(比如检测是否连击) + 局内效果实现
-        damages.ParseDamage();
+        EventHub.Instance.EventTrigger("ParseDamage", damages, 0);
 
         // 计算伤害
         for (int i = 0; i < damages.GetSize(); ++i)
         {
+            Debug.LogWarning($"即将施加伤害：{damages[i].damage}");
             BattleManager.Instance.player.BeHurted(damages[i].damage);
+            // 调用UI更新：
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
+            EventHub.Instance.EventTrigger("UpdateSliders");
         }
     }
 

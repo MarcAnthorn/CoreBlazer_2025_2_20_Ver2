@@ -84,43 +84,12 @@ public class BattleManager : Singleton<BattleManager>
         
     }
 
-    // 角色攻击动画(假设有)
-    public bool PlayerAttackAnimation()
-    {
-    
-        return true;
-    }
-
-    // // 行动队列更新方法
-    // public void UpdateActionQueue()
-    // {
-    //     object temp = null;
-    //     for(int i = 0; i < actionQueue.Count; i++)
-    //     {
-    //         temp = actionQueue.Dequeue();
-    //         if(temp.GetType() != typeof(Player))
-    //         {
-    //             Enemy enemy = temp as Enemy;
-    //             if (enemy.isDead)
-    //             {
-    //                 continue;
-    //             }
-    //             actionQueue.Enqueue(temp);
-    //         }
-    //     }
-    // }
 
     // 战斗开始
     public void BattleStart()
     {
         //调整当前玩家的playerSceneIndex
         PlayerManager.Instance.playerSceneIndex = E_PlayerSceneIndex.Battle;
-
-        // // 向行动队列中先后加入player和enemy
-        // actionQueue.Enqueue(player);
-    
-
-        // actionQueue.Enqueue(enemies[0]);
 
         if(battleEnemy == null)
         {
@@ -176,7 +145,6 @@ public class BattleManager : Singleton<BattleManager>
     {
 //----------------协程变动：（原先的逻辑有问题）------------------------------------------------
 
-        Debug.Log("等待玩家行动...");
         isRoundEndTriggered = false;
         
         //外部通过触发isRoundEndTriggered的方式让协程继续：
@@ -191,19 +159,9 @@ public class BattleManager : Singleton<BattleManager>
 
     private void PlayerAttack()
     {
-        Debug.Log($"角色释放技能{playerSkill}");
         // 将技能点交给 ReleaseSkill 方法处理
         SkillManager.Instance.ReleaseSkill(ref actionPoint, playerSkill, player, battleEnemy);
 
-        // 阻塞，播放技能释放动画以及敌人受伤动画
-        // 注意：播放动画的脚本处需要使用多线程
-        // while (true)
-        // {
-        //     if (PlayerAttackAnimation())
-        //     {
-        //         break;
-        //     }
-        // }
     }
 
     private void PlayerUseItem()
@@ -228,58 +186,6 @@ public class BattleManager : Singleton<BattleManager>
             PlayerUseItem();
 
 
-
-
-        // // 检查敌人状态
-        // List<Enemy> deadEnemies = new List<Enemy>();  // 临时列表，记录死亡的敌人
-
-        // foreach (var e in enemies)
-        // {
-        //     if (e.isDead)
-        //     {
-        //         BattleBuff buff;
-        //         if (e.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
-        //         {
-        //             buff.overlyingCount -= 1;
-        //             e.buffs.Remove(buff);
-        //             buff.OnEffect(1);
-        //         }
-        //         else
-        //         {
-        //             deadEnemies.Add(e);   // 先记下来
-        //             e.DieAnimation();     // 触发死亡动画
-        //         }
-        //     }
-        // }
-
-        // // 循环结束后统一移除
-        // foreach (var dead in deadEnemies)
-        // {
-        //     enemies.Remove(dead);
-        // }
-
-        // deadEnemies.Clear();
-
-//--------------------------------------------------------------------------------
-
-
-        // // 判断游戏状态
-        // if(enemies.Count == 0)
-        // {
-        //     GameOver(true);
-        //     return;
-        // }
-
-
-        // 更新行动队列
-        // UpdateActionQueue();
-
-        // 更新敌人位置
-        // for (int i = 0; i < enemies.Count; i++)
-        // {
-        //     enemies[i].positionId = i + 1;
-        // }
-
         // 行动点检查
         if (actionPoint >= 0)
         {
@@ -292,9 +198,6 @@ public class BattleManager : Singleton<BattleManager>
             Debug.Log("当前剩余0个行动点，轮到敌方行动!");
         }
 
-        // // 排到队尾
-        // if(actionQueue.Count != 0)
-        //     actionQueue.Enqueue(actionQueue.Dequeue());
     }
 
     // 退出角色回合
@@ -306,29 +209,9 @@ public class BattleManager : Singleton<BattleManager>
         // 更新角色回合(并做出一些Buff处理)
         TurnCounter.Instance.UpdatePlayerTurn();
         
-        // // 排到队尾
-        // actionQueue.Enqueue(actionQueue.Dequeue());
-
-        // 判断游戏状态
-        // 在DamageCalculation中，存在player的BeHurt方法；该方法会进行一次是否死亡的判断；
-        // if (player.isDie)
-        // {
-        //     BattleBuff buff;
-        //     if (TurnCounter.Instance.ContainsBuff<BattleBuff_1022>(out buff))  // 对“守护”进行特判
-        //     {
-        //         buff.overlyingCount += 1;
-        //         TurnCounter.Instance.playerBuffs.Remove(buff);
-        //         buff.OnEffect(0);
-        //     }
-        //     else
-        //     {
-        //         GameOver(false);
-        //         return;
-        //     }
-        // }
 
         //在进入地方回合之前，延迟一段时间，等buff结算的UI效果结束：
-        LeanTween.delayedCall(1f, ()=>{
+        LeanTween.delayedCall(1.2f, ()=>{
             EnterEnemyTurn(1);
         });
         
@@ -375,8 +258,6 @@ public class BattleManager : Singleton<BattleManager>
         // 更新敌人回合(并做出一些Buff处理)
         TurnCounter.Instance.UpdateEnemyTurn(index);
 
-        // // 排到队尾
-        // actionQueue.Enqueue(actionQueue.Dequeue());
         
 
         LeanTween.delayedCall(0.8f, () =>
@@ -389,17 +270,6 @@ public class BattleManager : Singleton<BattleManager>
             
         });
 
-        
-
-        // 判断下一个行动的对象
-        //if (actionQueue.Peek().GetType() == typeof(Player))
-        //{
-        //    EnterPlayerTurn();
-        //}
-        //else
-        //{
-        //    EnterEnemyTurn(index + 1);
-        //}
     }
 
 
@@ -426,8 +296,7 @@ public class BattleManager : Singleton<BattleManager>
 
                 UIManager.Instance.HidePanel<BattlePanel>();
 
-                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas);
-                GetComponent<WarningPanel>().SetWarningText($"击败敌人，战斗胜利", false, ()=>{
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas).GetComponent<WarningPanel>().SetWarningText($"击败敌人，战斗胜利", false, ()=>{
                     //如果需要触发战斗的后续奖励，在这里触发；
                     Debug.Log("callback is called");
                     callback?.Invoke(enemyId);
@@ -438,8 +307,7 @@ public class BattleManager : Singleton<BattleManager>
                 Debug.Log("is lost");
 
                 UIManager.Instance.HidePanel<BattlePanel>();
-                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas);
-                GetComponent<WarningPanel>().SetWarningText($"战斗失败",  false, ()=>{
+                PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas).GetComponent<WarningPanel>().SetWarningText($"战斗失败",  false, ()=>{
                     EventHub.Instance.EventTrigger("OnPlayerDead");
                 });
                 

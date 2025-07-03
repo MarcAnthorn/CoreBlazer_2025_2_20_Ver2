@@ -89,20 +89,23 @@ public class PathFindingManager : Singleton<PathFindingManager>
 
 
     /// <summary>
-    /// 更改逻辑地图的flag的方法（比如临时生成墙壁等等）
+    /// 更改逻辑地图的flag的方法, flag == 1为墙壁
     /// </summary>
     /// <param name="_flag">变更的flag去向</param>
     /// <param name="x">变更的策划坐标x</param>
     /// <param name="y">变更的策划坐标y</param>
-    public void ModifyGridFlag(int _flag, int x, int y)
+    public void ModifyGridFlag(int _flag, Vector3 targetPosition)
     {
+        int x, y;
+        GetGridIndex(targetPosition, out x, out y);
+        
         //当前所处的地图：
         int currentMapIndex = (int)GameLevelManager.Instance.gameLevelType;
         dicGridMap[currentMapIndex][x, y].flag = _flag;
 
         //同时，需要让所有当前正在寻路的对象重新调整路线；
         //使用事件中心向所有正在寻路的对象发布广播：
-        EventHub.Instance.EventTrigger("FindNewPath");
+        EventHub.Instance.EventTrigger("ChangeDestination", PlayerManager.Instance.PlayerTransform.position);
     }
 
     //初始化空间坐标系下的地图内容；

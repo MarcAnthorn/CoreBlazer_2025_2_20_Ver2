@@ -105,6 +105,8 @@ public class GodItemPanelInventory : BasePanel
 
         itemObjectList.Clear();
 
+        Debug.LogWarning("Refreshed");
+
         foreach(int itemId in ItemManager.Instance.itemList)
         {
             //只有神明道具初始化：
@@ -114,27 +116,11 @@ public class GodItemPanelInventory : BasePanel
             GameObject nowItem = null;
             InventoryItemLogic script = null;
 
-            //处理插槽信息（不过好像神明道具不可插槽来着，因此先注释了）
-            //如果该Item是快捷装备中，那么就需要调用InventoryPanel中的方法，进行插槽
-            // if(infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze)
-            // {
-            //     nowItem = Instantiate(Resources.Load<GameObject>("TestResources/ItemInventory"), itemContent, false);
-            //     script = nowItem.GetComponentInChildren<InventoryItemLogic>();
-            //     script.Init(infoItem);
-
-            //     if(infoItem.isSlottedToLeft)
-            //     {
-            //         EventHub.Instance.EventTrigger<GameObject>("SlotItemToLeft", nowItem);
-            //     }
-            //     else if(infoItem.isSlottedToRight)
-            //     {
-            //         EventHub.Instance.EventTrigger<GameObject>("SlotItemToRight", nowItem);
-            //     }
-            // }
 
             //安全屋，显示所有的神明道具：
             if(PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Shelter && (infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze))
             {
+                Debug.LogWarning("Refreshed Type 1");
                 if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                     continue;
 
@@ -157,6 +143,7 @@ public class GodItemPanelInventory : BasePanel
                 //处在战斗，才会初始化神明战斗道具：
                 if((infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze) && infoItem.usableScene[1]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Battle)
                 {
+                     Debug.LogWarning("Refreshed Type 2");
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;
 
@@ -175,8 +162,10 @@ public class GodItemPanelInventory : BasePanel
                 }
 
                 //不然就是初始化迷宫道具：
-                else if((infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze) && infoItem.usableScene[2]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
+                // else if((infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze) && infoItem.usableScene[2]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
+                else if((infoItem.type == Item.ItemType.God_Battle || infoItem.type == Item.ItemType.God_Maze) && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
                 {
+                     Debug.LogWarning("Refreshed Type 3");
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;
 

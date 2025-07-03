@@ -76,6 +76,10 @@ public class PlayerController : PlayerBase
 
         EventHub.Instance.AddEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
 
+        EventHub.Instance.AddEventListener("ResumeLight", ResumeLight);
+
+        
+
     }
     // Start is called before the first frame update
     void Start()
@@ -134,6 +138,7 @@ public class PlayerController : PlayerBase
         EventHub.Instance.RemoveEventListener<Vector3>("SetPlayerPosition", SetPlayerPosition);
 
         EventHub.Instance.RemoveEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
+        EventHub.Instance.RemoveEventListener("ResumeLight", ResumeLight);
 
         
         

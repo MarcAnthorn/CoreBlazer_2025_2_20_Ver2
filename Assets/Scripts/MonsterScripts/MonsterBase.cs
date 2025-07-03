@@ -49,6 +49,8 @@ public abstract class MonsterBase : MonoBehaviour
     {
         EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.AddEventListener<int>("AdjustLayer", AdjustLayer);
+        EventHub.Instance.AddEventListener<Vector3>("ChangeDestination", ChangeDestination);
+
         
         InitializeStates();
 
@@ -76,6 +78,7 @@ public abstract class MonsterBase : MonoBehaviour
     {
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.RemoveEventListener<int>("AdjustLayer", AdjustLayer);
+        EventHub.Instance.RemoveEventListener<Vector3>("ChangeDestination", ChangeDestination);
     }
 
 
@@ -135,7 +138,6 @@ public abstract class MonsterBase : MonoBehaviour
         }
     }
 
-
     //变更终点 or 重新寻路时调用的方法：
     //注意：如果处在追踪状态下，那么该方法会被持续调用，用于确保玩家位置的准确性；
     public virtual void ChangeDestination(Vector3 newDestination)
@@ -150,11 +152,22 @@ public abstract class MonsterBase : MonoBehaviour
         path = PathFindingManager.Instance.FindPath(startPoint, endPoint);
         if (path != null && path.Count > 0)
         {
+            isPaused = false;
+            isMoving = true;
+            
             if (moveCoroutine != null)
             {
                 StopCoroutine(moveCoroutine);
             }
             moveCoroutine = StartCoroutine(MoveAlongPath(path));
+        }
+
+        //if path is null, then the destination isnt reachable:
+        //make it stay static:
+        else
+        {
+            //路径不可达：终止移动；依然尝试每0.5s检测一次是否可以找到路径         
+            PauseMoving();
         }
     }
 
@@ -240,7 +253,7 @@ public abstract class MonsterBase : MonoBehaviour
         isMoving = true;
         // 直接用path参数，不再new List
         Vector3 targetPos;
-        for (int i = 0; i < path.Count - 1; i++)
+        for (int i = 0; i < path.Count; i++)
         {
             targetPos = path[i];
             while (Vector3.Distance(transform.position, targetPos) > 0.01f)
@@ -276,7 +289,7 @@ public abstract class MonsterBase : MonoBehaviour
         int startIndex = FindClosestPathIndex(currentPos, path);
         
         //继续移动：
-        for (int i = startIndex; i < path.Count - 1; i++)
+        for (int i = startIndex; i < path.Count; i++)
         {
             targetPos = path[i];
             
@@ -485,6 +498,8 @@ public abstract class ChaseState : IMonsterState
         lastPlayerPosition = playerTransform.position;
         lastPathUpdateTime = Time.time;
 
+        Debug.LogWarning($"Time recorded, {lastPathUpdateTime}");
+
     }
 
     public virtual void UpdateState(MonsterBase monster)
@@ -529,7 +544,10 @@ public abstract class ChaseState : IMonsterState
             // 更新路径
             monster.ChangeDestination(currentPlayerPos);
             lastPlayerPosition = currentPlayerPos;
+
+            
             lastPathUpdateTime = Time.time;
+            Debug.LogWarning($"Time recorded, {lastPathUpdateTime}");
         }
     }
     
@@ -542,6 +560,7 @@ public abstract class ChaseState : IMonsterState
         {
             return true;
         }
+        Debug.Log($"Current time, {Time.time}");
         
         // // 2. 检查玩家移动距离
         // //玩家移动超过1单位，才会更新

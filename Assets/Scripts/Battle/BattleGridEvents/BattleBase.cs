@@ -112,6 +112,24 @@ public class BattleBase : MonoBehaviour
                 ItemManager.Instance.AddItem(502, 502, 503, 503, 504, 504, 505, 505);
                 EquipmentManager.Instance.AddEquipment(1021, 1016, 1017);
                 break;
+        
+
+            //达贡：
+            case 1016:
+                //播放2305:
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(2305, (id) => {
+                    //获得道具：516:
+                    ItemManager.Instance.AddItem(516);
+
+                    //新增AVGid：
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 2405);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 2406);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 2407);
+
+
+                });
+                
+                break;
 
             default:
                 // 默认无掉落

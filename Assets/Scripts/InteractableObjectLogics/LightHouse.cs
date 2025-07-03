@@ -38,8 +38,8 @@ public class LightHouse : MonoBehaviour
                 .setOnUpdate((float val) => {
                     light2D.intensity = val;
             });
-            PlayerController pc = collision.gameObject.GetComponent<PlayerController>();
-            pc.ResumeLight();
+            
+            EventHub.Instance.EventTrigger("ResumeLight");
             lightLock = true;
 
             //灯光回复，尝试触发音效：

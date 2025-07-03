@@ -85,7 +85,7 @@ public class AVGPanel : BasePanel
         replaceTriggerCount = 0;
         base.Awake();
         EventHub.Instance.AddEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
-        EventHub.Instance.AddEventListener<int>("ChoiceIsMade", ChoiceIsMade);
+        EventHub.Instance.AddEventListener<int, DialogueOrder>("ChoiceIsMade", ChoiceIsMade);
 
         EventHub.Instance.AddEventListener<UnityAction<int>>("ReplaceCallback", ReplaceCallback);
 
@@ -119,7 +119,7 @@ public class AVGPanel : BasePanel
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
-        EventHub.Instance.RemoveEventListener<int>("ChoiceIsMade", ChoiceIsMade);
+        EventHub.Instance.RemoveEventListener<int, DialogueOrder>("ChoiceIsMade", ChoiceIsMade);
 
         EventHub.Instance.RemoveEventListener<UnityAction<int>>("ReplaceCallback", ReplaceCallback);
     }
@@ -205,6 +205,14 @@ public class AVGPanel : BasePanel
             
                 }
                 
+            }
+
+            //还存在一个情况，ifKey是0，但是当前依然是存在有效的goto：
+            else if (currentOrder.gotoRootId != 0)
+            {
+                //解锁 isGotoLocked 和 isOptionLocked
+                isGotoLocked = false;
+                isOptionLocked = false;
             }
 
             //处理当前的指令贡献：
@@ -392,6 +400,7 @@ public class AVGPanel : BasePanel
                     Debug.LogWarning("演出已终止");
                     //trigger the callback:
                     callback?.Invoke(orderBlock.rootId);
+
                     //将锁开启，下一次点击就会关闭avg；
                     isAvgOver = true;
                     break;
@@ -666,20 +675,56 @@ public class AVGPanel : BasePanel
     }
 
     //方法；DialogueOptionBtn中调用：更新布尔变量，让对话继续：
-    //规定：如果nextOrderId给定的是-1，说明当前被选中的选项，是分支选项；需要根据goto的内容进行avg的跳转；
-    private void ChoiceIsMade(int nextOrderId)
+    //规定：如果flag给定的是-1，说明当前被选中的选项，是分支选项；需要根据goto的内容进行avg的跳转；
+    //如果flag是1，那么就是正常的继续
+    private void ChoiceIsMade(int flag, DialogueOrder nowOptionOrder)
     {
         isChoiceMade = true;
         //注意：如果是-1，那么更新orderBlock和currentOrder:
-        if (nextOrderId == -1)
+        if (flag == -1)
         {
-            orderBlock = LoadManager.Instance.orderBlockDic[currentOrder.gotoRootId];
+            orderBlock = LoadManager.Instance.orderBlockDic[nowOptionOrder.gotoRootId];
             currentOrder = orderBlock.orderDic[1001];
+
+
+            //手动插入2304的战斗事件：
+            if(nowOptionOrder.gotoRootId == 2304)
+            {
+                ReplaceCallback((id) => {
+                    //2304的回调：触发战斗：
+                    GameLevelManager.Instance.avgIndexIsTriggeredDic.TryAdd(2304, true);
+
+                    //销毁交流达贡：
+                    EventHub.Instance.EventTrigger("DestroyDagoon");
+                    //生成战斗模式的达贡：
+                    var dagoon = Resources.Load<GameObject>("NPC/战斗点达贡");
+                    Instantiate(dagoon, PlayerManager.Instance.PlayerTransform.position, Quaternion.identity);    
+                    
+                });
+            }
+
+            //手动插入2311的事件回调：
+            if(nowOptionOrder.gotoRootId == 2311)
+            {
+                ReplaceCallback((id) => {
+                    //2311的回调：触发奖励，添加AVG，并且销毁达贡：
+                    //销毁交流达贡：
+                    EventHub.Instance.EventTrigger("DestroyDagoon");
+                    
+                    //添加AVG：
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 2408);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 2409);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 2410);
+                    
+                    
+                });
+            }
+
         }
         else
         {
             //更新当前需要处理的选项：
-            currentOrder = orderBlock.orderDic[nextOrderId];
+            currentOrder = orderBlock.orderDic[nowOptionOrder.nextOrderId];
         }
 
         //清空当前显示的所有Options，并且清空List：

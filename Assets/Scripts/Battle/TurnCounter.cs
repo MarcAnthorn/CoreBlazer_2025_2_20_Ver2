@@ -80,6 +80,8 @@ public class TurnCounter : Singleton<TurnCounter>
         //更新Buff的回调函数：(位于BattlePanel)
         Debug.LogWarning("player's buff is updated");
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
+        EventHub.Instance.EventTrigger("UpdateSliders");
+
 
     }
 
@@ -128,6 +130,7 @@ public class TurnCounter : Singleton<TurnCounter>
         //更新Buff的回调函数：
         Debug.LogWarning("enemy's buff is updated");
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
+        EventHub.Instance.EventTrigger("UpdateSliders");
 
     }
 
@@ -198,6 +201,7 @@ public class TurnCounter : Singleton<TurnCounter>
         }
 
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
+        EventHub.Instance.EventTrigger("UpdateSliders");
     }
 
     // 移除角色Buff

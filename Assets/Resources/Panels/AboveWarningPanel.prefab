@@ -180,7 +180,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadingTime: 0.4
   txtWarning: {fileID: 2224138448463633193}
-  btnConfirm: {fileID: 0}
 --- !u!1 &9143236352357726180
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,8 +247,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u706F\u5149\u6D88\u6563\uFF01 \n\u6B63\u5728\u53D7\u5230\u9ED1\u6697\u4FB5\u8680\uFF01"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
-  m_sharedMaterial: {fileID: 5724969808464279161, guid: d2d7bc3fee3e64739b54013286050e32, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2478d054a5dd047598837b4d1bd56ae2, type: 2}
+  m_sharedMaterial: {fileID: -6288978879547402825, guid: 2478d054a5dd047598837b4d1bd56ae2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -22,9 +22,10 @@ public class AVGDistributeManager : SingletonBaseManager<AVGDistributeManager>
     LinkedList<int> listShabu = new LinkedList<int>();
 
     //格赫罗斯队列，字典中id为3
-    LinkedList<int> listeGhroth = new LinkedList<int>();
+    LinkedList<int> listGhroth = new LinkedList<int>();
 
     //后续存在的NPC队列；
+    LinkedList<int> listDagoon = new LinkedList<int>();
 
 
     //存储所有事件队列的字典：
@@ -89,7 +90,8 @@ public class AVGDistributeManager : SingletonBaseManager<AVGDistributeManager>
         dicAVGDistributor.Add(E_NPCName.奈亚拉, listNana);
         dicAVGDistributor.Add(E_NPCName.优格, listYuge);
         dicAVGDistributor.Add(E_NPCName.莎布, listShabu);
-        dicAVGDistributor.Add(E_NPCName.格赫罗斯, listeGhroth);
+        dicAVGDistributor.Add(E_NPCName.格赫罗斯, listGhroth);
+        dicAVGDistributor.Add(E_NPCName.达贡, listDagoon);
 
         //当前的所有NPC的默认事件：
         
@@ -111,4 +113,5 @@ public enum E_NPCName{
     优格 = 1,
     莎布 = 2,  
     格赫罗斯 = 3,
+    达贡 = 4,
 }

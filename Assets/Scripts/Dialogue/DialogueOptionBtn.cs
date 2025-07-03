@@ -69,10 +69,10 @@ public class DialogueOptionBtn : MonoBehaviour
 
             //触发方法，让AVGPanel中的逻辑继续：
             if(isBranchChoice)
-                EventHub.Instance.EventTrigger<int>("ChoiceIsMade", -1);
+                EventHub.Instance.EventTrigger<int, DialogueOrder>("ChoiceIsMade", -1, myOrder);
                 
             else
-                EventHub.Instance.EventTrigger<int>("ChoiceIsMade", myOrder.nextOrderId);
+                EventHub.Instance.EventTrigger<int, DialogueOrder>("ChoiceIsMade", 1, myOrder);
         });
     }
 
