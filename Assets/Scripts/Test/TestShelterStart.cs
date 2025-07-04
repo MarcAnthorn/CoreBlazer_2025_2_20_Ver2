@@ -32,7 +32,8 @@ public class TestShelterStart : MonoBehaviour
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
 
-            else if(GameLevelManager.Instance.gameLevelType == E_GameLevelType.Second && !GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.Second])
+            //完成第一关，并且和第一关/大地图的格赫罗斯交互后。返回安全屋才能触发。（两个条件同时满足）
+            else if(GameLevelManager.Instance.gameLevelType == E_GameLevelType.Second && !GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.Second] && GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(1112) && GameLevelManager.Instance.avgIndexIsTriggeredDic[1112])
             {
                 GameLevelManager.Instance.avgShelterIsTriggered[E_GameLevelType.Second] = true;
                 UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1113);

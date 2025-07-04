@@ -11,6 +11,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     private static string gameLevelSavePath => Application.persistentDataPath + "/gamelevel_save.json";
     private static string equipmentSavePath => Application.persistentDataPath + "/equipment_save.json";
     private static string itemSavePath => Application.persistentDataPath + "/item_save.json";
+    private static string avgDistributeSavePath => Application.persistentDataPath + "/avgdistribute_save.json";
 
     //存档接口：
     public void SaveGame()
@@ -19,6 +20,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         SaveGameLevel();
         SaveEquipment();
         SaveItem();
+        SaveAVGDistribute();
     }
 
     //读档接口：
@@ -28,6 +30,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         LoadGameLevel();
         LoadEquipment();
         LoadItem();
+        LoadAVGDistribute();
     }
 
     //清空当前游戏进度的方法；
@@ -56,6 +59,9 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         var im = ItemManager.Instance;
         im.itemList.Clear();
         im.itemCountDic.Clear();
+
+        //avg贡献重置：
+        AVGDistributeManager.Instance.ClearAllDistributionRecord();
 
         Debug.Log("所有存档已清空，玩家进度已重置！");
     }
@@ -338,6 +344,53 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     {
         public List<int> itemList;
         public List<KeyValuePair<int, int>> itemCountList;
+    }
+
+    public void SaveAVGDistribute()
+    {
+        var avgMgr = AVGDistributeManager.Instance;
+        AVGDistributeSaveData data = new AVGDistributeSaveData();
+        data.contributedAvgIdList = new List<int>(avgMgr.contributedAvgIdList);
+        data.npcAvgQueueDic = new Dictionary<int, List<int>>();
+        foreach (var kv in avgMgr.dicAVGDistributor)
+        {
+            data.npcAvgQueueDic[(int)kv.Key] = new List<int>(kv.Value);
+        }
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(avgDistributeSavePath, json);
+        Debug.Log("AVGDistributeManager数据已保存到: " + avgDistributeSavePath);
+    }
+
+    public void LoadAVGDistribute()
+    {
+        if (!File.Exists(avgDistributeSavePath))
+        {
+            Debug.LogWarning("未找到AVGDistribute存档文件，无法读档！");
+            return;
+        }
+        var avgMgr = AVGDistributeManager.Instance;
+        string json = File.ReadAllText(avgDistributeSavePath);
+        AVGDistributeSaveData data = JsonConvert.DeserializeObject<AVGDistributeSaveData>(json);
+        avgMgr.contributedAvgIdList.Clear();
+        avgMgr.contributedAvgIdList.AddRange(data.contributedAvgIdList);
+        // 还原事件队列
+        foreach (var kv in data.npcAvgQueueDic)
+        {
+            var npcName = (E_NPCName)kv.Key;
+            avgMgr.dicAVGDistributor[npcName].Clear();
+            foreach (var id in kv.Value)
+            {
+                avgMgr.dicAVGDistributor[npcName].AddLast(id);
+            }
+        }
+        Debug.Log("AVGDistributeManager数据已从存档恢复！");
+    }
+
+    [System.Serializable]
+    public class AVGDistributeSaveData
+    {
+        public List<int> contributedAvgIdList;
+        public Dictionary<int, List<int>> npcAvgQueueDic;
     }
 
 //---------------------------存档可序列化数据容器--------------------------------------------

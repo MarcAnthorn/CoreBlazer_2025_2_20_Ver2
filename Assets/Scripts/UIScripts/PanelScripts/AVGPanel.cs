@@ -403,6 +403,9 @@ public class AVGPanel : BasePanel
 
                     //将锁开启，下一次点击就会关闭avg；
                     isAvgOver = true;
+
+                    //尝试更新：
+                    EventHub.Instance.EventTrigger("UpdateWaringMark");
                     break;
                 }
 

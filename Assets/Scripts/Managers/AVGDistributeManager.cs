@@ -27,9 +27,13 @@ public class AVGDistributeManager : SingletonBaseManager<AVGDistributeManager>
     //后续存在的NPC队列；
     LinkedList<int> listDagoon = new LinkedList<int>();
 
+    //统计所有进入过AVGDistributeManager的AVGid；确保不会重复添加；
+    //需要用于存档；
+    public List<int> contributedAvgIdList = new List<int>();
+
 
     //存储所有事件队列的字典：
-    private Dictionary<E_NPCName, LinkedList<int>> dicAVGDistributor = new Dictionary<E_NPCName, LinkedList<int>>();
+    public Dictionary<E_NPCName, LinkedList<int>> dicAVGDistributor = new Dictionary<E_NPCName, LinkedList<int>>();
 
     //字典是否初始化的flag：
     private bool isDistributorInited = false;
@@ -62,6 +66,13 @@ public class AVGDistributeManager : SingletonBaseManager<AVGDistributeManager>
     /// <param name="priority">当前事件的优先级，如果是1，那么就从队首插入；默认是1，是优先事件，排列在队首</param>
     public void ContributeAVGId(E_NPCName npcName, int id, int priority = 1)
     {
+        //没有添加过，才会添加；不然直接return；
+        if(!contributedAvgIdList.Contains(id))
+            contributedAvgIdList.Add(id);
+        
+        else 
+            return;
+            
         //优先确保Init在任何操作之前调用；
         if (!isDistributorInited)
         {
@@ -81,7 +92,30 @@ public class AVGDistributeManager : SingletonBaseManager<AVGDistributeManager>
             dicAVGDistributor[npcName].AddLast(id);
         }
 
+        //尝试更新：
+        EventHub.Instance.EventTrigger("UpdateWaringMark");
 
+
+    }
+
+    //判断当前的对话对象是否存在新的对话：
+    public bool JudgeNewConversation(E_NPCName npcName)
+    {
+        //优先确保Init在任何操作之前调用；
+        if (!isDistributorInited)
+        {
+            isDistributorInited = true;
+            Init();
+        }
+        
+        var currentList = dicAVGDistributor[npcName];
+
+        if (currentList.Count > 1)
+        {
+            return true;    //除了默认事件还存在事件，那么就返回true;
+        }
+
+        return false;
     }
 
     //初始化字典的方法：
@@ -95,6 +129,17 @@ public class AVGDistributeManager : SingletonBaseManager<AVGDistributeManager>
 
         //当前的所有NPC的默认事件：
         
+    }
+
+    //重制方法：
+    public void ClearAllDistributionRecord()
+    {
+        contributedAvgIdList.Clear();
+        listNana.Clear();
+        listDagoon.Clear();
+        listGhroth.Clear();
+        listShabu.Clear();
+        listYuge.Clear();
     }
 
    

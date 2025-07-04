@@ -53,7 +53,7 @@ public class LoadManager : Singleton<LoadManager>
 
 
     //大地图：
-    public int[,] mapCentralFloorIndex = new int[65, 153];
+    public int[,] mapCentralFloorIndex = new int[69, 153];
     public MapElement[,] mapCentralFloor;
 
 
@@ -501,6 +501,7 @@ public class LoadManager : Singleton<LoadManager>
                         break;
 
                         case 4:
+                            Debug.Log($"current index:{i}, {j}");
                             mapCentralFloorIndex[i, j] = int.Parse(values[j]);
                         break;
     
@@ -569,7 +570,7 @@ public class LoadManager : Singleton<LoadManager>
             break;
 
             case 4:
-                mapCentralFloor = new MapElement[65, 153];
+                mapCentralFloor = new MapElement[69, 153];
                 for (int i = 0; i < mapCentralFloor.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
                 {
                     for (int j = 0; j < mapCentralFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数

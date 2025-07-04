@@ -131,6 +131,11 @@ public class TestMazeStart : MonoBehaviour
                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 1110);
                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 1111);
 
+                    //贡献默认对话:
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 2501, 0);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 2502, 0);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 2503, 0);
+
 
                 });
 

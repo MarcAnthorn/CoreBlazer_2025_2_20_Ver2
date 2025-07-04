@@ -37,6 +37,13 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
     public GameObject rewardObj;
 
     public GameObject battleObj;
+    public GameObject chaseMonsterObj;
+    public GameObject dagoonObj;
+    public GameObject keyObj;
+    public GameObject shortcutDoorObj;
+    public GameObject restplaceObj;
+    public GameObject unknownObj;
+
     private float cellSize = 1;
     private int sizeX;
     private int sizeY;
@@ -78,16 +85,22 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
     private void LoadMapToPrefab(int mapIndex)
     {
         saveObject = Instantiate(parentPrefab);
+
         pathGridObject = Instantiate(parentPrefab);
         pathGridObject.name = "PathGridObject";
+
         poiObject = Instantiate(parentPrefab);
         poiObject.name = "POIObject";
+
         specialWallObject = Instantiate(parentPrefab);
         specialWallObject.name = "SpecialWallObject";
+
         lightHouseObject = Instantiate(parentPrefab);
         lightHouseObject.name = "LightHouseObject";
+
         npcObject = Instantiate(parentPrefab);
         npcObject.name = "NPCObject";
+
         startEndPointObject = Instantiate(parentPrefab);
         startEndPointObject.name = "StartEndPointObject";
 
@@ -103,9 +116,30 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         //战斗节点：
         battleObj = Instantiate(parentPrefab);
         battleObj.name = "BattleObject";
-        Debug.LogWarning("BattleObject is inited!");
 
+        //追逐战节点：
+        chaseMonsterObj = Instantiate(parentPrefab);
+        chaseMonsterObj.name = "ChaseMonsterObj";
 
+      //达贡节点：
+        dagoonObj = Instantiate(parentPrefab);
+        dagoonObj.name = "DagoonObj";
+
+        //钥匙节点：
+        keyObj = Instantiate(parentPrefab);
+        keyObj.name = "KeyObj";
+
+        //捷径门节点：
+        shortcutDoorObj = Instantiate(parentPrefab);
+        shortcutDoorObj.name = "ShortcutDoorObj";
+
+        //休息点：
+        restplaceObj = Instantiate(parentPrefab);
+        restplaceObj.name = "RestplaceObj";
+
+        //未知点位：
+        unknownObj = Instantiate(parentPrefab);
+        unknownObj.name = "UnknownObj";
 
 
         originalPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, Camera.main.nearClipPlane));
@@ -137,6 +171,11 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 currentMap = LoadManager.Instance.mapCentralFloor;
                 levelPath = "Grids/LevelTwoGrids";
             break;
+            case -1:
+                currentMap = LoadManager.Instance.mapCentralFloor;
+                levelPath = "Grids/LevelTwoGrids";
+            break;
+
 
         }
 
@@ -341,6 +380,78 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 Instantiate(battle, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(battleObj.transform, false);
             }
 
+            //休息点
+            else if(id == 60002 || id == 70001) 
+            {
+                GameObject restPlace = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RestPoint"));
+                restPlace.name = $"休息点";
+                Instantiate(restPlace, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(restplaceObj.transform, false);
+
+            }
+
+            //达贡点位：
+            else if(id >= 70002 && id <= 70004)
+            {
+                GameObject dagoonPoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "DagoonPoint"));
+                dagoonPoint.name = $"达贡点位";
+                Instantiate(dagoonPoint, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(dagoonObj.transform, false);
+
+            }
+
+            //钥匙点位：
+            else if(id == 60003)
+            {
+                GameObject keyPoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "KeyPoint"));
+                keyPoint.name = $"钥匙点位";
+                Instantiate(keyPoint, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(keyObj.transform, false);
+
+            }
+
+            //追逐战点位：
+            else if(id == 60001)
+            {
+                GameObject chasePointFather = Instantiate(parentPrefab, chaseMonsterObj.transform, false);
+                chasePointFather.name = "ChasePointFather";
+
+                GameObject chasePoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "ChaseTriggerPoint"));
+                chasePoint.name = $"追逐战点位";
+
+                GameObject chaser = Resources.Load<GameObject>(Path.Combine("MapPOIs", "MonsterChase101"));
+                chasePoint.name = $"追逐怪";
+
+                Instantiate(chasePoint, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(chasePointFather.transform, false);
+                Instantiate(chaser, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(chasePointFather.transform, false);
+
+            }
+
+            //未知点位（是啥策划没说）
+            else if(id == 20300 || id == 20400 || id == 20500)
+            {
+                GameObject unknownPoint;
+                
+               
+                if(id == 20300)
+                {
+                    unknownPoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "20300"));
+                    unknownPoint.name = $"20300";
+                }
+
+                else if(id == 20400)
+                {
+                    unknownPoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "20400"));
+                    unknownPoint.name = $"20400";
+                }
+
+                else{
+                    unknownPoint = Resources.Load<GameObject>(Path.Combine("MapPOIs", "20500"));
+                    unknownPoint.name = $"20500";
+                }
+
+                Instantiate(unknownPoint, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(unknownObj.transform, false);
+
+
+            }
+
             //实例化地块，调用内部函数GetWorldPosition布置位置
             Instantiate(pathGridObj, gridScript.GetWorldPosition(), Quaternion.identity).gameObject.transform.SetParent(pathGridObject.transform, false);
 
@@ -395,7 +506,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
                 id = me.GetId();
 
-                if(me.GetId() == 10001 || me.GetId() == 10014)
+                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004)
                 {
                     //加载水平墙体：
                     gridObj = Resources.Load<GameObject>(Path.Combine(levelPath, wallHorizontalPath)); 
@@ -447,7 +558,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 id = me.GetId();
 
 
-                if(me.GetId() == 10001 || me.GetId() == 10014)
+                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004)    //包含捷径门
                 {
                     //加载竖直墙体：
                     gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,wallVerticalPath));
@@ -472,10 +583,15 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
             if(me.GetId() == 10001 || me.GetId() == 10009) //普通墙壁 / 通路：
             {
+                
                 Instantiate(gridObj, gridScript.GetWorldPosition(), gridObj.transform.rotation).gameObject.transform.SetParent(pathGridObject.transform, false);
             }
 
-
+            //捷径门：
+            else if(me.GetId() == 60004)
+            {
+                Instantiate(gridObj, gridScript.GetWorldPosition(), gridObj.transform.rotation).gameObject.transform.SetParent(shortcutDoorObj.transform, false);
+            }
             //特殊墙壁：
             else
             {
@@ -556,6 +672,14 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
         sideQuestObj.transform.SetParent(saveObject.transform, false);
         rewardObj.transform.SetParent(saveObject.transform, false);
         battleObj.transform.SetParent(saveObject.transform, false);
+
+        chaseMonsterObj.transform.SetParent(saveObject.transform, false);
+        dagoonObj.transform.SetParent(saveObject.transform, false);
+        keyObj.transform.SetParent(saveObject.transform, false);
+        shortcutDoorObj.transform.SetParent(saveObject.transform, false);
+        restplaceObj.transform.SetParent(saveObject.transform, false);
+        unknownObj.transform.SetParent(saveObject.transform, false);
+
   
 #if UNITY_EDITOR
         switch(mapIndex){
@@ -574,6 +698,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             case 4:
                 PrefabUtility.SaveAsPrefabAsset(saveObject, "Assets/Resources/MapPrefabs/MapCentralFloor.prefab");
             break;
+
 
         }
         
