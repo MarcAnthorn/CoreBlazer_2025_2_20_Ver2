@@ -22,6 +22,20 @@ public class RestPoint : MonoBehaviour
             //先初始化我在字典中的位置：
             GameLevelManager.Instance.avgIndexIsTriggeredDic.TryAdd(2302, false);
         }
+
+        // restPointDic初始化与日志
+        var key = (GameLevelManager.Instance.gameLevelType, this.transform.position);
+        if (GameLevelManager.Instance.restPointDic.TryGetValue(key, out bool unlocked))
+        {
+            isRestPointUnlocked = unlocked;
+            Debug.Log($"[RestPoint] 初始化休息点状态: {unlocked}, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
+        }
+        else
+        {
+            isRestPointUnlocked = false;
+            GameLevelManager.Instance.restPointDic[key] = false;
+            Debug.Log($"[RestPoint] 首次注册休息点到字典，状态: false, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
+        }
     }
 
 
@@ -29,7 +43,11 @@ public class RestPoint : MonoBehaviour
         if(!isTriggerLock && Input.GetKeyDown(KeyCode.F))
         {
             //解锁当前的休息点：
-            isRestPointUnlocked = true;
+            isRestPointUnlocked = true; 
+            // 写入字典并输出日志
+            var key = (GameLevelManager.Instance.gameLevelType, this.transform.position);
+            GameLevelManager.Instance.restPointDic[key] = true;
+            Debug.Log($"[RestPoint] 休息点被解锁，状态已写入字典: true, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
             TriggerRest();
         }
     }
