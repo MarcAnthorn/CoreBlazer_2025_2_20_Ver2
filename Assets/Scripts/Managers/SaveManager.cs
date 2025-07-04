@@ -16,11 +16,12 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     //存档接口：
     public void SaveGame()
     {
-        SavePlayerAttribute(); 
+        SavePlayerAttribute();
         SaveGameLevel();
         SaveEquipment();
         SaveItem();
         SaveAVGDistribute();
+        ManageRestLightData(true);
     }
 
     //读档接口：
@@ -31,6 +32,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         LoadEquipment();
         LoadItem();
         LoadAVGDistribute();
+        ManageRestLightData(false);
     }
 
     //清空当前游戏进度的方法；
@@ -286,11 +288,71 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         Debug.Log("道具信息已从存档恢复！");
     }
 
-//---------------------------道具装备存档--------------------------------------------------
+    //---------------------------道具装备存档--------------------------------------------------
 
 
-//---------------------------存档可序列化数据容器--------------------------------------------
-     // 存档数据结构
+    //---------------------------存档可序列化数据容器--------------------------------------------
+    [System.Serializable]
+    public class RestLightSaveData
+    {
+        public List<KeyValuePair<string, bool>> restPointList = new List<KeyValuePair<string, bool>>();
+        public List<KeyValuePair<string, bool>> lightHouseList = new List<KeyValuePair<string, bool>>();
+    }
+
+    private static string restLightSavePath => Application.persistentDataPath + "/restlight_save.json";
+
+    // 存取rest point与lighthouse的方法，isSave为true时保存，为false时读取
+    public void ManageRestLightData(bool isSave)
+    {
+        if (isSave)
+        {
+            var data = new RestLightSaveData();
+            // 序列化restPointDic
+            foreach (var kv in GameLevelManager.Instance.restPointDic)
+            {
+                // key序列化为字符串，格式：关卡类型|x|y|z
+                string keyStr = $"{kv.Key.Item1}|{kv.Key.Item2.x}|{kv.Key.Item2.y}|{kv.Key.Item2.z}";
+                data.restPointList.Add(new KeyValuePair<string, bool>(keyStr, kv.Value));
+            }
+            // 序列化lightHouseIsDic
+            foreach (var kv in GameLevelManager.Instance.lightHouseIsDic)
+            {
+                string keyStr = $"{kv.Key.Item1}|{kv.Key.Item2.x}|{kv.Key.Item2.y}|{kv.Key.Item2.z}";
+                data.lightHouseList.Add(new KeyValuePair<string, bool>(keyStr, kv.Value));
+            }
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(restLightSavePath, json);
+            Debug.Log("RestPoint与LightHouse数据已保存到: " + restLightSavePath);
+        }
+        else
+        {
+            if (!File.Exists(restLightSavePath))
+            {
+                Debug.LogWarning("未找到RestLight存档文件，无法读档！");
+                return;
+            }
+            string json = File.ReadAllText(restLightSavePath);
+            RestLightSaveData data = JsonConvert.DeserializeObject<RestLightSaveData>(json);
+            GameLevelManager.Instance.restPointDic.Clear();
+            foreach (var kv in data.restPointList)
+            {
+                var arr = kv.Key.Split('|');
+                var level = (E_GameLevelType)System.Enum.Parse(typeof(E_GameLevelType), arr[0]);
+                var pos = new Vector3(float.Parse(arr[1]), float.Parse(arr[2]), float.Parse(arr[3]));
+                GameLevelManager.Instance.restPointDic[(level, pos)] = kv.Value;
+            }
+            GameLevelManager.Instance.lightHouseIsDic.Clear();
+            foreach (var kv in data.lightHouseList)
+            {
+                var arr = kv.Key.Split('|');
+                var level = (E_GameLevelType)System.Enum.Parse(typeof(E_GameLevelType), arr[0]);
+                var pos = new Vector3(float.Parse(arr[1]), float.Parse(arr[2]), float.Parse(arr[3]));
+                GameLevelManager.Instance.lightHouseIsDic[(level, pos)] = kv.Value;
+            }
+            Debug.Log("RestPoint与LightHouse数据已从存档恢复！");
+        }
+    }
+    // 存档数据结构
     [System.Serializable]
     public class PlayerAttributeSaveData
     {
@@ -374,9 +436,27 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         avgMgr.contributedAvgIdList.Clear();
         avgMgr.contributedAvgIdList.AddRange(data.contributedAvgIdList);
         // 还原事件队列
+        // 输出字典所有内容
+        Debug.Log("------npcAvgQueueDic完整内容------");
         foreach (var kv in data.npcAvgQueueDic)
         {
-            var npcName = (E_NPCName)kv.Key;
+            Debug.Log($"key: {kv.Key}, value: [{string.Join(",", kv.Value)}]");
+        }
+        Debug.Log("------------");
+        foreach (var kv in data.npcAvgQueueDic)
+        {
+            E_NPCName npcName;
+            if (int.TryParse(kv.Key.ToString(), out int npcInt))
+            {
+                npcName = (E_NPCName)npcInt;
+            }
+            else
+            {
+                npcName = (E_NPCName)System.Enum.Parse(typeof(E_NPCName), kv.Key.ToString());
+            }
+            if (!avgMgr.dicAVGDistributor.ContainsKey(npcName))
+                avgMgr.dicAVGDistributor[npcName] = new LinkedList<int>();
+            Debug.Log($"当前NPC名称: {npcName}");
             avgMgr.dicAVGDistributor[npcName].Clear();
             foreach (var id in kv.Value)
             {

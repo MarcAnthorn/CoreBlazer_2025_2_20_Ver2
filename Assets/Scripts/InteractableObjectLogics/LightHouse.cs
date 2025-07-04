@@ -5,24 +5,15 @@ using UnityEngine.Rendering.Universal;
 
 public class LightHouse : MonoBehaviour
 {
-    // 自动分配唯一ID
-    private static int nextLightHouseId = 0;
-    public int lightHouseId { get; private set; }
-
     private Light2D light2D;
     // private BoxCollider2D collider;
     private bool lightLock = false;
     private void Awake()
     {
-        // 分配唯一ID
-        lightHouseId = nextLightHouseId++;
         light2D = this.GetComponent<Light2D>();
         EventHub.Instance.AddEventListener("OnPlayerDead", OnPlayerDead);
         EventHub.Instance.AddEventListener<bool>("TriggerLight", TriggerLight);
-        Debug.Log($"LightHouse自动分配的id为: {lightHouseId}", this);
         Vector3 pos = this.transform.position;
-        Debug.Log($"LightHouse id={lightHouseId} 坐标为: {pos}", this);
-
         // 读取字典初始化lightLock
         var key = (GameLevelManager.Instance.gameLevelType, pos);
         if (GameLevelManager.Instance.lightHouseIsDic.TryGetValue(key, out bool isLocked))
