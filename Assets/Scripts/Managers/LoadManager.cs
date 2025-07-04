@@ -209,6 +209,12 @@ public class LoadManager : Singleton<LoadManager>
         allEnemies.Add(1014, new Enemy_1014(
             new EnemySkill_1001(), new EnemySkill_1023(), new EnemySkill_1022()
             ));
+        allEnemies.Add(1015, new Enemy_1015(
+            new EnemySkill_1010(), new EnemySkill_1001()
+            ));
+        allEnemies.Add(1016, new Enemy_1016(
+            new EnemySkill_1017(), new EnemySkill_1018(), new EnemySkill_1001()
+            ));
     }
 
     private void LoadAllAvgs()

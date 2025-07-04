@@ -631,7 +631,7 @@ public class SkillManager : Singleton<SkillManager>
     private void AddBuffToSkill_1018()
     {
         BattleBuff buff = new BattleBuff_1017();
-        TurnCounter.Instance.AddEnemyBuff(buff);
+        TurnCounter.Instance.AddPlayerBuff(buff);
     }
 
     // 风起之时

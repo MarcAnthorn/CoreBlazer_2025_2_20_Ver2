@@ -398,6 +398,34 @@ public class EnemyManager : Singleton<EnemyManager>
         TurnCounter.Instance.AddPlayerBuff(buff);
     }
 
+    // 深海的呼唤
+    public void EnemySkill_1017(Enemy enemy)
+    {
+        Debug.Log("敌人发动 深海的呼唤！");
+        float rowDamage = 20 + BattleManager.Instance.player.DEF.value * 0.5f;
+        Action action = () => AddBuffToEnemySkill_1017();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1017()
+    {
+        BattleBuff buff = new BattleBuff_1016();
+        TurnCounter.Instance.AddPlayerBuff(buff);
+    }
+
+    // 深渊之主的回音
+    public void EnemySkill_1018(Enemy enemy)
+    {
+        Debug.Log("敌人发动 深渊之主的回音！");
+        float rowDamage = 60;
+        Action action = () => AddBuffToEnemySkill_1018();
+        EnemyManager.Instance.DamageCalculation(PlayerManager.Instance.player, enemy, rowDamage, DamageType.Skill, action);
+    }
+    private void AddBuffToEnemySkill_1018()
+    {
+        BattleBuff buff = new BattleBuff_1017();
+        TurnCounter.Instance.AddEnemyBuff(buff);
+    }
+
     // 鼠群意志
     public void EnemySkill_1020(Enemy enemy)
     {
