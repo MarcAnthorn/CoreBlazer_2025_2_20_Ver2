@@ -68,8 +68,14 @@ public class MonsterChase101 : MonsterBase
     protected override void OnComplete()
     {
         base.OnComplete();    
+        
         UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1106, OnAVGComplete);
 
+    }
+
+    protected override void Freeze(bool _isFrozen)
+    {
+        base.Freeze(_isFrozen);     
     }
 
     private void OnAVGComplete(int id)
@@ -79,47 +85,6 @@ public class MonsterChase101 : MonsterBase
         LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
     }
-
-
-
-    //无巡逻怪物，无需以下内容
-    // protected override void InitPatrolPoints()
-    // {
-    //     //此处可以存储巡逻点
-        
-    //     //PatrolState会在进入State的时候初始化巡逻index；此处不需要
-    //     // patrolIndex = 0;
-    // }
-
-
-    // 在Inspector中可视化巡逻点
-    // private void OnDrawGizmosSelected()
-    // {
-    //     if (patrolPoints != null && patrolPoints.Count > 0)
-    //     {
-    //         Gizmos.color = Color.yellow;
-            
-    //         // 绘制巡逻点
-    //         for (int i = 0; i < patrolPoints.Count; i++)
-    //         {
-    //             Gizmos.DrawWireSphere(patrolPoints[i], 0.5f);
-                
-    //             // 绘制巡逻路径
-    //             if (i < patrolPoints.Count - 1)
-    //             {
-    //                 Gizmos.DrawLine(patrolPoints[i], patrolPoints[i + 1]);
-    //             }
-    //             else
-    //             {
-    //                 Gizmos.DrawLine(patrolPoints[i], patrolPoints[0]);
-    //             }
-    //         }
-            
-    //         // 绘制检测范围
-    //         Gizmos.color = Color.red;
-    //         Gizmos.DrawWireSphere(transform.position, detectionRange);
-    //     }
-    // }
 }
 
 

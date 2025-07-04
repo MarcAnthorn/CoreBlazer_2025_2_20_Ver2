@@ -18,8 +18,8 @@ using UnityEngine;
 //4.返回该List，供怪物对象使用；
 public class PathFindingManager : Singleton<PathFindingManager>
 {
-    //当前的地图数量:4
-    private int mapCount = 4;
+    //当前的地图数量:5
+    private int mapCount = 5;
     private float cellSize = 1;
 
     //一个额外的量，用于空出间隔填充扁墙空间：
@@ -80,11 +80,11 @@ public class PathFindingManager : Singleton<PathFindingManager>
     //如果不是路径，那么MapElement.flag == 1;
     private void LoadOriginalMapElements()
     {
-        dicElementMap.Add(0, LoadManager.Instance.mapTutorialFloor);
-        dicElementMap.Add(1, LoadManager.Instance.mapFirstFloor);
-        dicElementMap.Add(2, LoadManager.Instance.mapSecondFloor);
-        dicElementMap.Add(3, LoadManager.Instance.mapThirdFloor);
-        dicElementMap.Add(4, LoadManager.Instance.mapCentralFloor);
+        dicElementMap.TryAdd(0, LoadManager.Instance.mapTutorialFloor);
+        // dicElementMap.Add(1, LoadManager.Instance.mapFirstFloor);
+        // dicElementMap.Add(2, LoadManager.Instance.mapSecondFloor);
+        // dicElementMap.Add(3, LoadManager.Instance.mapThirdFloor);
+        dicElementMap.TryAdd(4, LoadManager.Instance.mapCentralFloor);
     }
 
 
@@ -101,6 +101,9 @@ public class PathFindingManager : Singleton<PathFindingManager>
         
         //当前所处的地图：
         int currentMapIndex = (int)GameLevelManager.Instance.gameLevelType;
+
+        currentMapIndex = currentMapIndex == 0 ? 0 : 4;
+
         dicGridMap[currentMapIndex][x, y].flag = _flag;
 
         //同时，需要让所有当前正在寻路的对象重新调整路线；
@@ -111,10 +114,16 @@ public class PathFindingManager : Singleton<PathFindingManager>
     //初始化空间坐标系下的地图内容；
     //注意：此处初始化的只包含路径，而不是全部元素；
     //因此，从策划表中获取的index，需要经过转换才是该GridMap中对应的路径的index；
+
+    //对于大地图，存在一个坐标偏移；
+    //即：对于(0, 0)的点，在策划表中是(16, 0)
     private void LoadWorldSpaceMapGrids()
     {
         for (int mapIndex = 0; mapIndex < mapCount; mapIndex++)
         {
+            if(mapIndex == 1 || mapIndex == 2 || mapIndex == 3)
+                continue;
+
             int sizeX = MapManager.Instance[mapIndex].row;
             int sizeY = MapManager.Instance[mapIndex].colume;
 
@@ -130,6 +139,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
                     if (dicElementMap[mapIndex][i, j] == null)
                         continue;
 
+        
                     //通过(i, j, offset, cellSize)信息就可以知道[i, j]的PathNode的世界坐标
                     //通过MapElement获取这个位置的地块的cost
                     //flag == 0是通路；不然就是墙壁；
@@ -169,6 +179,11 @@ public class PathFindingManager : Singleton<PathFindingManager>
         List<Vector3> pathList = ListPool<Vector3>.Get();
         //当前的地图：
         int mapIndex = (int)GameLevelManager.Instance.gameLevelType;
+
+        //将mapIndex从  0->0;
+        //             1/2/3 -> 4
+        mapIndex = mapIndex == 0 ? 0 : 4;
+
         Debug.LogWarning($"now map is:{mapIndex}");
         PathNode[,] nowPathNodeMap = dicGridMap[mapIndex];
 
@@ -310,13 +325,18 @@ public class PathFindingManager : Singleton<PathFindingManager>
         
         int normalizedY = ((int)(rawY / 2) * 2) + 1;
         int normalizedX = (int)(rawX / 2) * 2 + 1;
-        x = normalizedX;
+
+        //如果是第四层，更新i：
+        int delta = (int)GameLevelManager.Instance.gameLevelType == 0 ? 0 : 16;
+        
+        x = normalizedX + delta;
         y = normalizedY;
     }
 
     //传入策划坐标下的index，获取地块在世界坐标下的坐标；
     private Vector3 GetWorldPosition(int xMap, int yMap)
     {
+        int delta = (int)GameLevelManager.Instance.gameLevelType == 0 ? 0 : 16;
         //注意：因为Unity中的x', y'（传入Vector3中的）和我们此处的二维数组的x y（访问grid）并不一样；
         //因此需要进行坐标上的转换，即x' = y; y' = -x;
         Vector3 centerPoint;
@@ -325,7 +345,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
         //此处返回的是地块对象的中心点
         //offset是基于起始点的偏移；
         float centerX = yMap / 2 * (cellSize + intervalDistance) + basicOffset + offset.x;
-        float centerY = -(xMap / 2 * (cellSize + intervalDistance) + basicOffset) + offset.y;
+        float centerY = -((xMap - delta) / 2 * (cellSize + intervalDistance) + basicOffset) + offset.y;
         centerPoint = new Vector3(centerX, centerY);
         return centerPoint;
     }

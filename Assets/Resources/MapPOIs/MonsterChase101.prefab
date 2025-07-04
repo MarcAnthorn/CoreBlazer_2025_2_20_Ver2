@@ -93,8 +93,8 @@ GameObject:
   - component: {fileID: 8440522958056252818}
   - component: {fileID: 3154021359069976519}
   - component: {fileID: 1747055197744824927}
+  - component: {fileID: -5740127677948108767}
   - component: {fileID: 2265796388811895176}
-  - component: {fileID: 420048760993463815}
   m_Layer: 0
   m_Name: MonsterChase101
   m_TagString: Untagged
@@ -191,6 +191,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5740127677948108767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4075520551688853862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3157bb103a8844777a7f8cb0861ed42e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &2265796388811895176
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -236,23 +248,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.57, y: 1.51}
   m_EdgeRadius: 0
---- !u!114 &420048760993463815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4075520551688853862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3141aa1e043e840e9ae9e28c3d0ac589, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeedBase: 0
-  isMoving: 0
-  enemyId: 0
-  patrolPoints: []
-  patrolIndex: 0
-  detectionRange: 100
-  chaseSpeed: 4
-  _cam: {fileID: 0}

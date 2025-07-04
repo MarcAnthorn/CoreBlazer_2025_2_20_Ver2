@@ -217,10 +217,10 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
  
             GameObject pathGridObj = Resources.Load<GameObject>(path);
             PathGrid gridScript = pathGridObj.GetComponent<PathGrid>();
- 
-            Debug.Log($"path grid, x : {realX}, y : {realY}");
 
             MapElement me = currentMap[realX, realY];
+
+            Debug.Log($"realX: {realX}, realY: {realY}, currentMap[realX, realY]: {(me == null ? "null" : "not null")}");
 
             //如果是空的话，直接return：
             if(me == null){
@@ -464,6 +464,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
         //注意：墙壁地块的竖直高度（第二参数）需要是宽度（第一参数）的两倍；
         wallMap = new GridMap<WallGrid>(sizeY / 2, sizeX - 1, cellSize, originalPoint, (wallMap, i, j)=>{
+
             //回调：实例化地块游戏对象
             GameObject gridObj;
             WallGrid gridScript;    //注意：水平通路和竖直通路都算作是WallGrid的挂载对象了；
@@ -495,7 +496,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                         levelPath = Path.Combine("Grids","LevelThreeGrids", "Region3");     //red
                 }
 
-                Debug.Log($"horizontal wall grid, x : {realX}, y : {realY}");
+                // Debug.LogWarning($"horizontal wall grid, x : {realX}, y : {realY}");
                 me = currentMap[realX, realY];
 
                 //如果是空的话，直接return：
@@ -506,7 +507,83 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
                 id = me.GetId();
 
-                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004)
+// //---------------------------------------------------测试debug用：----------------------------------
+//             if(id == 10005)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 10004)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 10008)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 10010 || id == 10012)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 20010 || id == 20020 || id == 20030)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 30001 || id == 30002 || id == 30003 || id == 30004 || id == 30005)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 10015)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id >= 20016 && id <= 20021)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id >= 30016 && id <= 30018)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id >= 40016 && id <= 40017)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id >= 20022 && id <= 20024 || id == 20026)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 50001)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id >= 50002 && id <= 50006)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 60002 || id == 70001)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id >= 70002 && id <= 70004)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 60003)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 60001)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+//             else if(id == 20300 || id == 20400 || id == 20500)
+//             {
+//                 Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+//             }
+// //---------------------------------------------------测试debug用：----------------------------------
+
+
+                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004 || me.GetId() == 10002)    //包含捷径门 黑墙
                 {
                     //加载水平墙体：
                     gridObj = Resources.Load<GameObject>(Path.Combine(levelPath, wallHorizontalPath)); 
@@ -543,7 +620,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                         levelPath = Path.Combine("Grids/LevelThreeGrids", "Region3");     //red
                 }
 
-                Debug.Log($"vertical wall grid, x : {realX}, y : {realY}");
+                // Debug.Log($"vertical wall grid, x : {realX}, y : {realY}");
                 me = currentMap[realX, realY];
                 
 
@@ -558,7 +635,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 id = me.GetId();
 
 
-                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004)    //包含捷径门
+                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004 || me.GetId() == 10002)    //包含捷径门 黑墙
                 {
                     //加载竖直墙体：
                     gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,wallVerticalPath));
@@ -583,7 +660,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
             if(me.GetId() == 10001 || me.GetId() == 10009) //普通墙壁 / 通路：
             {
-                
+
                 Instantiate(gridObj, gridScript.GetWorldPosition(), gridObj.transform.rotation).gameObject.transform.SetParent(pathGridObject.transform, false);
             }
 
@@ -592,6 +669,14 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             {
                 Instantiate(gridObj, gridScript.GetWorldPosition(), gridObj.transform.rotation).gameObject.transform.SetParent(shortcutDoorObj.transform, false);
             }
+
+            //黑墙：
+            else if(me.GetId() == 10002)
+            {
+                gridObj.name = "blackwall";
+                Instantiate(gridObj, gridScript.GetWorldPosition(), gridObj.transform.rotation).gameObject.transform.SetParent(specialWallObject.transform, false);
+            }
+
             //特殊墙壁：
             else
             {

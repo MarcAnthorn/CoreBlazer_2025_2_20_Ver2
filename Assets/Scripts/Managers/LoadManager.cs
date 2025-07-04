@@ -507,7 +507,7 @@ public class LoadManager : Singleton<LoadManager>
                         break;
 
                         case 4:
-                            Debug.Log($"current index:{i}, {j}");
+                            // Debug.Log($"current index:{i}, {j}");
                             mapCentralFloorIndex[i, j] = int.Parse(values[j]);
                         break;
     

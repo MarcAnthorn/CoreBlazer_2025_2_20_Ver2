@@ -56,6 +56,8 @@ public class GameLevelManager : Singleton<GameLevelManager>
     public Dictionary<(E_GameLevelType, Vector3), bool> restPointDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
     public Dictionary<(E_GameLevelType, Vector3), bool> lightHouseIsDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
 
+    //返回安全屋之前的留存坐标，用于锚定返回点：
+    public Vector3 lastTeleportPoint = Vector3.zero;
 
     //Debug用：
     public void DebugAVGInfo()

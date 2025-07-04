@@ -80,6 +80,7 @@ public class MapManager : Singleton<MapManager>
         switch (elementId)
         {
             case 10001:
+            case 10002: //黑墙
             case 10003: //假墙
             case 10014: //特殊墙壁 
 

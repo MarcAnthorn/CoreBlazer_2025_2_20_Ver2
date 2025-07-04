@@ -5,9 +5,20 @@ using UnityEngine.Events;
 
 public class TestShelterStart : MonoBehaviour
 {
-    // Start is called before the first frame update
+    void Awake()
+    {
+        // //关闭灯光：
+        // EventHub.Instance.EventTrigger("TriggerLight", false);
+    }
+    
     void Start()
     {
+        // 重置所有IDAllocator
+        IDAllocator.Instance.Reset();
+        IDAllocatorFor30016.Instance.Reset();
+        IDAllocatorFor40016.Instance.Reset();
+        IDAllocatorForTarot.Instance.Reset();
+
         //回复血量：
         PlayerManager.Instance.player.HP.value = PlayerManager.Instance.player.HP.value_limit;
         EventHub.Instance.EventTrigger("UpdateAllUIElements");

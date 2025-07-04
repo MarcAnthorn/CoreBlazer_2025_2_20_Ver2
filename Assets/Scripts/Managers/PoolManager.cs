@@ -143,7 +143,10 @@ public class PoolManager : SingletonBaseManager<PoolManager>
     {
         //当对象要被归纳时，若根对象为空，并且开启了优化功能，则创建根对象；
         if (poolRoot == null && isOptimized)
+        {
             poolRoot = new GameObject("Pool");   //此语句表示的是创建一个以“Pool”命名的空物体；
+            GameObject.DontDestroyOnLoad(poolRoot);
+        }
 
         if (objToPool == null)
         {
@@ -167,8 +170,12 @@ public class PoolManager : SingletonBaseManager<PoolManager>
 
     public void ClearPool()
     {
-        poolDictionary.Clear();
-        //过场景手动清除poolRoot根对象；保证在新场景中的对象是重新声明的对象；
-        poolRoot = null;
+       poolDictionary.Clear();
+        // 过场景手动清除poolRoot根对象；保证在新场景中的对象是重新声明的对象；
+        if (poolRoot != null)
+        {
+            GameObject.Destroy(poolRoot);
+            poolRoot = null;
+        }
     }
 }

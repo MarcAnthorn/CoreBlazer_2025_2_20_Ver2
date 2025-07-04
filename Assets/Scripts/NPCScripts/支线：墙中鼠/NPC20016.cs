@@ -89,6 +89,12 @@ public class IDAllocator
         availableIDs.RemoveAt(index);
         return true;
     }
+
+    // 新增Reset方法
+    public void Reset()
+    {
+        availableIDs = new List<int> { 2102, 2103, 2104, 2105, 2106, 2107 };
+    }
 }
 
 
