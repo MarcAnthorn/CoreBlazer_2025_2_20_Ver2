@@ -39,7 +39,7 @@ public class TestMazeStart : MonoBehaviour
         switch (GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.First:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapFirstFloor", (_gameObject) =>
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapCentralFloor", (_gameObject) =>
                 {
                     Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
@@ -66,7 +66,7 @@ public class TestMazeStart : MonoBehaviour
 
                 break;
             case E_GameLevelType.Second:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapSecondFloor", (_gameObject) =>
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapCentralFloor", (_gameObject) =>
                 {
                     Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
@@ -92,7 +92,7 @@ public class TestMazeStart : MonoBehaviour
                 break;
             case E_GameLevelType.Third:
 
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapThirdFloor", (_gameObject) =>
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapCentralFloor", (_gameObject) =>
                 {
                     Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
@@ -141,12 +141,15 @@ public class TestMazeStart : MonoBehaviour
 
                 break;
         }
-        player.transform.position = originalPoint + new Vector3(0.41f, -0.91f);
+
+        if(GameLevelManager.Instance.lastTeleportPoint == Vector3.zero)
+            player.transform.position = originalPoint + new Vector3(0.41f, -0.91f);
+        
+        else 
+            player.transform.position = GameLevelManager.Instance.lastTeleportPoint;
+        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

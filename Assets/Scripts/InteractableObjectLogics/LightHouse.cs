@@ -12,6 +12,8 @@ public class LightHouse : MonoBehaviour
     {
         light2D = this.GetComponent<Light2D>();
         EventHub.Instance.AddEventListener("OnPlayerDead", OnPlayerDead);
+        EventHub.Instance.AddEventListener<bool>("TriggerLight", TriggerLight);
+
     }
     void Start()
     {
@@ -28,6 +30,7 @@ public class LightHouse : MonoBehaviour
     void OnDestroy()
     {
         EventHub.Instance.RemoveEventListener("OnPlayerDead", OnPlayerDead);
+        EventHub.Instance.RemoveEventListener<bool>("TriggerLight", TriggerLight);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -54,6 +57,12 @@ public class LightHouse : MonoBehaviour
         lightLock = false;
         light2D.intensity = 1;
         Debug.LogWarning("LightHouse Dead Triggered");
+    }
+
+    //在进入安全屋的时候，触发的取消灯光的方法：
+    private void TriggerLight(bool isOn)
+    {
+        light2D.enabled = isOn;
     }
 }
 

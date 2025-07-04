@@ -52,6 +52,8 @@ public class GameLevelManager : Singleton<GameLevelManager>
     //当前的uniqueId的可交互门是否解锁过：
     public Dictionary<int, bool> doorIsUnlockedDic = new Dictionary<int, bool>();
 
+    //返回安全屋之前的留存坐标，用于锚定返回点：
+    public Vector3 lastTeleportPoint = Vector3.zero;
 
     //Debug用：
     public void DebugAVGInfo()

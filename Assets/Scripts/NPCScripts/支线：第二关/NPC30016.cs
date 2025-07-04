@@ -90,4 +90,10 @@ public class IDAllocatorFor30016
         availableIDs.RemoveAt(index);
         return true;
     }
+
+    // 新增Reset方法
+    public void Reset()
+    {
+        availableIDs = new List<int> { 2202, 2203, 2204, 2205, 2206, 2207 };
+    }
 }

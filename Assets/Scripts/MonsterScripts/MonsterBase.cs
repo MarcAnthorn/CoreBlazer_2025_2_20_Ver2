@@ -209,7 +209,7 @@ public abstract class MonsterBase : MonoBehaviour
             return;
         }
 
-        Debug.Log($"now state:{_isFrozen}");
+        Debug.LogWarning($"now state:{_isFrozen}");
         
         if (_isFrozen)
         {
@@ -535,9 +535,9 @@ public abstract class ChaseState : IMonsterState
         }
         
         // 检查是否需要更新路径
-        bool shouldUpdatePath = ShouldUpdatePath(currentPlayerPos, monster);
+        bool shouldUpdatePath = monster.IsPaused() ? false : ShouldUpdatePath(currentPlayerPos, monster);
 
-        Debug.Log($"Chasing! shouldUpdatePath is {shouldUpdatePath}");
+        // Debug.Log($"Chasing! shouldUpdatePath is {shouldUpdatePath}");
         
         if(shouldUpdatePath)
         {
@@ -560,7 +560,7 @@ public abstract class ChaseState : IMonsterState
         {
             return true;
         }
-        Debug.Log($"Current time, {Time.time}");
+     
         
         // // 2. 检查玩家移动距离
         // //玩家移动超过1单位，才会更新
@@ -570,14 +570,15 @@ public abstract class ChaseState : IMonsterState
         //     return false;
         // }
         
-        // 3. 检查怪物是否正在移动
-        if(!monster.IsMoving())
-        {
-            return true; // 怪物停止时立即更新路径
-        }
+        // // 3. 检查怪物是否正在移动
+        // if(!monster.IsMoving())
+        // {
+        //     return true; // 怪物停止时立即更新路径
+        // }
 
         return false;
     }
+  
 }
 
 
