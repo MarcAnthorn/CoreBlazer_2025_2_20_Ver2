@@ -37,7 +37,7 @@ public class TextManager : MonoBehaviour
     /// <param name="role">角色名</param>
     /// <param name="eventName">事件名</param>
     /// <param name="dialogId">对话id</param>
-    /// <returns>对应的文本内容，如果未找到则返回提示字符串</returns>
+    /// <returns>对应的文本内容，如果未找到则返回提示字符串</returns> 
     public string GetText(string role, string eventName, string dialogId)
     {
         if (textData != null &&
