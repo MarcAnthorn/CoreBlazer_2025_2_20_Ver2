@@ -756,6 +756,34 @@ public class EnemySkill_1016 : EnemySkill
     }
 }
 
+// 深海的呼唤
+public class EnemySkill_1017 : EnemySkill
+{
+    public EnemySkill_1017()
+    {
+        skillName = "深海的呼唤";
+    }
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1017(enemy);
+    }
+}
+
+// 深渊之主的回音
+public class EnemySkill_1018 : EnemySkill
+{
+    public EnemySkill_1018()
+    {
+        skillName = "深渊之主的回音";
+    }
+
+    override public void Use(Enemy enemy)
+    {
+        EnemyManager.Instance.EnemySkill_1018(enemy);
+    }
+}
+
 // 鼠群意志
 public class EnemySkill_1020 : EnemySkill
 {
