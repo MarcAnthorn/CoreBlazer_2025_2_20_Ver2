@@ -476,10 +476,8 @@ public class PlayerController : PlayerBase
 
         //重置血量相关
         PlayerManager.Instance.player.HP.SetValue(100);
-        PlayerManager.Instance.player.LVL.value = 300;
-
-        //重置当前的关卡进度：
-        //不论是在哪一层死亡的，都会回到第一层的安全屋；
+        PlayerManager.Instance.player.LVL.SetValue(300);
+        PlayerManager.Instance.player.LVL.value_limit = 300; // 确保上限也同步
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
 
         //更新UI面板：
