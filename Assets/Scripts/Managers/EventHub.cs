@@ -79,8 +79,17 @@ public class EventHub : SingletonBaseManager<EventHub>
         if (eventDictionary.ContainsKey(eventName))
         {
             (eventDictionary[eventName] as EventInfo<T>).action_?.Invoke(info);      //info被作为参数传入；此时所有订阅者的监听方法都会收到该参数；
-            return true;
+            if((eventDictionary[eventName] as EventInfo<T>).action_ != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+
+        
         return false;
     }
 
