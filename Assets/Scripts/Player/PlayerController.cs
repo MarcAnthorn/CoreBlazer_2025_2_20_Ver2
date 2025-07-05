@@ -514,7 +514,7 @@ public class PlayerController : PlayerBase
 
     public void ResumeLight(float lightDelta)
     {
-        if(lightDelta != -1)
+        if(lightDelta < 0)
         {
             LExtra = lightDelta;
         }
@@ -550,6 +550,7 @@ public class PlayerController : PlayerBase
                 break;
         }
         spriteLight.pointLightOuterRadius = radiusMultiplier * L * L;
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
     }
 
     //冻结（解冻）方法，在UI显示等其他交互的时候，冻结Player相关的调整

@@ -54,7 +54,7 @@ public class LightHouse : MonoBehaviour
                     light2D.intensity = val;
             });
             
-            EventHub.Instance.EventTrigger("ResumeLight", -1);
+            EventHub.Instance.EventTrigger("ResumeLight", -1f);
             lightLock = true;
 
             // 记录状态到字典

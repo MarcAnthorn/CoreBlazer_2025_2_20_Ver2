@@ -106,7 +106,7 @@ public class RestPoint : MonoBehaviour
     private void TriggerRest()
     {
         isLightResumed = true;
-        EventHub.Instance.EventTrigger("ResumeLight", -1);
+        EventHub.Instance.EventTrigger("ResumeLight", -1f);
         PlayerManager.Instance.player.HP.SetValueToLimit(); 
 
         //关闭灯光衰减：
