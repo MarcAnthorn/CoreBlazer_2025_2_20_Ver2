@@ -380,7 +380,7 @@ public class BattlePanel : BasePanel
           {
                //GameOver在BattleManager中；
                Debug.LogWarning("玩家死亡！");
-               EventHub.Instance.EventTrigger("GameOver", false, callback);     //callback只有获胜才会调用，内部会进判断的；
+               EventHub.Instance.EventTrigger("GameOer", false, callback);     //callback只有获胜才会调用，内部会进判断的；
           }
 
           else if(enemy.HP <= 0) //敌人死亡

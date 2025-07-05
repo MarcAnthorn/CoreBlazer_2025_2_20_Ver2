@@ -46,8 +46,17 @@ public class MonsterChase101 : MonsterBase
         });
 
 
+        EventHub.Instance.AddEventListener<int>("Callback101", OnComplete);
+
     }
 
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        EventHub.Instance.AddEventListener<int>("Callback101", OnComplete);
+    }
 
     //追踪回调
     protected override void OnChaseEnd()
@@ -84,9 +93,13 @@ public class MonsterChase101 : MonsterBase
     private void OnAVGComplete(int id)
     {
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
-        LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
-        EventHub.Instance.EventTrigger<bool>("Freeze", false);
-        Destroy(this.gameObject);
+
+        EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
+        }); 
+
+        // Destroy(this.gameObject);
     }
 }
 

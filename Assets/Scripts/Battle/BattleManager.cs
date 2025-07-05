@@ -279,6 +279,13 @@ public class BattleManager : Singleton<BattleManager>
     private void GameOver(bool isWin, UnityAction<int> callback)
     {
 
+        //特殊：尝试调用101的战斗失败回调：
+        if(EventHub.Instance.EventTrigger("Callback101", 100)) //number doesnt matter
+        {
+            return;
+        }
+            
+
         if(!isJudgedWhoWins)
         {
             isJudgedWhoWins = true;
@@ -312,6 +319,8 @@ public class BattleManager : Singleton<BattleManager>
                 });
                 
             }
+
+            
 
             TurnCounter.Instance.ClearTurnCounter();
         }  
