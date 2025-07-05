@@ -60,7 +60,7 @@ public class MapManager : Singleton<MapManager>
 
         Map map4 = new Map()
         {
-            row = 65,
+            row = 68,
             colume = 152
         };
 
@@ -80,8 +80,11 @@ public class MapManager : Singleton<MapManager>
         switch (elementId)
         {
             case 10001:
+            case 10002: //黑墙
             case 10003: //假墙
             case 10014: //特殊墙壁 
+
+            case 60004://捷径门（默认关闭）
                 element = new Wall(elementId, 1);     //普通墙壁
                 return element;
 
@@ -97,9 +100,6 @@ public class MapManager : Singleton<MapManager>
             case 10013:
 
             case 10015: //回收商品的NPC：
-            case 20010: //poi事件
-            case 20020: //
-            case 20030: // 
 
 //--------------以下是墙中鼠-----------------------
             case 20016: 
@@ -108,7 +108,7 @@ public class MapManager : Singleton<MapManager>
             case 20019:
             case 20025:
             case 20021:
-//----------------------------------------------------
+
 
 //--------------宝箱-----------------------
             case 20022:
@@ -116,10 +116,16 @@ public class MapManager : Singleton<MapManager>
             case 20024:
             case 20026:
 
-            //boss战宝箱：
-            case 50007:
+            case 20010: //poi事件
+            case 20020: //
+            case 20030: // 
 
-//----------------------------------------------------
+            //不知道是啥：
+            case 20300:
+            case 20400:
+            case 20500:
+
+
 
             //新手关卡：
             case 30001:
@@ -137,8 +143,6 @@ public class MapManager : Singleton<MapManager>
             case 40016:
             case 40017:
 
-
-
             case 50001: //塔罗牌点位
 
 //----------战斗事件-------------------------------
@@ -148,6 +152,19 @@ public class MapManager : Singleton<MapManager>
             case 50004: //第一层boss点
             case 50005: //第二层boss点
             case 50006: //第三层boss点
+
+            case 50007://boss战宝箱：
+
+            case 60001://追逐战触发点：
+            case 60002://休息点
+            case 60003://钥匙投放点
+
+            case 70001: //达贡剧情点（+休息点）
+            case 70002: //达贡头
+            case 70003: //达贡身体
+            case 70004: //达贡底座
+            
+
                 element = new Ground(elementId, 0);  //起始点
                 return element;
             default:

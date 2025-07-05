@@ -34,12 +34,14 @@ public class TestMazeStart : MonoBehaviour
 
         //播放进入迷宫的音效：
         SoundEffectManager.Instance.PlaySoundEffect("进入离开迷宫时的音效");
+
+        // GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
         
         //按照当前的GameLevelManager中的标识进行地图的加载：
         switch (GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.First:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapFirstFloor", (_gameObject) =>
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapCentralFloor", (_gameObject) =>
                 {
                     Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
@@ -60,13 +62,9 @@ public class TestMazeStart : MonoBehaviour
 
 
                 });
-
-
-
-
                 break;
             case E_GameLevelType.Second:
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapSecondFloor", (_gameObject) =>
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapCentralFloor", (_gameObject) =>
                 {
                     Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
@@ -92,7 +90,7 @@ public class TestMazeStart : MonoBehaviour
                 break;
             case E_GameLevelType.Third:
 
-                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapThirdFloor", (_gameObject) =>
+                ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapCentralFloor", (_gameObject) =>
                 {
                     Instantiate(_gameObject, originalPoint, Quaternion.identity);
                     playerScript.isDamageLocked = false;
@@ -131,17 +129,25 @@ public class TestMazeStart : MonoBehaviour
                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 1110);
                     AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 1111);
 
+                    //贡献默认对话:
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 2501, 0);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 2502, 0);
+                    AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 2503, 0);
+
 
                 });
 
                 break;
         }
-        player.transform.position = originalPoint + new Vector3(0.41f, -0.91f);
+
+        if(GameLevelManager.Instance.lastTeleportPoint == Vector3.zero)
+            player.transform.position = originalPoint + new Vector3(0.41f, -0.91f);
+        
+        else 
+            player.transform.position = GameLevelManager.Instance.lastTeleportPoint;
+        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

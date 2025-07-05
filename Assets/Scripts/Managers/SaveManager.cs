@@ -11,14 +11,17 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     private static string gameLevelSavePath => Application.persistentDataPath + "/gamelevel_save.json";
     private static string equipmentSavePath => Application.persistentDataPath + "/equipment_save.json";
     private static string itemSavePath => Application.persistentDataPath + "/item_save.json";
+    private static string avgDistributeSavePath => Application.persistentDataPath + "/avgdistribute_save.json";
 
     //存档接口：
     public void SaveGame()
     {
-        SavePlayerAttribute(); 
+        SavePlayerAttribute();
         SaveGameLevel();
         SaveEquipment();
         SaveItem();
+        SaveAVGDistribute();
+        ManageRestLightData(true);
     }
 
     //读档接口：
@@ -28,6 +31,8 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         LoadGameLevel();
         LoadEquipment();
         LoadItem();
+        LoadAVGDistribute();
+        ManageRestLightData(false);
     }
 
     //清空当前游戏进度的方法；
@@ -56,6 +61,9 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         var im = ItemManager.Instance;
         im.itemList.Clear();
         im.itemCountDic.Clear();
+
+        //avg贡献重置：
+        AVGDistributeManager.Instance.ClearAllDistributionRecord();
 
         Debug.Log("所有存档已清空，玩家进度已重置！");
     }
@@ -280,11 +288,71 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         Debug.Log("道具信息已从存档恢复！");
     }
 
-//---------------------------道具装备存档--------------------------------------------------
+    //---------------------------道具装备存档--------------------------------------------------
 
 
-//---------------------------存档可序列化数据容器--------------------------------------------
-     // 存档数据结构
+    //---------------------------存档可序列化数据容器--------------------------------------------
+    [System.Serializable]
+    public class RestLightSaveData
+    {
+        public List<KeyValuePair<string, bool>> restPointList = new List<KeyValuePair<string, bool>>();
+        public List<KeyValuePair<string, bool>> lightHouseList = new List<KeyValuePair<string, bool>>();
+    }
+
+    private static string restLightSavePath => Application.persistentDataPath + "/restlight_save.json";
+
+    // 存取rest point与lighthouse的方法，isSave为true时保存，为false时读取
+    public void ManageRestLightData(bool isSave)
+    {
+        if (isSave)
+        {
+            var data = new RestLightSaveData();
+            // 序列化restPointDic
+            foreach (var kv in GameLevelManager.Instance.restPointDic)
+            {
+                // key序列化为字符串，格式：关卡类型|x|y|z
+                string keyStr = $"{kv.Key.Item1}|{kv.Key.Item2.x}|{kv.Key.Item2.y}|{kv.Key.Item2.z}";
+                data.restPointList.Add(new KeyValuePair<string, bool>(keyStr, kv.Value));
+            }
+            // 序列化lightHouseIsDic
+            foreach (var kv in GameLevelManager.Instance.lightHouseIsDic)
+            {
+                string keyStr = $"{kv.Key.Item1}|{kv.Key.Item2.x}|{kv.Key.Item2.y}|{kv.Key.Item2.z}";
+                data.lightHouseList.Add(new KeyValuePair<string, bool>(keyStr, kv.Value));
+            }
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(restLightSavePath, json);
+            Debug.Log("RestPoint与LightHouse数据已保存到: " + restLightSavePath);
+        }
+        else
+        {
+            if (!File.Exists(restLightSavePath))
+            {
+                Debug.LogWarning("未找到RestLight存档文件，无法读档！");
+                return;
+            }
+            string json = File.ReadAllText(restLightSavePath);
+            RestLightSaveData data = JsonConvert.DeserializeObject<RestLightSaveData>(json);
+            GameLevelManager.Instance.restPointDic.Clear();
+            foreach (var kv in data.restPointList)
+            {
+                var arr = kv.Key.Split('|');
+                var level = (E_GameLevelType)System.Enum.Parse(typeof(E_GameLevelType), arr[0]);
+                var pos = new Vector3(float.Parse(arr[1]), float.Parse(arr[2]), float.Parse(arr[3]));
+                GameLevelManager.Instance.restPointDic[(level, pos)] = kv.Value;
+            }
+            GameLevelManager.Instance.lightHouseIsDic.Clear();
+            foreach (var kv in data.lightHouseList)
+            {
+                var arr = kv.Key.Split('|');
+                var level = (E_GameLevelType)System.Enum.Parse(typeof(E_GameLevelType), arr[0]);
+                var pos = new Vector3(float.Parse(arr[1]), float.Parse(arr[2]), float.Parse(arr[3]));
+                GameLevelManager.Instance.lightHouseIsDic[(level, pos)] = kv.Value;
+            }
+            Debug.Log("RestPoint与LightHouse数据已从存档恢复！");
+        }
+    }
+    // 存档数据结构
     [System.Serializable]
     public class PlayerAttributeSaveData
     {
@@ -338,6 +406,71 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     {
         public List<int> itemList;
         public List<KeyValuePair<int, int>> itemCountList;
+    }
+
+    public void SaveAVGDistribute()
+    {
+        var avgMgr = AVGDistributeManager.Instance;
+        AVGDistributeSaveData data = new AVGDistributeSaveData();
+        data.contributedAvgIdList = new List<int>(avgMgr.contributedAvgIdList);
+        data.npcAvgQueueDic = new Dictionary<int, List<int>>();
+        foreach (var kv in avgMgr.dicAVGDistributor)
+        {
+            data.npcAvgQueueDic[(int)kv.Key] = new List<int>(kv.Value);
+        }
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(avgDistributeSavePath, json);
+        Debug.Log("AVGDistributeManager数据已保存到: " + avgDistributeSavePath);
+    }
+
+    public void LoadAVGDistribute()
+    {
+        if (!File.Exists(avgDistributeSavePath))
+        {
+            Debug.LogWarning("未找到AVGDistribute存档文件，无法读档！");
+            return;
+        }
+        var avgMgr = AVGDistributeManager.Instance;
+        string json = File.ReadAllText(avgDistributeSavePath);
+        AVGDistributeSaveData data = JsonConvert.DeserializeObject<AVGDistributeSaveData>(json);
+        avgMgr.contributedAvgIdList.Clear();
+        avgMgr.contributedAvgIdList.AddRange(data.contributedAvgIdList);
+        // 还原事件队列
+        // 输出字典所有内容
+        Debug.Log("------npcAvgQueueDic完整内容------");
+        foreach (var kv in data.npcAvgQueueDic)
+        {
+            Debug.Log($"key: {kv.Key}, value: [{string.Join(",", kv.Value)}]");
+        }
+        Debug.Log("------------");
+        foreach (var kv in data.npcAvgQueueDic)
+        {
+            E_NPCName npcName;
+            if (int.TryParse(kv.Key.ToString(), out int npcInt))
+            {
+                npcName = (E_NPCName)npcInt;
+            }
+            else
+            {
+                npcName = (E_NPCName)System.Enum.Parse(typeof(E_NPCName), kv.Key.ToString());
+            }
+            if (!avgMgr.dicAVGDistributor.ContainsKey(npcName))
+                avgMgr.dicAVGDistributor[npcName] = new LinkedList<int>();
+            Debug.Log($"当前NPC名称: {npcName}");
+            avgMgr.dicAVGDistributor[npcName].Clear();
+            foreach (var id in kv.Value)
+            {
+                avgMgr.dicAVGDistributor[npcName].AddLast(id);
+            }
+        }
+        Debug.Log("AVGDistributeManager数据已从存档恢复！");
+    }
+
+    [System.Serializable]
+    public class AVGDistributeSaveData
+    {
+        public List<int> contributedAvgIdList;
+        public Dictionary<int, List<int>> npcAvgQueueDic;
     }
 
 //---------------------------存档可序列化数据容器--------------------------------------------

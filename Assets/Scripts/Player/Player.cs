@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public enum AttributeType
 {
@@ -53,8 +54,9 @@ public class Player               //存储角色信息等
         {
             value = Mathf.Min(value + change, value_limit);    
             //如果是灯光值，并且change > 0,尝试触发道具102的效果：
-            if(change > 0)
-                EventHub.Instance.EventTrigger("AddExtraLight");       
+            if(change > 0 && this.id == 4)
+                EventHub.Instance.EventTrigger("AddExtraLight");  
+
         }
 
         public void MultipleValue(float change)
@@ -75,16 +77,23 @@ public class Player               //存储角色信息等
         public void AddValueLimit(float change)
         {
             //如果是灯光值，并且change > 0,尝试触发道具102的效果：
-            if(change > 0)
+            if(change > 0 && this.id == 4)
                 EventHub.Instance.EventTrigger("AddExtraLight"); 
 
             value += change;
             value_limit += change;
         }
 
+        public void SetValueToLimit()
+        {
+            this.value = this.value_limit;
+        }
+
         public void MultipleValueLimit(float change)
         {
-            value *= change;
+            float delta = value * change;
+            value_limit += delta;
+            value += delta;
         }
 
         public void SetValueLimit(float value)
@@ -122,19 +131,9 @@ public class Player               //存储角色信息等
 
     // }
 
-    public void BeHurted(Damage damage)
+    public void BeHurted(float value)
     {
-        HP.AddValue(-damage.damage);
-
-        // if (HP.value <= 0)
-        // {
-        //     //等待UI更新结束之后再处理死亡：
-        //     // LeanTween.delayedCall(0.6f, () => {
-        //     //     Debug.Log("玩家死亡!");
-        //     //     GameOver();
-        //     // });
-           
-        // }
+        HP.AddValue(-value);
     }
 
     public void DebugInfo()
@@ -157,16 +156,72 @@ public enum DamageType : uint
 
 public class Damage
 {
-    // 是否是暴击伤害
-    public bool isCritical;
-    // 伤害量
-    public float damage;
-    // 伤害类型
-    public DamageType damageType;
+    // 不要直接访问!!!改用索引器访问
+    private List<SingleDamage> damageValues = new List<SingleDamage>();
+
+    public bool isAvoided;                      // 闪避标识
+    public bool isCombo;                        // 连击标识
+    public DamageType damageType;               // 伤害类型
+
+    public class SingleDamage
+    {
+        public bool isCritical;                 // 暴击标识
+        public float damage;                      // 伤害量
+
+        public SingleDamage(bool isCritical, float damage)
+        {
+            this.isCritical = isCritical;
+            this.damage = damage;
+        }
+    }
 
     public Damage(DamageType damageType)
     {
         this.damageType = damageType;
     }
 
+    public SingleDamage this[int index]
+    {
+        get 
+        {
+            if (index < 0 || index >= damageValues.Count)
+            {
+            
+                throw new IndexOutOfRangeException($"索引超出范围 get, count is {damageValues.Count}, index is {index}");
+            }
+            return damageValues[index]; 
+        }
+        set 
+        {
+            if (index < 0 || index >= damageValues.Count)
+                throw new IndexOutOfRangeException("索引超出范围 set");
+            damageValues[index] = value;
+        }
+    }
+
+    public int GetSize()
+    {
+        return damageValues.Count;
+    }
+
+    public void AddSingleDamage(bool isCritical, float value)
+    {
+        damageValues.Add(new SingleDamage(isCritical, (int)value));
+    }
+
+    // 解析伤害 迁移到BattlePanel中；
+    // //注意需要区分伤害的施加来源
+    // //其中，0是表示玩家受伤；1是表示敌人受伤
+    // public void ParseDamage(int flag)
+    // {
+    //     if(flag == 0)
+    //     {
+    //         //玩家受伤
+    //     }
+
+    //     else
+    //     {
+    //         //敌人受伤
+    //     }
+    // }
 }

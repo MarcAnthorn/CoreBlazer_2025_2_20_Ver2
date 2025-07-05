@@ -165,7 +165,9 @@ public class CommonItemPanelInventory : BasePanel
                 }
 
                 //不然就是初始化迷宫道具：
-                else if((infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Normal || infoItem.type == Item.ItemType.Maze) && infoItem.usableScene[2]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
+                //  else if((infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Normal || infoItem.type == Item.ItemType.Maze) && infoItem.usableScene[2]  == 1 && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
+
+                else if((infoItem.type == Item.ItemType.Battle || infoItem.type == Item.ItemType.Normal || infoItem.type == Item.ItemType.Maze) && PlayerManager.Instance.playerSceneIndex == E_PlayerSceneIndex.Maze)
                 {
                     if(ItemManager.Instance.itemCountDic[infoItem.id] == 0 && !infoItem.isInUse)
                         continue;

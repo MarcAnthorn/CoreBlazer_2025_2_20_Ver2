@@ -14,6 +14,19 @@ public enum E_PlayerSceneIndex{
 public class PlayerManager : Singleton<PlayerManager>          //用于管理角色的事件
 {
     public Player player;               //当前角色
+
+    public Transform PlayerTransform{
+        get{
+            if(playerTransform == null)
+            {
+                EventHub.Instance.EventTrigger<UnityAction<Transform>>("ExposePlayerTransform", (_transform) =>{
+                    playerTransform = _transform;
+                });
+            }
+            return playerTransform;
+        }
+    }
+    private Transform playerTransform;
     public Vector3 initPosition;
 
     //特殊字段：当前玩家所处的场景；
@@ -26,11 +39,13 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     protected override void Awake()
     {
         base.Awake();
-
-        //测试用：
-        //该方法在Awake中调用，确保全局只触发一次
         InitPlayer();
+    
+    }
 
+    void Start()
+    {
+        
     }
 
     //使用只读属性暴露玩家数值
@@ -54,6 +69,13 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     {
         if(player != null)
             player = null;
+        
+        if(playerTransform == null)
+        {
+            EventHub.Instance.EventTrigger<UnityAction<Transform>>("ExposePlayerTransform", (_transform) =>{
+                playerTransform = _transform;
+            });
+        }
             
         //PlayerManager 管理的全局唯一Player实例
         player = new Player()
@@ -215,16 +237,17 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     }
 
     // 造成伤害
-    public List<Damage> CauseDamage(Enemy enemy, float singleDamage, DamageType damageType)
+    public Damage CauseDamage(Enemy enemy, float singleDamage, DamageType damageType)
     {
-        List<Damage> damages= new List<Damage>();
+        Damage damages= new Damage(damageType);
         if (JugdeAvoid(enemy))
         {
+            damages.isAvoided = true;
             return damages;
         }
         else
         {
-            JudgeHit(singleDamage, damageType, out damages);
+            JudgeHit(singleDamage, damages);
         }
 
         return damages;
@@ -233,7 +256,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     //命中判定
     private bool JugdeAvoid(Enemy enemy)
     {
-        float avo = enemy.AVO;        //!!先假设这是敌人的闪避值!!
+        float avo = enemy.AVO;
         float random = UnityEngine.Random.Range(0f, 1f);
         if (random < avo)
         {
@@ -244,13 +267,11 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
     }
 
     //连击判定
-    public void JudgeHit(float singleDamage, DamageType damageType, out List<Damage> damages)
+    public void JudgeHit(float singleDamage, Damage damages)
     {
-        /*连击判定(由Player类来处理每一次连击的效果)
-         *  对每一次连击进行暴击判定
-         */
-        List<Damage> damages_return = new List<Damage>();
-
+        // 连击判定(由Player类来处理每一次连击的效果)
+        // 对每一次连击进行暴击判定
+        damages.isCombo = false;
         float hit = PlayerManager.Instance.player.HIT.value;
         int baseHit = (int)Math.Ceiling(hit);       //向上取整
         if ((float)baseHit == hit)
@@ -261,36 +282,47 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         float constHit = baseHit;
         for (int i = 0; i < constHit + 1; i++)
         {
-            Damage tempDamage = new Damage(damageType);
-            float random1 = UnityEngine.Random.Range(0f, 1f);
-            if (random1 < crit_rate)
-            {
-                Debug.Log("is critical");
-                tempDamage.damage = singleDamage * (1 + crit_dmg);
-                tempDamage.isCritical = true;
-            }
-            else
-            {
-                tempDamage.damage = singleDamage;
-                tempDamage.isCritical = false;
-            }
-
             // 对下一次是否继续循环进行判断（连击判断）
             if (baseHit == 0)
             {
-                float random2 = UnityEngine.Random.Range(0f, 1f);
-                if (random2 >= hitRate)
+                float random1 = UnityEngine.Random.Range(0f, 1f);
+                if (random1 >= hitRate)
                 {
                     break;
                 }
+                damages.isCombo = true;
             }
 
-            damages_return.Add(tempDamage);
+            float random2 = UnityEngine.Random.Range(0f, 1f);
+            if (random2 < crit_rate)
+            {
+                Debug.Log("is critical");
+                damages.AddSingleDamage(true, singleDamage * (1 + crit_dmg));
+            }
+            else
+            {
+                damages.AddSingleDamage(false, singleDamage);
+            }
+
             baseHit--;
         }
 
-        damages = damages_return;
+    }
 
+    public void PlayerHurted(Damage damages)
+    {
+        // 在这里可以添加一些对伤害的解析(比如检测是否连击) + 局内效果实现
+        EventHub.Instance.EventTrigger("ParseDamage", damages, 0);
+
+        // 计算伤害
+        for (int i = 0; i < damages.GetSize(); ++i)
+        {
+            Debug.LogWarning($"即将施加伤害：{damages[i].damage}");
+            BattleManager.Instance.player.BeHurted(damages[i].damage);
+            // 调用UI更新：
+            EventHub.Instance.EventTrigger("UpdateAllUIElements");
+            EventHub.Instance.EventTrigger("UpdateSliders");
+        }
     }
 
 }

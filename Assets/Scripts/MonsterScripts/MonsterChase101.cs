@@ -12,6 +12,7 @@ public class MonsterChase101 : MonsterBase
     public float detectionRange = 100f;        // 检测范围
     public float chaseSpeed; // 追逐速度
 
+    private float chaseDelayTime = 2;   //唤醒到追逐的延迟时间
     //虚拟相机：
     public CinemachineVirtualCamera _cam;
 
@@ -27,15 +28,17 @@ public class MonsterChase101 : MonsterBase
         chaseState = new Chase101State(this);
            
         // 设置初始状态为追逐
-        SwitchToChase();
+        LeanTween.delayedCall(chaseDelayTime, ()=>{
+            SwitchToChase();
+        });
+        
     }
 
     protected override void Awake() {
         base.Awake();
-
         // 设置怪物特殊属性
         moveSpeedBase = chaseSpeed;
-        enemyId = 1001;
+        enemyId = 1015;
 
         _cam.Priority = 11;       
         LeanTween.delayedCall(2f, ()=>{
@@ -43,85 +46,61 @@ public class MonsterChase101 : MonsterBase
         });
 
 
+        EventHub.Instance.AddEventListener<int>("Callback101", OnComplete);
+
     }
 
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        EventHub.Instance.AddEventListener<int>("Callback101", OnComplete);
+    }
 
     //追踪回调
     protected override void OnChaseEnd()
     {
         Debug.LogWarning($"怪物{enemyId}追逐结束, 触发战斗");
+        PauseMoving();
+
+
 
         // 触发战斗：
-        //  var panel = UIManager.Instance.ShowPanel<BattlePanel>();
-        //     panel.InitEnemyInfo(enemyId);
-        //     panel.callback = OnComplete;
-        //     EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        var panel = UIManager.Instance.ShowPanel<BattlePanel>();
+        panel.InitEnemyInfo(enemyId);
+        panel.callback = OnComplete;
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
 
         //暂时先是触发回去的内容：
-        OnComplete();
+        // OnComplete();
    
     }
 
-    protected override void OnComplete()
+    protected override void OnComplete(int id)
     {
-        base.OnComplete();
+        base.OnComplete(id);    
         
-        DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1106];
-        var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-        panel.orderBlock = ob;
-        panel.callback = OnAVGComplete;
-        EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1106, OnAVGComplete);
 
+    }
+
+    protected override void Freeze(bool _isFrozen)
+    {
+        base.Freeze(_isFrozen);     
     }
 
     private void OnAVGComplete(int id)
     {
-        Destroy(this.gameObject);
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
-        LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
-        EventHub.Instance.EventTrigger<bool>("Freeze", false);
+
+        EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+            LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
+        }); 
+
+        // Destroy(this.gameObject);
     }
-
-
-
-    //无巡逻怪物，无需以下内容
-    // protected override void InitPatrolPoints()
-    // {
-    //     //此处可以存储巡逻点
-        
-    //     //PatrolState会在进入State的时候初始化巡逻index；此处不需要
-    //     // patrolIndex = 0;
-    // }
-
-
-    // 在Inspector中可视化巡逻点
-    // private void OnDrawGizmosSelected()
-    // {
-    //     if (patrolPoints != null && patrolPoints.Count > 0)
-    //     {
-    //         Gizmos.color = Color.yellow;
-            
-    //         // 绘制巡逻点
-    //         for (int i = 0; i < patrolPoints.Count; i++)
-    //         {
-    //             Gizmos.DrawWireSphere(patrolPoints[i], 0.5f);
-                
-    //             // 绘制巡逻路径
-    //             if (i < patrolPoints.Count - 1)
-    //             {
-    //                 Gizmos.DrawLine(patrolPoints[i], patrolPoints[i + 1]);
-    //             }
-    //             else
-    //             {
-    //                 Gizmos.DrawLine(patrolPoints[i], patrolPoints[0]);
-    //             }
-    //         }
-            
-    //         // 绘制检测范围
-    //         Gizmos.color = Color.red;
-    //         Gizmos.DrawWireSphere(transform.position, detectionRange);
-    //     }
-    // }
 }
 
 
@@ -150,8 +129,8 @@ public class Chase101State : ChaseState
     public Chase101State(MonsterChase101 monster)
     {
         monster101 = monster;
-        pathUpdateInterval = 0.5f;          //路径更新的时间阈值
-        minDistanceToUpdate = 1f;           //路径更新的距离阈值
+        pathUpdateInterval = 1.0f;          // 增加更新间隔
+        minDistanceToUpdate = 2f;           // 增加距离阈值
     }
 
     protected override void OnChaseUpdate(MonsterBase monster)

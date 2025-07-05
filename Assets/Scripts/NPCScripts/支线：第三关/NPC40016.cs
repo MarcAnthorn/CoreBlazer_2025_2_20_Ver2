@@ -34,7 +34,7 @@ public class NPC40016 : NPCBase
     {
         if (!IDAllocatorFor40016.Instance.TryGetUniqueID(out avgId))
         {
-            Debug.LogError("没有可用的ID分配给对象: " + gameObject.name);
+            Debug.LogWarning("没有可用的ID分配给对象: " + gameObject.name);
             return;
         }
 
@@ -77,5 +77,11 @@ public class IDAllocatorFor40016
         id = availableIDs[index];
         availableIDs.RemoveAt(index);
         return true;
+    }
+
+    // 新增Reset方法
+    public void Reset()
+    {
+        availableIDs = new List<int> { 1201, 1202, 1203, 1204, 1205 };
     }
 }

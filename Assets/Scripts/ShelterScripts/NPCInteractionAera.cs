@@ -10,6 +10,20 @@ public class NPCInteractionAera : MonoBehaviour
     
     public E_NPCName myName;
 
+    //出现非默认对话的时候，悬浮的符号：
+    public GameObject warningMarkObject;
+
+    void Awake()
+    {
+        EventHub.Instance.AddEventListener("UpdateWaringMark", UpdateWaringMark);
+    }
+
+    //在Star中更新：
+    void Start()
+    {
+        UpdateWaringMark();
+    }   
+
     private void Update()
     {
         if (!isTriggerLock)
@@ -24,12 +38,23 @@ public class NPCInteractionAera : MonoBehaviour
             {
                 int avgId = AVGDistributeManager.Instance.FetchAVGId(myName);
 
-                DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[avgId];
-                var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-                panel.orderBlock = ob;
+                //如果是格赫，那么还需要在第一次遇见的时候贡献三个AVG给三神：
+                //AVGDistributionManager中确保了不会重复添加avgid:
+                //迁移到了TestMazeStart中了：
+                // AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.奈亚拉, 2501);
+                // AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.优格, 2502);
+                // AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.莎布, 2503);
+                
+
+                UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(avgId);
                 EventHub.Instance.EventTrigger<bool>("Freeze", true);
             }
         }
+    }
+
+    void OnDestroy()
+    {
+        EventHub.Instance.RemoveEventListener("UpdateWaringMark", UpdateWaringMark);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -37,7 +62,16 @@ public class NPCInteractionAera : MonoBehaviour
         {
             isTriggerLock = false;
             txtObject = PoolManager.Instance.SpawnFromPool("TipText");
-            EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", "按下「J」进入信仰绑定界面\n按下「K」进入对话", this.transform.position + offset);
+            var tmpUGUI = txtObject.GetComponent<TMPro.TextMeshProUGUI>();
+            var tmp3D = txtObject.GetComponent<TMPro.TextMeshPro>();
+            var font = Resources.Load<TMPro.TMP_FontAsset>("Noto_Sans_SC/static/NotoSansSC-Black SDF");
+            if (font != null)
+            {
+                if (tmpUGUI != null) tmpUGUI.font = font;
+                if (tmp3D != null) tmp3D.font = font;
+                Debug.Log($"字体已设置为: {font.name}");
+            }
+            EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", TextManager.Instance.GetText("交互提示", "信仰", "绑定"), this.transform.position + offset);
 
         }
     }
@@ -47,6 +81,22 @@ public class NPCInteractionAera : MonoBehaviour
         {
             isTriggerLock = true;
             PoolManager.Instance.ReturnToPool("TipTexts", txtObject);
+        }
+    }
+
+    //广播方法：在ContributeAVGId后统一调用
+    //以防出现没有触发Start但是需要显示WarningMark的情况出现
+    private void UpdateWaringMark()
+    {
+        //如果出现了新的对话，那么就让WaringMark激活：
+        if(AVGDistributeManager.Instance.JudgeNewConversation(myName))
+        {
+            warningMarkObject.SetActive(true);
+        }
+
+        else 
+        {
+            warningMarkObject.SetActive(false);
         }
     }
 }

@@ -74,12 +74,14 @@ public class EventHub : SingletonBaseManager<EventHub>
 
     private Dictionary<string, EventInfoBaseClass> eventDictionary = new Dictionary<string, EventInfoBaseClass>();
 
-    public void EventTrigger<T>(string eventName, T info)
+    public bool EventTrigger<T>(string eventName, T info)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
             (eventDictionary[eventName] as EventInfo<T>).action_?.Invoke(info);      //info被作为参数传入；此时所有订阅者的监听方法都会收到该参数；
+            return true;
         }
+        return false;
     }
 
 

@@ -13,6 +13,8 @@ public class NPC30002  : NPCBase
 
         //分配：101
         ItemManager.Instance.AddItem(101);
+
+        PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", UIManager.Instance.CanvasTransform).gameObject.GetComponent<WarningPanel>().SetWarningText($"按下ESC键打开背包");
         
         Destroy(this.gameObject);
         

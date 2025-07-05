@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class NPC30005 : NPCBase
 {
+    public GameObject monster1001;
     protected override void OnComplete(int avgId)
     {
         base.OnComplete(avgId);
         Destroy(this.gameObject);
-        GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
-        LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
+        monster1001.gameObject.SetActive(true);        
     }
 
     protected override void Awake()

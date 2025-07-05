@@ -49,10 +49,20 @@ public class GameLevelManager : Singleton<GameLevelManager>
     public static Event currentEvent;
 
 
+    //当前的uniqueId的可交互门是否解锁过：
+    //返回安全屋之前的留存坐标，用于锚定返回点：
+    public Vector3 lastTeleportPoint = Vector3.zero;
+    public Dictionary<int, bool> doorIsUnlockedDic = new Dictionary<int, bool>();
+    public Dictionary<(E_GameLevelType, Vector3), bool> restPointDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
+    public Dictionary<(E_GameLevelType, Vector3), bool> keyPointDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
+    public Dictionary<(E_GameLevelType, Vector3), bool> itemPointDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
+    public Dictionary<(E_GameLevelType, Vector3), bool> lightHouseIsDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
+
+
     //Debug用：
     public void DebugAVGInfo()
     {
-        foreach(var key in avgIndexIsTriggeredDic.Keys)
+        foreach (var key in avgIndexIsTriggeredDic.Keys)
         {
             Debug.Log($"id is :{key}, state is :{avgIndexIsTriggeredDic[key]}");
         }

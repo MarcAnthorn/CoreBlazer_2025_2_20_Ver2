@@ -49,6 +49,8 @@ public abstract class MonsterBase : MonoBehaviour
     {
         EventHub.Instance.AddEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.AddEventListener<int>("AdjustLayer", AdjustLayer);
+        EventHub.Instance.AddEventListener<Vector3>("ChangeDestination", ChangeDestination);
+
         
         InitializeStates();
 
@@ -76,6 +78,7 @@ public abstract class MonsterBase : MonoBehaviour
     {
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.RemoveEventListener<int>("AdjustLayer", AdjustLayer);
+        EventHub.Instance.RemoveEventListener<Vector3>("ChangeDestination", ChangeDestination);
     }
 
 
@@ -101,7 +104,7 @@ public abstract class MonsterBase : MonoBehaviour
     protected abstract void OnChaseEnd();
 
     //战斗结束后的回调函数：
-    protected virtual void OnComplete(){}
+    protected virtual void OnComplete(int 占位){}
 
     // 状态转换方法
     public void TransitionToState(IMonsterState newState)
@@ -135,7 +138,6 @@ public abstract class MonsterBase : MonoBehaviour
         }
     }
 
-
     //变更终点 or 重新寻路时调用的方法：
     //注意：如果处在追踪状态下，那么该方法会被持续调用，用于确保玩家位置的准确性；
     public virtual void ChangeDestination(Vector3 newDestination)
@@ -150,11 +152,22 @@ public abstract class MonsterBase : MonoBehaviour
         path = PathFindingManager.Instance.FindPath(startPoint, endPoint);
         if (path != null && path.Count > 0)
         {
+            isPaused = false;
+            isMoving = true;
+            
             if (moveCoroutine != null)
             {
                 StopCoroutine(moveCoroutine);
             }
             moveCoroutine = StartCoroutine(MoveAlongPath(path));
+        }
+
+        //if path is null, then the destination isnt reachable:
+        //make it stay static:
+        else
+        {
+            //路径不可达：终止移动；依然尝试每0.5s检测一次是否可以找到路径         
+            PauseMoving();
         }
     }
 
@@ -163,8 +176,28 @@ public abstract class MonsterBase : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            //直接调用ReachDestination：
-            ReachDestination();
+            //终止相关内容：
+            if (moveCoroutine != null)
+            {
+                StopCoroutine(moveCoroutine);
+                moveCoroutine = null;
+            }
+            
+            isMoving = false;
+            isPaused = false;
+
+            
+            // 回收路径到对象池
+            if (path != null)
+            {
+                ListPool<Vector3>.Release(path);
+                path = null;
+            }
+            
+            Debug.Log($"{enemyId} 移动已完全停止, 触发回调函数");
+
+            //调用回调函数
+            OnChaseEnd();
         }
     }
 
@@ -176,7 +209,7 @@ public abstract class MonsterBase : MonoBehaviour
             return;
         }
 
-        Debug.Log($"now state:{_isFrozen}");
+        Debug.LogWarning($"now state:{_isFrozen}");
         
         if (_isFrozen)
         {
@@ -220,7 +253,7 @@ public abstract class MonsterBase : MonoBehaviour
         isMoving = true;
         // 直接用path参数，不再new List
         Vector3 targetPos;
-        for (int i = 0; i < path.Count - 1; i++)
+        for (int i = 0; i < path.Count; i++)
         {
             targetPos = path[i];
             while (Vector3.Distance(transform.position, targetPos) > 0.01f)
@@ -256,7 +289,7 @@ public abstract class MonsterBase : MonoBehaviour
         int startIndex = FindClosestPathIndex(currentPos, path);
         
         //继续移动：
-        for (int i = startIndex; i < path.Count - 1; i++)
+        for (int i = startIndex; i < path.Count; i++)
         {
             targetPos = path[i];
             
@@ -311,7 +344,7 @@ public abstract class MonsterBase : MonoBehaviour
     // 暂停移动 - 保存当前状态以便恢复
     public virtual void PauseMoving()
     {
-        if (isMoving && !isPaused)
+        if (!isPaused)
         {
             isPaused = true;
             
@@ -345,7 +378,8 @@ public abstract class MonsterBase : MonoBehaviour
     //在对象到达自己当前状态的终点后调用的方法：
     public virtual void ReachDestination()
     {
-        //区分状态：
+        Debug.LogWarning("Reach Destination!");
+        //只会在巡逻状态触发这个函数；
         //如果是巡逻状态，那么就重新寻路；调用ChangeDestination向着下一个路径点出发
         if(stateFlag == E_StateFlag.Patrol)
         {
@@ -356,30 +390,12 @@ public abstract class MonsterBase : MonoBehaviour
             ChangeDestination(patrolPoints[patrolIndex]);
         }
 
-        //如果是追踪状态，那么就终止寻路；触发对应的回调函数：
-        else
-        {
-            if (moveCoroutine != null)
-            {
-                StopCoroutine(moveCoroutine);
-                moveCoroutine = null;
-            }
+        //如果是追踪状态，那么不管继续寻路；
+        //追踪状态的终止是由BoxCollider控制；
+        // else
+        // {
             
-            isMoving = false;
-            isPaused = false;
-
-            
-            // 回收路径到对象池
-            if (path != null)
-            {
-                ListPool<Vector3>.Release(path);
-                path = null;
-            }
-            
-            Debug.Log($"{enemyId} 移动已完全停止, 触发回调函数");
-
-            OnChaseEnd();
-        }
+        // }
     }
 
 
@@ -465,8 +481,7 @@ public abstract class ChaseState : IMonsterState
     public virtual void EnterState(MonsterBase monster)
     {
         Debug.Log($"{monster.name} 进入追逐状态");
-        lastPathUpdateTime = Time.time;
-        
+ 
         // 获取玩家Transform引用
         if(playerTransform == null)
         {
@@ -478,6 +493,13 @@ public abstract class ChaseState : IMonsterState
                 }
             });
         }
+
+        monster.ChangeDestination(playerTransform.position);
+        lastPlayerPosition = playerTransform.position;
+        lastPathUpdateTime = Time.time;
+
+        Debug.LogWarning($"Time recorded, {lastPathUpdateTime}");
+
     }
 
     public virtual void UpdateState(MonsterBase monster)
@@ -513,14 +535,19 @@ public abstract class ChaseState : IMonsterState
         }
         
         // 检查是否需要更新路径
-        bool shouldUpdatePath = ShouldUpdatePath(currentPlayerPos, monster);
+        bool shouldUpdatePath = monster.IsPaused() ? false : ShouldUpdatePath(currentPlayerPos, monster);
+
+        Debug.Log($"Chasing! shouldUpdatePath is {shouldUpdatePath}");
         
         if(shouldUpdatePath)
         {
             // 更新路径
             monster.ChangeDestination(currentPlayerPos);
             lastPlayerPosition = currentPlayerPos;
+
+            
             lastPathUpdateTime = Time.time;
+            Debug.LogWarning($"Time recorded, {lastPathUpdateTime}");
         }
     }
     
@@ -529,10 +556,11 @@ public abstract class ChaseState : IMonsterState
     {
         // 1. 检查时间间隔
         //如果距离上一次更新路径的时间间隔超出了pathUpdateInterval，则执行更新
-        if(Time.time - lastPathUpdateTime < pathUpdateInterval)
+        if(Time.time - lastPathUpdateTime > pathUpdateInterval)
         {
-            return false;
+            return true;
         }
+     
         
         // // 2. 检查玩家移动距离
         // //玩家移动超过1单位，才会更新
@@ -542,14 +570,15 @@ public abstract class ChaseState : IMonsterState
         //     return false;
         // }
         
-        // 3. 检查怪物是否正在移动
-        if(!monster.IsMoving())
-        {
-            return true; // 怪物停止时立即更新路径
-        }
+        // // 3. 检查怪物是否正在移动
+        // if(!monster.IsMoving())
+        // {
+        //     return true; // 怪物停止时立即更新路径
+        // }
 
         return false;
     }
+  
 }
 
 

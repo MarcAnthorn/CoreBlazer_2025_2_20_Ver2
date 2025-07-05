@@ -32,18 +32,9 @@ public abstract class Enemy
 
     // public abstract void Attack(Player player);
 
-    public void BeHurted(Damage damage)
+    public void BeHurted(float value)
     {
-        Debug.LogWarning($"Now Enemy Damage is{damage.damage}");
-        
-        HP -= damage.damage;
-
-        // Debug.LogWarning($"Now Enemy HP is{HP}");
-        // if (HP <= 0)
-        // {
-        //     Debug.Log("敌人死亡");        
-        //     isDead = true;
-        // }
+        HP -= value;
     }
 
     // 查找敌人身上是否存在某一类型的BattleBuff
@@ -364,6 +355,50 @@ public class Enemy_1014 : Enemy
         AVO = 0.2f;
         HIT = 1.5f;
         SPD = 20;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+}
+
+public class Enemy_1015 : Enemy
+{
+    public Enemy_1015(params EnemySkill[] enemySkills)
+    {
+        id = 1015;
+        name = "死灵之书";
+        HP = 90;
+        HP_limit = 90;
+        STR = 30;  // 修正：从80改为70
+        DEF = 8;
+        CRIT_Rate = 0.5f;
+        CRIT_DMG = 1.3f;
+        AVO = 0.2f;
+        HIT = 0.4f;
+        SPD = 8;
+        foreach (var skl in enemySkills)
+        {
+            this.enemySkills.Add(skl);
+        }
+    }
+}
+
+public class Enemy_1016 : Enemy
+{
+    public Enemy_1016(params EnemySkill[] enemySkills)
+    {
+        id = 1016;
+        name = "达贡";
+        HP = 210;
+        HP_limit = 210;
+        STR = 75;  // 修正：从80改为70
+        DEF = 30;
+        CRIT_Rate = 0.1f;
+        CRIT_DMG = 1.2f;
+        AVO = 0.1f;
+        HIT = 0.35f;
+        SPD = 17;
         foreach (var skl in enemySkills)
         {
             this.enemySkills.Add(skl);

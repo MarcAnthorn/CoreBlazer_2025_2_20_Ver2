@@ -76,6 +76,10 @@ public class PlayerController : PlayerBase
 
         EventHub.Instance.AddEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
 
+        EventHub.Instance.AddEventListener("ResumeLight", ResumeLight);
+
+        
+
     }
     // Start is called before the first frame update
     void Start()
@@ -134,6 +138,7 @@ public class PlayerController : PlayerBase
         EventHub.Instance.RemoveEventListener<Vector3>("SetPlayerPosition", SetPlayerPosition);
 
         EventHub.Instance.RemoveEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
+        EventHub.Instance.RemoveEventListener("ResumeLight", ResumeLight);
 
         
         
@@ -427,16 +432,15 @@ public class PlayerController : PlayerBase
         //清除所有死亡清除的道具：(装备不清除)
         ItemManager.Instance.ResetItemAfterDeath();
 
+        //清除所有可能的层级buff：
+        EventHub.Instance.EventTrigger("ResetFloorDiffer");
+
 
         //如果死亡的时候，发现是玩家的SAN归零死亡的，那么直接播放剧情，然后回到游戏主界面：
         if(PlayerManager.Instance.player.SAN.value <= 0)
         {
-            DialogueOrderBlock ob = LoadManager.Instance.orderBlockDic[1301];
-            var panel = UIManager.Instance.ShowPanel<AVGPanel>();
-            panel.orderBlock = ob;
-            panel.callback = OnComplete;
+            UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1301, OnComplete);
             EventHub.Instance.EventTrigger<bool>("Freeze", true);
-
             return; //直接终止死亡的后续逻辑；
         }
 

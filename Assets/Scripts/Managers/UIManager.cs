@@ -9,11 +9,17 @@ public class UIManager : SingletonBaseManager<UIManager>
 {
 
     public Transform fatherTransform;
+    private Transform canvasTransform;
+    public Transform CanvasTransform => canvasTransform;
 
     public Dictionary<string, BasePanel> shownPanelDic = new Dictionary<string, BasePanel>();
 
     public T ShowPanel<T>() where T:BasePanel
     {
+        if(canvasTransform == null)
+        {
+            canvasTransform = GameObject.Find("Canvas").transform;
+        }
         //此处得取的实际上是脚本的名字，但是我们需要通过实例化预设体的方式加载panel对象；
         //所以就必须要确保panel对象和挂载的脚本名称必须要一致；
         string panelName = typeof(T).Name;
@@ -36,6 +42,11 @@ public class UIManager : SingletonBaseManager<UIManager>
 
     public T ShowPanel<T>(Transform father) where T:BasePanel
     {
+        if(canvasTransform == null)
+        {
+            canvasTransform = GameObject.Find("Canvas").transform;
+        }
+
         //此处得取的实际上是脚本的名字，但是我们需要通过实例化预设体的方式加载panel对象；
         //所以就必须要确保panel对象和挂载的脚本名称必须要一致；
         string panelName = typeof(T).Name;
@@ -60,6 +71,11 @@ public class UIManager : SingletonBaseManager<UIManager>
     //实现一个可以传入回调函数的ShowPanel方法：
     public T ShowPanel<T>(UnityAction action) where T : BasePanel
     {
+        if(canvasTransform == null)
+        {
+            canvasTransform = GameObject.Find("Canvas").transform;
+        }
+
         //此处得取的实际上是脚本的名字，但是我们需要通过实例化预设体的方式加载panel对象；
         //所以就必须要确保panel对象和挂载的脚本名称必须要一致；
         string panelName = typeof(T).Name;
@@ -83,6 +99,11 @@ public class UIManager : SingletonBaseManager<UIManager>
 
     public T InstantShowPanel<T>() where T : BasePanel
     {
+        if(canvasTransform == null)
+        {
+            canvasTransform = GameObject.Find("Canvas").transform;
+        }
+
         //此处得取的实际上是脚本的名字，但是我们需要通过实例化预设体的方式加载panel对象；
         //所以就必须要确保panel对象和挂载的脚本名称必须要一致；
         string panelName = typeof(T).Name;

@@ -53,7 +53,7 @@ public class LoadManager : Singleton<LoadManager>
 
 
     //大地图：
-    public int[,] mapCentralFloorIndex = new int[65, 153];
+    public int[,] mapCentralFloorIndex = new int[69, 153];
     public MapElement[,] mapCentralFloor;
 
 
@@ -209,11 +209,17 @@ public class LoadManager : Singleton<LoadManager>
         allEnemies.Add(1014, new Enemy_1014(
             new EnemySkill_1001(), new EnemySkill_1023(), new EnemySkill_1022()
             ));
+        allEnemies.Add(1015, new Enemy_1015(
+            new EnemySkill_1010(), new EnemySkill_1001()
+            ));
+        allEnemies.Add(1016, new Enemy_1016(
+            new EnemySkill_1017(), new EnemySkill_1018(), new EnemySkill_1001()
+            ));
     }
 
     private void LoadAllAvgs()
     {
-        for (int i = 1101; i <= 1122; i++)
+        for (int i = 1100; i <= 1122; i++)
         {
             LoadAVGDialogues(i);
         }
@@ -237,6 +243,22 @@ public class LoadManager : Singleton<LoadManager>
         {
             LoadAVGDialogues(i);
         }
+
+        for (int i = 2301; i <= 2311; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for (int i = 2401; i <= 2410; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
+        for (int i = 2501; i <= 2504; i++)
+        {
+            LoadAVGDialogues(i);
+        }
+
 
         for (int i = 3101; i <= 3103; i++)
         {
@@ -325,7 +347,8 @@ public class LoadManager : Singleton<LoadManager>
                 string line = lines[i];
                 string[] values = line.Split(',');
 
-                if (values.Length > 3)
+                // 检查是否有足够的列数（至少需要14列，索引0-13）
+                if (values.Length >= 14)
                 {
                     //此处进行道具分类
                     // Debug.LogWarning($"Item id is{values[1]}");
@@ -377,10 +400,12 @@ public class LoadManager : Singleton<LoadManager>
 
                     allItems.Add(Item.id, Item);
                 }
-                else
+                else if (values.Length > 0 && !string.IsNullOrEmpty(values[0].Trim()))
                 {
-                    Debug.LogError("道具表格文件未找到");
+                    // 如果不是空行但有数据，说明列数不足
+                    Debug.LogWarning($"道具表格第{i+1}行列数不足，期望至少14列，实际{values.Length}列。跳过此行。");
                 }
+                // 空行会被自动跳过
             }
         }
 
@@ -485,6 +510,7 @@ public class LoadManager : Singleton<LoadManager>
                         break;
 
                         case 4:
+                            // Debug.Log($"current index:{i}, {j}");
                             mapCentralFloorIndex[i, j] = int.Parse(values[j]);
                         break;
     
@@ -553,7 +579,7 @@ public class LoadManager : Singleton<LoadManager>
             break;
 
             case 4:
-                mapCentralFloor = new MapElement[65, 153];
+                mapCentralFloor = new MapElement[69, 153];
                 for (int i = 0; i < mapCentralFloor.GetLength(0); i++)        //mapSecondFloorIndex.GetLength(0) ==> 行数
                 {
                     for (int j = 0; j < mapCentralFloor.GetLength(1); j++)     //mapSecondFloorIndex.GetLength(1) ==> 列数
@@ -782,7 +808,7 @@ public class LoadManager : Singleton<LoadManager>
         if (avgId == 1107)
             return;
 
-        Debug.Log($"当前加载的avg id：{avgId}");
+        // Debug.Log($"当前加载的avg id：{avgId}");
 
         string path = Path.Combine(Application.streamingAssetsPath, "DialogueData", "AVG", $"{avgId}.csv");
         int showIndex = avgId;
@@ -967,7 +993,7 @@ public class LoadManager : Singleton<LoadManager>
                 }
                 else if (i + 1 == lines.Length) // 已经是最后一行
                 {
-                    Debug.LogWarning($"Try to add avg into dic:{showIndex}");
+                    // Debug.LogWarning($"Try to add avg into dic:{showIndex}");
                     // 在循环的最后一次迭代，确保最后一个 tempBlock 被添加
                     if (!orderBlockDic.ContainsKey(showIndex)) // 避免重复添加
                     {
