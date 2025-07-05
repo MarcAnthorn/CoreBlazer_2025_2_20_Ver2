@@ -94,6 +94,8 @@ public class MonsterChase101 : MonsterBase
     {
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
 
+        UIManager.Instance.HidePanel<BattlePanel>();
+
         EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
             LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
