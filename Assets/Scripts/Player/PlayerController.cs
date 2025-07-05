@@ -432,6 +432,9 @@ public class PlayerController : PlayerBase
         //清除所有死亡清除的道具：(装备不清除)
         ItemManager.Instance.ResetItemAfterDeath();
 
+        //清除所有可能的层级buff：
+        EventHub.Instance.EventTrigger("ResetFloorDiffer");
+
 
         //如果死亡的时候，发现是玩家的SAN归零死亡的，那么直接播放剧情，然后回到游戏主界面：
         if(PlayerManager.Instance.player.SAN.value <= 0)

@@ -793,11 +793,23 @@ public class Item_509 : Item
         
     }
 }
+
+//返回骨片
 public class Item_510 : Item
 {
+    Transform playerTransform;
     public override void Use()
     {
-        
+        if(playerTransform == null)
+        {
+            playerTransform = PlayerManager.Instance.PlayerTransform;
+        }
+
+        //清除所有可能的层级buff：
+        EventHub.Instance.EventTrigger("ResetFloorDiffer");
+        GameLevelManager.Instance.lastTeleportPoint = playerTransform.position;
+        LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
+
     }
 }
 
@@ -946,14 +958,22 @@ public class Item_514 : Item
         PlayerManager.Instance.player.HP.AddValueLimit(25);
         PlayerManager.Instance.player.LVL.AddValueLimit(150);
 
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「科拉佐斯的思绪」已生效");
+
     }
 
     private void Item514OnEffectOff()
     {
-        isTriggered = false;
-        PlayerManager.Instance.player.STR.AddValue(-strDelta);
-        PlayerManager.Instance.player.HP.AddValueLimit(-25);
-        PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+        if(isTriggered)
+        {
+            isTriggered = false;
+            PlayerManager.Instance.player.STR.AddValue(-strDelta);
+            PlayerManager.Instance.player.HP.AddValueLimit(-25);
+            PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「科拉佐斯的思绪」已不再生效");
+        }
+        
     }
 }
 
@@ -1008,14 +1028,21 @@ public class Item_515 : Item
         PlayerManager.Instance.player.DEF.AddValueLimit(25);
         PlayerManager.Instance.player.LVL.AddValueLimit(150);
 
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「山岳的凝视」已生效");
+
     }
 
     private void Item515OnEffectOff()
     {
-        isTriggered = false;
-        PlayerManager.Instance.player.STR.AddValue(-strDelta);
-        PlayerManager.Instance.player.DEF.AddValueLimit(-25);
-        PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+        if(isTriggered)
+        {
+            isTriggered = false;
+            PlayerManager.Instance.player.STR.AddValue(-strDelta);
+            PlayerManager.Instance.player.DEF.AddValueLimit(-25);
+            PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「山岳的凝视」已不再生效");
+        }
     }
 
 
