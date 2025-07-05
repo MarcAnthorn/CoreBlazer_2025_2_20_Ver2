@@ -85,7 +85,9 @@ public class Item_101 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +40f);
+        // PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +40f);
+
+        EventHub.Instance.EventTrigger("ResumeLight", 40f);
         PlayerManager.Instance.player.DebugInfo();
         //锁定玩家的灯光值：
         EventHub.Instance.EventTrigger("TriggerLightShrinking", false);

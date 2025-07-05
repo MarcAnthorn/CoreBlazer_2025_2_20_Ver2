@@ -279,8 +279,9 @@ public class BattleManager : Singleton<BattleManager>
     private void GameOver(bool isWin, UnityAction<int> callback)
     {
 
+        bool is101Triggered = EventHub.Instance.EventTrigger("Callback101", 100);
         //特殊：尝试调用101的战斗失败回调：
-        if(EventHub.Instance.EventTrigger("Callback101", 100)) //number doesnt matter
+        if(is101Triggered) //number doesnt matter
         {
             return;
         }

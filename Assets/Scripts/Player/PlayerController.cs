@@ -76,7 +76,7 @@ public class PlayerController : PlayerBase
 
         EventHub.Instance.AddEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
 
-        EventHub.Instance.AddEventListener("ResumeLight", ResumeLight);
+        EventHub.Instance.AddEventListener<float>("ResumeLight", ResumeLight);
 
         
 
@@ -138,7 +138,7 @@ public class PlayerController : PlayerBase
         EventHub.Instance.RemoveEventListener<Vector3>("SetPlayerPosition", SetPlayerPosition);
 
         EventHub.Instance.RemoveEventListener<UnityAction<Transform>>("ExposePlayerTransform", ExposePlayerTransform);
-        EventHub.Instance.RemoveEventListener("ResumeLight", ResumeLight);
+        EventHub.Instance.RemoveEventListener<float>("ResumeLight", ResumeLight);
 
         
         
@@ -512,8 +512,13 @@ public class PlayerController : PlayerBase
         this.transform.position = position;
     }
 
-    public void ResumeLight()
+    public void ResumeLight(float lightDelta)
     {
+        if(lightDelta != -1)
+        {
+            LExtra = lightDelta;
+        }
+
         isWarningLocked = false;
         isLightShrinking = false;
         L = Math.Min(L + LExtra, LMax);
@@ -530,6 +535,21 @@ public class PlayerController : PlayerBase
 
         isDamaging = false;
        
+        float radiusMultiplier = 0f;
+        switch (GameLevelManager.Instance.gameLevelType)
+        {
+            case E_GameLevelType.Tutorial:
+            case E_GameLevelType.Second:
+                radiusMultiplier = 0.02f / 20f;
+                break;
+            case E_GameLevelType.First:
+                radiusMultiplier = 0.015f / 20f;
+                break;
+            case E_GameLevelType.Third:
+                radiusMultiplier = 0.03f / 20f;
+                break;
+        }
+        spriteLight.pointLightOuterRadius = radiusMultiplier * L * L;
     }
 
     //冻结（解冻）方法，在UI显示等其他交互的时候，冻结Player相关的调整
