@@ -476,8 +476,8 @@ public class PlayerController : PlayerBase
 
         //重置血量相关
         PlayerManager.Instance.player.HP.SetValue(100);
-        PlayerManager.Instance.player.LVL.SetValue(300);
-        PlayerManager.Instance.player.LVL.value_limit = 300; // 确保上限也同步
+        PlayerManager.Instance.player.LVL.SetValue(100);
+        PlayerManager.Instance.player.LVL.value_limit = 100; // 确保上限也同步
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
 
         //更新UI面板：
@@ -513,6 +513,10 @@ public class PlayerController : PlayerBase
     public void ResumeLight(float lightDelta)
     {
         if(lightDelta < 0)
+        {
+            LExtra = LMax;
+        }
+        else 
         {
             LExtra = lightDelta;
         }

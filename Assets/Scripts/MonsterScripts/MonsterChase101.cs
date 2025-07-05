@@ -101,7 +101,7 @@ public class MonsterChase101 : MonsterBase
             LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
         }); 
 
-        // Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 }
 
