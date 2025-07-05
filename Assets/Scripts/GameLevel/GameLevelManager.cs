@@ -54,6 +54,8 @@ public class GameLevelManager : Singleton<GameLevelManager>
     public Vector3 lastTeleportPoint = Vector3.zero;
     public Dictionary<int, bool> doorIsUnlockedDic = new Dictionary<int, bool>();
     public Dictionary<(E_GameLevelType, Vector3), bool> restPointDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
+    public Dictionary<(E_GameLevelType, Vector3), bool> keyPointDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
+    public Dictionary<(E_GameLevelType, Vector3), bool> itemPointDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
     public Dictionary<(E_GameLevelType, Vector3), bool> lightHouseIsDic = new Dictionary<(E_GameLevelType, Vector3), bool>();
 
 

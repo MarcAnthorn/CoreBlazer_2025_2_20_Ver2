@@ -34,6 +34,8 @@ public class TestMazeStart : MonoBehaviour
 
         //播放进入迷宫的音效：
         SoundEffectManager.Instance.PlaySoundEffect("进入离开迷宫时的音效");
+
+        GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
         
         //按照当前的GameLevelManager中的标识进行地图的加载：
         switch (GameLevelManager.Instance.gameLevelType)

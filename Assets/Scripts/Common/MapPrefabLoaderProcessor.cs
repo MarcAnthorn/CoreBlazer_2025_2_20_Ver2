@@ -196,6 +196,8 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
             int realX = i * 2 + 1;
             int realY = j * 2 + 1;
 
+            
+
     
             //注意：第三张地图需要按坐标进行不同颜色资源的选择；因此需要进行路径的修正：
             if(mapIndex == 3)
@@ -231,6 +233,27 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 
             //初始化地块脚本的内部信息
             gridScript.Init(pathMap, i, j, originalPoint, cellSize, id);
+
+            if(id == 10003)
+            {
+                Debug.LogWarning($"fake wall in pathgrid, id :{id}, x : {realX}, y : {realY}");
+            }
+            // else if(id == 10003)
+            // {
+            //     Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+            // }
+            // else if(id == 60004)
+            // {
+            //     Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+            // }
+            // else if(id == 10002)
+            // {
+            //     Debug.LogWarning($"id :{id}, x : {realX}, y : {realY}");
+            // }
+
+
+
+
 
             //如果是灯塔，除了基本的地块资源，还需要灯塔资源：
             if(id == 10005)
@@ -583,7 +606,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
 // //---------------------------------------------------测试debug用：----------------------------------
 
 
-                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004 || me.GetId() == 10002)    //包含捷径门 黑墙
+                if(me.GetId() == 10001 || me.GetId() == 10003 || me.GetId() == 60004 || me.GetId() == 10002)    //包含捷径门 黑墙
                 {
                     //加载水平墙体：
                     gridObj = Resources.Load<GameObject>(Path.Combine(levelPath, wallHorizontalPath)); 
@@ -635,7 +658,7 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 id = me.GetId();
 
 
-                if(me.GetId() == 10001 || me.GetId() == 10014 || me.GetId() == 60004 || me.GetId() == 10002)    //包含捷径门 黑墙
+                if(me.GetId() == 10001 || me.GetId() == 10003 || me.GetId() == 60004 || me.GetId() == 10002)    //包含捷径门 黑墙
                 {
                     //加载竖直墙体：
                     gridObj = Resources.Load<GameObject>(Path.Combine(levelPath,wallVerticalPath));
@@ -677,9 +700,10 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 Instantiate(gridObj, gridScript.GetWorldPosition(), gridObj.transform.rotation).gameObject.transform.SetParent(specialWallObject.transform, false);
             }
 
-            //特殊墙壁：
-            else
+            //假墙壁：
+            else if(me.GetId() == 10003)
             {
+                gridObj.name = "fakewall";
                 Instantiate(gridObj, gridScript.GetWorldPosition(), gridObj.transform.rotation).gameObject.transform.SetParent(specialWallObject.transform, false);
             }
 
@@ -719,6 +743,13 @@ public class MapPrefabLoaderProcessor : MonoBehaviour
                 return null;
             }
             int id = me.GetId();
+
+            if(id == 10003)
+            {
+                Debug.LogWarning($"fake wall in wall corner, id :{id}, x : {realX}, y : {realY}");
+            }
+
+
             if(me.GetId() == 10001)
             {
                 string wallCornerPath = "WallCornerGrid" + randomNum.ToString();

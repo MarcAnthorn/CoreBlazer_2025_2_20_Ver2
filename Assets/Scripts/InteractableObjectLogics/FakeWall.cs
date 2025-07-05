@@ -12,7 +12,8 @@ public class FakeWall : MonoBehaviour
     }
 
     public bool isBreakerLocked = true;
-    void OnTriggerEnter2D(Collider2D collision)
+
+    void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Collider entered!");
 

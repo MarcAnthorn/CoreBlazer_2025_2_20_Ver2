@@ -347,7 +347,8 @@ public class LoadManager : Singleton<LoadManager>
                 string line = lines[i];
                 string[] values = line.Split(',');
 
-                if (values.Length > 3)
+                // 检查是否有足够的列数（至少需要14列，索引0-13）
+                if (values.Length >= 14)
                 {
                     //此处进行道具分类
                     // Debug.LogWarning($"Item id is{values[1]}");
@@ -399,10 +400,12 @@ public class LoadManager : Singleton<LoadManager>
 
                     allItems.Add(Item.id, Item);
                 }
-                else
+                else if (values.Length > 0 && !string.IsNullOrEmpty(values[0].Trim()))
                 {
-                    Debug.LogError("道具表格文件未找到");
+                    // 如果不是空行但有数据，说明列数不足
+                    Debug.LogWarning($"道具表格第{i+1}行列数不足，期望至少14列，实际{values.Length}列。跳过此行。");
                 }
+                // 空行会被自动跳过
             }
         }
 

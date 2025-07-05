@@ -38,7 +38,7 @@ public class MonsterChase101 : MonsterBase
         base.Awake();
         // 设置怪物特殊属性
         moveSpeedBase = chaseSpeed;
-        enemyId = 1001;
+        enemyId = 1015;
 
         _cam.Priority = 11;       
         LeanTween.delayedCall(2f, ()=>{
@@ -53,21 +53,24 @@ public class MonsterChase101 : MonsterBase
     protected override void OnChaseEnd()
     {
         Debug.LogWarning($"怪物{enemyId}追逐结束, 触发战斗");
+        PauseMoving();
+
+
 
         // 触发战斗：
-        //  var panel = UIManager.Instance.ShowPanel<BattlePanel>();
-        //     panel.InitEnemyInfo(enemyId);
-        //     panel.callback = OnComplete;
-        //     EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        var panel = UIManager.Instance.ShowPanel<BattlePanel>();
+        panel.InitEnemyInfo(enemyId);
+        panel.callback = OnComplete;
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
 
         //暂时先是触发回去的内容：
-        OnComplete();
+        // OnComplete();
    
     }
 
-    protected override void OnComplete()
+    protected override void OnComplete(int id)
     {
-        base.OnComplete();    
+        base.OnComplete(id);    
         
         UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1106, OnAVGComplete);
 
@@ -80,10 +83,10 @@ public class MonsterChase101 : MonsterBase
 
     private void OnAVGComplete(int id)
     {
-        Destroy(this.gameObject);
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
         LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
+        Destroy(this.gameObject);
     }
 }
 
@@ -113,8 +116,8 @@ public class Chase101State : ChaseState
     public Chase101State(MonsterChase101 monster)
     {
         monster101 = monster;
-        pathUpdateInterval = 0.5f;          //路径更新的时间阈值
-        minDistanceToUpdate = 1f;           //路径更新的距离阈值
+        pathUpdateInterval = 1.0f;          // 增加更新间隔
+        minDistanceToUpdate = 2f;           // 增加距离阈值
     }
 
     protected override void OnChaseUpdate(MonsterBase monster)
