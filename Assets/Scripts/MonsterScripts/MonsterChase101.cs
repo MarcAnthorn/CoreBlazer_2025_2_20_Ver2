@@ -55,7 +55,7 @@ public class MonsterChase101 : MonsterBase
     {
         base.OnDestroy();
 
-        EventHub.Instance.AddEventListener<int>("Callback101", OnComplete);
+        EventHub.Instance.RemoveEventListener<int>("Callback101", OnComplete);
     }
 
     //追踪回调
