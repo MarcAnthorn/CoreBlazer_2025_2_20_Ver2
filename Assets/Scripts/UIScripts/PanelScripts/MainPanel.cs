@@ -15,6 +15,7 @@ public class MainPanel : BasePanel
     private float maxLightWidth;
     protected override void Init()
     {
+        TextManager.SetContentFont(this.gameObject);
         UpdateAttributeUI();
         btnSetting.onClick.AddListener(()=>{
             UIManager.Instance.ShowPanel<SettingPanel>();

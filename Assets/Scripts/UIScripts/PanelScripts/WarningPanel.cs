@@ -15,7 +15,9 @@ public class WarningPanel : BasePanel
 
     
     protected override void Init()
+    
     {
+        TextManager.SetContentFont(this.gameObject);
         btnConfirm?.onClick.AddListener(()=>{
             PoolManager.Instance.ReturnToPool("WarningPanel", this.gameObject);   
             UIManager.Instance.HidePanel<WarningPanel>();  

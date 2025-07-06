@@ -5,6 +5,7 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.Progress;
+using UnityEngine.SceneManagement;
 
 public enum AttributeType
 {
@@ -36,6 +37,7 @@ public class Player               //存储角色信息等
         public float value_limit;           //角色属性的上限值
         public float minLimit;
 
+
         public PlayerAttribute(int id, int level = 0, int type = 0, string name = null, string icon = null)
         {
             this.id = id;
@@ -46,6 +48,7 @@ public class Player               //存储角色信息等
             this.value = 0f;         //初始化为0
             this.value_limit = 100;
             this.minLimit = 1;
+
         }
 
         //修正方法：所有只是调整数值的，但是不调整上限值的，使用这个方法；

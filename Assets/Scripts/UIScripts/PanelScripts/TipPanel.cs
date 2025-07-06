@@ -29,6 +29,7 @@ public class TipPanel : BasePanel
     }
     protected override void Init()
     {
+        TextManager.SetContentFont(this.gameObject);
         btnConfirm.onClick.AddListener(setOnConfirmAction);
 
         btnCancel.onClick.AddListener(setOnCancelAction);

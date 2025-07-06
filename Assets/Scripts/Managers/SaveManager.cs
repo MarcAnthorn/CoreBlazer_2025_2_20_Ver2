@@ -3,36 +3,59 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
+
+// 玩家位置数据类，用于JSON序列化
+[System.Serializable]
+public class PlayerPositionData
+{
+    public float x;
+    public float y;
+    public float z;
+    public string sceneName;
+    
+    public PlayerPositionData(float x, float y, float z, string sceneName)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.sceneName = sceneName;
+    }
+}
 
 public class SaveManager : SingletonBaseManager<SaveManager>
 {
     private SaveManager(){}
     private static string savePath => Application.persistentDataPath + "/player_save.json";
+    private static string playerPositionSavePath => Application.persistentDataPath + "/player_position_save.json";
     private static string gameLevelSavePath => Application.persistentDataPath + "/gamelevel_save.json";
     private static string equipmentSavePath => Application.persistentDataPath + "/equipment_save.json";
     private static string itemSavePath => Application.persistentDataPath + "/item_save.json";
     private static string avgDistributeSavePath => Application.persistentDataPath + "/avgdistribute_save.json";
-
     //存档接口：
     public void SaveGame()
     {
+
         SavePlayerAttribute();
         SaveGameLevel();
         SaveEquipment();
         SaveItem();
         SaveAVGDistribute();
         ManageRestLightData(true);
+        SavePlayerPosition();
     }
 
     //读档接口：
     public void LoadGame()
     {
+        LoadPlayerPosition();
         LoadPlayerAttribute();
         LoadGameLevel();
         LoadEquipment();
         LoadItem();
         LoadAVGDistribute();
         ManageRestLightData(false);
+        LoadPlayerPosition();
     }
 
     //清空当前游戏进度的方法；
@@ -72,6 +95,13 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     // 存储玩家属性
     private void SavePlayerAttribute()
     {
+        
+        
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+        int sceneIndex = currentScene.buildIndex;
+        Debug.Log("当前场景名: " + sceneName);
+        Debug.Log("当前场景索引: " + sceneIndex);
         Player player = PlayerManager.Instance.player;
         PlayerSaveData data = new PlayerSaveData
         {
@@ -85,13 +115,28 @@ public class SaveManager : SingletonBaseManager<SaveManager>
             CRIT_DMG = new PlayerAttributeSaveData(player.CRIT_DMG),
             HIT = new PlayerAttributeSaveData(player.HIT),
             AVO = new PlayerAttributeSaveData(player.AVO)
+            
         };
+       
 
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(savePath, json);
         Debug.Log("玩家属性已保存到: " + savePath);
     }
-
+    // 存储玩家位置
+    public void SavePlayerPosition()
+    {
+        Vector3 position = PlayerManager.Instance.playerPosition;
+        Scene currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+        
+        // 使用PlayerPositionData类
+        PlayerPositionData data = new PlayerPositionData(position.x, position.y, position.z, sceneName);
+        
+        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(playerPositionSavePath, json);
+        Debug.Log($"玩家位置已保存到: {playerPositionSavePath}, 坐标: {position}, 场景: {sceneName}");
+    }
     // 读取玩家属性
     private void LoadPlayerAttribute()
     {
@@ -118,6 +163,102 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         ApplyAttribute(player.AVO, data.AVO);
 
         Debug.Log("玩家属性已从存档恢复！");
+    }
+    // 读取玩家位置
+    public void LoadPlayerPosition()
+    {
+        if (!File.Exists(playerPositionSavePath))
+        {
+            Debug.LogWarning("未找到玩家位置存档文件，无法读档！");
+            return;
+        }
+
+        try
+        {
+            string json = File.ReadAllText(playerPositionSavePath);
+            PlayerPositionData data = JsonConvert.DeserializeObject<PlayerPositionData>(json);
+            
+            if (data == null)
+            {
+                Debug.LogError("玩家位置存档数据反序列化失败！");
+                return;
+            }
+
+            Vector3 position = new Vector3(data.x, data.y, data.z);
+
+            // 设置玩家位置到PlayerManager
+            PlayerManager.Instance.playerPosition = position;
+
+            // 如果场景不同，先切换场景
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != data.sceneName)
+            {
+                // 注册场景加载完成事件，在场景加载后设置玩家位置
+                UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoadedSetPosition;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(data.sceneName);
+                Debug.Log($"开始切换到场景: {data.sceneName}，位置将在场景加载完成后设置");
+            }
+            else
+            {
+                // 同一场景直接设置位置
+                PlayerController.SetPlayerPosition(position);
+                Debug.Log($"玩家位置已设置为: {position} (同一场景)");
+            }
+            
+            Debug.Log($"玩家位置已从存档恢复！坐标: {position}, 场景: {data.sceneName}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"读取玩家位置存档时发生错误: {e.Message}");
+        }
+    }
+    
+    // 场景加载完成后设置玩家位置的回调
+    private void OnSceneLoadedSetPosition(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        // 取消注册事件
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoadedSetPosition;
+        
+        Debug.Log($"场景 '{scene.name}' 加载完成，准备设置玩家位置...");
+        
+        // 使用延迟调用设置位置，确保场景完全准备就绪
+        DelayedSetPlayerPosition();
+    }
+    
+    // 延迟设置玩家位置的方法
+    private async void DelayedSetPlayerPosition()
+    {
+        try
+        {
+            // 等待一小段时间，确保场景完全加载和初始化
+            await System.Threading.Tasks.Task.Delay(200);
+            
+            // 检查PlayerManager和PlayerTransform是否准备就绪
+            int maxRetries = 25; // 最多重试25次（5秒）
+            int retryCount = 0;
+            
+            while (PlayerManager.Instance?.PlayerTransform == null && retryCount < maxRetries)
+            {
+                await System.Threading.Tasks.Task.Delay(200);
+                retryCount++;
+                Debug.Log($"等待PlayerTransform准备就绪... ({retryCount}/{maxRetries})");
+            }
+            
+            if (PlayerManager.Instance?.PlayerTransform == null)
+            {
+                Debug.LogError("场景加载完成后未能找到PlayerTransform，无法设置玩家位置！请检查场景中是否有Player对象。");
+                return;
+            }
+            
+            // 设置玩家位置
+            Vector3 targetPosition = PlayerManager.Instance.playerPosition;
+            PlayerController.SetPlayerPosition(targetPosition);
+            
+            Debug.Log($"✅ 场景加载完成！玩家位置已成功设置为: {targetPosition}");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"延迟设置玩家位置时发生错误: {e.Message}");
+        }
     }
 
     // 辅助方法：将存档属性赋值回Player.PlayerAttribute
@@ -382,6 +523,8 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         public PlayerAttributeSaveData CRIT_DMG;
         public PlayerAttributeSaveData HIT;
         public PlayerAttributeSaveData AVO;
+        public PlayerAttributeSaveData SCENE;
+        public PlayerAttributeSaveData POS; // 玩家位置数据
     }
 
     // GameLevel存档数据结构

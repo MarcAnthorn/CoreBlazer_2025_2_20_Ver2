@@ -10,6 +10,9 @@ using UnityEngine.UI;
 
 public class BattlePanel : BasePanel
 {
+    // 叠加的回合结束发光特效
+    private GameObject endTurnGlowEffect;
+    private Coroutine glowCoroutine;
 
     public Slider sliderEnemyHealth;
     public Slider sliderPlayerHealth;
@@ -71,15 +74,31 @@ public class BattlePanel : BasePanel
      public GameObject enemyMissTextObject;
 
      public GameObject maskTriggerButton;
+     public TMP_FontAsset defaultFont;
 
      // 预先缓存路径
      private static readonly string DamageNumberCritPrefix = Path.Combine("ArtResources", "DamageNumber", "DamageNumberCrit");
 
      private static readonly string DamageNumberCritPrefixExtra = Path.Combine("ArtResources", "DamageNumber", "DamageCritMark");
      private static readonly string DamageNumberPrefix = Path.Combine("ArtResources", "DamageNumber", "DamageNumber");
-
+     private void SetAllTextFont()
+     {
+     foreach (var tmp in GetComponentsInChildren<TextMeshProUGUI>(true))
+     {
+          tmp.font = defaultFont;
+     }
+     }
      protected override void Awake()
      {
+          if (defaultFont == null)
+               {
+               defaultFont = Resources.Load<TMP_FontAsset>("Fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF");
+               if (defaultFont == null)
+                    Debug.Log("TMP字体加载失败，请检查路径和资源文件！");
+               else
+                    Debug.Log("TMP字体加载成功：" + defaultFont.name);
+               }
+          SetAllTextFont();
           EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
           EventHub.Instance.AddEventListener<Equipment>("UnequipTarget", UnequipTarget);
 
@@ -134,6 +153,26 @@ public class BattlePanel : BasePanel
      }
      protected override void Init()
      {
+         // 创建回合结束发光特效对象（初始隐藏）
+         if (endTurnGlowEffect == null)
+         {
+             var glowSprite = Resources.Load<Sprite>("ArtResources/战斗_UI/技能面板/回合结束发光");
+             endTurnGlowEffect = new GameObject("EndTurnGlowEffect");
+             var img = endTurnGlowEffect.AddComponent<Image>();
+             img.sprite = glowSprite;
+             img.raycastTarget = false;
+             // 设置为按钮的第0层子物体，确保在所有子物体（包括文字）下方
+             endTurnGlowEffect.transform.SetParent(btnEndThisRound.transform, false);
+             endTurnGlowEffect.transform.SetSiblingIndex(0);
+             // 拉伸到按钮大小
+             var rect = endTurnGlowEffect.GetComponent<RectTransform>();
+             var btnRect = btnEndThisRound.GetComponent<RectTransform>();
+             rect.anchorMin = Vector2.zero;
+             rect.anchorMax = Vector2.one;
+             rect.offsetMin = Vector2.zero;
+             rect.offsetMax = Vector2.zero;
+             endTurnGlowEffect.SetActive(false);
+         }
           equipmentSlot1.InitSlot(null);
 
           int endNumber = myEnemyId % 1000;
@@ -178,11 +217,17 @@ public class BattlePanel : BasePanel
 
           btnEndThisRound.onClick.AddListener(() =>
           {
-
-               Debug.LogWarning("Triggered!");
+               Debug.Log("Triggered!");
                //触发BattleManager中的bool标识，让回合协程继续：
                BattleManager.Instance.isRoundEndTriggered = true;
-
+               // 手动点击后隐藏特效
+               if (endTurnGlowEffect != null)
+                   endTurnGlowEffect.SetActive(false);
+               if (glowCoroutine != null)
+               {
+                   StopCoroutine(glowCoroutine);
+                   glowCoroutine = null;
+               }
           });
 
 
@@ -339,55 +384,75 @@ public class BattlePanel : BasePanel
           //buff的显示更新；
           foreach(var playerBuff in TurnCounter.Instance.playerBuffs)
           {
-               // Debug.LogWarning($"尝试更新我方buff：{playerBuff.name}");
-
-
-               //此处是我方的buff；
-               //如果没有显示过，那么就执行游戏对象的实例化：
                if(!playerBuff.isShownOnUI)
-               {
                     Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), playerBuffContainer, false);
-               }
-
-               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
-               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
                EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", playerBuff);
-     
-
           }
-
-          //敌方buff的更新:
           foreach(var enemyBuff in enemy.buffs)
           {
-               // Debug.LogWarning($"尝试更新敌方buff：{enemyBuff.name}");
-               //此处是敌方的buff：
-               //如果没有显示过，那么就执行游戏对象的实例化：
                if(!enemyBuff.isShownOnUI)
-               {
                     Instantiate<GameObject>(Resources.Load<GameObject>("BuffCheckObject"), enemyBuffContainer, false);
-               }
-
-               //执行更新的广播：位于BuffCheckerLogic中，签名：UpdateBuffUI(BattleBuff targetBuff)
-               //对于新实例化的buff对象，和已存在的buff对象，都是通过这个广播实现更新的：
                EventHub.Instance.EventTrigger<BattleBuff>("UpdateBuffUI", enemyBuff);
           }
-          
           //以及剩余行动点数、最大行动点数的更新：
           txtLeftCost.text = BattleManager.Instance.actionPoint.ToString();
+          Debug.Log($"当前剩余行动点数：{BattleManager.Instance.actionPoint}");
           txtMaxCost.text = BattleManager.Instance.actionPointMax.ToString();
+          Debug.Log($"当前最大行动点数：{BattleManager.Instance.actionPointMax}");
 
-          if(PlayerManager.Instance.player.HP.value <= 0) //玩家死亡
+          // 行动点数归零时显示发光特效
+          if (BattleManager.Instance.actionPoint == 0)
           {
-               //GameOver在BattleManager中；
-               Debug.LogWarning("玩家死亡！");
-               EventHub.Instance.EventTrigger("GameOver", false, callback);     //callback只有获胜才会调用，内部会进判断的；
+               if (endTurnGlowEffect != null && !endTurnGlowEffect.activeSelf)
+               {
+                    endTurnGlowEffect.SetActive(true);
+                    if (glowCoroutine != null)
+                    {
+                        StopCoroutine(glowCoroutine);
+                        glowCoroutine = null;
+                    }
+                    glowCoroutine = StartCoroutine(GlowBreathCoroutine());
+               }
+          }
+          else
+          {
+               if (endTurnGlowEffect != null && endTurnGlowEffect.activeSelf)
+               {
+                    endTurnGlowEffect.SetActive(false);
+                    if (glowCoroutine != null)
+                    {
+                        StopCoroutine(glowCoroutine);
+                        glowCoroutine = null;
+                    }
+               }
           }
 
-          else if(enemy.HP <= 0) //敌人死亡
+          if (PlayerManager.Instance.player.HP.value <= 0) //玩家死亡
+          {
+               Debug.LogWarning("玩家死亡！");
+               EventHub.Instance.EventTrigger("GameOver", false, callback);
+          }
+          else if (enemy.HP <= 0) //敌人死亡
           {
                Debug.LogWarning("敌人死亡！");
                EventHub.Instance.EventTrigger("GameOver", true, callback);
           }
+     }
+
+     // 呼吸闪烁协程
+     private IEnumerator GlowBreathCoroutine()
+     {
+         var img = endTurnGlowEffect.GetComponent<Image>();
+         float t = 0f;
+         while (endTurnGlowEffect.activeSelf)
+         {
+             t += Time.deltaTime;
+             float alpha = 0.5f + 0.5f * Mathf.Sin(t * 2.5f); // 0~1之间呼吸
+             var c = img.color;
+             c.a = alpha;
+             img.color = c;
+             yield return null;
+         }
      }
 
      //更新Slider的方法

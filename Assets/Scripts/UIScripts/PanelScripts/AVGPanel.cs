@@ -81,7 +81,9 @@ public class AVGPanel : BasePanel
     public Queue<GameObject> npcObjectQueue;
 
     protected override void Awake()
+
     {
+        
         replaceTriggerCount = 0;
         base.Awake();
         EventHub.Instance.AddEventListener<DialogueOrderBlock>("BroadcastCurrentOrderBlock", BroadcastCurrentOrderBlock);
@@ -559,6 +561,7 @@ public class AVGPanel : BasePanel
     private void ConverseWithNPC(string name, string conversation)
     {
         //然后在对话框中显示对话内容，并且调整对话者的名字：
+        TextManager.SetContentFont(this.gameObject);
         txtConversation.text = conversation;
         txtConverseNPCName.text = name;
 
@@ -579,7 +582,7 @@ public class AVGPanel : BasePanel
                 LightenImage(key);
             }
         }
-
+        
     }
 
     //处理NPC的Image暗化的逻辑：参数是NPC名字

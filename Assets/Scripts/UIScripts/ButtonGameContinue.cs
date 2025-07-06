@@ -27,18 +27,22 @@ public class ButtonGameContinue : MonoBehaviour
                 btnSelf.interactable = false;
         }
 
-        btnSelf.onClick.AddListener(() => {
+        btnSelf.onClick.AddListener(() =>
+        {
             //从上次的存档中加载内容：
-            SaveManager.Instance.LoadGame();
+
 
             EventHub.Instance.EventTrigger<bool>("TestClearFunction", false);
-            
+
             //并且将玩家加载到对应的安全屋中：
-            EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+            EventHub.Instance.EventTrigger<UnityAction>("ShowMask", () =>
+            {
                 UIManager.Instance.HidePanel<StartPanel>();
                 LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
                 UIManager.Instance.ShowPanel<MainPanel>();
             });
+            UIManager.Instance.HidePanel<StartPanel>();
+            SaveManager.Instance.LoadGame();
         });
     }
 

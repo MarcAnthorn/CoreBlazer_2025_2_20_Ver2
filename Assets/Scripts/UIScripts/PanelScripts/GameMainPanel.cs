@@ -49,6 +49,7 @@ public class GameMainPanel : BasePanel
 
     protected override void Init()
     {
+        TextManager.SetContentFont(this.gameObject);
         //关闭主面板：
         UIManager.Instance.HidePanel<MainPanel>();
 

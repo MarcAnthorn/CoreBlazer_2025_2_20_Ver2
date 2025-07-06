@@ -143,11 +143,15 @@ public class ToastPanel : BasePanel
         //初始化文本：
         StringBuilder valueChange = new StringBuilder();
         StringBuilder mutiplierChange = new StringBuilder();
-        foreach(var key in attributeValueDic.Keys){
-            if(attributeValueDic[key] < 0){
+        TextManager.SetContentFont(this.gameObject);
+        foreach (var key in attributeValueDic.Keys)
+        {
+            if (attributeValueDic[key] < 0)
+            {
                 valueChange.Append($"[{key}]  {attributeValueDic[key]}");
             }
-            else{
+            else
+            {
                 valueChange.Append($"[{key}] + {attributeValueDic[key]}");
             }
         }

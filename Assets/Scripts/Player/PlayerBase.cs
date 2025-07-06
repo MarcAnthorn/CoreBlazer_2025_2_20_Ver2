@@ -14,6 +14,11 @@ public class PlayerBase : MonoBehaviour
     private SpriteRenderer sr;
 
     public CinemachineVirtualCamera cam;
+    
+    // 异步同步相关
+    private Coroutine positionSyncCoroutine;
+    private Vector3 lastSyncedPosition;
+    private float syncInterval = 0.1f; // 每0.1秒同步一次
 
     protected virtual void Awake()
     {
@@ -30,6 +35,35 @@ public class PlayerBase : MonoBehaviour
 
 
         cam = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+        
+        // 启动异步位置同步
+        StartPositionSync();
+    }
+    
+    // 启动异步位置同步协程
+    private void StartPositionSync()
+    {
+        if (positionSyncCoroutine != null)
+        {
+            StopCoroutine(positionSyncCoroutine);
+        }
+        positionSyncCoroutine = StartCoroutine(AsyncPositionSync());
+    }
+    
+    // 异步位置同步协程
+    private IEnumerator AsyncPositionSync()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(syncInterval);
+            
+            // 只有当位置发生变化时才同步
+            if (Vector3.Distance(transform.position, lastSyncedPosition) > 0.01f)
+            {
+                PlayerManager.Instance.playerPosition = transform.position;
+                lastSyncedPosition = transform.position;
+            }
+        }
     }
 
 
@@ -40,6 +74,12 @@ public class PlayerBase : MonoBehaviour
         EventHub.Instance.RemoveEventListener<E_DetectInputType>("UnlockSpecificDetectInput", UnlockSpecificDetectInput);
         EventHub.Instance.RemoveEventListener<bool>("Freeze", Freeze);
         EventHub.Instance.RemoveEventListener<int>("AdjustLayer", AdjustLayer);
+        
+        // 停止异步位置同步协程
+        if (positionSyncCoroutine != null)
+        {
+            StopCoroutine(positionSyncCoroutine);
+        }
     }
 
     protected virtual void FixedUpdate() 
@@ -62,7 +102,26 @@ public class PlayerBase : MonoBehaviour
     }
 
       
+public static void SetPlayerPosition(Vector3 pos)
+{
+    if (PlayerManager.Instance.PlayerTransform != null)
+    {
+        PlayerManager.Instance.PlayerTransform.position = pos;
+        PlayerManager.Instance.playerPosition = pos;
+        Debug.Log($"玩家位置已设置为: {pos}");
+    }
+    else
+    {
+        Debug.LogWarning("PlayerTransform为空，无法设置玩家位置！");
+    }
+}
 
+    // 立即同步当前位置（用于重要操作）
+    public void ForceSyncPosition()
+    {
+        PlayerManager.Instance.playerPosition = transform.position;
+        lastSyncedPosition = transform.position;
+    }
 
     protected void ControlPlayerMove()
     {
@@ -103,11 +162,12 @@ public class PlayerBase : MonoBehaviour
                 }
             }
 
-
             else if(!Input.anyKeyDown)
             {
                 animator.SetBool("IsIdle", true);
             }
+            
+            // 位置同步已改为异步协程处理
         }
     }
 
@@ -125,10 +185,18 @@ public class PlayerBase : MonoBehaviour
         if(_isFrozen)
         {
             TimeManager.Instance.SuspendAllTimers();
+            // 冻结时停止位置同步
+            if (positionSyncCoroutine != null)
+            {
+                StopCoroutine(positionSyncCoroutine);
+                positionSyncCoroutine = null;
+            }
         }
         else
         {
             TimeManager.Instance.StartAllTimers();
+            // 解冻时重新启动位置同步
+            StartPositionSync();
         }
 
         animator.SetBool("IsIdle", true);

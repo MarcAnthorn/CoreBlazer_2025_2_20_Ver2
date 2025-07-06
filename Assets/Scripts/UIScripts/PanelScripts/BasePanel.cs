@@ -24,6 +24,7 @@ public abstract class BasePanel : MonoBehaviour
     //因此，在初始化一些内容的时候，我们优先考虑使用Awake函数实现初始化，防止出现空引用；
     protected virtual void Awake()
     {
+        TextManager.SetContentFont(this.gameObject);
         canvasGroup = this.GetComponent<CanvasGroup>();
     }
 

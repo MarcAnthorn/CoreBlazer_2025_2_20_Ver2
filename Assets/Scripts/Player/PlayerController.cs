@@ -504,9 +504,18 @@ public class PlayerController : PlayerBase
         
     }
 
-    private void SetPlayerPosition(Vector3 position)
+    public new static void SetPlayerPosition(Vector3 position)
     {
-        this.transform.position = position;
+        if (PlayerManager.Instance?.PlayerTransform != null)
+        {
+            PlayerManager.Instance.PlayerTransform.position = position;
+            PlayerManager.Instance.playerPosition = position;
+            Debug.Log($"玩家位置已设置为: {position}");
+        }
+        else
+        {
+            Debug.LogWarning("PlayerTransform为空，无法设置玩家位置！");
+        }
     }
 
     public void ResumeLight()
