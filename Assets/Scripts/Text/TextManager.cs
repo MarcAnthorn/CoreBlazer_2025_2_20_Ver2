@@ -2,16 +2,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json; 
+using TMPro;
  
 public class TextManager : MonoBehaviour
 {
     private static TextManager _instance;
     public static TextManager Instance => _instance;
+    public TMP_FontAsset defaultFont;
 
     private Dictionary<string, Dictionary<string, Dictionary<string, string>>> textData;
+    private void SetAllTextFont()
+    {
+        foreach (var tmp in GetComponentsInChildren<TextMeshProUGUI>(true))
+        {
+            tmp.font = defaultFont;
+        }
+    }
+    public void SetTipFont(GameObject txtObject)
+    {
+        var tmpUGUI = txtObject.GetComponent<TMPro.TextMeshProUGUI>();
+            var tmp3D = txtObject.GetComponent<TMPro.TextMeshPro>();
+            var font = Resources.Load<TMPro.TMP_FontAsset>("Fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF");
+            if (font != null)
+            {
+                if (tmpUGUI != null) tmpUGUI.font = font;
+                if (tmp3D != null) tmp3D.font = font;
+                Debug.Log($"字体已设置为: {font.name}");
+            }
+    }
 
+    public static void SetContentFont(GameObject root, TMP_FontAsset fontAsset = null)
+    {
+        if (fontAsset == null) fontAsset = Resources.Load<TMP_FontAsset>("Fonts/NotoSansSC SDF");
+        if (fontAsset == null) return;
+
+        foreach (var tmp in root.GetComponentsInChildren<TextMeshProUGUI>(true))
+            tmp.font = fontAsset;
+        foreach (var tmp in root.GetComponentsInChildren<TextMeshPro>(true))
+            tmp.font = fontAsset;
+        Debug.Log($"已为 {root.name} 设置字体: {fontAsset.name}");
+        }
     void Awake()
     {
+        if (defaultFont == null)
+        {
+            // 路径为你生成的TMP字体资产的Resources路径（不带后缀）
+            defaultFont = Resources.Load<TMP_FontAsset>("Fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF");
+        }
+        SetAllTextFont();
         if (_instance == null)
         {
             _instance = this;

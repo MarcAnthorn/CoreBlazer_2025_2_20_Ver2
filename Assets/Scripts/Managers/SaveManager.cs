@@ -48,14 +48,15 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     //读档接口：
     public void LoadGame()
     {
+        
+        
+        LoadGameLevel();
         LoadPlayerPosition();
         LoadPlayerAttribute();
-        LoadGameLevel();
         LoadEquipment();
         LoadItem();
         LoadAVGDistribute();
         ManageRestLightData(false);
-        LoadPlayerPosition();
     }
 
     //清空当前游戏进度的方法；

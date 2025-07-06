@@ -35,13 +35,16 @@ public class ButtonGameContinue : MonoBehaviour
             EventHub.Instance.EventTrigger<bool>("TestClearFunction", false);
 
             //并且将玩家加载到对应的安全屋中：
+            /*
             EventHub.Instance.EventTrigger<UnityAction>("ShowMask", () =>
             {
                 UIManager.Instance.HidePanel<StartPanel>();
                 LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
                 UIManager.Instance.ShowPanel<MainPanel>();
             });
+            */
             UIManager.Instance.HidePanel<StartPanel>();
+            UIManager.Instance.ShowPanel<MainPanel>();
             SaveManager.Instance.LoadGame();
         });
     }
