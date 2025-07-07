@@ -23,7 +23,7 @@ public class ButtonGameStart : MonoBehaviour
         EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
             UIManager.Instance.HidePanel<StartPanel>();
             
-            UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1106, OnComplete);
+            UIManager.Instance.ShowPanel<AVGPanel>().InitAVG(1100, OnComplete);
 
         });
             
