@@ -43,6 +43,7 @@ public class TipPanel : BasePanel
 
     public void SetTipText(string tipText)
     {
+        TextManager.SetContentFont(this.gameObject);
         txtTipText.text = tipText;
     }
 

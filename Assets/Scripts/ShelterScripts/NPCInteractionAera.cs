@@ -61,18 +61,15 @@ public class NPCInteractionAera : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             isTriggerLock = false;
-            txtObject = PoolManager.Instance.SpawnFromPool("TipText");
-            var tmpUGUI = txtObject.GetComponent<TMPro.TextMeshProUGUI>();
-            var tmp3D = txtObject.GetComponent<TMPro.TextMeshPro>();
-            var font = Resources.Load<TMPro.TMP_FontAsset>("Noto_Sans_SC/static/NotoSansSC-Black SDF");
-            if (font != null)
+            TextManager.SetContentFont(this.gameObject);
+            
+            // 从对象池获取提示文本对象
+            txtObject = PoolManager.Instance.SpawnFromPool("TipTexts");
+            if (txtObject != null)
             {
-                if (tmpUGUI != null) tmpUGUI.font = font;
-                if (tmp3D != null) tmp3D.font = font;
-                Debug.Log($"字体已设置为: {font.name}");
+                // 设置提示文本内容和位置
+                EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", TextManager.Instance.GetText("交互提示", "信仰", "绑定"), this.transform.position + offset);
             }
-            EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", TextManager.Instance.GetText("交互提示", "信仰", "绑定"), this.transform.position + offset);
-
         }
     }
 
@@ -80,7 +77,12 @@ public class NPCInteractionAera : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             isTriggerLock = true;
-            PoolManager.Instance.ReturnToPool("TipTexts", txtObject);
+            // 只有当txtObject不为null时才返回到对象池
+            if (txtObject != null)
+            {
+                PoolManager.Instance.ReturnToPool("TipTexts", txtObject);
+                txtObject = null; // 清空引用
+            }
         }
     }
 
