@@ -85,7 +85,9 @@ public class Item_101 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +40f);
+        // PlayerManager.Instance.PlayerAttributeChange(AttributeType.LVL, +40f);
+
+        EventHub.Instance.EventTrigger("ResumeLight", 40f);
         PlayerManager.Instance.player.DebugInfo();
         //锁定玩家的灯光值：
         EventHub.Instance.EventTrigger("TriggerLightShrinking", false);
@@ -322,8 +324,8 @@ public class Item_204 : Item
         defenseValueTmp = PlayerManager.Instance.player.DEF.value * 1.5f;
         PlayerManager.Instance.player.DEF.AddValue(defenseValueTmp);
 
-        temp = PlayerManager.Instance.player.CRIT_Rate.value;
-        PlayerManager.Instance.player.CRIT_Rate.value = 0f;
+        temp = PlayerManager.Instance.player.CRIT_RateValue;
+        PlayerManager.Instance.player.CRIT_RateValue = 0f;
     }
 
     private void OnComplete()
@@ -355,7 +357,7 @@ public class Item_205 : Item
     {
         PlayerManager.Instance.player.STR.MultipleValue(1.5f);
         temp = PlayerManager.Instance.player.DEF.value;
-        PlayerManager.Instance.player.CRIT_Rate.value = 0f;
+        PlayerManager.Instance.player.CRIT_RateValue = 0f;
     }
 
     private void OnComplete()
@@ -704,7 +706,7 @@ public class Item_505 : Item
 
         //获得后精神值上限-10
         PlayerManager.Instance.player.SAN.AddValue(-10f);
-        PlayerManager.Instance.player.SAN.value -= 10f;
+        PlayerManager.Instance.player.SANValue -= 10f;
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -793,11 +795,23 @@ public class Item_509 : Item
         
     }
 }
+
+//返回骨片
 public class Item_510 : Item
 {
+    Transform playerTransform;
     public override void Use()
     {
-        
+        if(playerTransform == null)
+        {
+            playerTransform = PlayerManager.Instance.PlayerTransform;
+        }
+
+        //清除所有可能的层级buff：
+        EventHub.Instance.EventTrigger("ResetFloorDiffer");
+        GameLevelManager.Instance.lastTeleportPoint = playerTransform.position;
+        LoadSceneManager.Instance.LoadSceneAsync("ShelterScene");
+
     }
 }
 
@@ -946,14 +960,22 @@ public class Item_514 : Item
         PlayerManager.Instance.player.HP.AddValueLimit(25);
         PlayerManager.Instance.player.LVL.AddValueLimit(150);
 
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「科拉佐斯的思绪」已生效");
+
     }
 
     private void Item514OnEffectOff()
     {
-        isTriggered = false;
-        PlayerManager.Instance.player.STR.AddValue(-strDelta);
-        PlayerManager.Instance.player.HP.AddValueLimit(-25);
-        PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+        if(isTriggered)
+        {
+            isTriggered = false;
+            PlayerManager.Instance.player.STR.AddValue(-strDelta);
+            PlayerManager.Instance.player.HP.AddValueLimit(-25);
+            PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「科拉佐斯的思绪」已不再生效");
+        }
+        
     }
 }
 
@@ -1008,14 +1030,21 @@ public class Item_515 : Item
         PlayerManager.Instance.player.DEF.AddValueLimit(25);
         PlayerManager.Instance.player.LVL.AddValueLimit(150);
 
+        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「山岳的凝视」已生效");
+
     }
 
     private void Item515OnEffectOff()
     {
-        isTriggered = false;
-        PlayerManager.Instance.player.STR.AddValue(-strDelta);
-        PlayerManager.Instance.player.DEF.AddValueLimit(-25);
-        PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+        if(isTriggered)
+        {
+            isTriggered = false;
+            PlayerManager.Instance.player.STR.AddValue(-strDelta);
+            PlayerManager.Instance.player.DEF.AddValueLimit(-25);
+            PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「山岳的凝视」已不再生效");
+        }
     }
 
 

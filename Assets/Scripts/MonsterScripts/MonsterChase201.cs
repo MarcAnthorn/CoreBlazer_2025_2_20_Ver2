@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Cinemachine;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class MonsterChase201 : MonsterBase
     private float chaseDelayTime = 2;   //唤醒到追逐的延迟时间
     //虚拟相机：
     public CinemachineVirtualCamera _cam;
+    private GameObject reward;
 
 
     //在Awake中调用的初始化状态的方法：InitializeStates
@@ -35,13 +37,14 @@ public class MonsterChase201 : MonsterBase
         base.Awake();
         // 设置怪物特殊属性
         moveSpeedBase = chaseSpeed;
-        enemyId = 1001;
+        enemyId = 1015;
 
         _cam.Priority = 11;       
         LeanTween.delayedCall(2f, ()=>{
             _cam.Priority = 0;   
         });
 
+        reward = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RewardBoss"));
 
     }
 
@@ -51,20 +54,29 @@ public class MonsterChase201 : MonsterBase
     {
         Debug.LogWarning($"怪物{enemyId}追逐结束, 触发战斗");
 
-        // 触发战斗：
-        //  var panel = UIManager.Instance.ShowPanel<BattlePanel>();
-        //     panel.InitEnemyInfo(enemyId);
-        //     panel.callback = OnComplete;
-        //     EventHub.Instance.EventTrigger<bool>("Freeze", true);
+        //触发战斗：
+        var panel = UIManager.Instance.ShowPanel<BattlePanel>();
+        panel.InitEnemyInfo(enemyId);
+        panel.callback = OnComplete;
+        EventHub.Instance.EventTrigger<bool>("Freeze", true);
 
-        //no avg is triggered
-        OnComplete();
+
    
     }
 
-    protected override void OnComplete()
+    protected override void OnComplete(int id)
     {
+        //在最近的地块生成宝箱：
+        int x, y;
+        PathFindingManager.Instance.GetGridIndex(this.transform.position, out x, out y);
+        Vector3 targetPosition = PathFindingManager.Instance.GetWorldPosition(x, y);
+
+        Instantiate(reward, targetPosition, Quaternion.identity);
+
+    
         Destroy(this.gameObject);
+
+        
 
     }
 

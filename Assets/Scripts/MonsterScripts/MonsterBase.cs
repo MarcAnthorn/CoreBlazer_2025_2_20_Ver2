@@ -104,7 +104,7 @@ public abstract class MonsterBase : MonoBehaviour
     protected abstract void OnChaseEnd();
 
     //战斗结束后的回调函数：
-    protected virtual void OnComplete(){}
+    protected virtual void OnComplete(int 占位){}
 
     // 状态转换方法
     public void TransitionToState(IMonsterState newState)
@@ -344,7 +344,7 @@ public abstract class MonsterBase : MonoBehaviour
     // 暂停移动 - 保存当前状态以便恢复
     public virtual void PauseMoving()
     {
-        if (isMoving && !isPaused)
+        if (!isPaused)
         {
             isPaused = true;
             
@@ -537,7 +537,7 @@ public abstract class ChaseState : IMonsterState
         // 检查是否需要更新路径
         bool shouldUpdatePath = monster.IsPaused() ? false : ShouldUpdatePath(currentPlayerPos, monster);
 
-        // Debug.Log($"Chasing! shouldUpdatePath is {shouldUpdatePath}");
+        Debug.Log($"Chasing! shouldUpdatePath is {shouldUpdatePath}");
         
         if(shouldUpdatePath)
         {

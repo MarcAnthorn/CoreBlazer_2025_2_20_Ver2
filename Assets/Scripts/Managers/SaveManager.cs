@@ -151,17 +151,18 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         string json = File.ReadAllText(savePath);
         PlayerSaveData data = JsonConvert.DeserializeObject<PlayerSaveData>(json);
 
-        // 恢复属性
-        ApplyAttribute(player.HP, data.HP);
-        ApplyAttribute(player.STR, data.STR);
-        ApplyAttribute(player.DEF, data.DEF);
-        ApplyAttribute(player.LVL, data.LVL);
-        ApplyAttribute(player.SAN, data.SAN);
-        ApplyAttribute(player.SPD, data.SPD);
-        ApplyAttribute(player.CRIT_Rate, data.CRIT_Rate);
-        ApplyAttribute(player.CRIT_DMG, data.CRIT_DMG);
-        ApplyAttribute(player.HIT, data.HIT);
-        ApplyAttribute(player.AVO, data.AVO);
+        // 恢复属性（修正struct赋值问题，确保写回Player实例）
+        ApplyAttribute(player, AttributeType.HP, data.HP);
+        ApplyAttribute(player, AttributeType.STR, data.STR);
+        ApplyAttribute(player, AttributeType.DEF, data.DEF);
+        ApplyAttribute(player, AttributeType.LVL, data.LVL);
+        ApplyAttribute(player, AttributeType.SAN, data.SAN);
+        ApplyAttribute(player, AttributeType.SPD, data.SPD);
+        ApplyAttribute(player, AttributeType.CRIT_Rate, data.CRIT_Rate);
+        ApplyAttribute(player, AttributeType.CRIT_DMG, data.CRIT_DMG);
+        ApplyAttribute(player, AttributeType.HIT, data.HIT);
+        ApplyAttribute(player, AttributeType.AVO, data.AVO);
+        
 
         Debug.Log("玩家属性已从存档恢复！");
     }
@@ -263,12 +264,17 @@ public class SaveManager : SingletonBaseManager<SaveManager>
     }
 
     // 辅助方法：将存档属性赋值回Player.PlayerAttribute
-    private void ApplyAttribute(Player.PlayerAttribute attr, PlayerAttributeSaveData data)
+    // 辅助方法：将存档属性赋值回Player.PlayerAttribute，确保写回Player实例
+    private void ApplyAttribute(Player player, AttributeType type, PlayerAttributeSaveData data)
     {
         if (data == null) return;
+        var attr = player.GetAttr(type);
         attr.value = data.value;
         attr.value_limit = data.value_limit;
         attr.type = data.type;
+        player.SetAttr(type, attr);
+        EventHub.Instance.EventTrigger("UpdateAllUIElements");
+        Debug.Log($"属性 {type} 已恢复：值 = {attr.value}, 上限 = {attr.value_limit}");
     }
 
 //---------------------------玩家属性存档--------------------------------------------------

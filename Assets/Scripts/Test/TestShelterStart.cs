@@ -20,7 +20,7 @@ public class TestShelterStart : MonoBehaviour
         IDAllocatorForTarot.Instance.Reset();
 
         //回复血量：
-        PlayerManager.Instance.player.HP.value = PlayerManager.Instance.player.HP.value_limit;
+        PlayerManager.Instance.player.HPValue = PlayerManager.Instance.player.HP.value_limit;
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         UIManager.Instance.ShowPanel<MainPanel>();
@@ -63,7 +63,7 @@ public class TestShelterStart : MonoBehaviour
 
 
         //自动存档：
-        SaveManager.Instance.SaveGame();
+        //SaveManager.Instance.SaveGame();
     }
 
 }

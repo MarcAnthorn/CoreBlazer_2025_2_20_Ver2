@@ -23,7 +23,8 @@ public class EndPointFirstFloor : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.J))
             {
                 SoundEffectManager.Instance.StopMusic();
-
+                //清除所有可能的层级buff：
+                EventHub.Instance.EventTrigger("ResetFloorDiffer");
                 //存储当前的位置：
                 GameLevelManager.Instance.lastTeleportPoint = this.transform.position;
 

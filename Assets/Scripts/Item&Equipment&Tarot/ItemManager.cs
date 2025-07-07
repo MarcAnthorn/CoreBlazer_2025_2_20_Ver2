@@ -85,6 +85,7 @@ public class ItemManager : Singleton<ItemManager>
     }
 
     //重载：一次加多个道具：
+    //bool:是否提示：
     public void AddItem(params int[] ids)
     {
         if(canvas == null)
@@ -361,6 +362,20 @@ public class ItemManager : Singleton<ItemManager>
 
             case 509:
                 return new Item_509();
+            case 510:
+                return new Item_510();
+            case 511:
+                return new Item_511();
+            case 512:
+                return new Item_512();
+            case 513:
+                return new Item_513();
+            case 514:
+                return new Item_514();
+            case 515:
+                return new Item_515();
+            case 516:
+                return new Item_516();
 
         //塔罗牌：
              case 601:

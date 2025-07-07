@@ -52,8 +52,10 @@ public class TestItem : MonoBehaviour
 
 
 
-        //测试塔罗牌：
-        ItemManager.Instance.AddItem(509);
+ 
+        ItemManager.Instance.AddItem(514);
+        ItemManager.Instance.AddItem(510);
+        ItemManager.Instance.AddItem(101);
 
         // ItemManager.Instance.AddItem(103, 104);
 

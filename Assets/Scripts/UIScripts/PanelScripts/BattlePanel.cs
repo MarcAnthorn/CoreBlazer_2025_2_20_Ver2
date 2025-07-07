@@ -90,15 +90,8 @@ public class BattlePanel : BasePanel
      }
      protected override void Awake()
      {
-          if (defaultFont == null)
-               {
-               defaultFont = Resources.Load<TMP_FontAsset>("Fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF");
-               if (defaultFont == null)
-                    Debug.Log("TMP字体加载失败，请检查路径和资源文件！");
-               else
-                    Debug.Log("TMP字体加载成功：" + defaultFont.name);
-               }
-          SetAllTextFont();
+
+
           EventHub.Instance.AddEventListener<Equipment>("EquipTarget", EquipTarget);
           EventHub.Instance.AddEventListener<Equipment>("UnequipTarget", UnequipTarget);
 

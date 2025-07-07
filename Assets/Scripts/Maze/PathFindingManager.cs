@@ -263,7 +263,10 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 int xn = x + manhattanMove[i];
                 int yn = y + manhattanMove[i + 1];
                 PathNode next;
-                if (xn >= 0 && xn < width && yn >= 0 && yn < height && !closedList.Contains(nowPathNodeMap[xn, yn]) && nowPathNodeMap[xn, yn].flag != 1)
+                if (xn >= 0 && xn < width && yn >= 0 && yn < height && 
+                    nowPathNodeMap[xn, yn] != null &&      // 添加null检查
+                    !closedList.Contains(nowPathNodeMap[xn, yn]) && 
+                    nowPathNodeMap[xn, yn].flag != 1)
                 {
                     next = nowPathNodeMap[xn, yn];
                     if (cur.distance + 1 < next.distance)
@@ -334,7 +337,7 @@ public class PathFindingManager : Singleton<PathFindingManager>
     }
 
     //传入策划坐标下的index，获取地块在世界坐标下的坐标；
-    private Vector3 GetWorldPosition(int xMap, int yMap)
+    public Vector3 GetWorldPosition(int xMap, int yMap)
     {
         int delta = (int)GameLevelManager.Instance.gameLevelType == 0 ? 0 : 16;
         //注意：因为Unity中的x', y'（传入Vector3中的）和我们此处的二维数组的x y（访问grid）并不一样；

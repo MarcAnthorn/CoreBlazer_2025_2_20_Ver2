@@ -74,12 +74,24 @@ public class EventHub : SingletonBaseManager<EventHub>
 
     private Dictionary<string, EventInfoBaseClass> eventDictionary = new Dictionary<string, EventInfoBaseClass>();
 
-    public void EventTrigger<T>(string eventName, T info)
+    public bool EventTrigger<T>(string eventName, T info)
     {
         if (eventDictionary.ContainsKey(eventName))
         {
-            (eventDictionary[eventName] as EventInfo<T>).action_?.Invoke(info);      //info被作为参数传入；此时所有订阅者的监听方法都会收到该参数；
+            var eventInfo = eventDictionary[eventName] as EventInfo<T>;
+            if (eventInfo != null)
+            {
+                eventInfo.action_?.Invoke(info);      //info被作为参数传入；此时所有订阅者的监听方法都会收到该参数；
+                return eventInfo.action_ != null;
+            }
+            else
+            {
+                Debug.LogWarning($"EventTrigger: 事件 '{eventName}' 的类型不匹配。期望类型: EventInfo<{typeof(T).Name}>, 实际类型: {eventDictionary[eventName].GetType().Name}");
+                return false;
+            }
         }
+        
+        return false;
     }
 
 
@@ -88,7 +100,15 @@ public class EventHub : SingletonBaseManager<EventHub>
     {
         if (eventDictionary.ContainsKey(eventName))
         {
-            (eventDictionary[eventName] as EventInfo<T1, T2>)?.action_?.Invoke(arg1, arg2);
+            var eventInfo = eventDictionary[eventName] as EventInfo<T1, T2>;
+            if (eventInfo != null)
+            {
+                eventInfo.action_?.Invoke(arg1, arg2);
+            }
+            else
+            {
+                Debug.LogWarning($"EventTrigger: 双参数事件 '{eventName}' 的类型不匹配。期望类型: EventInfo<{typeof(T1).Name}, {typeof(T2).Name}>, 实际类型: {eventDictionary[eventName].GetType().Name}");
+            }
         }
     }
 
@@ -105,7 +125,15 @@ public class EventHub : SingletonBaseManager<EventHub>
             if(function == null)
                 Debug.LogWarning("add function is null");
 
-            (eventDictionary[eventName] as EventInfo<T>).action_ += function;  //as父转子实现子类成员委托调用
+            var eventInfo = eventDictionary[eventName] as EventInfo<T>;
+            if (eventInfo != null)
+            {
+                eventInfo.action_ += function;  //as父转子实现子类成员委托调用
+            }
+            else
+            {
+                Debug.LogWarning($"AddEventListener: 事件 '{eventName}' 的类型不匹配。期望类型: EventInfo<{typeof(T).Name}>, 实际类型: {eventDictionary[eventName].GetType().Name}");
+            }
         }
         else
         {
@@ -145,7 +173,17 @@ public class EventHub : SingletonBaseManager<EventHub>
     public void RemoveEventListener<T>(string eventName, UnityAction<T> function)
     {
         if (eventDictionary.ContainsKey(eventName))
-            (eventDictionary[eventName] as EventInfo<T>).action_ -= function;   //根据里氏替换原则，就算父类对象中装载了子类实例，要想访问子类中的成员，也必须要使用as进行转换
+        {
+            var eventInfo = eventDictionary[eventName] as EventInfo<T>;
+            if (eventInfo != null)
+            {
+                eventInfo.action_ -= function;   //根据里氏替换原则，就算父类对象中装载了子类实例，要想访问子类中的成员，也必须要使用as进行转换
+            }
+            else
+            {
+                Debug.LogWarning($"RemoveEventListener: 事件 '{eventName}' 的类型不匹配。期望类型: EventInfo<{typeof(T).Name}>, 实际类型: {eventDictionary[eventName].GetType().Name}");
+            }
+        }
     }
 
     //双参数的移除事件监听：

@@ -50,6 +50,7 @@ public class MainPanel : BasePanel
     protected override void Awake()
     {
         base.Awake();
+        TextManager.SetContentFont(this.gameObject);
         EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateAttributeUI);
 
         maxHpWidth = imgHp.rectTransform.rect.width;
@@ -67,12 +68,12 @@ public class MainPanel : BasePanel
         var player = PlayerManager.Instance.player;
         txtSan.text = ((int)player.SAN.value).ToString();
 
-        float hpRatio = Mathf.Clamp01(player.HP.value / player.HP.value_limit);
+        float hpRatio = Mathf.Clamp01(player.HPValue / player.HP.value_limit);
         RectTransform rt = imgHp.rectTransform;
         rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxHpWidth * hpRatio);
 
 
-        float lightRatio = Mathf.Clamp01(player.LVL.value / player.LVL.value_limit);
+        float lightRatio = Mathf.Clamp01(player.LVLValue / player.LVL.value_limit);
         RectTransform rt_ = imgLight.rectTransform;
         rt_.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, maxLightWidth * lightRatio);
     }

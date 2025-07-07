@@ -29,7 +29,7 @@ public class PlayerController : PlayerBase
         get => PlayerManager.Instance.player.LVL.value;
         set
         {
-            PlayerManager.Instance.player.LVL.value = value;
+            PlayerManager.Instance.player.LVLValue = value;
             _l = value; // 也同步更新本地的 _l
         }
     }
@@ -165,9 +165,9 @@ public class PlayerController : PlayerBase
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         // 更新时间计数器（限制最大9秒）
-        lightShrinkingTime = Mathf.Min(lightShrinkingTime + Time.deltaTime, 9f);
+        lightShrinkingTime = Mathf.Min(lightShrinkingTime + Time.deltaTime, 10f);
         
-        // 计算当前t值（0-9秒）
+        // 计算当前t值（0-10秒）
         float t = lightShrinkingTime;
         
         // 目标L值：LMax - t²
@@ -179,25 +179,34 @@ public class PlayerController : PlayerBase
         // 确保不会低于目标值（防止lerp过冲）
         L = Mathf.Max(L, targetL);
         
-        // 更新光照半径（优化版）
+        // 更新光照半径（基于L值的平方根或线性关系）
+        float baseRadius = 0f;
         float radiusMultiplier = 0f;
         switch (GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.Tutorial:
             case E_GameLevelType.Second:
-                radiusMultiplier = 0.02f / 20f;
+                baseRadius = 2.12f;  // 最小基础半径
+                radiusMultiplier = 0.05f;  // L值线性系数
                 break;
             case E_GameLevelType.First:
-                radiusMultiplier = 0.015f / 20f;
+                baseRadius = 2.12f;
+                radiusMultiplier = 0.05f;
                 break;
             case E_GameLevelType.Third:
-                radiusMultiplier = 0.03f / 20f;
+                baseRadius = 2.12f;
+                radiusMultiplier = 0.05f;
                 break;
         }
-        spriteLight.pointLightOuterRadius = radiusMultiplier * L * L;
+        
+        // 新的光照半径计算：基础半径 + L值的线性或平方根关系
+        // 选择一种计算方式：
+        spriteLight.pointLightOuterRadius = baseRadius + radiusMultiplier * L; // 平方根关系，变化更平缓 
+        Debug.Log($"L: {L}, Radius: {spriteLight.pointLightOuterRadius}");
+        // 或者使用线性关系：spriteLight.pointLightOuterRadius = baseRadius + radiusMultiplier * L;
 
-        // 灯光最小保护
-        if (spriteLight.pointLightOuterRadius <= 2.12f)
+        // 灯光最小保护 - 基于L值判断
+        if (L <= 3f)
         {
             HandleMinimumLight();
         }
@@ -211,8 +220,9 @@ public class PlayerController : PlayerBase
             isWarningLocked = true;
         }
 
-        spriteLight.pointLightOuterRadius = 2.12f;
-        L = 21.2f;
+        // 设置最小光照保护值
+        L = 0f; // L值设为3，触发最小保护
+        spriteLight.pointLightOuterRadius = 2.12f; // 最小光照半径
         TriggerLightShrinking(false);
 
         isDamaging = isDamageLocked ? false : true;
@@ -432,6 +442,9 @@ public class PlayerController : PlayerBase
         //清除所有死亡清除的道具：(装备不清除)
         ItemManager.Instance.ResetItemAfterDeath();
 
+        //清除所有可能的层级buff：
+        EventHub.Instance.EventTrigger("ResetFloorDiffer");
+
 
         //如果死亡的时候，发现是玩家的SAN归零死亡的，那么直接播放剧情，然后回到游戏主界面：
         if(PlayerManager.Instance.player.SAN.value <= 0)
@@ -473,7 +486,7 @@ public class PlayerController : PlayerBase
 
         //重置血量相关
         PlayerManager.Instance.player.HP.SetValue(100);
-        PlayerManager.Instance.player.LVL.value = 300;
+        PlayerManager.Instance.player.LVLValue = 300;
 
         //重置当前的关卡进度：
         //不论是在哪一层死亡的，都会回到第一层的安全屋；
@@ -579,13 +592,16 @@ public class PlayerController : PlayerBase
             // currentDamage = initDamageValue * (1 + damageTime) >= 20 ? 20 : initDamageValue * (1 + damageTime);
 
             currentDamage = 1 + time;
-            
-            Debug.Log(currentDamage);
-            
-            PlayerManager.Instance.player.HP.AddValue(-currentDamage);
-            Debug.Log(PlayerManager.Instance.player.HP.value);
 
-            if(PlayerManager.Instance.player.HP.value <= 0)
+            Debug.Log($"currentDamage: {currentDamage}");
+
+            // 修复：使用HPValue直接设置，避免struct副本问题
+            var currentHP = PlayerManager.Instance.player.HPValue;
+            var newHP = Mathf.Max(0, currentHP - currentDamage); // 确保不低于0
+            PlayerManager.Instance.player.HPValue = newHP;
+            Debug.Log($"Player HP: {PlayerManager.Instance.player.HPValue}");
+
+            if(PlayerManager.Instance.player.HPValue <= 0)
             {
                 EventHub.Instance.EventTrigger("OnPlayerDead");
             }
