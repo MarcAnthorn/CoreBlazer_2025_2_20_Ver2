@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xMap: 31
-  yMap: 13
+  yMap: 12
   id: 10001
 --- !u!61 &8334181233515754600
 BoxCollider2D:
