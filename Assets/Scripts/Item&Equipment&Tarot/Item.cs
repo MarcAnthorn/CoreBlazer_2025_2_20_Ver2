@@ -7,6 +7,8 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
+
+
 [System.Serializable]
 public abstract class Item                  //所有道具类的基类
 {
@@ -80,7 +82,8 @@ public class Item_101 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"灯火助燃剂\" 使用！");
         timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.灯光值, PlayerManager.Instance.player.LVL.value + 40);
+        
+        PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVLValue + 40);
     }
 
     private void OnStart()
@@ -122,7 +125,10 @@ public class Item_102 : Item
 
     private void AddExtraLight()
     {
-        PlayerManager.Instance.player.LVL.AddValueLimit(10);
+        // 使用统一的PlayerController.SetPlayerAttribute方法同时设置LVL值和上限
+        var currentLVL = PlayerManager.Instance.player.LVLValue;
+        var currentLimit = PlayerManager.Instance.player.LVL.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.LVL, currentLVL, currentLimit + 10);
     }
 
 
@@ -141,7 +147,7 @@ public class Item_103 : Item
 
         //注册取消道具的方法：
         EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
-        
+
         // //使用后靠近特殊墙壁可砸碎
         // int timerIndex;
         // timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
@@ -181,7 +187,19 @@ public class Item_103 : Item
     //     }
     // }
 }
-
+/*
+    NONE = 0,
+    HP = 1,
+    STR = 2,
+    DEF = 3,
+    LVL = 4,
+    SAN = 5,
+    SPD = 6,
+    CRIT_Rate = 7,
+    CRIT_DMG = 8,
+    HIT = 9,
+    AVO = 10
+}*/
 public class Item_104 : Item
 {
     public override void Use()
@@ -256,18 +274,30 @@ public class Item_202 : Item
         //生命值高于50%时，可扣除自身当前生命值的80%，使自身暴击率提升100%
         timerIndex = TimeManager.Instance.AddTimer(6f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HP.value * 0.2f);
-        PlayerManager.Instance.player.CRIT_Rate.AddValue(1f);
+        
+        // 使用统一的PlayerController.SetPlayerAttribute方法设置HP值，保持原有上限
+        var currentHP = PlayerManager.Instance.player.HPValue;
+        var hpLimit = PlayerManager.Instance.player.HP.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.HP, currentHP * 0.2f);
+        
+        var currentCritRate = PlayerManager.Instance.player.CRIT_RateValue;
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.CRIT_Rate, 1f);
     }
 
     bool isEffected;
     private void OnStart()
     {
-        bool condition1 = (PlayerManager.Instance.player.HP.value / PlayerManager.Instance.player.HP.value_limit) >= 0.5;
+        bool condition1 = (PlayerManager.Instance.player.HPValue / PlayerManager.Instance.player.HP.value_limit) >= 0.5;
         if (condition1)
         {
-            PlayerManager.Instance.player.HP.MultipleValue(0.2f);
-            PlayerManager.Instance.player.CRIT_Rate.AddValue(1f);
+            // 使用PlayerController.SetPlayerAttribute统一设置属性值
+            var currentHP = PlayerManager.Instance.player.HPValue;
+            var hpLimit = PlayerManager.Instance.player.HP.value_limit;
+            PlayerController.SetPlayerAttribute(AttributeType.HP, Mathf.Min(currentHP * 0.2f, hpLimit));
+            
+            var currentCritRate = PlayerManager.Instance.player.CRIT_RateValue;
+            var critLimit = PlayerManager.Instance.player.CRIT_Rate.value_limit;
+            PlayerController.SetPlayerAttribute(AttributeType.CRIT_Rate, Mathf.Min(currentCritRate + 1f, critLimit));
             isEffected = true;
         }
     }
@@ -277,8 +307,13 @@ public class Item_202 : Item
         onCompleteCallback?.Invoke();
         if (isEffected)
         {
-            PlayerManager.Instance.player.HP.MultipleValue(1 / 0.2f);
-            PlayerManager.Instance.player.CRIT_Rate.AddValue(-1f);
+            // 使用PlayerController.SetPlayerAttribute统一恢复属性值
+            var currentHP = PlayerManager.Instance.player.HPValue;
+            var hpLimit = PlayerManager.Instance.player.HP.value_limit;
+            PlayerController.SetPlayerAttribute(AttributeType.HP, Mathf.Min(currentHP / 0.2f, hpLimit));
+            
+            var currentCritRate = PlayerManager.Instance.player.CRIT_RateValue;
+            PlayerController.SetPlayerAttribute(AttributeType.CRIT_Rate, Mathf.Max(currentCritRate - 1f, 0));
         }
     }
 
@@ -294,7 +329,7 @@ public class Item_203 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HP.value_limit);
 
         //使用后生命值回满
-        PlayerManager.Instance.player.HP.SetValue(PlayerManager.Instance.player.HP.value_limit);
+        PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HP.value_limit);
         PlayerManager.Instance.player.DebugInfo();
     }
 
@@ -310,31 +345,32 @@ public class Item_204 : Item
         //使用后防御值短时间*1.5倍，在此期间暴击率归0
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, Mathf.Min(PlayerManager.Instance.player.DEF.value * 1.5f, PlayerManager.Instance.player.DEF.value_limit));
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.暴击率, 0);
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, Mathf.Min(PlayerManager.Instance.player.DEFValue * 1.5f, PlayerManager.Instance.player.DEF.value_limit));
+        PlayerController.SetPlayerAttribute(AttributeType.CRIT_Rate, 0);
     }
 
     float temp;
     float defenseValueTmp;
     private void OnStart()
     {
-        //此处是否会存在问题？如如果先*=1.5，而后通过另外的道具加上某个数值，是否会导致最终的/= 1.5f不能回复到原先的数值？
-        //PlayerManager.Instance.player.DEF.value *= 1.5f;
-
-        defenseValueTmp = PlayerManager.Instance.player.DEF.value * 1.5f;
-        PlayerManager.Instance.player.DEF.AddValue(defenseValueTmp);
+        // 使用PlayerController.SetPlayerAttribute统一设置防御值，保持上限不变
+        var currentDEF = PlayerManager.Instance.player.DEFValue;
+        var defLimit = PlayerManager.Instance.player.DEF.value_limit;
+        defenseValueTmp = currentDEF * 1.5f;
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, Mathf.Min(defenseValueTmp, defLimit));
 
         temp = PlayerManager.Instance.player.CRIT_RateValue;
-        PlayerManager.Instance.player.CRIT_RateValue = 0f;
+        PlayerController.SetPlayerAttribute(AttributeType.CRIT_Rate, 0); // 将暴击率归0
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
 
-        //通过减去之前加上的百分比数值，恢复到原先的值；
-        PlayerManager.Instance.player.DEF.AddValue(-defenseValueTmp);
-        PlayerManager.Instance.player.CRIT_Rate.AddValue(temp);
+        // 使用PlayerController.SetPlayerAttribute统一恢复属性值
+        var originalDEF = defenseValueTmp / 1.5f; // 计算原始防御值
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, originalDEF);
+        PlayerController.SetPlayerAttribute(AttributeType.CRIT_Rate, temp); // 恢复原来的暴击率值
     }
 
 }
@@ -349,22 +385,30 @@ public class Item_205 : Item
         //使用后力量短时间*1.5倍，在此期间防御值归0
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value * 1.5f,PlayerManager.Instance.player.STR.value_limit));
+        PlayerController.SetPlayerAttribute(AttributeType.STR, Mathf.Min(PlayerManager.Instance.player.STRValue * 1.5f,PlayerManager.Instance.player.STR.value_limit));
+
     }
 
     float temp;
     private void OnStart()
     {
-        PlayerManager.Instance.player.STR.MultipleValue(1.5f);
+        // 使用PlayerController.SetPlayerAttribute统一设置力量值，保持上限不变
+        var currentSTR = PlayerManager.Instance.player.STRValue;
+        var strLimit = PlayerManager.Instance.player.STR.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.STR, Mathf.Min(currentSTR * 1.5f, strLimit));
+        
         temp = PlayerManager.Instance.player.DEF.value;
-        PlayerManager.Instance.player.CRIT_RateValue = 0f;
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, 0); // 将防御值归0
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.STR.MultipleValue(1 / 1.5f);
-        PlayerManager.Instance.player.DEF.AddValue(temp);
+        // 使用PlayerController.SetPlayerAttribute统一恢复属性值
+        var currentSTR = PlayerManager.Instance.player.STRValue;
+        var strLimit = PlayerManager.Instance.player.STR.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.STR, Mathf.Min(currentSTR / 1.5f, strLimit));
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, temp); // 恢复原来的防御值
     }
 
 }
@@ -385,14 +429,20 @@ public class Item_206 : Item
     int index;
     private void OnStart()
     {
-        PlayerManager.Instance.player.AVO.MultipleValue(1.8f);
+        // 使用PlayerController.SetPlayerAttribute统一设置闪避值
+        var currentAVO = PlayerManager.Instance.player.AVO.value;
+        var avoLimit = PlayerManager.Instance.player.AVO.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.AVO, Mathf.Min(currentAVO * 1.8f, avoLimit));
         index = BuffManager.Instance.AddBuff(UseCase.Battle, BuffType.HP_Change, CalculationType.Multiply, 1.0f / 1.5f);    //减益表示为除法
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.AVO.MultipleValue(1 / 1.8f);
+        // 使用PlayerController.SetPlayerAttribute统一恢复闪避值
+        var currentAVO = PlayerManager.Instance.player.AVO.value;
+        var avoLimit = PlayerManager.Instance.player.AVO.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.AVO, Mathf.Min(currentAVO / 1.8f, avoLimit));
         BuffManager.Instance.RemoveBuff(index);
     }
 
@@ -420,7 +470,7 @@ public class Item_207 : Item
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.HP.SetValue(0);
+        PlayerController.SetPlayerAttribute(AttributeType.HP, 0);
         BuffManager.Instance.RemoveBuff(index);
     }
 
@@ -442,20 +492,31 @@ public class Item_208 : Item
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.暴击率, Mathf.Min(PlayerManager.Instance.player.CRIT_Rate.value + 1f,PlayerManager.Instance.player.CRIT_Rate.value_limit));
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value * 1.5f,PlayerManager.Instance.player.STR.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STRValue * 1.5f,PlayerManager.Instance.player.STR.value_limit));
     }
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.CRIT_Rate.AddValue(1f);
-        PlayerManager.Instance.player.STR.MultipleValue(1.5f);
+        // 使用PlayerController.SetPlayerAttribute统一设置暴击率和力量值
+        var currentCritRate = PlayerManager.Instance.player.CRIT_RateValue;
+        var critLimit = PlayerManager.Instance.player.CRIT_Rate.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.CRIT_Rate, Mathf.Min(currentCritRate + 1f, critLimit));
+        
+        var currentSTR = PlayerManager.Instance.player.STRValue;
+        var strLimit = PlayerManager.Instance.player.STR.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.STR, Mathf.Min(currentSTR * 1.5f, strLimit));
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.CRIT_Rate.AddValue(-1f);
-        PlayerManager.Instance.player.STR.MultipleValue(1 / 1.5f);
+        // 使用PlayerController.SetPlayerAttribute统一恢复属性值
+        var currentCritRate = PlayerManager.Instance.player.CRIT_RateValue;
+        PlayerController.SetPlayerAttribute(AttributeType.CRIT_Rate, Mathf.Max(currentCritRate - 1f, 0));
+        
+        var currentSTR = PlayerManager.Instance.player.STRValue;
+        var strLimit = PlayerManager.Instance.player.STR.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.STR, Mathf.Min(currentSTR / 1.5f, strLimit));
     }
 
 }
@@ -467,10 +528,10 @@ public class Item_301 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"灯光up\" 使用！");
 
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.灯光值, Mathf.Min(PlayerManager.Instance.player.LVL.value + 20,PlayerManager.Instance.player.LVL.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.灯光值, Mathf.Min(PlayerManager.Instance.player.LVLValue + 20,PlayerManager.Instance.player.LVL.value_limit));
         
         //获得后灯光值+20
-        PlayerManager.Instance.player.LVL.AddValue(20);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.LVL, 20);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -492,13 +553,19 @@ public class Item_302 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.SPD.MultipleValue(2f);
+        // 使用PlayerController.SetPlayerAttribute统一设置速度值
+        var currentSPD = PlayerManager.Instance.player.SPDValue;
+        var spdLimit = PlayerManager.Instance.player.SPD.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.SPD, Mathf.Min(currentSPD * 2f, spdLimit));
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.SPD.MultipleValue(1 / 2f);
+        // 使用PlayerController.SetPlayerAttribute统一恢复速度值
+        var currentSPD = PlayerManager.Instance.player.SPDValue;
+        var spdLimit = PlayerManager.Instance.player.SPD.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.SPD, Mathf.Min(currentSPD / 2f, spdLimit));
     }
 
 }
@@ -510,10 +577,10 @@ public class Item_303 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"精神恢复剂\" 使用！");
 
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值, Mathf.Min(PlayerManager.Instance.player.SAN.value + 3,PlayerManager.Instance.player.SAN.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值, Mathf.Min(PlayerManager.Instance.player.SANValue + 3,PlayerManager.Instance.player.SAN.value_limit));
 
         //使用后当前精神值+3
-        PlayerManager.Instance.player.SAN.AddValue(3);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 3);
         PlayerManager.Instance.player.DebugInfo();
 
          
@@ -531,7 +598,7 @@ public class Item_401 : Item
         //生命值上限+10
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HP.value + 10);
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, PlayerManager.Instance.player.HPValue + 10);
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值上限, PlayerManager.Instance.player.HP.value_limit + 10);
     }
 
@@ -559,7 +626,7 @@ public class Item_402 : Item
         //防御值上限+10
         timerIndex = TimeManager.Instance.AddTimer(12f, () => OnStart(), () => OnComplete());
         PlayerManager.Instance.player.DebugInfo();
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, PlayerManager.Instance.player.DEF.value_limit + 10);
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, PlayerManager.Instance.player.DEF.value + 10);
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值上限, PlayerManager.Instance.player.DEF.value_limit + 10);
     }
 
@@ -572,7 +639,7 @@ public class Item_402 : Item
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.DEF.AddValue(-10f);
+        PlayerManager.Instance.player.DEF.AddValueLimit(-10f);
     }
 
 }
@@ -586,7 +653,7 @@ public class Item_403 : Item
         Debug.Log($"道具 \"攻击果实\" 使用！");
         //使用后力量+20
         timerIndex = TimeManager.Instance.AddTimer(18f, () => OnStart(), () => OnComplete());
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 20,PlayerManager.Instance.player.STR.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STRValue + 20,PlayerManager.Instance.player.STR.value_limit));
     }
 
     private void OnStart()
@@ -632,10 +699,10 @@ public class Item_501 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"回血药\" 使用！");
 
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, Mathf.Min(PlayerManager.Instance.player.HP.value + 5,PlayerManager.Instance.player.HP.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.生命值, Mathf.Min(PlayerManager.Instance.player.HPValue + 5,PlayerManager.Instance.player.HP.value_limit));
 
         //当前生命值+5
-        PlayerManager.Instance.player.HP.AddValue(5f);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.HP, 5f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -650,10 +717,10 @@ public class Item_502 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"护身甲\" 使用！");
 
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, Mathf.Min(PlayerManager.Instance.player.DEF.value + 10,PlayerManager.Instance.player.DEF.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.防御值, Mathf.Min(PlayerManager.Instance.player.DEFValue + 10,PlayerManager.Instance.player.DEF.value_limit));
 
         //获得后防御+10
-        PlayerManager.Instance.player.DEF.AddValue(10f);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.DEF, 10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -671,7 +738,7 @@ public class Item_503 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.闪避值, Mathf.Min(PlayerManager.Instance.player.AVO.value + 10,PlayerManager.Instance.player.AVO.value_limit));
 
         //获得后闪避+10
-        PlayerManager.Instance.player.AVO.AddValue(10f);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.AVO, 10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -685,10 +752,10 @@ public class Item_504 : Item
     {
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"重拳出击\" 使用！");
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 10,PlayerManager.Instance.player.STR.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STRValue + 10,PlayerManager.Instance.player.STR.value_limit));
 
         //获得后力量+10
-        PlayerManager.Instance.player.STR.AddValue(10f);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, 10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -705,8 +772,7 @@ public class Item_505 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit - 10);
 
         //获得后精神值上限-10
-        PlayerManager.Instance.player.SAN.AddValue(-10f);
-        PlayerManager.Instance.player.SANValue -= 10f;
+        PlayerManager.Instance.player.SAN.AddValueLimit(-10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -721,10 +787,10 @@ public class Item_506 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"木剑\" 使用！");
 
-         effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 10,PlayerManager.Instance.player.STR.value_limit));
+         effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STRValue + 10,PlayerManager.Instance.player.STR.value_limit));
 
         //获得后攻击+10
-        PlayerManager.Instance.player.STR.AddValue(10f);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, 10f);
         PlayerManager.Instance.player.DebugInfo();
 
        
@@ -739,10 +805,10 @@ public class Item_507 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"宝剑\" 使用！");
 
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STR.value + 40,PlayerManager.Instance.player.STR.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.力量值, Mathf.Min(PlayerManager.Instance.player.STRValue + 40,PlayerManager.Instance.player.STR.value_limit));
 
         //获得后攻击+40
-        PlayerManager.Instance.player.STR.AddValue(40f);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, 40f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -1077,14 +1143,24 @@ public class Item_516 : Item
 
     private void Item516OnEffect()
     {
-        PlayerManager.Instance.player.STR.MultipleValue(1.08f);
-        PlayerManager.Instance.player.DEF.MultipleValue(1.08f);
+        // 使用PlayerController.SetPlayerAttribute统一设置属性值，保持限制
+        var currentSTR = PlayerManager.Instance.player.STRValue;
+        var strLimit = PlayerManager.Instance.player.STR.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.STR, Mathf.Min(currentSTR * 1.08f, strLimit * 1.08f), strLimit * 1.08f);
+        
+        var currentDEF = PlayerManager.Instance.player.DEFValue;
+        var defLimit = PlayerManager.Instance.player.DEF.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, Mathf.Min(currentDEF * 1.08f, defLimit * 1.08f), defLimit * 1.08f);
 
-        PlayerManager.Instance.player.HP.MultipleValueLimit(1.08f);
-        PlayerManager.Instance.player.LVL.MultipleValueLimit(1.08f);
+        var currentHP = PlayerManager.Instance.player.HPValue;
+        var hpLimit = PlayerManager.Instance.player.HP.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.HP, currentHP, hpLimit * 1.08f);
 
-         PlayerManager.Instance.player.SAN.AddValue(5);
+        var currentLVL = PlayerManager.Instance.player.LVLValue;
+        var lvlLimit = PlayerManager.Instance.player.LVL.value_limit;
+        PlayerController.SetPlayerAttribute(AttributeType.LVL, currentLVL, lvlLimit * 1.08f);
 
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
 
     }
 

@@ -7,18 +7,65 @@ using UnityEngine.UIElements;
 using static UnityEditor.Progress;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 玩家属性类型枚举
+/// 定义了游戏中所有可用的玩家属性类型
+/// </summary>
 public enum AttributeType
 {
+    /// <summary>
+    /// 无效属性类型，用于默认值或错误处理
+    /// </summary>
     NONE = 0,
+    
+    /// <summary>
+    /// 生命值 - 玩家的血量，归零时死亡
+    /// </summary>
     HP = 1,
+    
+    /// <summary>
+    /// 力量值 - 影响攻击伤害
+    /// </summary>
     STR = 2,
+    
+    /// <summary>
+    /// 防御值 - 减少受到的物理伤害
+    /// </summary>
     DEF = 3,
+    
+    /// <summary>
+    /// 灯光值 - 影响视野范围和光照半径，关系到生存机制
+    /// </summary>
     LVL = 4,
+    
+    /// <summary>
+    /// 精神值 - 理智值，过低可能导致负面效果，归零时死亡
+    /// </summary>
     SAN = 5,
+    
+    /// <summary>
+    /// 速度值 - 影响移动速度和行动顺序
+    /// </summary>
     SPD = 6,
+    
+    /// <summary>
+    /// 暴击率 - 造成暴击伤害的概率
+    /// </summary>
     CRIT_Rate = 7,
+    
+    /// <summary>
+    /// 暴击伤害 - 暴击时的伤害倍率
+    /// </summary>
     CRIT_DMG = 8,
+    
+    /// <summary>
+    /// 命中率 - 攻击命中目标的概率（0-1之间）
+    /// </summary>
     HIT = 9,
+    
+    /// <summary>
+    /// 闪避值 - 躲避敌方攻击的概率（0-1之间）
+    /// </summary>
     AVO = 10
 }
 
@@ -172,7 +219,21 @@ public class Player               //存储角色信息等
     public void SetAttrValue(AttributeType type, float value)
     {
         var attr = GetAttr(type);
+        if (attr.value_limit < value)
+        {
+            Debug.LogWarning($"尝试设置属性 {type} 的值为 {value}，但超过了上限 {attr.value_limit}，将被限制为上限值。");
+            value = attr.value_limit; // 限制为上限值
+        }
         attr.value = value;
+        SetAttr(type, attr);
+    }
+
+    // 新增：同时设置属性值和上限的方法
+    public void SetAttrValueAndLimit(AttributeType type, float value, float valueLimit)
+    {
+        var attr = GetAttr(type);
+        attr.value = value;
+        attr.value_limit = valueLimit;
         SetAttr(type, attr);
     }
 

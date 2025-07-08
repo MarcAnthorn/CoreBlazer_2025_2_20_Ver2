@@ -146,26 +146,27 @@ public class BattlePanel : BasePanel
      }
      protected override void Init()
      {
+          TextManager.SetContentFont(this.gameObject);
          // 创建回合结束发光特效对象（初始隐藏）
-         if (endTurnGlowEffect == null)
-         {
-             var glowSprite = Resources.Load<Sprite>("ArtResources/战斗_UI/技能面板/回合结束发光");
-             endTurnGlowEffect = new GameObject("EndTurnGlowEffect");
-             var img = endTurnGlowEffect.AddComponent<Image>();
-             img.sprite = glowSprite;
-             img.raycastTarget = false;
-             // 设置为按钮的第0层子物体，确保在所有子物体（包括文字）下方
-             endTurnGlowEffect.transform.SetParent(btnEndThisRound.transform, false);
-             endTurnGlowEffect.transform.SetSiblingIndex(0);
-             // 拉伸到按钮大小
-             var rect = endTurnGlowEffect.GetComponent<RectTransform>();
-             var btnRect = btnEndThisRound.GetComponent<RectTransform>();
-             rect.anchorMin = Vector2.zero;
-             rect.anchorMax = Vector2.one;
-             rect.offsetMin = Vector2.zero;
-             rect.offsetMax = Vector2.zero;
-             endTurnGlowEffect.SetActive(false);
-         }
+          if (endTurnGlowEffect == null)
+          {
+               var glowSprite = Resources.Load<Sprite>("ArtResources/战斗_UI/技能面板/回合结束发光");
+               endTurnGlowEffect = new GameObject("EndTurnGlowEffect");
+               var img = endTurnGlowEffect.AddComponent<Image>();
+               img.sprite = glowSprite;
+               img.raycastTarget = false;
+               // 设置为按钮的第0层子物体，确保在所有子物体（包括文字）下方
+               endTurnGlowEffect.transform.SetParent(btnEndThisRound.transform, false);
+               endTurnGlowEffect.transform.SetSiblingIndex(0);
+               // 拉伸到按钮大小
+               var rect = endTurnGlowEffect.GetComponent<RectTransform>();
+               var btnRect = btnEndThisRound.GetComponent<RectTransform>();
+               rect.anchorMin = Vector2.zero;
+               rect.anchorMax = Vector2.one;
+               rect.offsetMin = Vector2.zero;
+               rect.offsetMax = Vector2.zero;
+               endTurnGlowEffect.SetActive(false);
+          }
           equipmentSlot1.InitSlot(null);
 
           int endNumber = myEnemyId % 1000;

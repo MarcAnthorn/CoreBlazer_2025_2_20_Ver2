@@ -61,14 +61,26 @@ public class NPCInteractionAera : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             isTriggerLock = false;
-            TextManager.SetContentFont(this.gameObject);
             
-            // 从对象池获取提示文本对象
-            txtObject = PoolManager.Instance.SpawnFromPool("TipTexts");
+            // 从对象池获取提示文本对象，添加空值检查
+            txtObject = PoolManager.Instance.SpawnFromPool("TipText");
+            // 安全检查：确保PoolManager实例存在
+            if (PoolManager.Instance == null)
+            {
+                Debug.LogError("[NPCInteractionAera] PoolManager实例不存在！");
+                return;
+            }
+            
+            
             if (txtObject != null)
             {
                 // 设置提示文本内容和位置
+                TextManager.SetContentFont(this.gameObject);
                 EventHub.Instance.EventTrigger<string, Vector3>("SetTipContent", TextManager.Instance.GetText("交互提示", "信仰", "绑定"), this.transform.position + offset);
+            }
+            else
+            {
+                Debug.LogError("[NPCInteractionAera] 无法从对象池获取TipTexts对象！请检查对象池配置。");
             }
         }
     }
@@ -77,11 +89,18 @@ public class NPCInteractionAera : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             isTriggerLock = true;
-            // 只有当txtObject不为null时才返回到对象池
-            if (txtObject != null)
+            // 安全返回对象到对象池
+            if (txtObject != null && PoolManager.Instance != null)
             {
                 PoolManager.Instance.ReturnToPool("TipTexts", txtObject);
                 txtObject = null; // 清空引用
+            }
+            else if (txtObject != null)
+            {
+                // 如果PoolManager不存在，直接销毁对象避免内存泄漏
+                Debug.LogWarning("[NPCInteractionAera] PoolManager不存在，直接销毁txtObject");
+                Destroy(txtObject);
+                txtObject = null;
             }
         }
     }

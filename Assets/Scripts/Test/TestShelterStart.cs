@@ -17,7 +17,7 @@ public class TestShelterStart : MonoBehaviour
         IDAllocator.Instance.Reset();
         IDAllocatorFor30016.Instance.Reset();
         IDAllocatorFor40016.Instance.Reset();
-        IDAllocatorForTarot.Instance.Reset();
+       // IDAllocatorForTarot.Instance.Reset();
 
         //回复血量：
         PlayerManager.Instance.player.HPValue = PlayerManager.Instance.player.HP.value_limit;

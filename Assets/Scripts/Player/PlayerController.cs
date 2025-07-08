@@ -62,6 +62,7 @@ public class PlayerController : PlayerBase
     private float shrinkingTimer = 0f; // 用于累计整秒
     private float shrinkingTarget = 0f; // 本秒应该减少的总量
     private float shrinkingLeftThisSecond = 0f; // 当前帧剩余的减少量
+    
 
     protected override void Awake()
     {
@@ -78,7 +79,7 @@ public class PlayerController : PlayerBase
 
         EventHub.Instance.AddEventListener("ResumeLight", ResumeLight);
 
-        
+
 
     }
     // Start is called before the first frame update
@@ -164,14 +165,29 @@ public class PlayerController : PlayerBase
 
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
-        // 更新时间计数器（限制最大9秒）
-        lightShrinkingTime = Mathf.Min(lightShrinkingTime + Time.deltaTime, 10f);
+        
         
         // 计算当前t值（0-10秒）
         float t = lightShrinkingTime;
         
         // 目标L值：LMax - t²
         float targetL = LMax - t * t;
+
+        // 检测灯光值是否发生外部变化（如道具使用、灯塔触发等）
+        float currentL = PlayerManager.Instance.player.LVLValue;
+        float expectedL = targetL;
+        
+        // 如果当前灯光值与预期衰减值差异较大，说明有外部干预
+        if (Mathf.Abs(currentL - expectedL) > 3f)
+        {
+            // 重新计算对应的时间点：根据当前L值反推时间
+            float newTime = Mathf.Sqrt(Mathf.Max(0, LMax - currentL));
+            lightShrinkingTime = newTime;
+            Debug.Log($"[LightShrinking] 检测到灯光值外部变化，预期值：{expectedL}，实际值：{currentL}，重置计数器: L={currentL}, 新时间={newTime:F2}秒");
+        }
+
+        // 更新时间计数器（限制最大10秒）
+        lightShrinkingTime = Mathf.Min(lightShrinkingTime + Time.deltaTime, 10f);
         
         // 平滑过渡到目标值（使用Lerp或阻尼弹簧）
         L = Mathf.Lerp(L, targetL, Time.deltaTime * 5f); // 5是平滑系数，可调整
@@ -202,7 +218,7 @@ public class PlayerController : PlayerBase
         // 新的光照半径计算：基础半径 + L值的线性或平方根关系
         // 选择一种计算方式：
         spriteLight.pointLightOuterRadius = baseRadius + radiusMultiplier * L; // 平方根关系，变化更平缓 
-        Debug.Log($"L: {L}, Radius: {spriteLight.pointLightOuterRadius}");
+        //Debug.Log($"L: {L}, Radius: {spriteLight.pointLightOuterRadius}");
         // 或者使用线性关系：spriteLight.pointLightOuterRadius = baseRadius + radiusMultiplier * L;
 
         // 灯光最小保护 - 基于L值判断
@@ -231,6 +247,48 @@ public class PlayerController : PlayerBase
             damageCoroutine = StartCoroutine(DamageCoroutine());
             damageTime = 0;
         }
+    }
+    /// <summary>
+    /// 设置玩家属性的方法，保持上限值不变
+    /// </summary>
+    /// <param name="attrType">属性类型</param>
+    /// <param name="newValue">新的属性值</param>
+    /// <returns>是否设置成功</returns>
+    public static bool SetPlayerAttribute(AttributeType attrType, float newValue)
+    {
+        var player = PlayerManager.Instance?.player;
+        if (player == null)
+        {
+            Debug.LogError("未找到PlayerManager或player实例！");
+            return false;
+        }
+
+        // 使用Player类的安全方法，避免反射调用
+        player.SetAttrValue(attrType, newValue);
+        Debug.Log($"已设置{attrType}={newValue}");
+        return true;
+    }
+
+    /// <summary>
+    /// 设置玩家属性的方法，可以同时设置当前值和上限值
+    /// </summary>
+    /// <param name="attrType">属性类型</param>
+    /// <param name="newValue">新的属性值</param>
+    /// <param name="newValueLimit">新的属性上限值</param>
+    /// <returns>是否设置成功</returns>
+    public static bool SetPlayerAttribute(AttributeType attrType, float newValue, float newValueLimit)
+    {
+        var player = PlayerManager.Instance?.player;
+        if (player == null)
+        {
+            Debug.LogError("未找到PlayerManager或player实例！");
+            return false;
+        }
+
+        // 使用Player类的安全方法，避免反射调用
+        player.SetAttrValueAndLimit(attrType, newValue, newValueLimit);
+        Debug.Log($"已设置{attrType}={newValue}，上限={newValueLimit}");
+        return true;
     }
 
 
@@ -536,11 +594,14 @@ public class PlayerController : PlayerBase
         isWarningLocked = false;
         isLightShrinking = false;
         L = Math.Min(L + LExtra, LMax);
-        lightShrinkingTime = Mathf.Sqrt(LMax - L);
+        
+        // 根据新的灯光值重新计算对应的时间点
+        lightShrinkingTime = Mathf.Sqrt(Mathf.Max(0, LMax - L));
         t = lightShrinkingTime;
 
         Debug.LogWarning($"灯光值L：{L}");
         Debug.LogWarning($"实际灯光值：{PlayerManager.Instance.player.LVL.value}");
+        Debug.LogWarning($"重置计数器时间：{lightShrinkingTime:F2}秒");
 
         //补充灯光之后，开启灯光衰减，关闭伤害判定协程；
         isLightShrinking = true;
@@ -593,8 +654,17 @@ public class PlayerController : PlayerBase
 
             currentDamage = 1 + time;
 
+            
+            // 检测灯光值，如果大于3则停止伤害
+            float currentLightValue = PlayerManager.Instance.player.LVLValue;
+            if (currentLightValue > 3f)
+            {
+                Debug.Log($"[DamageCoroutine] 灯光值恢复到{currentLightValue}，停止黑暗伤害");
+                isDamaging = false;
+                TriggerLightShrinking(true);
+                yield break; // 退出协程
+            }
             Debug.Log($"currentDamage: {currentDamage}");
-
             // 修复：使用HPValue直接设置，避免struct副本问题
             var currentHP = PlayerManager.Instance.player.HPValue;
             var newHP = Mathf.Max(0, currentHP - currentDamage); // 确保不低于0
