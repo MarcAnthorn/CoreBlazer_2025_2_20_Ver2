@@ -11,6 +11,8 @@ public enum E_PlayerSceneIndex{
     Maze = 3,
     Shelter = 4,    //安全屋下；
 }
+
+
 public class PlayerManager : Singleton<PlayerManager>          //用于管理角色的事件
 {
     public Player player;               //当前角色
@@ -26,7 +28,7 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             return playerTransform;
         }
     }
-    public Transform playerTransform;
+    private Transform playerTransform;
     
     public Vector3 initPosition;
     // 玩家当前坐标（用于存档/读档）
@@ -74,14 +76,15 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         if(player != null)
             player = null;
         
-        if(playerTransform == null)
-        {
-            EventHub.Instance.EventTrigger<UnityAction<Transform>>("ExposePlayerTransform", (_transform) =>{
-                playerTransform = _transform;
-            });
-        }
-        if (playerTransform == null)
-    Debug.LogError("PlayerTransform is null! 玩家对象未初始化或未生成。");    
+        // if(playerTransform == null)
+        // {
+        //     EventHub.Instance.EventTrigger<UnityAction<Transform>>("ExposePlayerTransform", (_transform) =>{
+        //         playerTransform = _transform;
+        //     });
+        // }
+        // if (playerTransform == null)
+        //     Debug.LogError("PlayerTransform is null! 玩家对象未初始化或未生成。");    
+            
         //PlayerManager 管理的全局唯一Player实例
         player = new Player()
         {
