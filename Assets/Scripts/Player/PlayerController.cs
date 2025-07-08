@@ -10,8 +10,8 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerController : PlayerBase
 {
-    public float LMax = 100;
-    [Range(0, 200)]
+    public float LMax = PlayerManager.Instance.player.LVL.value_limit; // 灯光值的上限，默认为玩家的LVL上限值
+    [Range(0, 500)]
     public float LExtra;
     private float _l;
 
@@ -88,7 +88,7 @@ public class PlayerController : PlayerBase
         isLightShrinking = true;
         lightShrinkingTime = 0;
         spriteLight.pointLightOuterRadius = initialLightScope;
-
+        L = PlayerManager.Instance.player.LVL.value_limit; // 初始化灯光值为上限
         L = LMax;
 
         TriggerLightShrinking(true);
@@ -162,15 +162,16 @@ public class PlayerController : PlayerBase
     {
         if (!isLightShrinking)
             return;
-
+        LMax = PlayerManager.Instance.player.LVL.value_limit;
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
         
         
         // 计算当前t值（0-10秒）
         float t = lightShrinkingTime;
-        
+
         // 目标L值：LMax - t²
+        //Debug.Log($"[LightShrinking] 当前t值: {t:F2}秒" + $"，当前L值: {L:F2}，LMax: {LMax:F2}");
         float targetL = LMax - t * t;
 
         // 检测灯光值是否发生外部变化（如道具使用、灯塔触发等）
@@ -178,7 +179,7 @@ public class PlayerController : PlayerBase
         float expectedL = targetL;
         
         // 如果当前灯光值与预期衰减值差异较大，说明有外部干预
-        if (Mathf.Abs(currentL - expectedL) > 3f)
+        if (Mathf.Abs(currentL - expectedL) > 10f)
         {
             // 重新计算对应的时间点：根据当前L值反推时间
             float newTime = Mathf.Sqrt(Mathf.Max(0, LMax - currentL));
@@ -186,8 +187,8 @@ public class PlayerController : PlayerBase
             Debug.Log($"[LightShrinking] 检测到灯光值外部变化，预期值：{expectedL}，实际值：{currentL}，重置计数器: L={currentL}, 新时间={newTime:F2}秒");
         }
 
-        // 更新时间计数器（限制最大10秒）
-        lightShrinkingTime = Mathf.Min(lightShrinkingTime + Time.deltaTime, 10f);
+        // 更新时间计数器
+        lightShrinkingTime = lightShrinkingTime + Time.deltaTime;
         
         // 平滑过渡到目标值（使用Lerp或阻尼弹簧）
         L = Mathf.Lerp(L, targetL, Time.deltaTime * 5f); // 5是平滑系数，可调整

@@ -232,9 +232,21 @@ public class Player               //存储角色信息等
     public void SetAttrValueAndLimit(AttributeType type, float value, float valueLimit)
     {
         var attr = GetAttr(type);
-        attr.value = value;
         attr.value_limit = valueLimit;
+        attr.value = value;
+        //SetAttrValue(type, value);
         SetAttr(type, attr);
+    }
+
+    public void OverFlowDector(AttributeType type)
+    {
+        var attr = GetAttr(type);
+        if (attr.value_limit < attr.value)
+        {
+            attr.value = attr.value_limit;
+            Debug.LogWarning($"属性 {type} 超过上限，当前值: {attr.value}, 上限: {attr.value_limit}");
+            SetAttr(type, attr);
+        }
     }
 
     public bool isDie = false;

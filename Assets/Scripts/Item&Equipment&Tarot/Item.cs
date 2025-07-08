@@ -982,6 +982,7 @@ public class Item_514 : Item
 
     private bool isTriggered = false;
     private float strDelta;
+    private float hpDelta;
     public override void Use()
     {
         effectFinalValueDic.Clear();
@@ -991,8 +992,8 @@ public class Item_514 : Item
 
         //注册取消道具的方法：
         EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
-        
-        
+
+
 
     }
 
@@ -1020,26 +1021,33 @@ public class Item_514 : Item
     private void Item514OnEffect()
     {
         isTriggered = true;
-        strDelta = PlayerManager.Instance.player.STR.value;
+        strDelta = PlayerManager.Instance.player.STRValue;
+        hpDelta = PlayerManager.Instance.player.HPValue;
         //道具效果：
-        PlayerManager.Instance.player.STR.AddValue(strDelta);
-        PlayerManager.Instance.player.HP.AddValueLimit(25);
-        PlayerManager.Instance.player.LVL.AddValueLimit(150);
+        Debug.Log("Item514OnEffect");
+        PlayerController.SetPlayerAttribute(AttributeType.STR, strDelta * 2);
+        PlayerController.SetPlayerAttribute(AttributeType.HP, hpDelta + 25, PlayerManager.Instance.player.HP.value_limit + 25);
+        PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVL.value_limit + 150, PlayerManager.Instance.player.LVL.value_limit + 150);
+        PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVL.value_limit - 0.3f, PlayerManager.Instance.player.LVL.value_limit);
 
         UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「科拉佐斯的思绪」已生效");
+        
 
     }
 
     private void Item514OnEffectOff()
     {
-        if(isTriggered)
+        if (isTriggered)
         {
+            Debug.Log("Item514OnEffectOff");
             isTriggered = false;
-            PlayerManager.Instance.player.STR.AddValue(-strDelta);
-            PlayerManager.Instance.player.HP.AddValueLimit(-25);
-            PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+            PlayerController.SetPlayerAttribute(AttributeType.STR, strDelta);
+            PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HP.value_limit - 25, PlayerManager.Instance.player.HP.value_limit - 25);
+            PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVLValue - 150, PlayerManager.Instance.player.LVL.value_limit - 150);
+            PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVLValue);
 
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「科拉佐斯的思绪」已不再生效");
+            
         }
         
     }

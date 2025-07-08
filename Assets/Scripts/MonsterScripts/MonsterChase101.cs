@@ -39,7 +39,16 @@ public class MonsterChase101 : MonsterBase
         // 设置怪物特殊属性
         moveSpeedBase = chaseSpeed;
         enemyId = 1015;
+        // 获取SpriteRenderer组件
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
+        // 从Resources文件夹加载Sprite
+        Sprite newSprite = Resources.Load<Sprite>("ArtResources/Enemies/死灵之书");
+        spriteRenderer.sprite = newSprite;
+        
+        // 设置尺寸缩放为0.1
+        transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        
         _cam.Priority = 11;       
         LeanTween.delayedCall(2f, ()=>{
             _cam.Priority = 0;   
