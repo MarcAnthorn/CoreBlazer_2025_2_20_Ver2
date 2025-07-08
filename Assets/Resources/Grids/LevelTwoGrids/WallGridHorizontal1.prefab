@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xMap: 63
-  yMap: 6
+  yMap: 10
   id: 10001
 --- !u!114 &-2337102440269412661
 MonoBehaviour:
