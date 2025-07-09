@@ -15,6 +15,7 @@ public class TestSaveButton : MonoBehaviour
 
     void Start()
     {
+        TextManager.SetContentFont(this.gameObject);
         btnSave.onClick.AddListener(()=>{
             SaveManager.Instance.SaveGame();
             Debug.LogWarning("Game Saved!");

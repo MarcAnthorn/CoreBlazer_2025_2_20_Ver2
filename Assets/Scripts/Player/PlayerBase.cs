@@ -56,7 +56,8 @@ public class PlayerBase : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(syncInterval);
-            
+            PlayerManager.Instance.player.OverFlowDector(AttributeType.LVL);
+
             // 只有当位置发生变化时才同步
             if (Vector3.Distance(transform.position, lastSyncedPosition) > 0.01f)
             {

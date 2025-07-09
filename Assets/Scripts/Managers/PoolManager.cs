@@ -93,6 +93,7 @@ public class PoolManager : SingletonBaseManager<PoolManager>
     public GameObject SpawnFromPool(string key)
     {
         GameObject objFromPool;
+        
 
         //注意：经过优化，if中的Count不再是Stack的直接API调用；而是PoolData数据类的只读属性；两者只有数值是相等的；
         if (poolDictionary.ContainsKey(key) && poolDictionary[key].Count > 0)
@@ -106,8 +107,13 @@ public class PoolManager : SingletonBaseManager<PoolManager>
         }
         else
         {
-            objFromPool = GameObject.Instantiate(Resources.Load<GameObject>(key));
-
+            GameObject prefab = Resources.Load<GameObject>(key);
+            if (prefab == null)
+            {
+                Debug.LogError($"PoolManager.SpawnFromPool: 无法从Resources中加载预制体 '{key}'。请检查：1) Resources文件夹中是否存在该预制体；2) 键名是否正确；3) 预制体是否为GameObject类型。");
+                return null;
+            }
+            objFromPool = GameObject.Instantiate(prefab);
         }
         return objFromPool;
     }
@@ -131,8 +137,13 @@ public class PoolManager : SingletonBaseManager<PoolManager>
         }
         else
         {
-            objFromPool = GameObject.Instantiate(Resources.Load<GameObject>(key), father, false);
-
+            GameObject prefab = Resources.Load<GameObject>(key);
+            if (prefab == null)
+            {
+                Debug.LogError($"PoolManager.SpawnFromPool: 无法从Resources中加载预制体 '{key}'。请检查：1) Resources文件夹中是否存在该预制体；2) 键名是否正确；3) 预制体是否为GameObject类型。");
+                return null;
+            }
+            objFromPool = GameObject.Instantiate(prefab, father, false);
         }
         return objFromPool;
     }

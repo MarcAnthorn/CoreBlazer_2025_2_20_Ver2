@@ -22,7 +22,7 @@ public class TextManager : MonoBehaviour
     {
         var tmpUGUI = txtObject.GetComponent<TMPro.TextMeshProUGUI>();
             var tmp3D = txtObject.GetComponent<TMPro.TextMeshPro>();
-            var font = Resources.Load<TMPro.TMP_FontAsset>("Fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF");
+            var font = Resources.Load<TMPro.TMP_FontAsset>("Fonts/NotoSansSC SDF");
             if (font != null)
             {
                 if (tmpUGUI != null) tmpUGUI.font = font;
@@ -33,7 +33,7 @@ public class TextManager : MonoBehaviour
 
     public static void SetContentFont(GameObject root, TMP_FontAsset fontAsset = null)
     {
-        if (fontAsset == null) fontAsset = Resources.Load<TMP_FontAsset>("Fonts/NotoSansSC SDF");
+        if (fontAsset == null) fontAsset = Resources.Load<TMP_FontAsset>("Fonts/NotoSansSC-Regular SDF");
         if (fontAsset == null) return;
 
         foreach (var tmp in root.GetComponentsInChildren<TextMeshProUGUI>(true))
@@ -46,8 +46,7 @@ public class TextManager : MonoBehaviour
     {
         if (defaultFont == null)
         {
-            // 路径为你生成的TMP字体资产的Resources路径（不带后缀）
-            defaultFont = Resources.Load<TMP_FontAsset>("Fonts/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF");
+            defaultFont = Resources.Load<TMP_FontAsset>("Fonts/NotoSansSC-Regular SDF");
         }
         SetAllTextFont();
         if (_instance == null)

@@ -505,11 +505,11 @@ public class InventoryPanel : BasePanel
 
         //更新Sliders：
         sliderHealth.value = PlayerManager.Instance.player.HP.value / PlayerManager.Instance.player.HP.value_limit;
-        sliderLight.value = PlayerManager.Instance.player.LVL.value / PlayerManager.Instance.player.LVL.value_limit;
+        sliderLight.value = PlayerManager.Instance.player.LVLValue / PlayerManager.Instance.player.LVL.value_limit;
         sliderSanity.value = PlayerManager.Instance.player.SAN.value / PlayerManager.Instance.player.SAN.value_limit;
 
         txtHealth.text = $"{(int)PlayerManager.Instance.player.HP.value} / {(int)PlayerManager.Instance.player.HP.value_limit}";
-        txtLight.text = $"{(int)PlayerManager.Instance.player.LVL.value} / {(int)PlayerManager.Instance.player.LVL.value_limit}";
+        txtLight.text = $"{(int)PlayerManager.Instance.player.LVLValue} / {(int)PlayerManager.Instance.player.LVL.value_limit}";
         txtSan.text = $"{(int)PlayerManager.Instance.player.SAN.value} / {(int)PlayerManager.Instance.player.SAN.value_limit}";;
 
 

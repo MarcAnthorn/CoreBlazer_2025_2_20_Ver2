@@ -49,17 +49,21 @@ public class LightHouse : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player") && !lightLock)
         {
-            LeanTween.value(gameObject, 1f, 0f, 1f)
-                .setOnUpdate((float val) => {
-                    light2D.intensity = val;
-            });
+            // 设置灯光值到上限
+            PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVL.value_limit);
             
-            EventHub.Instance.EventTrigger("ResumeLight", -1f);
+            // 触发灯光恢复事件（这会重新启动衰减并重置计数器）
+            EventHub.Instance.EventTrigger("ResumeLight", 40f);
+            
+            PlayerManager.Instance.player.DebugInfo();
+
+            // 设置灯塔锁定状态
             lightLock = true;
 
             // 记录状态到字典
             var key = (GameLevelManager.Instance.gameLevelType, this.transform.position);
             GameLevelManager.Instance.lightHouseIsDic[key] = true;
+            
             Debug.Log($"[LightHouse] 灯塔被触发，状态已写入字典: true, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
 
             //灯光回复，尝试触发音效：
