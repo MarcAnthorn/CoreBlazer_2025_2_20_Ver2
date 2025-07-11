@@ -63,6 +63,8 @@ public class MainPanel : BasePanel
         EventHub.Instance.RemoveEventListener("UpdateAllUIElements", UpdateAttributeUI);
     }
 
+    
+
     private void UpdateAttributeUI()
     {
         var player = PlayerManager.Instance.player;

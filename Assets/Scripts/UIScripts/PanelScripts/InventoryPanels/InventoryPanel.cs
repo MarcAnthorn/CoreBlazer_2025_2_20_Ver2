@@ -253,8 +253,17 @@ public class InventoryPanel : BasePanel
         EventHub.Instance.AddEventListener("UpdateAllUIElements", UpdateAttributeText);
     }
 
-    private void Update() {
-        
+    void Update()
+    {
+        // 按下ESC键关闭面板，但如果SettingPanel打开着，则不响应
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // 检查是否有SettingPanel正在显示
+            if (UIManager.Instance.GetPanel<SettingPanel>() == null)
+            {
+                UIManager.Instance.HidePanel<InventoryPanel>();
+            }
+        }
     }
 
 

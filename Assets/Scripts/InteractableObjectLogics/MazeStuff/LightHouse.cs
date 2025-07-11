@@ -6,8 +6,10 @@ using UnityEngine.Rendering.Universal;
 public class LightHouse : MonoBehaviour
 {
     private Light2D light2D;
+    private SpriteRenderer spriteRenderer;
     // private BoxCollider2D collider;
     private bool lightLock = false;
+    
     private void Awake()
     {
         light2D = this.GetComponent<Light2D>();

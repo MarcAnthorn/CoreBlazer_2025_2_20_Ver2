@@ -27,6 +27,14 @@ public class SettingPanel : BasePanel
             EventHub.Instance.EventTrigger<bool>("Freeze", false);
         });
     }
-
+    void Update()
+    {
+        // 按下ESC键关闭面板
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UIManager.Instance.HidePanel<SettingPanel>();
+            EventHub.Instance.EventTrigger<bool>("Freeze", false);
+        }
+    }
 
 }

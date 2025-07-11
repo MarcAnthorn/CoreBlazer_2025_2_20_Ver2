@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 
+
 public class PlayerController : PlayerBase
 {
     public float LMax = PlayerManager.Instance.player.LVL.value_limit; // 灯光值的上限，默认为玩家的LVL上限值
@@ -167,34 +168,31 @@ public class PlayerController : PlayerBase
 
         
         
-        // 计算当前t值（0-10秒）
+        // 计算当前t值和预期L值（用于检测外部变化）
         float t = lightShrinkingTime;
-
-        // 目标L值：LMax - t²
-        //Debug.Log($"[LightShrinking] 当前t值: {t:F2}秒" + $"，当前L值: {L:F2}，LMax: {LMax:F2}");
-        float targetL = LMax - t * t;
+        float expectedL = LMax - 3.5f * t;
 
         // 检测灯光值是否发生外部变化（如道具使用、灯塔触发等）
         float currentL = PlayerManager.Instance.player.LVLValue;
-        float expectedL = targetL;
         
         // 如果当前灯光值与预期衰减值差异较大，说明有外部干预
         if (Mathf.Abs(currentL - expectedL) > 10f)
         {
             // 重新计算对应的时间点：根据当前L值反推时间
-            float newTime = Mathf.Sqrt(Mathf.Max(0, LMax - currentL));
-            lightShrinkingTime = newTime;
-            Debug.Log($"[LightShrinking] 检测到灯光值外部变化，预期值：{expectedL}，实际值：{currentL}，重置计数器: L={currentL}, 新时间={newTime:F2}秒");
+            float newTime = (LMax - currentL) / 3.5f;
+            lightShrinkingTime = Mathf.Max(0, newTime);
+            Debug.Log($"[LightShrinking] 检测到灯光值外部变化，预期值：{expectedL}，实际值：{currentL}，重置计数器: L={currentL}, 新时间={lightShrinkingTime:F2}秒");
         }
 
         // 更新时间计数器
         lightShrinkingTime = lightShrinkingTime + Time.deltaTime;
         
-        // 平滑过渡到目标值（使用Lerp或阻尼弹簧）
-        L = Mathf.Lerp(L, targetL, Time.deltaTime * 5f); // 5是平滑系数，可调整
+        // 直接按每秒3.5的速度衰减，不使用Lerp平滑
+        // 这样可以确保精确的衰减速度和即时响应
+        L -= 3.5f * Time.deltaTime; // 每帧减少 3.5 * deltaTime
         
-        // 确保不会低于目标值（防止lerp过冲）
-        L = Mathf.Max(L, targetL);
+        // 确保不会低于0
+        L = Mathf.Max(L, 0f);
         
         // 更新光照半径（基于L值的平方根或线性关系）
         float baseRadius = 0f;
@@ -596,8 +594,9 @@ public class PlayerController : PlayerBase
         isLightShrinking = false;
         L = Math.Min(L + LExtra, LMax);
         
-        // 根据新的灯光值重新计算对应的时间点
-        lightShrinkingTime = Mathf.Sqrt(Mathf.Max(0, LMax - L));
+        // 根据新的灯光值重新计算对应的时间点（线性衰减反推）
+        // 从 L = LMax - 3.5 * t 反推 t = (LMax - L) / 3.5
+        lightShrinkingTime = Mathf.Max(0, (LMax - L) / 3.5f);
         t = lightShrinkingTime;
 
         Debug.LogWarning($"灯光值L：{L}");
