@@ -57,8 +57,11 @@ public class ChooseBeliefButton : MonoBehaviour
         }
 
         btnSelf.onClick.AddListener(()=>{
-            if(isSanityEnoughToBuy)
+            if (isSanityEnoughToBuy)
+            {
                 UIManager.Instance.ShowPanel<BuyItemCheckPanel>().InitPanel(_itemId);
+                
+            }
 
             else
                 UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("精神值不足，不能购买");

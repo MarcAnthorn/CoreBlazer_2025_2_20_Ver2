@@ -1379,11 +1379,9 @@ public class Item_2013 : Item
     //使用后：当前生命值+100，防御+10
     public override void Use()
     {
-        PlayerManager.Instance.player.HP.AddValue(100);
-        PlayerManager.Instance.player.DEF.AddValue(100);
+        PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue + 100, PlayerManager.Instance.player.HP.value_limit + 100);
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, PlayerManager.Instance.player.DEFValue + 10, PlayerManager.Instance.player.DEF.value_limit + 10);
     }
-
-
 }
 
 public class Item_2014 : Item
@@ -1391,8 +1389,8 @@ public class Item_2014 : Item
     //使用后：当前灯光值与生命值以及他们的上限+50。
     public override void Use()
     {
-        PlayerManager.Instance.player.LVL.AddValueLimit(50);
-        PlayerManager.Instance.player.HP.AddValueLimit(50);
+        PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVLValue + 50, PlayerManager.Instance.player.LVL.value_limit + 50);
+        PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue + 50, PlayerManager.Instance.player.HP.value_limit + 50);
     }
 
 }
@@ -1457,15 +1455,15 @@ public class Item_2016 : Item
         int randomNum = UnityEngine.Random.Range(1, 4); // 注意上限是4，不包含4！
         switch(randomNum){
             case 1:
-                PlayerManager.Instance.player.STR.AddValueLimit(10);
+                PlayerController.SetPlayerAttribute(AttributeType.STR, PlayerManager.Instance.player.STRValue + 10, PlayerManager.Instance.player.STR.value_limit + 10);
             break;
                 
             case 2:
-                PlayerManager.Instance.player.SPD.AddValueLimit(10);
+                PlayerController.SetPlayerAttribute(AttributeType.SPD, PlayerManager.Instance.player.SPDValue + 10, PlayerManager.Instance.player.SPD.value_limit + 10);
             break;
                     
             case 3:
-                PlayerManager.Instance.player.DEF.AddValueLimit(10);
+                PlayerController.SetPlayerAttribute(AttributeType.DEF, PlayerManager.Instance.player.DEFValue + 10, PlayerManager.Instance.player.DEF.value_limit + 10);
             break;
         }
     }
