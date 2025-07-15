@@ -13,10 +13,26 @@ public class RestPoint : MonoBehaviour
     private static int count2302 = 0;
 
     private bool isRestPointUnlocked = false;
+    private SpriteRenderer spriteRenderer;
 
     void Awake()
     {
-        if(!GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(2302))
+        spriteRenderer = this.GetComponent<SpriteRenderer>();
+        
+        // 加载并设置休息点图片
+        Sprite lightHouseSprite = Resources.Load<Sprite>("ArtResources/POI/休息点");
+        if (lightHouseSprite != null && spriteRenderer != null)
+        {
+            spriteRenderer.sprite = lightHouseSprite;
+            // 设置尺寸缩放为0.1倍率
+            transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        }
+        else
+        {
+            Debug.LogWarning("[休息点] 无法加载休息点图片或找不到SpriteRenderer组件");
+        }
+        
+        if (!GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(2302))
         {
             //不包含，说明字典中都没有我的位置：
             //先初始化我在字典中的位置：

@@ -162,6 +162,7 @@ public class UIManager : SingletonBaseManager<UIManager>
         if (!shownPanelDic.ContainsKey(panelName))
         {
             Debug.LogError("你要获取的面板尚未显示，错误出现在GetPanel方法上");
+            return null;
         }
         return shownPanelDic[panelName] as T;
 

@@ -21,8 +21,8 @@ public class MonsterChase101 : MonsterBase
     protected override void InitializeStates()
     {
         Debug.LogWarning($"Monster Initialized!");
-        
-        chaseSpeed = 1.2f * 3 * (1 + (5 * PlayerManager.Instance.player.SPD.value - 10) / 100);       
+
+        chaseSpeed = 0.5f * PlayerManager.Instance.player.SPD.value;       
         // 创建自定义状态
         patrolState = null;
         chaseState = new Chase101State(this);
@@ -34,9 +34,10 @@ public class MonsterChase101 : MonsterBase
         
     }
 
-    protected override void Awake() {
+    protected override void Awake()
+    {
         base.Awake();
-        // 设置怪物特殊属性
+        // 设置怪物特殊属性  
         moveSpeedBase = chaseSpeed;
         enemyId = 1015;
         // 获取SpriteRenderer组件
@@ -45,17 +46,19 @@ public class MonsterChase101 : MonsterBase
         // 从Resources文件夹加载Sprite
         Sprite newSprite = Resources.Load<Sprite>("ArtResources/Enemies/死灵之书");
         spriteRenderer.sprite = newSprite;
-        
-        // 设置尺寸缩放为0.1
-        transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-        
-        _cam.Priority = 11;       
-        LeanTween.delayedCall(2f, ()=>{
-            _cam.Priority = 0;   
+
+        // 设置尺寸缩放为0.2
+        transform.localScale = new Vector3(0.13f, 0.13f, 0.13f);
+
+        _cam.Priority = 11;
+        LeanTween.delayedCall(2f, () =>
+        {
+            _cam.Priority = 0;
         });
 
 
         EventHub.Instance.AddEventListener<int>("Callback101", OnComplete);
+        Debug.Log($"速度设置为：{chaseSpeed}");
 
     }
 

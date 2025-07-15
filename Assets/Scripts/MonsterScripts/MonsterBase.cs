@@ -54,7 +54,7 @@ public abstract class MonsterBase : MonoBehaviour
         
         InitializeStates();
 
-        moveSpeedBase = 3;
+        moveSpeedBase = 1;
 
         animator = this.GetComponent<Animator>();
         sr = this.GetComponent<SpriteRenderer>();
@@ -537,7 +537,7 @@ public abstract class ChaseState : IMonsterState
         // 检查是否需要更新路径
         bool shouldUpdatePath = monster.IsPaused() ? false : ShouldUpdatePath(currentPlayerPos, monster);
 
-        Debug.Log($"Chasing! shouldUpdatePath is {shouldUpdatePath}");
+        //Debug.Log($"Chasing! shouldUpdatePath is {shouldUpdatePath}");
         
         if(shouldUpdatePath)
         {
