@@ -131,35 +131,35 @@ public class Event          //
     {
         if (hasResult)
         {
-            player.HP.AddValue(this.result.change_HP);
-            player.HP.MultipleValue( this.result.change_HP_rate + 1);
+            player.AddAttrValue(AttributeType.HP, this.result.change_HP);
+            player.AddAttrValue(AttributeType.HP, this.result.change_HP_rate);
 
-            player.STR.AddValue(this.result.change_STR);
-            player.STR.MultipleValue( this.result.change_STR_rate + 1);
+            player.AddAttrValue(AttributeType.STR, this.result.change_STR);
+            player.AddAttrValue(AttributeType.STR, this.result.change_STR_rate);
 
-            player.DEF.AddValue(this.result.change_DEF);
-            player.DEF.MultipleValue(this.result.change_DEF_rate + 1);
+            player.AddAttrValue(AttributeType.DEF, this.result.change_DEF);
+            player.AddAttrValue(AttributeType.DEF, this.result.change_DEF_rate);
 
-            player.LVL.AddValue(this.result.change_LVL);
-            player.LVL.MultipleValue(this.result.change_LVL_rate + 1);
+            player.AddAttrValue(AttributeType.LVL, this.result.change_LVL);
+            player.AddAttrValue(AttributeType.LVL, this.result.change_LVL_rate);
 
-            player.SAN.AddValue(this.result.change_SAN);
-            player.SAN.MultipleValue(this.result.change_SAN_rate + 1);
+            player.AddAttrValue(AttributeType.SAN, this.result.change_SAN);
+            player.AddAttrValue(AttributeType.SAN, this.result.change_SAN_rate);
 
-            player.SPD.AddValue(this.result.change_SPD);
-            player.SPD.MultipleValue(this.result.change_SPD_rate + 1);
+            player.AddAttrValue(AttributeType.SPD, this.result.change_SPD);
+            player.AddAttrValue(AttributeType.SPD, this.result.change_SPD_rate);
 
-            player.CRIT_Rate.AddValue(this.result.change_CRIT_Rate);
-            player.CRIT_Rate.MultipleValue(this.result.change_CRIT_Rate_rate + 1);
+            player.AddAttrValue(AttributeType.CRIT_Rate, this.result.change_CRIT_Rate);
+            player.AddAttrValue(AttributeType.CRIT_Rate, this.result.change_CRIT_Rate_rate);
 
-            player.CRIT_DMG.AddValue(this.result.change_CRIT_DMG);
-            player.CRIT_DMG.MultipleValue( this.result.change_CRIT_DMG_rate + 1);
+            player.AddAttrValue(AttributeType.CRIT_DMG, this.result.change_CRIT_DMG);
+            player.AddAttrValue(AttributeType.CRIT_DMG, this.result.change_CRIT_DMG_rate);
 
-            player.HIT.AddValue(this.result.change_HIT);
-            player.HIT.MultipleValue( this.result.change_HIT_rate + 1);
+            player.AddAttrValue(AttributeType.HIT, this.result.change_HIT);
+            player.AddAttrValue(AttributeType.HIT, this.result.change_HIT_rate);
 
-            player.AVO.AddValue(this.result.change_AVO);
-            player.AVO.MultipleValue(this.result.change_AVO_rate + 1);
+            player.AddAttrValue(AttributeType.AVO, this.result.change_AVO);
+            player.AddAttrValue(AttributeType.AVO, this.result.change_AVO_rate);
 
 
             //如果有战斗，那么尝试将战斗id播放给BattlePanel：

@@ -112,10 +112,10 @@ public class PlayerController : PlayerBase
         //     ItemManager.Instance.AddItem(104);
         // }
 
-        // //测试用：按键锁灯光 
-        // if(Input.GetKeyDown(KeyCode.B)){
-        //     isLightLocked = !isLightLocked;
-        // }
+        //测试用：按键锁灯光 
+        if(Input.GetKeyDown(KeyCode.B)){
+            isLightLocked = !isLightLocked;
+        }
     
     }
 

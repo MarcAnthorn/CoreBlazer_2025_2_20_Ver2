@@ -83,7 +83,7 @@ public class Item_101 : Item
         Debug.Log($"道具 \"灯火助燃剂\" 使用！");
         timerIndex = TimeManager.Instance.AddTimer(8f, () => OnStart(), () => OnComplete());
         
-        PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVLValue + 40);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.LVL, 40);
     }
 
     private void OnStart()
