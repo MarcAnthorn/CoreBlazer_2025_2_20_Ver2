@@ -27,10 +27,17 @@ public class PoolData
     public void Push(GameObject obj)
     {
         if (obj == null)
-            Debug.LogError("当前希望push入对象栈的对象为空，请检查！");
+        {
+            Debug.LogWarning("当前希望push入对象栈的对象为空，请检查！");
+            return;
+        }
 
         if (objRoot == null)
-            Debug.LogError("当前希望挂载对象的父对象Root为空，请检查！");
+        {
+            Debug.LogWarning("当前希望挂载对象的父对象Root为空，请检查！");
+            return;
+        }
+   
 
         //开启优化，再建立父子关系；否则不建立
         if (isOptimized)
