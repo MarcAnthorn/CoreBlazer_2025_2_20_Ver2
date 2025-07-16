@@ -26,8 +26,8 @@ public class SoundEffectManager : SingletonBaseManager<SoundEffectManager>
     //默认是移除的；
     private bool soundRemove = true;
 
-    private float musicVolume = 0.5f;
-    private float soundEffectVolume = 0.5f;
+    private float musicVolume = 0.3f;
+    private float soundEffectVolume = 0.3f;
     public float  SoundEffectVolume => soundEffectVolume;
 
     //播放BGM
