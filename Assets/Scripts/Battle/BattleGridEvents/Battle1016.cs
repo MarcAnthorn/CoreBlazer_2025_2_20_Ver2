@@ -9,6 +9,8 @@ public class Battle1016 : BattleBase
     {
         base.OnComplete(enemyId);
 
+        //达贡掉落：
+        ItemManager.Instance.AddItem(516);
         Destroy(this.gameObject);
     }
 
