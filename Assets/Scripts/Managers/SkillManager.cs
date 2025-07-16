@@ -424,7 +424,7 @@ public class SkillManager : Singleton<SkillManager>
     public void Skill_1004(Player player)
     {
         Debug.Log("角色发动 心火！");
-        player.HP.AddValue(-10);
+        player.AddAttrValue(AttributeType.HP, -10);
         AddBuffToSkill_1004();
     }
     private void AddBuffToSkill_1004()
@@ -625,7 +625,7 @@ public class SkillManager : Singleton<SkillManager>
     public void Skill_1018(Player player)
     {
         Debug.Log("角色发动 深渊之主的回音！");
-        player.HP.AddValue(60);
+        player.AddAttrValue(AttributeType.HP, 60);
         AddBuffToSkill_1018();
     }
     private void AddBuffToSkill_1018()
@@ -638,7 +638,7 @@ public class SkillManager : Singleton<SkillManager>
     public void Skill_1019(Player player)
     {
         Debug.Log("角色发动 风起之时！");
-        player.HP.AddValue(20);
+        player.AddAttrValue(AttributeType.HP, 20);
         AddBuffToSkill_1019();
     }
     private void AddBuffToSkill_1019()
@@ -651,7 +651,7 @@ public class SkillManager : Singleton<SkillManager>
     public void Skill_1020(Player player)
     {
         Debug.Log("角色发动 鼠群意志！");
-        player.HP.AddValue(20 + player.SAN.value * 2.0f + player.SPD.value * 1.0f);
+        player.AddAttrValue(AttributeType.HP, 20 + player.SAN.value * 2.0f + player.SPD.value * 1.0f);
         AddBuffToSkill_1020();
     }
     private void AddBuffToSkill_1020()

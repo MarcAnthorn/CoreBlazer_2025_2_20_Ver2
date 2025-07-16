@@ -31,7 +31,7 @@ public class ItemManager : Singleton<ItemManager>
             if(id / 100 == 6)
             {
                 //如果是，那么就是重复添加塔罗牌，直接不添加，而是加精神值；
-                PlayerManager.Instance.player.SAN.AddValue(5);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
                 PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas.transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5");
                 return;
                 
@@ -104,7 +104,7 @@ public class ItemManager : Singleton<ItemManager>
                 if(id / 100 == 6)
                 {
                     //如果是，那么就是重复添加塔罗牌，直接不添加，而是加精神值；
-                    PlayerManager.Instance.player.SAN.AddValue(5);
+                    PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
                     PoolManager.Instance.SpawnFromPool("Panels/WarningPanel", canvas.transform).gameObject.GetComponent<WarningPanel>().SetWarningText($"当前塔罗牌「{nowItem.name}」已收集，精神值 + 5");
                     return;
                     

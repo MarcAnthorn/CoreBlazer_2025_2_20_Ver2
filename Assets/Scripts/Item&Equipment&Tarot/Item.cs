@@ -605,13 +605,14 @@ public class Item_401 : Item
     private void OnStart()
     {
         //AddValueLimit方法已修正：所有需要调整数值&上限值的，直接使用这个方法；该方法会同步加成数值和上限值；
-        PlayerManager.Instance.player.HP.AddValueLimit(10f);        
+        PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue + 10, PlayerManager.Instance.player.HP.value_limit + 10);        
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.HP.AddValueLimit(-10f);
+        // 只加属性值和上限
+        PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue - 10, PlayerManager.Instance.player.HP.value_limit - 10);
     }
 
 }
@@ -632,14 +633,16 @@ public class Item_402 : Item
 
     private void OnStart()
     {
-        PlayerManager.Instance.player.DEF.AddValueLimit(10f);
+        // 只加属性值和上限
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, PlayerManager.Instance.player.DEFValue + 10, PlayerManager.Instance.player.DEF.value_limit + 10);
 
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        PlayerManager.Instance.player.DEF.AddValueLimit(-10f);
+        // 只加属性值和上限
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, PlayerManager.Instance.player.DEFValue - 10, PlayerManager.Instance.player.DEF.value_limit - 10);
     }
 
 }
@@ -658,16 +661,16 @@ public class Item_403 : Item
 
     private void OnStart()
     {
-        // PlayerManager.Instance.player.STR.value_limit += 10f;
-        PlayerManager.Instance.player.STR.AddValue(20f);
+        // 只加属性值
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, 20f);
         PlayerManager.Instance.player.DebugInfo();
     }
 
     private void OnComplete()
     {
         onCompleteCallback?.Invoke();
-        // PlayerManager.Instance.player.STR.value_limit -= 10f;
-        PlayerManager.Instance.player.STR.AddValue(-20f);
+        // 只加属性值
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, -20f);
         PlayerManager.Instance.player.DebugInfo();
     }
 
@@ -772,7 +775,7 @@ public class Item_505 : Item
         effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit - 10);
 
         //获得后精神值上限-10
-        PlayerManager.Instance.player.SAN.AddValueLimit(-10f);
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.SAN, -10f);
         PlayerManager.Instance.player.DebugInfo();
 
         
@@ -828,25 +831,25 @@ public class Item_508 : Item
         if (randomNum == 0)
         {
             effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit + 20);
-            PlayerManager.Instance.player.SAN.AddValueLimit(20f);
+            PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.SAN, 20f);
 
             
         }
         else if (randomNum == 1)
         {
             effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值上限, PlayerManager.Instance.player.SAN.value_limit + 10);
-            PlayerManager.Instance.player.SAN.AddValueLimit(10f);
+            PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.SAN, 10f);
             
         }
         else if (randomNum == 2)
         {
-            PlayerManager.Instance.player.SAN.AddValue(0f);
+            PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 0f);
         }
         else if (randomNum == 3)
         {
             effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值, 10);
-            PlayerManager.Instance.player.SAN.AddValueLimit(-10f);
-            PlayerManager.Instance.player.SAN.AddValue(-10f);
+            PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.SAN, -10f);
+            PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, -10f);
             
         }
         PlayerManager.Instance.player.DebugInfo();
@@ -890,8 +893,10 @@ public class Item_511 : Item
     {
         effectFinalValueDic.Clear();
 
-        PlayerManager.Instance.player.HP.AddValueLimit(100);
-        PlayerManager.Instance.player.DEF.AddValueLimit(15);
+        // 只加属性值和上限
+        PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue + 100, PlayerManager.Instance.player.HP.value_limit + 100);
+        // 只加属性值和上限
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, PlayerManager.Instance.player.DEFValue + 15, PlayerManager.Instance.player.DEF.value_limit + 15);
         //注册取消道具的方法：
         EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
         
@@ -902,8 +907,10 @@ public class Item_511 : Item
         //移除对应的响应事件：
         EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
 
-        PlayerManager.Instance.player.HP.AddValueLimit(-100);
-        PlayerManager.Instance.player.DEF.AddValueLimit(-15);
+        // 只加属性值和上限
+        PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue - 100, PlayerManager.Instance.player.HP.value_limit - 100);
+        // 只加属性值和上限
+        PlayerController.SetPlayerAttribute(AttributeType.DEF, PlayerManager.Instance.player.DEFValue - 15, PlayerManager.Instance.player.DEF.value_limit - 15);
 
         //执行生效结束后的回调：
         onCompleteCallback?.Invoke();
@@ -920,8 +927,10 @@ public class Item_512 : Item
     {
         effectFinalValueDic.Clear();
 
-        PlayerManager.Instance.player.SAN.AddValue(164);
-        PlayerManager.Instance.player.AVO.AddValue(0.15f);
+        // 只加属性值
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 164);
+        // 只加属性值
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.AVO, 0.15f);
         //注册取消道具的方法：
         EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
         
@@ -932,8 +941,8 @@ public class Item_512 : Item
         //移除对应的响应事件：
         EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
 
-        // PlayerManager.Instance.player.SAN.AddValue(-164);
-        PlayerManager.Instance.player.AVO.AddValue(-0.15f);
+        // 只加属性值
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.AVO, -0.15f);
 
         //执行生效结束后的回调：
         onCompleteCallback?.Invoke();
@@ -949,10 +958,14 @@ public class Item_513 : Item
     {
         effectFinalValueDic.Clear();
 
-        PlayerManager.Instance.player.STR.AddValueLimit(20);
-        PlayerManager.Instance.player.CRIT_DMG.AddValueLimit(0.25f);
-        PlayerManager.Instance.player.CRIT_Rate.AddValueLimit(0.25f);
-        PlayerManager.Instance.player.HIT.AddValueLimit(0.35f);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.STR, 20);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.CRIT_DMG, 0.25f);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.CRIT_Rate, 0.25f);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.HIT, 0.35f);
         //注册取消道具的方法：
         EventHub.Instance.AddEventListener("UsedCallback", UsedCallback);
         
@@ -964,10 +977,14 @@ public class Item_513 : Item
         EventHub.Instance.RemoveEventListener("UsedCallback", UsedCallback);
 
        
-        PlayerManager.Instance.player.STR.AddValueLimit(-20);
-        PlayerManager.Instance.player.CRIT_DMG.AddValueLimit(-0.25f);
-        PlayerManager.Instance.player.CRIT_Rate.AddValueLimit(-0.25f);
-        PlayerManager.Instance.player.HIT.AddValueLimit(-0.35f);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.STR, -20);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.CRIT_DMG, -0.25f);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.CRIT_Rate, -0.25f);
+        // 只加上限
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.HIT, -0.35f);
 
         //执行生效结束后的回调：
         onCompleteCallback?.Invoke();
@@ -1100,9 +1117,9 @@ public class Item_515 : Item
         isTriggered = true;
         strDelta = PlayerManager.Instance.player.STR.value;
         //道具效果：
-        PlayerManager.Instance.player.STR.AddValue(strDelta);
-        PlayerManager.Instance.player.DEF.AddValueLimit(25);
-        PlayerManager.Instance.player.LVL.AddValueLimit(150);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, strDelta);
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.DEF, 25);
+        PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.LVL, 150);
 
         UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「山岳的凝视」已生效");
 
@@ -1113,9 +1130,9 @@ public class Item_515 : Item
         if(isTriggered)
         {
             isTriggered = false;
-            PlayerManager.Instance.player.STR.AddValue(-strDelta);
-            PlayerManager.Instance.player.DEF.AddValueLimit(-25);
-            PlayerManager.Instance.player.LVL.AddValueLimit(-150);
+            PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, -strDelta);
+            PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.DEF, -25);
+            PlayerManager.Instance.player.AddAttrValueLimit(AttributeType.LVL, -150);
 
             UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("道具「山岳的凝视」已不再生效");
         }
@@ -1168,6 +1185,7 @@ public class Item_516 : Item
         var lvlLimit = PlayerManager.Instance.player.LVL.value_limit;
         PlayerController.SetPlayerAttribute(AttributeType.LVL, currentLVL, lvlLimit * 1.08f);
 
+        // SAN值不变，无需操作
         PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
 
     }
@@ -1180,7 +1198,7 @@ public class Item_601 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1188,7 +1206,7 @@ public class Item_602 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1196,7 +1214,7 @@ public class Item_603 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1204,7 +1222,7 @@ public class Item_604 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1212,7 +1230,7 @@ public class Item_605 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1220,7 +1238,7 @@ public class Item_606 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1228,7 +1246,7 @@ public class Item_607 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1236,7 +1254,7 @@ public class Item_608 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1244,7 +1262,7 @@ public class Item_609 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1252,7 +1270,7 @@ public class Item_610 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1260,7 +1278,7 @@ public class Item_611 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1268,7 +1286,7 @@ public class Item_612 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1276,7 +1294,7 @@ public class Item_613 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1284,7 +1302,7 @@ public class Item_614 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1292,7 +1310,7 @@ public class Item_615 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1300,7 +1318,7 @@ public class Item_616 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1308,7 +1326,7 @@ public class Item_617 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1316,7 +1334,7 @@ public class Item_618 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1324,7 +1342,7 @@ public class Item_619 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1332,7 +1350,7 @@ public class Item_620 : Item
 {
     public override void Use()
     {
-        PlayerManager.Instance.player.SAN.AddValue(5);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 5);
     }
 }
 
@@ -1379,7 +1397,9 @@ public class Item_2013 : Item
     //使用后：当前生命值+100，防御+10
     public override void Use()
     {
+        // 只加属性值和上限
         PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue + 100, PlayerManager.Instance.player.HP.value_limit + 100);
+        // 只加属性值和上限
         PlayerController.SetPlayerAttribute(AttributeType.DEF, PlayerManager.Instance.player.DEFValue + 10, PlayerManager.Instance.player.DEF.value_limit + 10);
     }
 }
@@ -1389,7 +1409,9 @@ public class Item_2014 : Item
     //使用后：当前灯光值与生命值以及他们的上限+50。
     public override void Use()
     {
+        // 只加属性值和上限
         PlayerController.SetPlayerAttribute(AttributeType.LVL, PlayerManager.Instance.player.LVLValue + 50, PlayerManager.Instance.player.LVL.value_limit + 50);
+        // 只加属性值和上限
         PlayerController.SetPlayerAttribute(AttributeType.HP, PlayerManager.Instance.player.HPValue + 50, PlayerManager.Instance.player.HP.value_limit + 50);
     }
 

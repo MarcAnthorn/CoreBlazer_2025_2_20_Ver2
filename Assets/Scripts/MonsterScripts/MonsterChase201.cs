@@ -44,7 +44,7 @@ public class MonsterChase201 : MonsterBase
             _cam.Priority = 0;   
         });
 
-        reward = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RewardBoss"));
+        reward = Resources.Load<GameObject>(Path.Combine("MapPOIs", "RewardChaseBoss"));
 
     }
 

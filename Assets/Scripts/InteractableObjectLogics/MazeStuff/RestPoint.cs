@@ -6,6 +6,7 @@ public class RestPoint : MonoBehaviour
 {
     private bool isTriggerLock = true; 
     private Vector3 offset = new Vector3(0, 0.5f);
+    private Vector3 dagoonOffset = new Vector3(0, 0.3f);
     private GameObject txtObject;
     private bool isLightResumed = false;
 
@@ -135,7 +136,7 @@ public class RestPoint : MonoBehaviour
         //将当前的休息点变化为达贡：
         Debug.LogWarning("当前休息点变为达贡");
         GameObject dagoon =  Resources.Load<GameObject>("NPC/达贡");
-        Instantiate<GameObject>(dagoon, this.transform.position, Quaternion.identity);
+        Instantiate<GameObject>(dagoon, this.transform.position + dagoonOffset, Quaternion.identity);
 
         //向达贡字典中添加默认通用对话：
         AVGDistributeManager.Instance.ContributeAVGId(E_NPCName.达贡, 2303, 0);

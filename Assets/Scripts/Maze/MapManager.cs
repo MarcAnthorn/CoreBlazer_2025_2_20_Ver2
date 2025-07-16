@@ -61,7 +61,7 @@ public class MapManager : Singleton<MapManager>
         Map map4 = new Map()
         {
             row = 72,
-            colume = 154
+            colume = 153
         };
 
         Maps.Add(0, map0);

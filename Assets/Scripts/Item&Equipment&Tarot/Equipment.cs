@@ -87,18 +87,18 @@ public class Equipment_1001 : Equipment
 
     public override void Equip()
     {
-        player.SPD.AddValue(10);
+        player.AddAttrValue(AttributeType.SPD, 10);
         strDelta = player.STR.value * 0.1f;
-        player.STR.AddValue(strDelta);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.1f);
+        player.AddAttrValue(AttributeType.STR, strDelta);
+        player.AddAttrValue(AttributeType.CRIT_DMG, player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.SPD.AddValue(-10);
-        player.STR.AddValue(-strDelta);
-        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.1f);
+        player.AddAttrValue(AttributeType.SPD, -10);
+        player.AddAttrValue(AttributeType.STR, -strDelta);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 }
@@ -125,16 +125,16 @@ public class Equipment_1002 : Equipment
 
     public override void Equip()
     {
-        player.AVO.AddValue(0.1f);
+        player.AddAttrValue(AttributeType.AVO, 0.1f);
         strDelta = player.STR.value * 1f;
-        player.STR.AddValue(strDelta);
+        player.AddAttrValue(AttributeType.STR, strDelta);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.AVO.AddValue(-0.1f);
-        player.STR.AddValue(-strDelta);
+        player.AddAttrValue(AttributeType.AVO, -0.1f);
+        player.AddAttrValue(AttributeType.STR, -strDelta);
         player.DebugInfo();
     }
 }
@@ -159,17 +159,17 @@ public class Equipment_1003 : Equipment
 
     public override void Equip()
     {
-        player.STR.AddValue(10);
-        player.DEF.AddValue(10);
-        player.HP.MultipleValue(1.15f);
+        player.AddAttrValue(AttributeType.STR, 10);
+        player.AddAttrValue(AttributeType.DEF, 10);
+        player.AddAttrValue(AttributeType.HP, player.HPValue * 0.15f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-10);
-        player.DEF.AddValue(-10);
-        player.HP.MultipleValue(1f / 1.15f);
+        player.AddAttrValue(AttributeType.STR, -10);
+        player.AddAttrValue(AttributeType.DEF, -10);
+        player.AddAttrValue(AttributeType.HP, player.HPValue * (1f / 1.15f - 1f));
         player.DebugInfo();
     }
 }
@@ -197,17 +197,17 @@ public class Equipment_1004 : Equipment
     public override void Equip()
     {
         strDelta = player.STR.value * 1f;
-        player.STR.AddValue(strDelta);
-        player.HIT.AddValue(player.HIT.value * 0.4f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.1f);
+        player.AddAttrValue(AttributeType.STR, strDelta);
+        player.AddAttrValue(AttributeType.HIT, player.HIT.value * 0.4f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-strDelta);
-        player.HIT.AddValue(-player.HIT.value * 0.4f);
-        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.1f);
+        player.AddAttrValue(AttributeType.STR, -strDelta);
+        player.AddAttrValue(AttributeType.HIT, -player.HIT.value * 0.4f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -player.CRIT_DMG.value * 0.1f);
         player.DebugInfo();
     }
 }
@@ -232,17 +232,17 @@ public class Equipment_1005 : Equipment
 
     public override void Equip()
     {
-        player.STR.AddValue(20);
-        player.CRIT_Rate.AddValue(0.1f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.3f);
+        player.AddAttrValue(AttributeType.STR, 20);
+        player.AddAttrValue(AttributeType.CRIT_Rate, 0.1f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, player.CRIT_DMG.value * 0.3f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-20);
-        player.CRIT_Rate.AddValue(-0.1f);
-        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.3f);
+        player.AddAttrValue(AttributeType.STR, -20);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -0.1f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -player.CRIT_DMG.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -267,17 +267,17 @@ public class Equipment_1006 : Equipment
 
     public override void Equip()
     {
-        player.STR.AddValue(10);
-        player.DEF.AddValue(10);
-        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.3f);
+        player.AddAttrValue(AttributeType.STR, 10);
+        player.AddAttrValue(AttributeType.DEF, 10);
+        player.AddAttrValue(AttributeType.CRIT_Rate, player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-10);
-        player.DEF.AddValue(-10);
-        player.CRIT_Rate.AddValue(-player.CRIT_Rate.value * 0.3f);
+        player.AddAttrValue(AttributeType.STR, -10);
+        player.AddAttrValue(AttributeType.DEF, -10);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -302,17 +302,17 @@ public class Equipment_1007 : Equipment
 
     public override void Equip()
     {
-        player.CRIT_Rate.AddValue(0.5f);
-        player.CRIT_DMG.AddValue(0.5f);
-        player.HIT.AddValue(0.5f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, 0.5f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, 0.5f);
+        player.AddAttrValue(AttributeType.HIT, 0.5f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.CRIT_Rate.AddValue(-0.5f);
-        player.CRIT_DMG.AddValue(-0.5f);
-        player.HIT.AddValue(-0.5f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -0.5f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -0.5f);
+        player.AddAttrValue(AttributeType.HIT, -0.5f);
         player.DebugInfo();
     }
 }
@@ -337,17 +337,17 @@ public class Equipment_1008 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(0.5f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.3f);
-        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.3f);
+        player.AddAttrValue(AttributeType.HIT, 0.5f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, player.CRIT_DMG.value * 0.3f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-0.5f);
-        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.3f);
-        player.CRIT_Rate.AddValue(-player.CRIT_Rate.value * 0.3f);
+        player.AddAttrValue(AttributeType.HIT, -0.5f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -player.CRIT_DMG.value * 0.3f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -372,15 +372,15 @@ public class Equipment_1009 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(0.2f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 0.4f);
+        player.AddAttrValue(AttributeType.HIT, 0.2f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, player.CRIT_DMG.value * 0.4f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-0.2f);
-        player.CRIT_DMG.AddValue(-player.CRIT_DMG.value * 0.4f);
+        player.AddAttrValue(AttributeType.HIT, -0.2f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -player.CRIT_DMG.value * 0.4f);
         player.DebugInfo();
     }
 }
@@ -405,15 +405,15 @@ public class Equipment_1010 : Equipment
 
     public override void Equip()
     {
-        player.CRIT_Rate.AddValue(0.5f);
-        player.CRIT_DMG.AddValue(0.5f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, 0.5f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, 0.5f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.CRIT_Rate.AddValue(-0.5f);
-        player.CRIT_DMG.AddValue(-0.5f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -0.5f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -0.5f);
         player.DebugInfo();
     }
 }
@@ -438,17 +438,17 @@ public class Equipment_1011 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(0.5f);
-        player.STR.AddValue(20f);
-        player.CRIT_DMG.AddValue(0.5f);
+        player.AddAttrValue(AttributeType.HIT, 0.5f);
+        player.AddAttrValue(AttributeType.STR, 20f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, 0.5f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-0.5f);
-        player.STR.AddValue(-20f);
-        player.CRIT_DMG.AddValue(0.5f);
+        player.AddAttrValue(AttributeType.HIT, -0.5f);
+        player.AddAttrValue(AttributeType.STR, -20f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, 0.5f);
         player.DebugInfo();
     }
 }
@@ -473,15 +473,15 @@ public class Equipment_1012 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(0.3f);
-        player.SPD.AddValue(player.SPD.value * 0.2f);
+        player.AddAttrValue(AttributeType.HIT, 0.3f);
+        player.AddAttrValue(AttributeType.SPD, player.SPD.value * 0.2f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-0.3f);
-        player.SPD.AddValue(-player.SPD.value * 0.2f);
+        player.AddAttrValue(AttributeType.HIT, -0.3f);
+        player.AddAttrValue(AttributeType.SPD, -player.SPD.value * 0.2f);
         player.DebugInfo();
     }
 }
@@ -506,15 +506,15 @@ public class Equipment_1013 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(0.5f);
-        player.AVO.AddValue(0.2f);
+        player.AddAttrValue(AttributeType.HIT, 0.5f);
+        player.AddAttrValue(AttributeType.AVO, 0.2f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-0.5f);
-        player.AVO.AddValue(-0.2f);
+        player.AddAttrValue(AttributeType.HIT, -0.5f);
+        player.AddAttrValue(AttributeType.AVO, -0.2f);
         player.DebugInfo();
     }
 }
@@ -539,15 +539,15 @@ public class Equipment_1014 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(0.5f);
-        player.CRIT_Rate.AddValue(0.4f);
+        player.AddAttrValue(AttributeType.HIT, 0.5f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, 0.4f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-0.5f);
-        player.CRIT_Rate.AddValue(-0.4f);
+        player.AddAttrValue(AttributeType.HIT, -0.5f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -0.4f);
         player.DebugInfo();
     }
 }
@@ -573,16 +573,16 @@ public class Equipment_1015 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(2f);
+        player.AddAttrValue(AttributeType.HIT, 2f);
         delta = player.SPD.value * 1.0f;
-        player.SPD.AddValue(delta);
+        player.AddAttrValue(AttributeType.SPD, delta);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-2f);
-        player.SPD.AddValue(-delta);
+        player.AddAttrValue(AttributeType.HIT, -2f);
+        player.AddAttrValue(AttributeType.SPD, -delta);
         player.DebugInfo();
     }
 }
@@ -607,15 +607,15 @@ public class Equipment_1016 : Equipment
 
     public override void Equip()
     {
-        player.CRIT_Rate.AddValue(0.8f);
-        player.CRIT_DMG.AddValue(0.1f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, 0.8f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, 0.1f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.CRIT_Rate.AddValue(-0.8f);
-        player.CRIT_DMG.AddValue(-0.1f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -0.8f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -0.1f);
         player.DebugInfo();
     }
 }
@@ -648,17 +648,17 @@ public class Equipment_1017 : Equipment
         defDelta = player.DEF.value * 0.8f;
         spdDelta = player.SPD.value * 0.8f;
         
-        player.STR.AddValue(strDelta);
-        player.DEF.AddValue(defDelta);
-        player.SPD.AddValue(spdDelta);
+        player.AddAttrValue(AttributeType.STR, strDelta);
+        player.AddAttrValue(AttributeType.DEF, defDelta);
+        player.AddAttrValue(AttributeType.SPD, spdDelta);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-strDelta);
-        player.DEF.AddValue(-defDelta);
-        player.SPD.AddValue(-spdDelta);
+        player.AddAttrValue(AttributeType.STR, -strDelta);
+        player.AddAttrValue(AttributeType.DEF, -defDelta);
+        player.AddAttrValue(AttributeType.SPD, -spdDelta);
         player.DebugInfo();
     }
 }
@@ -683,17 +683,17 @@ public class Equipment_1018 : Equipment
 
     public override void Equip()
     {
-        player.STR.AddValue(30);
-        player.DEF.AddValue(30);
-        player.SPD.AddValue(15);
+        player.AddAttrValue(AttributeType.STR, 30);
+        player.AddAttrValue(AttributeType.DEF, 30);
+        player.AddAttrValue(AttributeType.SPD, 15);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-30);
-        player.DEF.AddValue(-30);
-        player.SPD.AddValue(-15);
+        player.AddAttrValue(AttributeType.STR, -30);
+        player.AddAttrValue(AttributeType.DEF, -30);
+        player.AddAttrValue(AttributeType.SPD, -15);
         player.DebugInfo();
     }
 }
@@ -718,17 +718,17 @@ public class Equipment_1019 : Equipment
 
     public override void Equip()
     {
-        player.AVO.AddValue(100);
-        player.SPD.AddValue(15);
-        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.3f);
+        player.AddAttrValue(AttributeType.AVO, 100);
+        player.AddAttrValue(AttributeType.SPD, 15);
+        player.AddAttrValue(AttributeType.CRIT_Rate, player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.AVO.AddValue(-100);
-        player.SPD.AddValue(-15);
-        player.CRIT_Rate.AddValue(-player.CRIT_Rate.value * 0.3f);
+        player.AddAttrValue(AttributeType.AVO, -100);
+        player.AddAttrValue(AttributeType.SPD, -15);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -player.CRIT_Rate.value * 0.3f);
         player.DebugInfo();
     }
 }
@@ -753,17 +753,17 @@ public class Equipment_1020 : Equipment
 
     public override void Equip()
     {
-        player.STR.AddValue(30);
-        player.CRIT_Rate.AddValue(0.3f);
-        player.CRIT_DMG.AddValue(0.3f);
+        player.AddAttrValue(AttributeType.STR, 30);
+        player.AddAttrValue(AttributeType.CRIT_Rate, 0.3f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, 0.3f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.STR.AddValue(-30);
-        player.CRIT_Rate.AddValue(-0.3f);
-        player.CRIT_DMG.AddValue(-0.3f);
+        player.AddAttrValue(AttributeType.STR, -30);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -0.3f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, -0.3f);
         player.DebugInfo();
     }
 }
@@ -788,15 +788,15 @@ public class Equipment_1021 : Equipment
 
     public override void Equip()
     {
-        player.HIT.AddValue(2f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 1.0f);
+        player.AddAttrValue(AttributeType.HIT, 2f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, player.CRIT_DMG.value * 1.0f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.HIT.AddValue(-2f);
-        player.CRIT_DMG.AddValue(player.CRIT_DMG.value * 1.0f);
+        player.AddAttrValue(AttributeType.HIT, -2f);
+        player.AddAttrValue(AttributeType.CRIT_DMG, player.CRIT_DMG.value * 1.0f);
         player.DebugInfo();
     }
 }
@@ -821,17 +821,17 @@ public class Equipment_1022 : Equipment
 
     public override void Equip()
     {
-        player.DEF.AddValue(100);
-        player.SPD.AddValue(100);
-        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.8f);
+        player.AddAttrValue(AttributeType.DEF, 100);
+        player.AddAttrValue(AttributeType.SPD, 100);
+        player.AddAttrValue(AttributeType.CRIT_Rate, player.CRIT_Rate.value * 0.8f);
         player.DebugInfo();
     }
 
     public override void Unequip()
     {
-        player.DEF.AddValue(-100);
-        player.SPD.AddValue(-100);
-        player.CRIT_Rate.AddValue(player.CRIT_Rate.value * 0.8f);
+        player.AddAttrValue(AttributeType.DEF, -100);
+        player.AddAttrValue(AttributeType.SPD, -100);
+        player.AddAttrValue(AttributeType.CRIT_Rate, player.CRIT_Rate.value * 0.8f);
         player.DebugInfo();
     }
 }

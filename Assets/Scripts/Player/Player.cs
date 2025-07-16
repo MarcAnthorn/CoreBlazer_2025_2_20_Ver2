@@ -232,6 +232,20 @@ public class Player               //存储角色信息等
         // 确保血量不低于0
         if (type == AttributeType.HP)
             attr.value = Mathf.Max(0, attr.value);
+
+        //如果是灯光值，并且change > 0,尝试触发道具102的效果：
+        if (change > 0 && type == AttributeType.LVL)
+            EventHub.Instance.EventTrigger("AddExtraLight");  
+
+        SetAttr(type, attr);
+    }
+
+    public void AddAttrValueLimit(AttributeType type, float value)
+    {
+        var attr = GetAttr(type);
+        attr.value_limit += value;
+        attr.value += value;
+        //SetAttrValue(type, value);
         SetAttr(type, attr);
     }
 

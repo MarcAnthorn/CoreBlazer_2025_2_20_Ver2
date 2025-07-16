@@ -199,34 +199,34 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
         switch (type)
         {
             case AttributeType.HP:
-                PlayerManager.Instance.player.HP.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.HP, finalValue);
                 break;
             case AttributeType.STR:
-                PlayerManager.Instance.player.STR.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.STR, finalValue);
                 break;
             case AttributeType.DEF:
-                PlayerManager.Instance.player.DEF.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.DEF, finalValue);
                 break;
             case AttributeType.LVL:
-                PlayerManager.Instance.player.LVL.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.LVL, finalValue);
                 break;
             case AttributeType.SAN:
-                PlayerManager.Instance.player.SAN.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, finalValue);
                 break;
             case AttributeType.SPD:
-                PlayerManager.Instance.player.SPD.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.SPD, finalValue);
                 break;
             case AttributeType.CRIT_Rate:
-                PlayerManager.Instance.player.CRIT_Rate.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.CRIT_Rate, finalValue);
                 break;
             case AttributeType.CRIT_DMG:
-                PlayerManager.Instance.player.CRIT_DMG.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.CRIT_DMG, finalValue);
                 break;
             case AttributeType.HIT:
-                PlayerManager.Instance.player.HIT.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.HIT, finalValue);
                 break;
             case AttributeType.AVO:
-                PlayerManager.Instance.player.AVO.AddValue(finalValue);
+                PlayerManager.Instance.player.AddAttrValue(AttributeType.AVO, finalValue);
                 break;
             default:
                 break;

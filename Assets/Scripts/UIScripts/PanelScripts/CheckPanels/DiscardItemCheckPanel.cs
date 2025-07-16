@@ -27,7 +27,7 @@ public class DiscardItemCheckPanel : BasePanel
 
           
             //返还精神值：
-            PlayerManager.Instance.player.SAN.AddValue(10);
+            PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 10);
             PlayerManager.Instance.player.DebugInfo();
 
             EventHub.Instance.EventTrigger("UpdateAllUIElements");

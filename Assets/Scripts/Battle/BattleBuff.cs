@@ -177,7 +177,7 @@ public class BattleBuff_1001 : BattleBuff
         if(flag == 0)
         {
             Debug.Log("I am in buff 1001");
-            BattleManager.Instance.player.HP.AddValue(-10 * overlyingCount);
+            BattleManager.Instance.player.AddAttrValue(AttributeType.HP, -10 * overlyingCount);
         
             //更新伤害显示面板：
             EventHub.Instance.EventTrigger<int, bool>("UpdateDamangeTextInt", 10 * overlyingCount, false);    
@@ -278,8 +278,8 @@ public class BattleBuff_1003 : BattleBuff
             Player player = BattleManager.Instance.player;
             if (player.HP.value >= 1/2 * player.HP.value_limit)
             {
-                player.HP.MultipleValue(0.2f);
-                player.CRIT_Rate.AddValue(1.0f);
+                player.AddAttrValue(AttributeType.HP, player.HPValue * (0.2f - 1f));
+                player.AddAttrValue(AttributeType.CRIT_Rate, 1.0f);
             }
             else
             {
@@ -291,7 +291,7 @@ public class BattleBuff_1003 : BattleBuff
     public override void OnEnd(int flag = 0)
     {
         Player player = BattleManager.Instance.player;
-        player.CRIT_Rate.AddValue(-1.0f);
+        player.AddAttrValue(AttributeType.CRIT_Rate, -1.0f);
     }
 
 }
@@ -1083,12 +1083,12 @@ public class BattleBuff_1018 : BattleBuff
     {
         if (flag == 0)  // 此时玩家持有Buff
         {
-            BattleManager.Instance.battleEnemy.HIT += 2.1f;
+            BattleManager.Instance.player.AddAttrValue(AttributeType.HIT, 2.1f);
         }
 
         else if (flag == 1)
         {
-            BattleManager.Instance.player.HIT.AddValue(2.1f);
+            BattleManager.Instance.player.AddAttrValue(AttributeType.HIT, 2.1f);
         }
     }
 
@@ -1125,7 +1125,7 @@ public class BattleBuff_1019 : BattleBuff
     {
         if (flag == 0)  // 此时玩家持有Buff
         {
-            BattleManager.Instance.player.HIT.AddValue(0.3f * overlyingCount);
+            BattleManager.Instance.player.AddAttrValue(AttributeType.HIT, 0.3f * overlyingCount);
         }
         else if (flag == 1)
         {
