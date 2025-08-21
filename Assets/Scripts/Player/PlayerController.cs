@@ -102,9 +102,9 @@ public class PlayerController : PlayerBase
         base.Update();
 
         //测试用，速死选项：
-        if(Input.GetKeyDown(KeyCode.M)){
-            EventHub.Instance.EventTrigger("OnPlayerDead");
-        }
+        // if(Input.GetKeyDown(KeyCode.M)){
+        //     EventHub.Instance.EventTrigger("OnPlayerDead");
+        // }
 
 
 
@@ -114,9 +114,9 @@ public class PlayerController : PlayerBase
         // }
 
         //测试用：按键锁灯光 
-        if(Input.GetKeyDown(KeyCode.B)){
-            isLightLocked = !isLightLocked;
-        }
+        // if(Input.GetKeyDown(KeyCode.B)){
+        //     isLightLocked = !isLightLocked;
+        // }
     
     }
 
