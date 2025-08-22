@@ -87,6 +87,7 @@ public class GameLevelManager : Singleton<GameLevelManager>
         gameLevelType = E_GameLevelType.Tutorial;
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
         isClearLock = false;
+        stonePos.Clear();
     }
     
 
