@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -11,11 +12,17 @@ public class TestMazeStart : MonoBehaviour
     GameObject player;
     public Vector3 originalPoint;
     public Image blackMask;
+    private GameObject stone;
+    Transform playerTransform; 
 
     void Awake()
     {
         //更新事件库：
         EventManager.Instance.ResetAllLibIds();
+
+        if(stone == null)
+            stone = Resources.Load<GameObject>(Path.Combine("MapPOIs", "ShiningStone"));
+        
     }
 
     void Start()
@@ -41,6 +48,12 @@ public class TestMazeStart : MonoBehaviour
         switch (GameLevelManager.Instance.gameLevelType)
         {
             case E_GameLevelType.First:
+                if(!GameLevelManager.Instance.isClearLock)
+                {
+                    GameLevelManager.Instance.stonePos.Clear();
+                    GameLevelManager.Instance.isClearLock = true;
+                }
+                
                 ResourcesManager.Instance.LoadAsync<GameObject>("MapPrefabsFormer/MapCentralFloor", (_gameObject) =>
                 {
                     Instantiate(_gameObject, originalPoint, Quaternion.identity);
@@ -146,6 +159,12 @@ public class TestMazeStart : MonoBehaviour
         else 
             player.transform.position = GameLevelManager.Instance.lastTeleportPoint;
         
+        ItemManager.Instance.AddItem(105, true, 10);
+
+        //初始化石头：
+        foreach(var pos in GameLevelManager.Instance.stonePos){
+            GameObject.Instantiate(stone, pos, Quaternion.identity);
+        }
 
     }
 

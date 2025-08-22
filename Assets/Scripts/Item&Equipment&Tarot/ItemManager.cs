@@ -313,6 +313,8 @@ public class ItemManager : Singleton<ItemManager>
                 return new Item_103();
             case 104:
                 return new Item_104();
+            case 105:
+                return new Item_105();
             case 201:
                 return new Item_201();
             case 202:

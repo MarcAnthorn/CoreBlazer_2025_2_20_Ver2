@@ -85,7 +85,6 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         var im = ItemManager.Instance;
         im.itemList.Clear();
         im.itemCountDic.Clear();
-
         //avg贡献重置：
         AVGDistributeManager.Instance.ClearAllDistributionRecord();
 

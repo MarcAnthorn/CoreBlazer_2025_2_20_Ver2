@@ -48,6 +48,10 @@ public class GameLevelManager : Singleton<GameLevelManager>
     public int eventNum;
     public static Event currentEvent;
 
+    //石头管理器
+    public List<Vector3> stonePos = new List<Vector3>();
+    public bool isClearLock = false;
+
 
     //当前的uniqueId的可交互门是否解锁过：
     //返回安全屋之前的留存坐标，用于锚定返回点：
@@ -82,6 +86,7 @@ public class GameLevelManager : Singleton<GameLevelManager>
         // avgShelterIsTriggered.Clear();
         gameLevelType = E_GameLevelType.Tutorial;
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
+        isClearLock = false;
     }
     
 

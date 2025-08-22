@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Unity.Mathematics;
@@ -240,6 +241,35 @@ public class Item_104 : Item
     }
 
 
+}
+
+public class Item_105 : Item
+{
+    Transform playerTransform;
+    GameObject stone;
+    public override void Use()
+    {
+        if(playerTransform == null)
+            playerTransform = PlayerManager.Instance.PlayerTransform;
+
+        if(stone == null)
+            stone = Resources.Load<GameObject>(Path.Combine("MapPOIs", "ShiningStone"));
+
+        //在最近的地块生成石头，并且记录：
+        int x, y;
+        PathFindingManager.Instance.GetGridIndex(playerTransform.position, out x, out y);
+        Vector3 targetPosition = PathFindingManager.Instance.GetWorldPosition(x, y);
+
+        if(GameLevelManager.Instance.stonePos.Contains(targetPosition))
+        {
+            UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("当前位置已放置「发光的引路石」，不可重复放置");
+            return;
+        }
+
+        GameObject.Instantiate(stone, targetPosition, Quaternion.identity);
+
+    }
+    
 }
 
 public class Item_201 : Item
