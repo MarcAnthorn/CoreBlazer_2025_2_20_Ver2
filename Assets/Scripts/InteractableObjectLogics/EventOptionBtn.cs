@@ -48,6 +48,9 @@ public class EventOptionBtn : MonoBehaviour
     void Start()
     {
         btnSelf.onClick.AddListener(()=>{
+            // 标记当前事件为已完成
+            EventManager.Instance.MarkCurrentEventAsCompleted();
+            
             //进行影响的广播：
             myOption.result.myAction?.Invoke();
             EventHub.Instance.EventTrigger("ClearOptions");

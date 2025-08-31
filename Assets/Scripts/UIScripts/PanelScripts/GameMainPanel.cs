@@ -131,11 +131,41 @@ public class GameMainPanel : BasePanel
         //复原PlayerBase中的Escape检测；
         EventHub.Instance.EventTrigger<E_DetectInputType>("UnlockSpecificDetectInput", E_DetectInputType.Escape);
 
-        UIManager.Instance.ShowPanel<MainPanel>();
-
+        // 安全检查：只在非场景切换时显示MainPanel
+        if (Application.isPlaying && !UnityEngine.SceneManagement.SceneManager.GetActiveScene().isLoaded)
+        {
+            Debug.Log("Scene is being unloaded, skipping MainPanel display");
+        }
+        else if (Application.isPlaying && UIManager.Instance != null)
+        {
+            // 使用延迟调用，确保OnDestroy完成后再尝试显示面板
+            StartCoroutine(DelayedShowMainPanel());
+        }
+        else
+        {
+            Debug.Log("Application not playing or UIManager is null, skipping MainPanel display");
+        }
 
         //事件面板销毁，更新回切换之前的场景：
         PlayerManager.Instance.playerSceneIndex = playerSceneIndexFormer;
+    }
+
+    /// <summary>
+    /// 延迟显示MainPanel，避免在OnDestroy期间直接调用
+    /// </summary>
+    private System.Collections.IEnumerator DelayedShowMainPanel()
+    {
+        yield return new WaitForEndOfFrame();
+        
+        // 再次检查是否仍然需要显示MainPanel
+        if (Application.isPlaying && UIManager.Instance != null)
+        {
+            var mainPanel = UIManager.Instance.ShowPanel<MainPanel>();
+            if (mainPanel == null)
+            {
+                Debug.LogWarning("Failed to show MainPanel after GameMainPanel destruction");
+            }
+        }
     }
 
     //更新面板属性的方法，所有存在属性更新（如道具使用等等，最后都需要调用这个方法以确保显示的属性文本的更新）

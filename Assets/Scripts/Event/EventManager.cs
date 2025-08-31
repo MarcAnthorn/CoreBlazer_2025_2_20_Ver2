@@ -60,11 +60,52 @@ public class EventManager : Singleton<EventManager>
         UIManager.Instance.ShowPanel<GameMainPanel>();
     }
 
+    /// <summary>
+    /// 标记事件为已完成
+    /// </summary>
+    /// <param name="eventId">要标记为完成的事件ID</param>
+    public void MarkEventAsCompleted(int eventId)
+    {
+        // 检查起始事件
+        if (LoadManager.Instance.startEvents != null && LoadManager.Instance.startEvents.ContainsKey(eventId))
+        {
+            LoadManager.Instance.startEvents[eventId].isTrigger = true;
+            Debug.Log($"起始事件 {eventId} 已标记为完成");
+            return;
+        }
+
+        // 检查选项事件
+        if (LoadManager.Instance.optionEvents != null && LoadManager.Instance.optionEvents.ContainsKey(eventId))
+        {
+            LoadManager.Instance.optionEvents[eventId].isTrigger = true;
+            Debug.Log($"选项事件 {eventId} 已标记为完成");
+            return;
+        }
+
+        Debug.LogWarning($"未找到事件 {eventId}，无法标记为完成");
+    }
+
+    /// <summary>
+    /// 标记当前事件为已完成
+    /// </summary>
+    public void MarkCurrentEventAsCompleted()
+    {
+        if (currentEventId != 0)
+        {
+            MarkEventAsCompleted(currentEventId);
+        }
+        else
+        {
+            Debug.LogWarning("当前没有活跃的事件可以标记为完成");
+        }
+    }
+
 
     //用于向外部广播事件的方法，使外部获取当前的事件实例(Marc添加)
     public Event BroadcastEvent()
     {
         Debug.LogWarning($"Try to broadcast event, id is{currentEventId}");
+        
 
         if (LoadManager.Instance.startEvents.ContainsKey(currentEventId))
         {
@@ -85,16 +126,8 @@ public class EventManager : Singleton<EventManager>
         {
             if (_event.Value.eventId == eventId)
             {
-                Event tempEvent = _event.Value;
-                Event @event = new Event()
-                {
-                    libId = tempEvent.libId,
-                    eventId = tempEvent.eventId,
-                    eventType = tempEvent.eventType,
-                    options = tempEvent.options,
-                };
-
-                return @event;
+                
+                return _event.Value;
             }
         }
 
@@ -121,6 +154,7 @@ public class EventManager : Singleton<EventManager>
 
     public void OnOptionSelected(int optionId)
     {
+        
         // 执行事件  
         ExecuteEvent(Event.MyEventType.None);
 

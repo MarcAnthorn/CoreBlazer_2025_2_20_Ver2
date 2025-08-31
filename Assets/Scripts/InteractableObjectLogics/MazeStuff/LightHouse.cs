@@ -32,8 +32,11 @@ public class LightHouse : MonoBehaviour
     }
     void Start()
     {
-        lightLock = false;
+        // 使用Awake中读取的状态，不强制重置
+        // lightLock = false; // 已注释，使用Awake中读取的状态
         light2D.intensity = 1;
+        
+        Debug.Log($"[LightHouse] Start完成，当前状态: lightLock={lightLock}, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
     }
 
     void Update()
@@ -71,16 +74,38 @@ public class LightHouse : MonoBehaviour
             //灯光回复，尝试触发音效：
             SoundEffectManager.Instance.PlaySoundEffect("接触灯塔");
         }
+        else if(collision.gameObject.CompareTag("Player") && lightLock)
+        {
+            Debug.Log($"[LightHouse] 灯塔已被激活，无法重复触发, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
+        }
     }
 
     private void OnPlayerDead()
     {
+        // 复活重置：不重置灯塔的激活状态，保持用于SAN奖励计算
+        // 只重置视觉效果，让灯塔在视觉上重置但保持逻辑状态
+        light2D.intensity = 1;
+        
+        // 不重置字典状态和lightLock，保持激活状态用于复活SAN奖励
+        // var key = (GameLevelManager.Instance.gameLevelType, this.transform.position);
+        // GameLevelManager.Instance.lightHouseIsDic[key] = false; // 已注释，不重置状态
+        
+        Debug.Log($"[LightHouse] 玩家死亡，保持灯塔激活状态用于复活SAN奖励计算, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
+    }
+
+    /// <summary>
+    /// 真正重置灯塔状态（用于清空游戏数据等情况）
+    /// </summary>
+    public void ResetLightHouse()
+    {
         lightLock = false;
         light2D.intensity = 1;
+        
         // 重置字典状态
         var key = (GameLevelManager.Instance.gameLevelType, this.transform.position);
         GameLevelManager.Instance.lightHouseIsDic[key] = false;
-        Debug.LogWarning($"[LightHouse] 灯塔重置，状态已写入字典: false, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
+        
+        Debug.Log($"[LightHouse] 灯塔完全重置，状态已写入字典: false, 关卡: {GameLevelManager.Instance.gameLevelType}, 坐标: {this.transform.position}");
     }
 
     // 在进入安全屋的时候，触发的取消灯光的方法：
