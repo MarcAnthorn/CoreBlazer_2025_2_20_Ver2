@@ -10038,6 +10038,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &410117713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 410117715}
+  - component: {fileID: 410117714}
+  m_Layer: 0
+  m_Name: "DeathTestScript(Marc\u6DFB\u52A0)"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &410117714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410117713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13721c1fdb2f85d4fa6bfa7ac909a6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testDeathKey: 107
+  testBattleDeathKey: 98
+  testSanDeathKey: 109
+  testShowStatusKey: 105
+  enableTestLogs: 1
+--- !u!4 &410117715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410117713}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -75.84241, y: -10.505953, z: -1260.5975}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &417136740
 GameObject:
   m_ObjectHideFlags: 0
@@ -40384,7 +40433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1680825353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43427,7 +43476,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1808385803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52171,3 +52220,4 @@ SceneRoots:
   - {fileID: 1600890782}
   - {fileID: 1808385804}
   - {fileID: 1680825354}
+  - {fileID: 410117715}

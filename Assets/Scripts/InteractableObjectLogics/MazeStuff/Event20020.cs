@@ -56,6 +56,8 @@ public class Event20020 : MonoBehaviour
         {
             EventManager.Instance.TriggerEvent(eventId);
 
+            myEvent.isTrigger = true;
+
             SoundEffectManager.Instance.PlaySoundEffect("与地图POI交互");
             Destroy(this.gameObject);
         }

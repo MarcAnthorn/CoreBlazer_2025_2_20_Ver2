@@ -21,6 +21,32 @@ public class GameOverPanel : BasePanel
     private float totalSANGained = 0f;
     private UnityAction onCloseCallback;
 
+
+    //--------------------------必备UI组件--------------------------
+
+    //总进度
+    public TextMeshProUGUI txtProgress;
+
+    //事件完成
+    public Transform contentEvents;
+    //获得的san值：
+    public TextMeshProUGUI txtSanGained;
+    //下一步button：
+    public Button btnNextStep;
+
+    public Image imgFirstPassed;
+    public Image imgFirstNotPassed;
+    public Image imgSecondPassed;
+    public Image imgSecondNotPassed;
+    public Image imgThirdPassed;
+    public Image imgThirdNotPassed;
+    public Image imgFourthPassed;
+    public Image imgFourthNotPassed;
+
+
+
+    //-------------------------------------------------------------
+
     protected override void Init()
     {
         // 只保留必要初始化：字体与关闭按钮绑定
@@ -49,6 +75,8 @@ public class GameOverPanel : BasePanel
         }
 
         UpdateSANDisplay();
+
+
     }
 
     /// <summary>
@@ -65,7 +93,9 @@ public class GameOverPanel : BasePanel
     {
         if (txtSANTotal != null)
         {
-            txtSANTotal.text = $"SAN：{totalSANGained:F0}";
+            // txtSANTotal.text = $"SAN：{totalSANGained:F0}";
+            //Marc更改：
+            txtSanGained.text = $"本轮获得San值：{totalSANGained:F0}";
         }
     }
 
@@ -78,7 +108,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 运行时创建一个最小化的 SAN 面板（方便在没有 prefab 的情况下快速展示）
     /// </summary>
-    public static void ShowSANOnlyPanel(
+    public void ShowSANOnlyPanel(
         float sanValue,
         UnityAction onClose = null,
         string mazeProgress = null,
@@ -103,154 +133,154 @@ public class GameOverPanel : BasePanel
             stageProgress = GetOverallProgress();
         }
 
-        GameObject root = new GameObject("GameOverPanel_SimpleSAN");
-        root.layer = canvas.gameObject.layer;
-        var rootRt = root.AddComponent<RectTransform>();
-        root.transform.SetParent(canvas.transform, false);
-        rootRt.anchorMin = Vector2.zero;
-        rootRt.anchorMax = Vector2.one;
-        rootRt.offsetMin = Vector2.zero;
-        rootRt.offsetMax = Vector2.zero;
+        // GameObject root = new GameObject("GameOverPanel_SimpleSAN");
+        // root.layer = canvas.gameObject.layer;
+        // var rootRt = root.AddComponent<RectTransform>();
+        // root.transform.SetParent(canvas.transform, false);
+        // rootRt.anchorMin = Vector2.zero;
+        // rootRt.anchorMax = Vector2.one;
+        // rootRt.offsetMin = Vector2.zero;
+        // rootRt.offsetMax = Vector2.zero;
 
-        var bg = root.AddComponent<Image>();
-        bg.color = new Color(0f, 0f, 0f, 0.5f);
+        // var bg = root.AddComponent<Image>();
+        // bg.color = new Color(0f, 0f, 0f, 0.5f);
 
-        var panel = root.AddComponent<GameOverPanel>();
+        // var panel = root.AddComponent<GameOverPanel>();
 
-        // 左上角：探索完成
-        GameObject tipGo = new GameObject("ExploreTip");
-        tipGo.transform.SetParent(root.transform, false);
-        var tipRt = tipGo.AddComponent<RectTransform>();
-        tipRt.anchorMin = new Vector2(0f, 1f);
-        tipRt.anchorMax = new Vector2(0f, 1f);
-        tipRt.pivot = new Vector2(0f, 1f);
-        tipRt.anchoredPosition = new Vector2(40, -40);
-        tipRt.sizeDelta = new Vector2(320, 60);
-        var tipText = tipGo.AddComponent<TextMeshProUGUI>();
-        tipText.text = exploreTip;
-        tipText.fontSize = 28;
-        tipText.color = new Color(1f, 0.95f, 0.5f, 1f);
-        tipText.alignment = TextAlignmentOptions.TopLeft;
+        // // 左上角：探索完成
+        // GameObject tipGo = new GameObject("ExploreTip");
+        // tipGo.transform.SetParent(root.transform, false);
+        // var tipRt = tipGo.AddComponent<RectTransform>();
+        // tipRt.anchorMin = new Vector2(0f, 1f);
+        // tipRt.anchorMax = new Vector2(0f, 1f);
+        // tipRt.pivot = new Vector2(0f, 1f);
+        // tipRt.anchoredPosition = new Vector2(40, -40);
+        // tipRt.sizeDelta = new Vector2(320, 60);
+        // var tipText = tipGo.AddComponent<TextMeshProUGUI>();
+        // tipText.text = exploreTip;
+        // tipText.fontSize = 28;
+        // tipText.color = new Color(1f, 0.95f, 0.5f, 1f);
+        // tipText.alignment = TextAlignmentOptions.TopLeft;
 
-        // 左侧中部：迷宫进度
-        GameObject mazeGo = new GameObject("MazeProgress");
-        mazeGo.transform.SetParent(root.transform, false);
-        var mazeRt = mazeGo.AddComponent<RectTransform>();
-        mazeRt.anchorMin = new Vector2(0f, 0.5f);
-        mazeRt.anchorMax = new Vector2(0f, 0.5f);
-        mazeRt.pivot = new Vector2(0f, 0.5f);
-        mazeRt.anchoredPosition = new Vector2(40, 0);
-        mazeRt.sizeDelta = new Vector2(400, 120);
-        var mazeText = mazeGo.AddComponent<TextMeshProUGUI>();
-        mazeText.text = mazeProgress ?? "迷宫进度：-";
-        mazeText.fontSize = 24;
-        mazeText.color = Color.white;
-        mazeText.alignment = TextAlignmentOptions.Left;
+        // // 左侧中部：迷宫进度
+        // GameObject mazeGo = new GameObject("MazeProgress");
+        // mazeGo.transform.SetParent(root.transform, false);
+        // var mazeRt = mazeGo.AddComponent<RectTransform>();
+        // mazeRt.anchorMin = new Vector2(0f, 0.5f);
+        // mazeRt.anchorMax = new Vector2(0f, 0.5f);
+        // mazeRt.pivot = new Vector2(0f, 0.5f);
+        // mazeRt.anchoredPosition = new Vector2(40, 0);
+        // mazeRt.sizeDelta = new Vector2(400, 120);
+        // var mazeText = mazeGo.AddComponent<TextMeshProUGUI>();
+        // mazeText.text = mazeProgress ?? "迷宫进度：-";
+        // mazeText.fontSize = 24;
+        // mazeText.color = Color.white;
+        // mazeText.alignment = TextAlignmentOptions.Left;
 
-        // 左下角：通关进度
-        GameObject stageGo = new GameObject("StageProgress");
-        stageGo.transform.SetParent(root.transform, false);
-        var stageRt = stageGo.AddComponent<RectTransform>();
-        stageRt.anchorMin = new Vector2(0f, 0f);
-        stageRt.anchorMax = new Vector2(0f, 0f);
-        stageRt.pivot = new Vector2(0f, 0f);
-        stageRt.anchoredPosition = new Vector2(40, 40);
-        stageRt.sizeDelta = new Vector2(400, 60);
-        var stageText = stageGo.AddComponent<TextMeshProUGUI>();
-        stageText.text = stageProgress ?? "通关进度：-";
-        stageText.fontSize = 20;
-        stageText.color = new Color(0.7f, 1f, 0.7f, 1f);
-        stageText.alignment = TextAlignmentOptions.Left;
+        // // 左下角：通关进度
+        // GameObject stageGo = new GameObject("StageProgress");
+        // stageGo.transform.SetParent(root.transform, false);
+        // var stageRt = stageGo.AddComponent<RectTransform>();
+        // stageRt.anchorMin = new Vector2(0f, 0f);
+        // stageRt.anchorMax = new Vector2(0f, 0f);
+        // stageRt.pivot = new Vector2(0f, 0f);
+        // stageRt.anchoredPosition = new Vector2(40, 40);
+        // stageRt.sizeDelta = new Vector2(400, 60);
+        // var stageText = stageGo.AddComponent<TextMeshProUGUI>();
+        // stageText.text = stageProgress ?? "通关进度：-";
+        // stageText.fontSize = 20;
+        // stageText.color = new Color(0.7f, 1f, 0.7f, 1f);
+        // stageText.alignment = TextAlignmentOptions.Left;
 
-        // 右上角：结算清单
-        GameObject settlementGo = new GameObject("SettlementList");
-        settlementGo.transform.SetParent(root.transform, false);
-        var settlementRt = settlementGo.AddComponent<RectTransform>();
-        settlementRt.anchorMin = new Vector2(1f, 1f);
-        settlementRt.anchorMax = new Vector2(1f, 1f);
-        settlementRt.pivot = new Vector2(1f, 1f);
-        settlementRt.anchoredPosition = new Vector2(-40, -40);
-        settlementRt.sizeDelta = new Vector2(400, 60);
-        var settlementText = settlementGo.AddComponent<TextMeshProUGUI>();
-        settlementText.text = "结算清单";
-        settlementText.fontSize = 28;
-        settlementText.color = new Color(1f, 0.8f, 0.3f, 1f);
-        settlementText.alignment = TextAlignmentOptions.TopRight;
+        // // 右上角：结算清单
+        // GameObject settlementGo = new GameObject("SettlementList");
+        // settlementGo.transform.SetParent(root.transform, false);
+        // var settlementRt = settlementGo.AddComponent<RectTransform>();
+        // settlementRt.anchorMin = new Vector2(1f, 1f);
+        // settlementRt.anchorMax = new Vector2(1f, 1f);
+        // settlementRt.pivot = new Vector2(1f, 1f);
+        // settlementRt.anchoredPosition = new Vector2(-40, -40);
+        // settlementRt.sizeDelta = new Vector2(400, 60);
+        // var settlementText = settlementGo.AddComponent<TextMeshProUGUI>();
+        // settlementText.text = "结算清单";
+        // settlementText.fontSize = 28;
+        // settlementText.color = new Color(1f, 0.8f, 0.3f, 1f);
+        // settlementText.alignment = TextAlignmentOptions.TopRight;
 
-        // 右侧中部：怪谈事件列表
-        GameObject eventsGo = new GameObject("EventsList");
-        eventsGo.transform.SetParent(root.transform, false);
-        var eventsRt = eventsGo.AddComponent<RectTransform>();
-        eventsRt.anchorMin = new Vector2(1f, 0.5f);
-        eventsRt.anchorMax = new Vector2(1f, 0.5f);
-        eventsRt.pivot = new Vector2(1f, 0.5f);
-        eventsRt.anchoredPosition = new Vector2(-40, 0);
-        eventsRt.sizeDelta = new Vector2(450, 200);
-        var eventsText = eventsGo.AddComponent<TextMeshProUGUI>();
-        eventsText.text = GetCompletedEventsText();
-        eventsText.fontSize = 18;
-        eventsText.color = new Color(0.9f, 0.9f, 0.9f, 1f);
-        eventsText.alignment = TextAlignmentOptions.TopRight;
+        // // 右侧中部：怪谈事件列表
+        // GameObject eventsGo = new GameObject("EventsList");
+        // eventsGo.transform.SetParent(root.transform, false);
+        // var eventsRt = eventsGo.AddComponent<RectTransform>();
+        // eventsRt.anchorMin = new Vector2(1f, 0.5f);
+        // eventsRt.anchorMax = new Vector2(1f, 0.5f);
+        // eventsRt.pivot = new Vector2(1f, 0.5f);
+        // eventsRt.anchoredPosition = new Vector2(-40, 0);
+        // eventsRt.sizeDelta = new Vector2(450, 200);
+        // var eventsText = eventsGo.AddComponent<TextMeshProUGUI>();
+        // eventsText.text = GetCompletedEventsText();
+        // eventsText.fontSize = 18;
+        // eventsText.color = new Color(0.9f, 0.9f, 0.9f, 1f);
+        // eventsText.alignment = TextAlignmentOptions.TopRight;
 
-        // 右下角：SAN值显示
-        GameObject rightSanGo = new GameObject("RightSANDisplay");
-        rightSanGo.transform.SetParent(root.transform, false);
-        var rightSanRt = rightSanGo.AddComponent<RectTransform>();
-        rightSanRt.anchorMin = new Vector2(1f, 0f);
-        rightSanRt.anchorMax = new Vector2(1f, 0f);
-        rightSanRt.pivot = new Vector2(1f, 0f);
-        rightSanRt.anchoredPosition = new Vector2(-40, 40);
-        rightSanRt.sizeDelta = new Vector2(300, 80);
-        var rightSanText = rightSanGo.AddComponent<TextMeshProUGUI>();
-        rightSanText.text = $"当前SAN：{sanValue:F0}";
-        rightSanText.fontSize = 24;
-        rightSanText.color = new Color(0.5f, 1f, 0.8f, 1f);
-        rightSanText.alignment = TextAlignmentOptions.BottomRight;
+        // // 右下角：SAN值显示
+        // GameObject rightSanGo = new GameObject("RightSANDisplay");
+        // rightSanGo.transform.SetParent(root.transform, false);
+        // var rightSanRt = rightSanGo.AddComponent<RectTransform>();
+        // rightSanRt.anchorMin = new Vector2(1f, 0f);
+        // rightSanRt.anchorMax = new Vector2(1f, 0f);
+        // rightSanRt.pivot = new Vector2(1f, 0f);
+        // rightSanRt.anchoredPosition = new Vector2(-40, 40);
+        // rightSanRt.sizeDelta = new Vector2(300, 80);
+        // var rightSanText = rightSanGo.AddComponent<TextMeshProUGUI>();
+        // rightSanText.text = $"当前SAN：{sanValue:F0}";
+        // rightSanText.fontSize = 24;
+        // rightSanText.color = new Color(0.5f, 1f, 0.8f, 1f);
+        // rightSanText.alignment = TextAlignmentOptions.BottomRight;
 
-        // 内容容器（中间 关闭按钮，移除SAN显示，因为右下角已经有了）
-        GameObject content = new GameObject("Content");
-        content.transform.SetParent(root.transform, false);
-        var contentRt = content.AddComponent<RectTransform>();
-        contentRt.sizeDelta = new Vector2(200, 100);
-        contentRt.anchorMin = contentRt.anchorMax = new Vector2(0.5f, 0.5f);
-        contentRt.anchoredPosition = Vector2.zero;
-        var contentBg = content.AddComponent<Image>();
-        contentBg.color = new Color(0.06f, 0.06f, 0.06f, 0.95f);
+        // // 内容容器（中间 关闭按钮，移除SAN显示，因为右下角已经有了）
+        // GameObject content = new GameObject("Content");
+        // content.transform.SetParent(root.transform, false);
+        // var contentRt = content.AddComponent<RectTransform>();
+        // contentRt.sizeDelta = new Vector2(200, 100);
+        // contentRt.anchorMin = contentRt.anchorMax = new Vector2(0.5f, 0.5f);
+        // contentRt.anchoredPosition = Vector2.zero;
+        // var contentBg = content.AddComponent<Image>();
+        // contentBg.color = new Color(0.06f, 0.06f, 0.06f, 0.95f);
 
-        // 关闭按钮
-        GameObject btnGo = new GameObject("CloseButton");
-        btnGo.transform.SetParent(content.transform, false);
-        var btnRt = btnGo.AddComponent<RectTransform>();
-        btnRt.sizeDelta = new Vector2(160, 44);
-        btnRt.anchorMin = btnRt.anchorMax = new Vector2(0.5f, 0.5f);
-        btnRt.anchoredPosition = Vector2.zero;
-        var button = btnGo.AddComponent<Button>();
-        var btnImg = btnGo.AddComponent<Image>();
-        btnImg.color = new Color(0.18f, 0.55f, 0.18f, 1f);
+        // // 关闭按钮
+        // GameObject btnGo = new GameObject("CloseButton");
+        // btnGo.transform.SetParent(content.transform, false);
+        // var btnRt = btnGo.AddComponent<RectTransform>();
+        // btnRt.sizeDelta = new Vector2(160, 44);
+        // btnRt.anchorMin = btnRt.anchorMax = new Vector2(0.5f, 0.5f);
+        // btnRt.anchoredPosition = Vector2.zero;
+        // var button = btnGo.AddComponent<Button>();
+        // var btnImg = btnGo.AddComponent<Image>();
+        // btnImg.color = new Color(0.18f, 0.55f, 0.18f, 1f);
 
-        GameObject btnText = new GameObject("Text");
-        btnText.transform.SetParent(btnGo.transform, false);
-        var btnTextRt = btnText.AddComponent<RectTransform>();
-        btnTextRt.anchorMin = btnTextRt.anchorMax = new Vector2(0.5f, 0.5f);
-        btnTextRt.anchoredPosition = Vector2.zero;
-        var btnTmp = btnText.AddComponent<TextMeshProUGUI>();
-        btnTmp.text = "关闭";
-        btnTmp.alignment = TextAlignmentOptions.Center;
-        btnTmp.fontSize = 20;
-        btnTmp.color = Color.white;
+        // GameObject btnText = new GameObject("Text");
+        // btnText.transform.SetParent(btnGo.transform, false);
+        // var btnTextRt = btnText.AddComponent<RectTransform>();
+        // btnTextRt.anchorMin = btnTextRt.anchorMax = new Vector2(0.5f, 0.5f);
+        // btnTextRt.anchoredPosition = Vector2.zero;
+        // var btnTmp = btnText.AddComponent<TextMeshProUGUI>();
+        // btnTmp.text = "关闭";
+        // btnTmp.alignment = TextAlignmentOptions.Center;
+        // btnTmp.fontSize = 20;
+        // btnTmp.color = Color.white;
 
-        // 赋值并显示
-        panel.txtSANTotal = rightSanText; // 使用右下角的SAN文本
-        panel.btnClose = button;
-        panel.SetSAN(sanValue, onClose);
-        panel.ShowMe();
+        // // 赋值并显示
+        // panel.txtSANTotal = rightSanText; // 使用右下角的SAN文本
+        // panel.btnClose = button;
+        // panel.SetSAN(sanValue, onClose);
+        // panel.ShowMe();
     }
 
     /// <summary>
     /// 获取已完成的怪谈事件文本
     /// 使用SaveManager的详细数据显示交互对象和SAN奖励信息
     /// </summary>
-    private static string GetCompletedEventsText()
+    private string GetCompletedEventsText()
     {
         try
         {
@@ -403,7 +433,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 获取交互对象统计信息
     /// </summary>
-    private static string GetInteractionStatistics()
+    private string GetInteractionStatistics()
     {
         if (GameLevelManager.Instance == null) return null;
         
@@ -433,7 +463,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 获取SAN奖励信息
     /// </summary>
-    private static string GetSanRewardInfo()
+    private string GetSanRewardInfo()
     {
         // 这里需要访问SaveManager的复活SAN数据
         // 由于SaveManager的LoadReviveSanData是private方法，我们需要其他方式获取信息
@@ -477,7 +507,7 @@ public class GameOverPanel : BasePanel
     /// </summary>
     /// <param name="sanReward">本次获得的SAN奖励</param>
     /// <param name="onClose">关闭回调</param>
-    public static void ShowReviveSanRewardPanel(int sanReward, UnityAction onClose = null)
+    public void ShowReviveSanRewardPanel(int sanReward, UnityAction onClose = null)
     {
         Canvas canvas = UnityEngine.Object.FindObjectOfType<Canvas>();
         if (canvas == null)
@@ -610,7 +640,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 获取详细的游戏进度信息 - 紧凑布局
     /// </summary>
-    private static string GetDetailedGameProgress()
+    private string GetDetailedGameProgress()
     {
         var progress = new System.Text.StringBuilder();
         
@@ -677,7 +707,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 获取详细的SAN奖励信息 - 紧凑布局
     /// </summary>
-    private static string GetDetailedSanRewardInfo(int sanReward)
+    private string GetDetailedSanRewardInfo(int sanReward)
     {
         var sanInfo = new System.Text.StringBuilder();
         
@@ -734,7 +764,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 获取当前迷宫进度信息
     /// </summary>
-    private static string GetCurrentMazeProgress()
+    private string GetCurrentMazeProgress()
     {
         if (GameLevelManager.Instance == null)
             return "迷宫进度：无法获取";
@@ -748,7 +778,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 获取总体通关进度
     /// </summary>
-    private static string GetOverallProgress()
+    private string GetOverallProgress()
     {
         if (GameLevelManager.Instance == null)
             return "通关进度：无法获取";
@@ -759,6 +789,9 @@ public class GameOverPanel : BasePanel
         
         // 计算通关进度百分比：当前关卡索引 / 总关卡数 * 100%
         float progressPercent = (float)currentLevelIndex / (totalLevels - 1) * 100f;
+
+        //设置显示UI：Marc添加：
+        txtProgress.text = $"{(float)currentLevelIndex / (totalLevels - 1) * 100f}%";
         
         return $"通关进度：{progressPercent:F1}% ({currentLevelIndex}/{totalLevels - 1})";
     }
@@ -766,7 +799,7 @@ public class GameOverPanel : BasePanel
     /// <summary>
     /// 根据关卡类型获取关卡名称
     /// </summary>
-    private static string GetLevelName(E_GameLevelType levelType)
+    private string GetLevelName(E_GameLevelType levelType)
     {
         switch (levelType)
         {

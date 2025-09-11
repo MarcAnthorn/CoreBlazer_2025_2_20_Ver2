@@ -549,14 +549,16 @@ public class PlayerController : PlayerBase
     {
         // 获取实际的通关 SAN 值
         float sanValue = PlayerManager.Instance.player.SAN.value;
-        GameOverPanel.ShowSANOnlyPanel(sanValue, () => {
-            // 通关后返回主菜单或显示成就等
-            EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
-                Debug.LogWarning("游戏通关，返回主界面");
-                LoadSceneManager.Instance.LoadSceneAsync("StartScene");  
-                EventHub.Instance.EventTrigger<bool>("Freeze", false);
-            });
-        });
+
+        // UIManager.Instance.ShowPanel<GameOverPanel>();
+        // GameOverPanel.ShowSANOnlyPanel(sanValue, () => {
+        //     // 通关后返回主菜单或显示成就等
+        //     EventHub.Instance.EventTrigger<UnityAction>("ShowMask", ()=>{
+        //         Debug.LogWarning("游戏通关，返回主界面");
+        //         LoadSceneManager.Instance.LoadSceneAsync("StartScene");  
+        //         EventHub.Instance.EventTrigger<bool>("Freeze", false);
+        //     });
+        // });
     }
     //这个是切换场景的时候的回调函数：
     private void SwitchSceneCallback()
@@ -568,6 +570,15 @@ public class PlayerController : PlayerBase
         PlayerManager.Instance.player.HP.SetValue(100);
         PlayerManager.Instance.player.LVLValue = 300;
 
+        //新增条件：San增加40:
+        PlayerManager.Instance.player.SAN.AddValue(40);
+
+        //新增条件：死亡掉落10个石头
+        ItemManager.Instance.AddItem(105, true, 10);
+
+        int equipmentId = UnityEngine.Random.Range(1, 22);
+        EquipmentManager.Instance.AddEquipment(equipmentId);
+
         //重置当前的关卡进度：
         //不论是在哪一层死亡的，都会回到第一层的安全屋；
         GameLevelManager.Instance.gameLevelType = E_GameLevelType.First;
@@ -575,69 +586,69 @@ public class PlayerController : PlayerBase
         //更新UI面板：
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
-        // 复活时处理：自动保存游戏并显示所有储存的事件与互动过的物体
-        try
-        {
-            // 复活时首先计算并给予SAN奖励
-            int sanReward = 0;
-            if (SaveManager.Instance != null)
-            {
-                sanReward = SaveManager.Instance.CalculateAndAwardReviveSan();
-                Debug.Log($"复活SAN奖励计算完成，获得SAN: {sanReward}");
-            }
-            else
-            {
-                Debug.LogWarning("SaveManager.Instance 为空，无法计算复活SAN奖励");
-            }
+        // // 复活时处理：自动保存游戏并显示所有储存的事件与互动过的物体
+        // try
+        // {
+        //     // 复活时首先计算并给予SAN奖励
+        //     int sanReward = 0;
+        //     if (SaveManager.Instance != null)
+        //     {
+        //         sanReward = SaveManager.Instance.CalculateAndAwardReviveSan();
+        //         Debug.Log($"复活SAN奖励计算完成，获得SAN: {sanReward}");
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning("SaveManager.Instance 为空，无法计算复活SAN奖励");
+        //     }
 
-            // 优先使用ReviveDataManager
-            var reviveManagerType = System.Type.GetType("ReviveDataManager");
-            if (reviveManagerType != null)
-            {
-                var instanceProperty = reviveManagerType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-                if (instanceProperty != null)
-                {
-                    var instance = instanceProperty.GetValue(null);
-                    if (instance != null)
-                    {
-                        var onPlayerReviveMethod = reviveManagerType.GetMethod("OnPlayerRevive");
-                        if (onPlayerReviveMethod != null)
-                        {
-                            onPlayerReviveMethod.Invoke(instance, null);
-                            Debug.Log("复活数据管理器调用成功");
-                        }
-                        else
-                        {
-                            Debug.LogWarning("ReviveDataManager.OnPlayerRevive 方法未找到，使用SaveManager替代");
-                            UseSaveManagerReviveMethod();
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning("ReviveDataManager.Instance 为空，使用SaveManager替代");
-                        UseSaveManagerReviveMethod();
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("ReviveDataManager.Instance 属性未找到，使用SaveManager替代");
-                    UseSaveManagerReviveMethod();
-                }
-            }
-            else
-            {
-                Debug.LogWarning("ReviveDataManager 类型未找到，使用SaveManager替代");
-                UseSaveManagerReviveMethod();
-            }
+        //     // 优先使用ReviveDataManager
+        //     var reviveManagerType = System.Type.GetType("ReviveDataManager");
+        //     if (reviveManagerType != null)
+        //     {
+        //         var instanceProperty = reviveManagerType.GetProperty("Instance", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+        //         if (instanceProperty != null)
+        //         {
+        //             var instance = instanceProperty.GetValue(null);
+        //             if (instance != null)
+        //             {
+        //                 var onPlayerReviveMethod = reviveManagerType.GetMethod("OnPlayerRevive");
+        //                 if (onPlayerReviveMethod != null)
+        //                 {
+        //                     onPlayerReviveMethod.Invoke(instance, null);
+        //                     Debug.Log("复活数据管理器调用成功");
+        //                 }
+        //                 else
+        //                 {
+        //                     Debug.LogWarning("ReviveDataManager.OnPlayerRevive 方法未找到，使用SaveManager替代");
+        //                     UseSaveManagerReviveMethod();
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 Debug.LogWarning("ReviveDataManager.Instance 为空，使用SaveManager替代");
+        //                 UseSaveManagerReviveMethod();
+        //             }
+        //         }
+        //         else
+        //         {
+        //             Debug.LogWarning("ReviveDataManager.Instance 属性未找到，使用SaveManager替代");
+        //             UseSaveManagerReviveMethod();
+        //         }
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning("ReviveDataManager 类型未找到，使用SaveManager替代");
+        //         UseSaveManagerReviveMethod();
+        //     }
 
-            // 复活后显示复活面板（无论是否获得SAN奖励都显示）
-            ShowReviveSanRewardPanel(sanReward);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"调用ReviveDataManager时发生错误: {e.Message}，使用SaveManager替代");
-            UseSaveManagerReviveMethod();
-        }
+        //     // 复活后显示复活面板（无论是否获得SAN奖励都显示）
+        //     // ShowReviveSanRewardPanel(sanReward);
+        // }
+        // catch (System.Exception e)
+        // {
+        //     Debug.LogError($"调用ReviveDataManager时发生错误: {e.Message}，使用SaveManager替代");
+        //     UseSaveManagerReviveMethod();
+        // }
     }
 
     /// <summary>
@@ -670,44 +681,44 @@ public class PlayerController : PlayerBase
         
     }
 
-    /// <summary>
-    /// 显示复活SAN奖励面板 - 紧凑版
-    /// </summary>
-    /// <param name="sanReward">获得的SAN奖励数量</param>
-    private void ShowReviveSanRewardPanel(int sanReward)
-    {
-        try
-        {
-            // 使用GameOverPanel的专用复活面板方法 - 集成SaveManager数据
-            GameOverPanel.ShowReviveSanRewardPanel(sanReward, () => {
-                Debug.Log("复活面板已关闭，解冻玩家");
-                // 解冻玩家，允许继续游戏
-                EventHub.Instance?.EventTrigger<bool>("Freeze", false);
-            });
+    // /// <summary>
+    // /// 显示复活SAN奖励面板 - 紧凑版
+    // /// </summary>
+    // /// <param name="sanReward">获得的SAN奖励数量</param>
+    // private void ShowReviveSanRewardPanel(int sanReward)
+    // {
+    //     try
+    //     {
+    //         // 使用GameOverPanel的专用复活面板方法 - 集成SaveManager数据
+    //         GameOverPanel.ShowReviveSanRewardPanel(sanReward, () => {
+    //             Debug.Log("复活面板已关闭，解冻玩家");
+    //             // 解冻玩家，允许继续游戏
+    //             EventHub.Instance?.EventTrigger<bool>("Freeze", false);
+    //         });
 
-            Debug.Log($"复活面板已显示：{(sanReward > 0 ? $"+{sanReward} SAN" : "无SAN奖励")}");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"显示复活面板时发生错误: {e.Message}");
-            // 发生错误时也要解冻玩家
-            EventHub.Instance?.EventTrigger<bool>("Freeze", false);
-        }
-    }
+    //         Debug.Log($"复活面板已显示：{(sanReward > 0 ? $"+{sanReward} SAN" : "无SAN奖励")}");
+    //     }
+    //     catch (System.Exception e)
+    //     {
+    //         Debug.LogError($"显示复活面板时发生错误: {e.Message}");
+    //         // 发生错误时也要解冻玩家
+    //         EventHub.Instance?.EventTrigger<bool>("Freeze", false);
+    //     }
+    // }
 
-    public new static void SetPlayerPosition(Vector3 position)
-    {
-        if (PlayerManager.Instance?.PlayerTransform != null)
-        {
-            PlayerManager.Instance.PlayerTransform.position = position;
-            PlayerManager.Instance.playerPosition = position;
-            Debug.Log($"玩家位置已设置为: {position}");
-        }
-        else
-        {
-            Debug.LogWarning("PlayerTransform为空，无法设置玩家位置！");
-        }
-    }
+    // public new static void SetPlayerPosition(Vector3 position)
+    // {
+    //     if (PlayerManager.Instance?.PlayerTransform != null)
+    //     {
+    //         PlayerManager.Instance.PlayerTransform.position = position;
+    //         PlayerManager.Instance.playerPosition = position;
+    //         Debug.Log($"玩家位置已设置为: {position}");
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("PlayerTransform为空，无法设置玩家位置！");
+    //     }
+    // }
 
     public void ResumeLight()
     {
