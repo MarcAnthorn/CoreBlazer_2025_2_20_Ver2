@@ -21,11 +21,14 @@ public class NPC40017  : NPCBase
         if(GameLevelManager.Instance.avgIndexIsTriggeredDic.ContainsKey(avgId) && GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId]) 
         {
             OnComplete(avgId);
+
+            GameLevelManager.Instance.eventList.Add(new ResultEvent("支线3", 4, 1));
             this.gameObject.SetActive(false);
             return;
         }
         
-       GameLevelManager.Instance.avgIndexIsTriggeredDic.TryAdd(avgId, false);
+        GameLevelManager.Instance.eventList.Add(new ResultEvent("支线3", 4, 1));
+        GameLevelManager.Instance.avgIndexIsTriggeredDic.TryAdd(avgId, false);
     }
 
 } 

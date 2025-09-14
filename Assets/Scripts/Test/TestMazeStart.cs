@@ -159,7 +159,7 @@ public class TestMazeStart : MonoBehaviour
         else 
             player.transform.position = GameLevelManager.Instance.lastTeleportPoint;
         
-        ItemManager.Instance.AddItem(105, true, 10);
+        // ItemManager.Instance.AddItem(105, true, 10);
 
         //初始化石头：
         foreach(var pos in GameLevelManager.Instance.stonePos){

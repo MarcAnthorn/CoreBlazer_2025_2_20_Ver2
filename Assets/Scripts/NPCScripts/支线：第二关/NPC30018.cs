@@ -19,6 +19,9 @@ public class NPC30018 : NPCBase
         ItemManager.Instance.AddItem(id1, id2, id3);
 
         GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId] = true;
+
+        GameLevelManager.Instance.eventList.Add(new ResultEvent("支线2", 4, 1));
+
         Destroy(this.gameObject);
     }
 

@@ -1367,6 +1367,13 @@ public class SaveManager : SingletonBaseManager<SaveManager>
             data.avgShelterIsTriggeredList.Add(new KeyValuePair<int, bool>((int)kv.Key, kv.Value));
         }
 
+        //存储当前的结算清单：
+        data.eventList = new List<ResultEventSaveData>();
+        foreach (var resultEvent in glm.eventList)
+        {
+            data.eventList.Add(new ResultEventSaveData(resultEvent));
+        }
+
         //序列化：
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(gameLevelSavePath, json);
@@ -1395,6 +1402,17 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         {
             glm.avgShelterIsTriggered[(E_GameLevelType)kv.Key] = kv.Value;
         }
+        
+        //恢复结算清单：
+        glm.eventList.Clear();
+        if (data.eventList != null)
+        {
+            foreach (var resultEventSaveData in data.eventList)
+            {
+                glm.eventList.Add(resultEventSaveData.ToResultEvent());
+            }
+        }
+        
         Debug.Log("关卡信息已从存档恢复！");
     }
 
@@ -1595,6 +1613,34 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         public PlayerAttributeSaveData POS; // 玩家位置数据
     }
 
+    // ResultEvent存档数据结构
+    [System.Serializable]
+    public class ResultEventSaveData
+    {
+        public string eventName;
+        public int contributeSan;
+        public int mutiplier;
+        public int gameLevel;
+        
+        public ResultEventSaveData() { }
+        
+        public ResultEventSaveData(ResultEvent resultEvent)
+        {
+            eventName = resultEvent.eventName;
+            contributeSan = resultEvent.contributeSan;
+            mutiplier = resultEvent.mutiplier;
+            gameLevel = resultEvent.gameLevel;
+        }
+        
+        public ResultEvent ToResultEvent()
+        {
+            return new ResultEvent(eventName, contributeSan, mutiplier)
+            {
+                gameLevel = this.gameLevel
+            };
+        }
+    }
+
     // GameLevel存档数据结构
     [System.Serializable]
 
@@ -1603,6 +1649,7 @@ public class SaveManager : SingletonBaseManager<SaveManager>
         public int gameLevelType;
         public List<KeyValuePair<int, bool>> avgIndexIsTriggeredList;
         public List<KeyValuePair<int, bool>> avgShelterIsTriggeredList;
+        public List<ResultEventSaveData> eventList;
     }
     
     [System.Serializable]

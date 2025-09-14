@@ -21,6 +21,8 @@ public class NPC20025: NPCBase
         node20018Next.SetActive(true);
 
         GameLevelManager.Instance.avgIndexIsTriggeredDic[avgId] = true;
+
+        GameLevelManager.Instance.eventList.Add(new ResultEvent("支线1", 2, 1));
         
         Destroy(this.gameObject);
     }

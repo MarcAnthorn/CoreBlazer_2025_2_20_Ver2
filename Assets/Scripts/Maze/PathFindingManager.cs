@@ -266,7 +266,8 @@ public class PathFindingManager : Singleton<PathFindingManager>
                 if (xn >= 0 && xn < width && yn >= 0 && yn < height && 
                     nowPathNodeMap[xn, yn] != null &&      // 添加null检查
                     !closedList.Contains(nowPathNodeMap[xn, yn]) && 
-                    nowPathNodeMap[xn, yn].flag != 1)
+                    nowPathNodeMap[xn, yn].flag != 1
+                    && (xn != 0 && yn != 0))
                 {
                     next = nowPathNodeMap[xn, yn];
                     if (cur.distance + 1 < next.distance)

@@ -50,6 +50,9 @@ public class GameLevelManager : Singleton<GameLevelManager>
 
     //石头管理器
     public List<Vector3> stonePos = new List<Vector3>();
+
+    //结算清单：
+    public List<ResultEvent> eventList = new List<ResultEvent>();
     public bool isClearLock = false;
 
 
@@ -88,6 +91,7 @@ public class GameLevelManager : Singleton<GameLevelManager>
         EventHub.Instance.EventTrigger<bool>("Freeze", false);
         isClearLock = false;
         stonePos.Clear();
+        eventList.Clear();
     }
     
 

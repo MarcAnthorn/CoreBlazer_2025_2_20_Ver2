@@ -586,6 +586,10 @@ public class PlayerController : PlayerBase
         //更新UI面板：
         EventHub.Instance.EventTrigger("UpdateAllUIElements");
 
+        //新手关结束不会触发：
+        if(GameLevelManager.Instance.gameLevelType != E_GameLevelType.First)
+            UIManager.Instance.ShowPanel<ResultPanel>();
+
         // // 复活时处理：自动保存游戏并显示所有储存的事件与互动过的物体
         // try
         // {
