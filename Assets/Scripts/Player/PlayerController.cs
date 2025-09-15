@@ -807,7 +807,7 @@ public class PlayerController : PlayerBase
             PlayerManager.Instance.player.HPValue = newHP;
             Debug.Log($"Player HP: {PlayerManager.Instance.player.HPValue}");
 
-            if(PlayerManager.Instance.player.HPValue <= 0)
+            if(PlayerManager.Instance.player.HP.value <= 0)
             {
                 EventHub.Instance.EventTrigger("OnPlayerDead");
             }
