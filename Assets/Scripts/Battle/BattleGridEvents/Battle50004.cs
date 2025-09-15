@@ -10,7 +10,7 @@ public class Battle50004 : BattleBase
         base.OnComplete(enemyId);
 
         //生成boss宝箱：
-        PoolManager.Instance.SpawnFromPool("RewardBoss", this.transform.position, Quaternion.identity);
+        PoolManager.Instance.SpawnFromPool("MapPOIs/RewardBoss", this.transform.position, Quaternion.identity);
         
         Destroy(this.gameObject);
     }
