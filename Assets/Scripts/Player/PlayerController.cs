@@ -577,7 +577,7 @@ public class PlayerController : PlayerBase
         ItemManager.Instance.AddItem(105, true, 10);
 
         int equipmentId = UnityEngine.Random.Range(1, 22);
-        EquipmentManager.Instance.AddEquipment(equipmentId);
+        EquipmentManager.Instance.AddEquipment(equipmentId + 1000);
 
         //重置当前的关卡进度：
         //不论是在哪一层死亡的，都会回到第一层的安全屋；

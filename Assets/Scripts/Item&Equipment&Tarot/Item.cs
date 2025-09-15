@@ -607,10 +607,10 @@ public class Item_303 : Item
         effectFinalValueDic.Clear();
         Debug.Log($"道具 \"精神恢复剂\" 使用！");
 
-        effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值, Mathf.Min(PlayerManager.Instance.player.SANValue + 3,PlayerManager.Instance.player.SAN.value_limit));
+        effectFinalValueDic.Add(E_AffectPlayerAttributeType.精神值, Mathf.Min(PlayerManager.Instance.player.SANValue + 8,PlayerManager.Instance.player.SAN.value_limit));
 
         //使用后当前精神值+3
-        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 3);
+        PlayerManager.Instance.player.AddAttrValue(AttributeType.SAN, 8);
         PlayerManager.Instance.player.DebugInfo();
 
          
