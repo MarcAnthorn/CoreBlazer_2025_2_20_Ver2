@@ -151,7 +151,7 @@ public class Enemy_1005 : Enemy
         HP = 50;
         HP_limit = 50;
         STR = 30;
-        DEF = 20;
+        DEF = 5;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
@@ -172,8 +172,8 @@ public class Enemy_1006 : Enemy
         name = "牛头人";
         HP = 90;
         HP_limit = 90;
-        STR = 30;
-        DEF = 10;
+        STR = 50;
+        DEF = 20;
         CRIT_Rate = 0.6f;
         CRIT_DMG = 2.0f;
         AVO = 0.2f;
@@ -192,10 +192,10 @@ public class Enemy_1007 : Enemy
     {
         id = 1007;
         name = "未知魔音";
-        HP = 70;
-        HP_limit = 70;
-        STR = 50;
-        DEF = 20;
+        HP = 150;
+        HP_limit = 150;
+        STR = 40;
+        DEF = 30;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
@@ -217,7 +217,7 @@ public class Enemy_1008 : Enemy
         HP = 70;
         HP_limit = 70;
         STR = 55;  // 修正：从100改为55
-        DEF = 5;
+        DEF = 15;
         CRIT_Rate = 0.8f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
@@ -258,10 +258,10 @@ public class Enemy_1010 : Enemy
     {
         id = 1010;
         name = "画中世界";
-        HP = 70;
-        HP_limit = 70;
+        HP = 150;
+        HP_limit = 150;
         STR = 40;  // 修正：从80改为40
-        DEF = 10;
+        DEF = 30;
         CRIT_Rate = 0.3f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
@@ -283,7 +283,7 @@ public class Enemy_1011 : Enemy
         HP = 100;
         HP_limit = 100;
         STR = 12;
-        DEF = 3;
+        DEF = 20;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 1.2f;
         AVO = 0.2f;
@@ -304,8 +304,8 @@ public class Enemy_1012 : Enemy
         name = "鼠群意志";
         HP = 100;
         HP_limit = 100;
-        STR = 20;
-        DEF = 3;
+        STR = 40;
+        DEF = 20;
         CRIT_Rate = 0.5f;
         CRIT_DMG = 1.2f;
         AVO = 0.4f;
@@ -324,10 +324,10 @@ public class Enemy_1013 : Enemy
     {
         id = 1013;
         name = "群山之主的思绪";
-        HP = 180;
-        HP_limit = 180;
-        STR = 55;  // 修正：从60改为55
-        DEF = 35;  // 修正：从40改为35
+        HP = 300;
+        HP_limit = 300;
+        STR = 50;  // 修正：从60改为50
+        DEF = 50;  // 修正：从40改为50
         CRIT_Rate = 0.7f;
         CRIT_DMG = 1.7f;
         AVO = 0.2f;
@@ -346,10 +346,10 @@ public class Enemy_1014 : Enemy
     {
         id = 1014;
         name = "格赫罗斯";
-        HP = 300;
-        HP_limit = 300;
+        HP = 444;
+        HP_limit = 444;
         STR = 70;  // 修正：从80改为70
-        DEF = 30;
+        DEF = 80;
         CRIT_Rate = 0.2f;
         CRIT_DMG = 2.0f;
         AVO = 0.2f;
@@ -368,10 +368,10 @@ public class Enemy_1015 : Enemy
     {
         id = 1015;
         name = "死灵之书";
-        HP = 90;
-        HP_limit = 90;
+        HP = 666;
+        HP_limit = 666;
         STR = 30;  // 修正：从80改为70
-        DEF = 8;
+        DEF = 6;
         CRIT_Rate = 0.5f;
         CRIT_DMG = 1.3f;
         AVO = 0.2f;
@@ -393,7 +393,7 @@ public class Enemy_1016 : Enemy
         HP = 210;
         HP_limit = 210;
         STR = 75;  // 修正：从80改为70
-        DEF = 30;
+        DEF = 50;
         CRIT_Rate = 0.1f;
         CRIT_DMG = 1.2f;
         AVO = 0.1f;

@@ -279,7 +279,7 @@ public class ItemManager : Singleton<ItemManager>
                     TimeManager.Instance.RemoveTimer(item.timerIndex);
 
                     //手动调用OnComplete的委托：
-                    item.onCompleteDelegate();
+                    item.onCompleteDelegate?.Invoke();
                 }
                 toRemove.Add(_item);
             }

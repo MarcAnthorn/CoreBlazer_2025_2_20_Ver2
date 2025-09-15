@@ -98,14 +98,14 @@ public class PlayerManager : Singleton<PlayerManager>          //用于管理角
             STR = new Player.PlayerAttribute(2)
             {
                 value = 10,
-                value_limit = 100
+                value_limit = 300
             },
             // 力量 (Strength)，id = 2，初始值 10
 
             DEF = new Player.PlayerAttribute(3)
             {
                 value = 5,
-                value_limit = 100
+                value_limit = 300
             },
             // 防御 (Defense)，id = 3，初始值 5
 
