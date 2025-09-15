@@ -80,7 +80,7 @@ public class ButtonInteract : MonoBehaviour
                         break;
                     case "AboutButton":
                         SoundEffectManager.Instance.PlaySoundEffect("PanelRevealVer1");
-                        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("制作人员：\n策划：咕咕咕 王润霖 \n被窝猫 朔风闽江\n程序：Ancheryy Marc\n美术：年丰巷凩工坊 冻鱼不列\n感谢游玩！", Color.white);
+                        UIManager.Instance.ShowPanel<WarningPanel>().SetWarningText("制作人员：\n策划：咕咕咕 王润霖 \n被窝猫 朔风闽江\n程序：Ancheryy Marc 核爆蛋\n美术：年丰巷凩工坊 冻鱼不列 洛提亚\n感谢游玩！", Color.white);
                         break;
                     default:
                         break;
