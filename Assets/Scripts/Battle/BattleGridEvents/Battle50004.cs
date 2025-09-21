@@ -13,6 +13,7 @@ public class Battle50004 : BattleBase
         PoolManager.Instance.SpawnFromPool("MapPOIs/RewardBoss", this.transform.position, Quaternion.identity);
         
         Destroy(this.gameObject);
+    
     }
 
 
